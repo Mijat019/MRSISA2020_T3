@@ -1,5 +1,5 @@
-# Internet software architecture group project
-### Members of the team
+# Grupni projekat iz internet softverskih arhitektura
+### Članovi tima
 
 * Stefan Kandić
 * Stefan Stegić
