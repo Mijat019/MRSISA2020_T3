@@ -1,6 +1,6 @@
 # backend setup
 
-### First install required packages by running
+### Install required packages by running
 
 ```
 npm install
@@ -12,7 +12,7 @@ npm install
 npm run dev
 ```
 
-### Compiles and minifies for production
+### Compile TypeScript to JavaScript for production
 
 ```
 npm run build
