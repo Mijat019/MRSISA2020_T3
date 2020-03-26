@@ -4,3 +4,10 @@
 * Stefan Kandić
 * Stefan Stegić
 * Mijat Miletić
+
+
+### Technology stack
+* MySQL
+* Express
+* Vue
+* Node
