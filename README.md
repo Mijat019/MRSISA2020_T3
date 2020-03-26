@@ -1,5 +1,5 @@
-# Internet software architecture group project
-### Members of the team
+# Internet software architectures and methodologies of software development group project
+### Team members
 
 * Stefan Kandić
 * Stefan Stegić
