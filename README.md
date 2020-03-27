@@ -14,4 +14,4 @@
 
 ### Setup
 
-You need to setup api and client separately. You will find instructions inside folders "api" and "client".
+Api contains the backend and client contains the frontend. You need to setup frontend and backend applications separately. You will find instructions inside folders "api" and "client".
