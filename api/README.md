@@ -9,7 +9,10 @@ npm install
 ### Create the database
 You will need to:
 1. Install xampp from https://www.apachefriends.org/download.html
-2. Create a database called "covid19Clinic" from phpmyadmin
+2. Run xampp
+3. Start Apache and MySQL
+4. Open phpmyadmin by clicking on "Admin" for MySQL
+5. Create a database called "covid19Clinic" in phpmyadmin
 
 ### Run for development with hot reload
 
