@@ -12,6 +12,8 @@ import Users from "./models/User";
 (async () => {
   try {
     await db.authenticate();
+    // creates tables from model
+    // drops tables if they already exist
     await db.sync({ force: true });
     console.log("Connected to the database");
   } catch (error) {
