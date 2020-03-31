@@ -33,7 +33,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
  */
 app.get("/", async (req: any, res: any) => {
   await ClinicAdmins.create({
-    accountStatus: 1,
     email: "dasd",
     password: "dsf",
     firstName: "asd",
