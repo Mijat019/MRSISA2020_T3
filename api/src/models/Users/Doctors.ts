@@ -1,18 +1,18 @@
-import { Model, STRING, INTEGER, DATE } from "sequelize";
+import { Model, INTEGER, Association } from "sequelize";
 import db from "../database";
-import AccountStatus from "./AccountStatus";
+import ContactInfo from "./ContactInfo";
+import AccountInfo from "./AccountInfo";
 
 class Doctors extends Model {
   public id!: number;
-  public email!: string;
-  public firstName!: string;
-  public lastName!: string;
-  public password!: string;
-  public city!: string;
-  /** Pending or Activated */
-  public accountStatus!: AccountStatus;
-  public country!: string;
-  public phoneNumber!: string;
+  public readonly contactInfo?: ContactInfo;
+  public readonly accountInfo?: AccountInfo;
+
+  // define associations
+  public static associations: {
+    contactInfo: Association<Doctors, ContactInfo>;
+    accountInfo: Association<Doctors, AccountInfo>;
+  };
 }
 
 Doctors.init(
@@ -21,40 +21,6 @@ Doctors.init(
       type: INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true
-    },
-    email: {
-      type: STRING,
-      allowNull: false,
-      unique: true
-    },
-    firstName: {
-      type: STRING,
-      allowNull: false
-    },
-    lastName: {
-      type: STRING,
-      allowNull: false
-    },
-    password: {
-      type: STRING,
-      allowNull: false
-    },
-    city: {
-      type: STRING,
-      allowNull: false
-    },
-    country: {
-      type: STRING,
-      allowNull: false
-    },
-    accountStatus: {
-      type: INTEGER,
-      allowNull: false
-    },
-    phoneNumber: {
-      type: STRING,
-      allowNull: false,
-      unique: true
     }
   },
   {
@@ -62,5 +28,15 @@ Doctors.init(
     tableName: "doctors"
   }
 );
+
+Doctors.hasOne(ContactInfo, {
+  foreignKey: "ownerId",
+  as: "contactInfo"
+});
+
+Doctors.hasOne(AccountInfo, {
+  foreignKey: "ownerId",
+  as: "accountInfo"
+});
 
 export default Doctors;

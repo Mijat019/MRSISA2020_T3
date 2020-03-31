@@ -1,21 +1,21 @@
 import { Model, INTEGER, Association } from "sequelize";
 import db from "../database";
-import ContactInfo from "./ContactInfo";
 import AccountInfo from "./AccountInfo";
+import ContactInfo from "./ContactInfo";
 
-class Patients extends Model {
+class ClinicAdmins extends Model {
   public id!: number;
   public readonly contactInfo?: ContactInfo;
   public readonly accountInfo?: AccountInfo;
 
   // define associations
   public static associations: {
-    contactInfo: Association<Patients, ContactInfo>;
-    accountInfo: Association<Patients, AccountInfo>;
+    contactInfo: Association<ClinicAdmins, ContactInfo>;
+    accountInfo: Association<ClinicAdmins, AccountInfo>;
   };
 }
 
-Patients.init(
+ClinicAdmins.init(
   {
     id: {
       type: INTEGER.UNSIGNED,
@@ -25,18 +25,18 @@ Patients.init(
   },
   {
     sequelize: db,
-    tableName: "patients"
+    tableName: "clinicAdmins"
   }
 );
 
-Patients.hasOne(ContactInfo, {
+ClinicAdmins.hasOne(ContactInfo, {
   foreignKey: "ownerId",
   as: "contactInfo"
 });
 
-Patients.hasOne(AccountInfo, {
+ClinicAdmins.hasOne(AccountInfo, {
   foreignKey: "ownerId",
   as: "accountInfo"
 });
 
-export default Patients;
+export default ClinicAdmins;

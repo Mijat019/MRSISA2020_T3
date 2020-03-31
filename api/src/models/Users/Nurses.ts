@@ -3,19 +3,19 @@ import db from "../database";
 import ContactInfo from "./ContactInfo";
 import AccountInfo from "./AccountInfo";
 
-class Patients extends Model {
+class Nurses extends Model {
   public id!: number;
   public readonly contactInfo?: ContactInfo;
   public readonly accountInfo?: AccountInfo;
 
   // define associations
   public static associations: {
-    contactInfo: Association<Patients, ContactInfo>;
-    accountInfo: Association<Patients, AccountInfo>;
+    contactInfo: Association<Nurses, ContactInfo>;
+    accountInfo: Association<Nurses, AccountInfo>;
   };
 }
 
-Patients.init(
+Nurses.init(
   {
     id: {
       type: INTEGER.UNSIGNED,
@@ -25,18 +25,18 @@ Patients.init(
   },
   {
     sequelize: db,
-    tableName: "patients"
+    tableName: "nurses"
   }
 );
 
-Patients.hasOne(ContactInfo, {
+Nurses.hasOne(ContactInfo, {
   foreignKey: "ownerId",
   as: "contactInfo"
 });
 
-Patients.hasOne(AccountInfo, {
+Nurses.hasOne(AccountInfo, {
   foreignKey: "ownerId",
   as: "accountInfo"
 });
 
-export default Patients;
+export default Nurses;
