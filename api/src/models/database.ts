@@ -3,7 +3,7 @@ import { Options, Sequelize } from "sequelize";
 const dbConfig = {
   dbName: "covid19Clinic",
   username: "root",
-  password: "123456"
+  password: ""
 };
 
 const options: Options = {
