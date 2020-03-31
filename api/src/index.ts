@@ -6,7 +6,8 @@ import config from "./config";
 
 import db from "./models/database";
 
-import Users from "./models/User";
+import Patients from "./models/Users/Patients";
+import Doctors from "./models/Users/Doctors";
 
 // connect to the database
 (async () => {
@@ -14,7 +15,8 @@ import Users from "./models/User";
     await db.authenticate();
     // creates tables from model
     // drops tables if they already exist
-    await db.sync({ force: true });
+    // uncomment next line if you want to apply changes to the schema
+    // await db.sync({ force: true });
     console.log("Connected to the database");
   } catch (error) {
     console.log(error);
@@ -30,8 +32,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // this is just a test
 app.get("/", async (req: any, res: any) => {
-  const resp = await Users.findAll();
-  res.send(resp);
+  const resp = await Patients.findAll();
+  const resp2 = await Doctors.findAll();
+  res.send(resp2);
 });
 
 app.listen(config.port, () =>
