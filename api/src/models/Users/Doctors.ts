@@ -1,18 +1,19 @@
-import { Model, INTEGER, Association } from "sequelize";
+import { Model, STRING, INTEGER } from "sequelize";
 import db from "../database";
-import ContactInfo from "./ContactInfo";
-import AccountInfo from "./AccountInfo";
+import AccountStatus from "./AccountStatus";
 
 class Doctors extends Model {
   public id!: number;
-  public readonly contactInfo?: ContactInfo;
-  public readonly accountInfo?: AccountInfo;
-
-  // define associations
-  public static associations: {
-    contactInfo: Association<Doctors, ContactInfo>;
-    accountInfo: Association<Doctors, AccountInfo>;
-  };
+  public email!: string;
+  public password!: string;
+  public firstName!: string;
+  public lastName!: string;
+  public jmbg!: string;
+  public city!: string;
+  public country!: string;
+  public address!: string;
+  public phoneNumber!: string;
+  public accountStatus!: AccountStatus;
 }
 
 Doctors.init(
@@ -21,22 +22,55 @@ Doctors.init(
       type: INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true
+    },
+    email: {
+      type: STRING,
+      allowNull: false,
+      unique: true
+    },
+    password: {
+      type: STRING,
+      allowNull: false
+    },
+    accountStatus: {
+      type: INTEGER,
+      defaultValue: 0
+    },
+    firstName: {
+      type: STRING,
+      allowNull: false
+    },
+    lastName: {
+      type: STRING,
+      allowNull: false
+    },
+    jmbg: {
+      type: STRING,
+      allowNull: false,
+      unique: true
+    },
+    city: {
+      type: STRING,
+      allowNull: false
+    },
+    country: {
+      type: STRING,
+      allowNull: false
+    },
+    address: {
+      type: STRING,
+      allowNull: false
+    },
+    phoneNumber: {
+      type: STRING,
+      allowNull: false,
+      unique: true
     }
   },
   {
     sequelize: db,
-    tableName: "doctors"
+    tableName: "Doctors"
   }
 );
-
-Doctors.hasOne(ContactInfo, {
-  foreignKey: "ownerId",
-  as: "contactInfo"
-});
-
-Doctors.hasOne(AccountInfo, {
-  foreignKey: "ownerId",
-  as: "accountInfo"
-});
 
 export default Doctors;

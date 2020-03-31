@@ -1,18 +1,18 @@
-import { Model, INTEGER, Association } from "sequelize";
+import { Model, STRING, INTEGER } from "sequelize";
 import db from "../database";
-import ContactInfo from "./ContactInfo";
-import AccountInfo from "./AccountInfo";
+import AccountStatus from "./AccountStatus";
 
 class ClinicCenterAdmins extends Model {
   public id!: number;
-  public readonly contactInfo?: ContactInfo;
-  public readonly accountInfo?: AccountInfo;
-
-  // define associations
-  public static associations: {
-    contactInfo: Association<ClinicCenterAdmins, ContactInfo>;
-    accountInfo: Association<ClinicCenterAdmins, AccountInfo>;
-  };
+  public email!: string;
+  public password!: string;
+  public firstName!: string;
+  public lastName!: string;
+  public jmbg!: string;
+  public city!: string;
+  public country!: string;
+  public address!: string;
+  public phoneNumber!: string;
 }
 
 ClinicCenterAdmins.init(
@@ -21,6 +21,45 @@ ClinicCenterAdmins.init(
       type: INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true
+    },
+    email: {
+      type: STRING,
+      allowNull: false,
+      unique: true
+    },
+    password: {
+      type: STRING,
+      allowNull: false
+    },
+    firstName: {
+      type: STRING,
+      allowNull: false
+    },
+    lastName: {
+      type: STRING,
+      allowNull: false
+    },
+    jmbg: {
+      type: STRING,
+      allowNull: false,
+      unique: true
+    },
+    city: {
+      type: STRING,
+      allowNull: false
+    },
+    country: {
+      type: STRING,
+      allowNull: false
+    },
+    address: {
+      type: STRING,
+      allowNull: false
+    },
+    phoneNumber: {
+      type: STRING,
+      allowNull: false,
+      unique: true
     }
   },
   {
@@ -28,14 +67,5 @@ ClinicCenterAdmins.init(
     tableName: "clinicCenterAdmins"
   }
 );
-ClinicCenterAdmins.hasOne(ContactInfo, {
-  foreignKey: "ownerId",
-  as: "contactInfo"
-});
-
-ClinicCenterAdmins.hasOne(AccountInfo, {
-  foreignKey: "ownerId",
-  as: "accountInfo"
-});
 
 export default ClinicCenterAdmins;
