@@ -3,10 +3,10 @@
   <v-app id="inspire">
     <v-content>
 
-      <v-container class="mt-10" fluid>
+      <v-container class="my-10" fluid>
 
         <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="4">
+          <v-col cols="12" sm="8">
 
             <v-card outlined shaped :loading="loading">
 
@@ -16,40 +16,40 @@
                 <v-card-title>
                   <v-row align="center" justify="center">
                     <v-btn class="my-4" icon  >
-                      <span class="iconify" data-icon="mdi-language-python"/>                
+                      <span class="iconify" data-icon="fa-solid:virus"/>                
                     </v-btn>
                   </v-row>
                 </v-card-title>
 
                 <v-card-subtitle>
                   <v-row align="center" justify="center">
-                    <p class="headline py-4">Sign in to use app</p>
+                    <p class="headline py-4">Register to start using the app</p>
                   </v-row>
                 </v-card-subtitle>
 
               <v-card-text>
-                <v-form ref="loginForm" lazy-validation>
+                <v-form ref="form" lazy-validation>
                   <v-row align="center" justify="center" class="pt-3">
-                    <v-col cols="6">
+                    <v-col cols="12" sm="6">
                       <v-text-field
                         v-model="user.firstname"
-                        :rules="fieldRules"
+                        :rules="requiredRule"
                         outlined 
                         dense
                         label="First Name"
-                        name="login"
+                        name="firstname"
                         type="text"
                       />
                     </v-col>
 
-                    <v-col cols="6">
+                    <v-col cols="12" sm="6">
                       <v-text-field
                         v-model="user.lastname"
-                        :rules="fieldRules"
+                        :rules="requiredRule"
                         outlined 
                         dense
                         label="Last Name"
-                        name="login"
+                        name="lastname"
                         type="text"
                       />
                     </v-col>
@@ -58,102 +58,102 @@
                   <v-row align="center" justify="center">
                     <v-col cols="12">
                       <v-text-field
-                        v-model="user.username"
-                        :rules="fieldRules"
+                        v-model="user.email"
+                        :rules="emailRule"
                         outlined 
                         dense
                         label="Email"
-                        name="login"
+                        name="email"
                         type="text"
                       />
                     </v-col>
                   </v-row>
 
                   <v-row align="center" justify="center" class="pt-3">
-                    <v-col cols="6">
+                    <v-col cols="12" sm="6">
                       <v-text-field
-                        v-model="user.firstname"
-                        :rules="fieldRules"
+                        v-model="user.jmbg"
+                        :rules="jmbgRule"
                         outlined 
                         dense
                         label="JMBG"
-                        name="login"
+                        name="jmbg"
                         type="text"
                       />
                     </v-col>
 
-                    <v-col cols="6">
+                    <v-col cols="12" sm="6">
                       <v-text-field
-                        v-model="user.lastname"
-                        :rules="fieldRules"
+                        v-model="user.phoneNum"
+                        :rules="phoneNumRule"
                         outlined 
                         dense
                         label="Phone Number"
-                        name="login"
+                        name="phoneNum"
                         type="text"
                       />
                     </v-col>
                   </v-row>
 
                   <v-row align="center" justify="center">
-                    <v-col cols="6">
+                    <v-col cols="12" sm="6">
                       <v-text-field
                         v-model="user.password"
-                        :rules="fieldRules"
+                        :rules="requiredRule"
                         outlined 
                         dense
-                        id="password"
+                        id="password1"
                         label="Password"
-                        name="password"
+                        name="password1"
                         type="password"
                       />
                     </v-col>
 
-                    <v-col cols="6">
+                    <v-col cols="12" sm="6">
                       <v-text-field
-                        v-model="user.password"
-                        :rules="fieldRules"
+                        v-model="user.confirmed_password"
+                        :rules="requiredRule"
                         outlined 
                         dense
-                        id="password"
+                        id="password2"
                         label="Confirm"
-                        name="password"
+                        name="password2"
                         type="password"
                       />
                     </v-col>                 
                   </v-row>
 
                   <v-row align="center" justify="center">
-                    <v-col cols="4">
+                    <v-col cols="12" sm="4">
                       <v-text-field
-                        v-model="user.firstname"
-                        :rules="fieldRules"
+                        v-model="user.country"
+                        :rules="requiredRule"
                         outlined 
                         dense
                         label="Country"
-                        name="login"
+                        name="country"
                         type="text"
                       />
                     </v-col>
-                    <v-col cols="4">
+                    <v-col cols="12" sm="4">
                       <v-text-field
-                        v-model="user.firstname"
-                        :rules="fieldRules"
+                        v-model="user.city"
+                        :rules="requiredRule"
                         outlined 
                         dense
                         label="City"
-                        name="login"
+                        name="city"
                         type="text"
                       />
                     </v-col>
-                    <v-col cols="4">
+                    <v-col cols="12" sm="4">
                       <v-text-field
-                        v-model="user.firstname"
-                        :rules="fieldRules"
+                        v-model="user.address"
+                        :rules="requiredRule"
                         outlined 
                         dense
                         label="Address"
-                        name="login"
+                        name="address"
                         type="text"
                       />
                     </v-col>                    
@@ -186,37 +186,62 @@
 
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Register",
   components: {},
   data() {
     return {
       loading : false,
-      fieldRules: [v => !!v || "This field is required"],
       user: {
         firstname : "",
         lastname : "",
         jmbg : "",
-        username : "",
+        phoneNum : "",
         address : "",
         city : "",
         country : "",
-        password1: "",
-        password12 : ""
-      }
+        password: "",
+      },
+      confirmed_password : "",
+
+      // FORM VALIDATION DATA
+      requiredRule : [v => !!v || "This field is required"],
+      emailRule : [
+        v => !!v || "This field is required",
+        // v => /.+@.+/.test(v) || 'E-mail must be valid',
+      ],
+      jmbgRule : [
+        v => !!v || "This field is required",
+        v => !/[a-zA-Z]/.test(v) || "JMBG must not contain letters",
+        v => /^[0-9]{13}$/.test(v) || "JMBG must be 13 digits long"
+      ],
+      phoneNumRule : [
+        v => !!v || "This field is required",
+        v => !/[a-zA-Z]/.test(v) || "Phone number must not contain letters",
+        v => /^[0-9]{10}$/.test(v) || "Phone number must be 10 digits long"
+      ],
+      // END OF FORM VALIDATION
+
     };
   },
   methods: {
+
+    ...mapActions({
+      register: "authentication/register",
+    }),
+
     async submit() {
     
-      if (!this.$refs.loginForm.validate()) {
+      if (!this.$refs.form.validate()) {
         return;
       }
 
       this.loading = true
       await setTimeout(() => (this.loading = false), 2000)
 
-      // await this.login(this.user);
+      await this.register(this.user);
       this.$router.push("/");
     }
   }
@@ -231,8 +256,8 @@ export default {
   }
 
   .iconify { 
-    width: 50px; 
-    height: 50px; 
+    width: 60px; 
+    height: 60px; 
   }
 
 

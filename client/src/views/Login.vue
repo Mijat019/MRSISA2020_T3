@@ -3,10 +3,10 @@
   <v-app id="inspire">
     <v-content>
 
-      <v-container class="mt-12 pt-12" fluid>
+      <v-container class="my-12 py-12" fluid>
 
         <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="4">
+          <v-col cols="12" sm="8">
 
             <v-card outlined shaped :loading="loading">
 
@@ -16,14 +16,14 @@
                 <v-card-title>
                   <v-row align="center" justify="center">
                     <v-btn class="my-5" icon  >
-                      <span class="iconify" data-icon="mdi-language-python"/>                
+                      <span class="iconify" data-icon="fa-solid:virus"/>                
                     </v-btn>
                   </v-row>
                 </v-card-title>
 
                 <v-card-subtitle>
                   <v-row align="center" justify="center">
-                    <p class="headline py-4">Sign in to use app</p>
+                    <p class="headline py-4">Sign in to access your profile</p>
                   </v-row>
                 </v-card-subtitle>
 
@@ -66,7 +66,7 @@
                     <a href=""> Create account</a>
                   </router-link>
                   <v-spacer />
-                  <v-btn @click="submit" class="blue white--text mr-2">Register</v-btn>
+                  <v-btn @click="submit" class="blue white--text mr-2">Sign in</v-btn>
               </v-card-actions>
               </v-col>
               </v-row>
@@ -85,6 +85,8 @@
 
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Login",
   components: {},
@@ -99,6 +101,10 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      login: "authentication/login",
+    }),
+
     async submit() {
     
       if (!this.$refs.loginForm.validate()) {
@@ -108,7 +114,7 @@ export default {
       this.loading = true
       await setTimeout(() => (this.loading = false), 2000)
 
-      // await this.login(this.user);
+      await this.login(this.user);
       this.$router.push("/");
     }
   }
