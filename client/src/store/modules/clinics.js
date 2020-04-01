@@ -11,7 +11,7 @@ const mutations = {
 };
 
 const actions = {
-    async getClinics({ commit }) {
+    async getClinicsActions({ commit }) {
         try {
             const { data: clinics } = await Vue.$axios.get("/clinics");
             commit("setClinics", clinics);
@@ -27,6 +27,7 @@ const getters = {
 };
 
 export default {
+    namespaced: true,
     state,
     mutations,
     actions,
