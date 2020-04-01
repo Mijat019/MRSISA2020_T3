@@ -27,7 +27,7 @@ const actions = {
         try {
             let { data } = await Vue.$axios.post('/auth/login', credentialsPayload);
             commit('logUser', data);
-            alert('uspeh');
+            // alert('uspeh');
         } catch (error) {
             alert('tuki')
         }
