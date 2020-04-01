@@ -32,24 +32,24 @@
                   <v-row align="center" justify="center" class="pt-3">
                     <v-col cols="12" sm="6">
                       <v-text-field
-                        v-model="user.firstname"
+                        v-model="user.firstName"
                         :rules="requiredRule"
                         outlined 
                         dense
                         label="First Name"
-                        name="firstname"
+                        name="firstName"
                         type="text"
                       />
                     </v-col>
 
                     <v-col cols="12" sm="6">
                       <v-text-field
-                        v-model="user.lastname"
+                        v-model="user.lastName"
                         :rules="requiredRule"
                         outlined 
                         dense
                         label="Last Name"
-                        name="lastname"
+                        name="lastName"
                         type="text"
                       />
                     </v-col>
@@ -84,12 +84,12 @@
 
                     <v-col cols="12" sm="6">
                       <v-text-field
-                        v-model="user.phoneNum"
+                        v-model="user.phoneNumber"
                         :rules="phoneNumRule"
                         outlined 
                         dense
                         label="Phone Number"
-                        name="phoneNum"
+                        name="phoneNumber"
                         type="text"
                       />
                     </v-col>
@@ -102,9 +102,9 @@
                         :rules="requiredRule"
                         outlined 
                         dense
-                        id="password1"
+                        id="password"
                         label="Password"
-                        name="password1"
+                        name="password"
                         type="password"
                       />
                     </v-col>
@@ -194,10 +194,10 @@ export default {
     return {
       loading : false,
       user: {
-        firstname : "",
-        lastname : "",
+        firstName : "",
+        lastName : "",
         jmbg : "",
-        phoneNum : "",
+        phoneNumber : "",
         address : "",
         city : "",
         country : "",

@@ -3,13 +3,9 @@ import AuthenticationController from "../controllers/AuthenticationController";
 
 const router = express.Router();
 
-router.post('/login', async (req,res) => {
-    res.send('uspeh');
-})
+router.post('/login', AuthenticationController.login);
 
 
-router.post('/register', async (req,res) => {
-    res.send('uspeh');
-})
+router.post('/register', AuthenticationController.register);
 
 export default router;
