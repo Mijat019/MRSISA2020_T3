@@ -1,4 +1,4 @@
-import db from "../database";
+import db from "./database";
 import { Model, STRING, INTEGER } from "sequelize";
 
 class Clinics extends Model {
