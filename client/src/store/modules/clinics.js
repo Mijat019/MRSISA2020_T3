@@ -7,6 +7,9 @@ const state = {
 const mutations = {
     setClinics(state, clinics) {
         state.clinics = clinics;
+    },
+    addClinic(state, newClinic) {
+        state.clinics.push(newClinic);
     }
 };
 
@@ -15,6 +18,20 @@ const actions = {
         try {
             const { data: clinics } = await Vue.$axios.get("/clinics");
             commit("setClinics", clinics);
+        } catch (error) {
+            // TODO: add snack bar call
+            console.log(error);
+        }
+    },
+
+    async addClinicAction({ commit }, clinicPayload) {
+        try {
+            console.log(clinicPayload);
+            const { data: newClinic } = await Vue.$axios.post(
+                "/clinics",
+                clinicPayload
+            );
+            commit("addClinic", newClinic);
         } catch (error) {
             // TODO: add snack bar call
             console.log(error);

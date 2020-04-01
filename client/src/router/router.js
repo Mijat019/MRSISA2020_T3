@@ -32,7 +32,7 @@ const routes = [
         name: "ManageClinics",
         component: () =>
             import(
-                /* webpackChunkName: "ManageClinics" */ "../components/clinics/ManageClinics"
+                /* webpackChunkName: "ManageClinics" */ "../components/clinics/Clinics"
             )
     }
 ];

@@ -11,11 +11,11 @@
                 hide-details
             ></v-text-field>
         </v-card-title>
-        <v-data-table
-            :headers="headers"
-            :items="getClinics"
-            :search="search"
-        ></v-data-table>
+        <v-data-table :headers="headers" :items="getClinics" :search="search">
+            <template v-slot:top>
+                <slot name="addClinic"></slot>
+            </template>
+        </v-data-table>
     </v-card>
 </template>
 

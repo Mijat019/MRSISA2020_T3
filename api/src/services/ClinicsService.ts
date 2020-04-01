@@ -5,6 +5,11 @@ class ClinicsService {
         const clinics = await Clinics.findAll();
         return clinics;
     }
+
+    public async add(clinicPayload: any): Promise<any> {
+        const clinic = await Clinics.create(clinicPayload);
+        return clinic;
+    }
 }
 
 export default new ClinicsService();

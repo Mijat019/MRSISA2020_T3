@@ -14,7 +14,7 @@ import clinicsRoutes from "./routes/clinicsRoutes";
         // creates tables from model
         // drops tables if they already exist
         // uncomment next line if you want to apply changes to the schema
-        // await db.sync({ force: true });
+        await db.sync({ force: true });
         console.log("Connected to the database");
     } catch (error) {
         console.log(error);

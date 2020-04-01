@@ -17,7 +17,8 @@ Clinics.init(
         },
         name: {
             type: STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         address: {
             type: STRING,
