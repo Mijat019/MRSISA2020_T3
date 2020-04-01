@@ -32,7 +32,7 @@
                   <v-row align="center" justify="center" class="pt-6">
                     <v-col cols="12">
                       <v-text-field
-                        v-model="user.username"
+                        v-model="user.email"
                         :rules="fieldRules"
                         outlined 
                         dense
@@ -92,7 +92,7 @@ export default {
       loading : false,
       fieldRules: [v => !!v || "This field is required"],
       user: {
-        username: "",
+        email: "",
         password: ""
       }
     };

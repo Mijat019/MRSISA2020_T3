@@ -9,6 +9,7 @@ import ClinicAdmins from "./models/Users/ClinicAdmins";
 import Patients from "./models/Users/Patients";
 
 import authentication from './routes/authenticationRoutes'
+import usersRoutes from './routes/usersRoutes'
 
 
 // connect to the database
@@ -55,8 +56,10 @@ app.get("/", async (req: any, res: any) => {
     res.send({resp});
 });
 
-// login and register
+// login
 app.use('/auth', authentication);
+
+app.use('/users', usersRoutes);
 
 app.listen(config.port, () =>
     console.log(`Server listening on port ${config.port}`)

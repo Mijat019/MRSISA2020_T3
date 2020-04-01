@@ -109,10 +109,11 @@
                       />
                     </v-col>
 
+                    <!-- ne radi kad dam listu za rules nmp -->
                     <v-col cols="12" sm="6">
                       <v-text-field
-                        v-model="user.confirmed_password"
-                        :rules="requiredRule"
+                        v-model="confirmed_password"
+                        :rules="passwordRule"  
                         outlined 
                         dense
                         id="password2"
@@ -216,6 +217,10 @@ export default {
         v => !/[a-zA-Z]/.test(v)   || "JMBG must not contain letters",
         // v => /^[0-9]{13}$/.test(v) || "JMBG must be 13 digits long"
       ],
+      passwordRule : [ 
+        v => !!v                      || "This field is required",
+        v => v === this.user.password || "Passwords must match!" 
+      ],
       phoneNumRule : [
         v => !!v                   || "This field is required",
         v => !/[a-zA-Z]/.test(v)   || "Phone number must not contain letters",
@@ -227,7 +232,7 @@ export default {
   methods: {
 
     ...mapActions({
-      register: "authentication/register",
+      register: "users/register",
     }),
 
     async submit() {
@@ -256,6 +261,9 @@ export default {
         setTimeout(resolve, ms);
       });
     }
+  },
+
+  computed : {
   }
 };
 </script>

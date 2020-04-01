@@ -1,56 +1,44 @@
 import Vue from 'vue';
-
+var jwt = require('jsonwebtoken');
 
 const state = {
-  username: "",
+  user: {email : ""},
 }
 
 const mutations = {
-  logUser(state, user) {
-    state.username = user.username;
-    localStorage.setItem('token', user.token);
-    Vue.$axios.defaults.headers['Authorization'] = user.token;
-  },
+    logUser(state, user) {
+        state.email = user.email;
+        localStorage.setItem('token', user.token);
+        Vue.$axios.defaults.headers['Authorization'] = user.token;
+    },
 
-  logoutUser(state) {
-    state.username = "";
-    localStorage.setItem('token', '');
-    Vue.$axios.defaults.headers.Authorization = '';
-    // notesModule.state.notes = [];
-    // userModule.state.users = [];
-  },
-
+    logoutUser(state) {
+        state.email = "";
+        localStorage.setItem('token', '');
+        Vue.$axios.defaults.headers.Authorization = '';
+    },
 }
 
 const actions = {
     async login({ commit }, credentialsPayload) {
         try {
             let { data } = await Vue.$axios.post('/auth/login', credentialsPayload);
+            console.log(jwt.decode(data.token));
             commit('logUser', data);
-            // alert('uspeh');
+            alert('uspeh');
         } catch (error) {
-            alert('tuki')
+            alert(error.response.data)
         }
     },
 
     async logout({ commit }) {
         commit('logoutUser');
     },
-
-    async register({ commit }, credentialsPayload) {
-        try {
-            let { data } = await Vue.$axios.post('/auth/register', credentialsPayload);
-            commit('logUser', data);
-            alert('uspeh');
-        } catch (error) {
-            alert('tuki')
-        }
-    },
 }
 
 const getters = {
-    getUsername: state => state.username,
-    isLogged: state => state.username || false,
+    getEmail: state => state.email,
+    isLogged: state => state.email || false,
 }
 
 
