@@ -6,10 +6,11 @@ const state = {
 }
 
 const mutations = {
-    logUser(state, user) {
-        state.email = user.email;
-        localStorage.setItem('token', user.token);
-        Vue.$axios.defaults.headers['Authorization'] = user.token;
+    async logUser(state, data) {
+        state.user = await jwt.decode(data.token);
+        console.log(state.user);
+        localStorage.setItem('token', data.token);
+        Vue.$axios.defaults.headers['Authorization'] = data.token;
     },
 
     logoutUser(state) {
@@ -23,7 +24,6 @@ const actions = {
     async login({ commit }, credentialsPayload) {
         try {
             let { data } = await Vue.$axios.post('/auth/login', credentialsPayload);
-            console.log(jwt.decode(data.token));
             commit('logUser', data);
             alert('uspeh');
         } catch (error) {

@@ -4,10 +4,10 @@ import Doctors from '../models/Users/Doctors'
 import Nurses from '../models/Users/Nurses'
 import { User } from '../models/Users/User';
 import UsersService from '../services/UsersService'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcrypt')
-const rounds = 5;
+// var jwt = require('jsonwebtoken');
 
 class AuthenticationService {
 

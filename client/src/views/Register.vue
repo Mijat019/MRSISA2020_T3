@@ -28,7 +28,7 @@
                 </v-card-subtitle>
 
               <v-card-text>
-                <v-form ref="form" lazy-validation>
+                <v-form ref="form" lazy-validation v-model="valid">
                   <v-row align="center" justify="center" class="pt-3">
                     <v-col cols="12" sm="6">
                       <v-text-field
@@ -194,6 +194,7 @@ export default {
   data() {
     return {
       loading : false,
+      valid : true,
       user: {
         firstName : "",
         lastName : "",
