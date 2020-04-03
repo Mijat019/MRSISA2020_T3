@@ -7,8 +7,8 @@ class UsersController {
       const user = req.body;
       await UsersService.registerPatient(user);
       res.send("Registration was successful");
-    } catch {
-      res.status(400).send("Email is already registered!");
+    } catch (error) {
+      res.status(400).send(error);
     }
   }
 }

@@ -13,13 +13,18 @@ const mutations = {
 const actions = {
   async register({ dispatch }, credentialsPayload) {
     try {
-      await Vue.$axios.post("/users/register", credentialsPayload);
-      dispatch("snackbar/showSuccess", "You've registered successfully.", {
+      const { data } = await Vue.$axios.post(
+        "/users/register",
+        credentialsPayload
+      );
+
+      dispatch("snackbar/showSuccess", data, {
         root: true,
       });
     } catch (error) {
-      console.log(error);
-      alert(error.response.data);
+      dispatch("snackbar/showError", error.response.data, {
+        root: true,
+      });
     }
   },
 };
