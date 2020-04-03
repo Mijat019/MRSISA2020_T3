@@ -8,14 +8,20 @@ import db from "./models/database";
 import ClinicAdmins from "./models/Users/ClinicAdmins";
 import Patients from "./models/Users/Patients";
 
+import authentication from './routes/authenticationRoutes'
+import usersRoutes from './routes/usersRoutes'
+
+
 // connect to the database
 (async () => {
     try {
-        await db.authenticate();
+        await db.authenticate()
+            .then(() => console.log('Database connected'))
+            .catch(()=> console.log('ERROR'));
         // creates tables from model
         // drops tables if they already exist
         // uncomment next line if you want to apply changes to the schema
-        await db.sync({ force: true });
+        // await db.sync({ force: true });
         console.log("Connected to the database");
     } catch (error) {
         console.log(error);
@@ -34,7 +40,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
  */
 app.get("/", async (req: any, res: any) => {
     await Patients.create({
-        email: "dasd",
+        email: "pera",
         password: "dsf",
         firstName: "asd",
         lastName: "adsf",
@@ -44,9 +50,16 @@ app.get("/", async (req: any, res: any) => {
         address: "sadf",
         phoneNumber: "asdf"
     });
-    const resp = await Patients.findAll();
-    res.send(resp);
+    // const resp = await Patients.findAll();
+    const resp = await Patients.findOne({where : {email : 'dura'}});
+    console.log(resp?.getDataValue);
+    res.send({resp});
 });
+
+// login
+app.use('/auth', authentication);
+
+app.use('/users', usersRoutes);
 
 app.listen(config.port, () =>
     console.log(`Server listening on port ${config.port}`)

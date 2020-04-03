@@ -11,9 +11,10 @@ const options: Options = {
   }
 };
 
+
 export default {
   port: 4200,
-  saltRounds: 10,
+  saltRounds: 5,
   secret: "qwertyuiopasdfghjklzxcvbnm1234567890",
   tokenExpirySeconds: 14400,
   dbConfig: {
