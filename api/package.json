@@ -26,6 +26,7 @@
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.3",
     "@types/joi": "^14.3.4",
+    "@types/jsonwebtoken": "^8.3.8",
     "@types/node": "^12.12.31",
     "@types/sequelize": "^4.28.8",
     "nodemon": "^2.0.2",
