@@ -1,13 +1,10 @@
 import express, { Application } from "express";
-
 import bodyParser from "body-parser";
 import cors from "cors";
 import config from "./config";
-
 import db from "./models/database";
-import ClinicAdmins from "./models/Users/ClinicAdmins";
-import Patients from "./models/Users/Patients";
 
+import clinicsRoutes from "./routes/clinicsRoutes";
 import authentication from './routes/authenticationRoutes'
 import usersRoutes from './routes/usersRoutes'
 
@@ -35,30 +32,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-/**
- * OVO JE SAMO TEST
- */
-app.get("/", async (req: any, res: any) => {
-    await Patients.create({
-        email: "pera",
-        password: "dsf",
-        firstName: "asd",
-        lastName: "adsf",
-        jmbg: "sdf",
-        city: "daf",
-        country: "sdaf",
-        address: "sadf",
-        phoneNumber: "asdf"
-    });
-    // const resp = await Patients.findAll();
-    const resp = await Patients.findOne({where : {email : 'dura'}});
-    console.log(resp?.getDataValue);
-    res.send({resp});
-});
-
-// login
+// routes
+app.use("/clinics", clinicsRoutes);
 app.use('/auth', authentication);
-
 app.use('/users', usersRoutes);
 
 app.listen(config.port, () =>
