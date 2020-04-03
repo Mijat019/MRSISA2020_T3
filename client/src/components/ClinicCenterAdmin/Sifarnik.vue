@@ -16,8 +16,8 @@
 export default {
   name: "Sifarnik",
   data: () => ({
-    tab: null,
-  }),
+    tab: null
+  })
 };
 </script>
 

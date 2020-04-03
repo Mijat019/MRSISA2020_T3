@@ -17,9 +17,7 @@
 
                   <v-card-subtitle>
                     <v-row align="center" justify="center">
-                      <p class="headline py-4">
-                        Sign in to access your profile
-                      </p>
+                      <p class="headline py-4">Sign in to access your profile</p>
                     </v-row>
                   </v-card-subtitle>
 
@@ -57,13 +55,9 @@
                   </v-card-text>
 
                   <v-card-actions>
-                    <button @click="gotoRegister" class="white blue--text ml-2">
-                      Create Account
-                    </button>
+                    <button @click="gotoRegister" class="white blue--text ml-2">Create Account</button>
                     <v-spacer />
-                    <v-btn @click="submit" class="blue white--text mr-2"
-                      >Sign in</v-btn
-                    >
+                    <v-btn @click="submit" class="blue white--text mr-2">Sign in</v-btn>
                   </v-card-actions>
                 </v-col>
               </v-row>
@@ -84,16 +78,16 @@ export default {
   data() {
     return {
       loading: false,
-      fieldRules: [(v) => !!v || "This field is required"],
+      fieldRules: [v => !!v || "This field is required"],
       user: {
         email: "",
-        password: "",
-      },
+        password: ""
+      }
     };
   },
   methods: {
     ...mapActions({
-      login: "authentication/login",
+      login: "authentication/login"
     }),
 
     async submit() {
@@ -106,7 +100,7 @@ export default {
       this.loading = false;
 
       await this.login(this.user);
-      this.$router.push("/");
+      this.$router.push("/clinic/clinicCenterAdmin");
     },
 
     async gotoRegister() {
@@ -116,11 +110,11 @@ export default {
       this.$router.push("/");
     },
     async wait(ms) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         setTimeout(resolve, ms);
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
