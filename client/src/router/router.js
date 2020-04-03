@@ -8,7 +8,7 @@ import ClinicAdminPage from "../views/ClinicAdminPage";
 import DoctorPage from "../views/DoctorPage";
 import NursePage from "../views/NursePage";
 import PatientPage from "../views/PatientPage";
-import Clinics from "../components/ClinicCenterAdmin/Clinics";
+import Clinics from "../components/ClinicCenterAdmin/Clinics/ManageClinics";
 import Sifarnik from "../components/ClinicCenterAdmin/Sifarnik";
 import Users from "../components/ClinicCenterAdmin/Users";
 
