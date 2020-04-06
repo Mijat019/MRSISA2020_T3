@@ -34,6 +34,14 @@ const routes = [
             import(
                 /* webpackChunkName: "ManageClinics" */ "../components/clinics/Clinics"
             )
+    },
+    {
+        path: "/manageDoctors",
+        name: "ManageDoctors",
+        component: () =>
+            import(
+                "../components/doctors/Doctors"
+            )
     }
 ];
 

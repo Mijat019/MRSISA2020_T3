@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
 
 import clinics from "./modules/clinics";
+import doctors from "./modules/doctors";
 import snackbar from "./modules/snackbar";
 import authentication from "./modules/authentication"
 import users from "./modules/users"
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     authentication,
     users,
     clinics,
+    doctors,
     snackbar
   }
 });
