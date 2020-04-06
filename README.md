@@ -9,7 +9,7 @@
 ### Technology stack
 * MySQL
 * Express
-* Vue
+* Vue.js
 * Node
 
 ### Setup
