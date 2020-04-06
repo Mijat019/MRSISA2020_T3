@@ -8,7 +8,7 @@
 
 ### Technology stack
 * MySQL
-* Express
+* Express.js
 * Vue.js
 * Node.js
 
