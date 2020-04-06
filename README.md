@@ -10,7 +10,7 @@
 * MySQL
 * Express
 * Vue.js
-* Node
+* Node.js
 
 ### Setup
 
