@@ -5,6 +5,7 @@ import config from "./config";
 import db from "./models/database";
 
 import clinicsRoutes from "./routes/clinicsRoutes";
+import doctorsRoutes from "./routes/doctorsRoutes";
 import authenticationRoutes from "./routes/authenticationRoutes";
 import usersRoutes from "./routes/usersRoutes";
 
@@ -34,6 +35,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // routes
 app.use("/clinics", clinicsRoutes);
+app.use("/doctors", doctorsRoutes);
 app.use("/auth", authenticationRoutes);
 app.use("/users", usersRoutes);
 
