@@ -1,10 +1,12 @@
 <template>
-  <div>Clinic admin</div>
+  <div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "ClinicAdminPage",
+  name: "ClinicAdminPage"
 };
 </script>
 

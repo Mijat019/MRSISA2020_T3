@@ -2,7 +2,7 @@ import Vue from "vue";
 var jwt = require("jsonwebtoken");
 
 const state = {
-  user: { email: "" },
+  user: null,
 };
 
 const mutations = {
@@ -14,8 +14,8 @@ const mutations = {
   },
 
   logoutUser(state) {
-    state.email = "";
-    localStorage.setItem("token", "");
+    state.user = null;
+    localStorage.removeItem("token");
     Vue.$axios.defaults.headers.Authorization = "";
   },
 };
@@ -41,8 +41,10 @@ const actions = {
 };
 
 const getters = {
-  getEmail: (state) => state.email,
-  isLogged: (state) => state.email || false,
+  isAuthenticated: (state) => (state.user ? true : false),
+  getUser: (state) => state.user,
+  getRole: (state) => state.user.role,
+  getFullName: (state) => `${state.user.firstName} ${state.user.lastName}`,
 };
 
 export default {

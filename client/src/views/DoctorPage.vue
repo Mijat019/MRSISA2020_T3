@@ -1,10 +1,12 @@
 <template>
-  <div>doctor</div>
+  <div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "DoctorPage",
+  name: "DoctorPage"
 };
 </script>
 

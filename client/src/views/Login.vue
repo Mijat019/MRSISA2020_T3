@@ -55,7 +55,7 @@
                   </v-card-text>
 
                   <v-card-actions>
-                    <button @click="gotoRegister" class="white blue--text ml-2">Create Account</button>
+                    <v-btn :to="`/register`" text class="white blue--text ml-2">Create Account</v-btn>
                     <v-spacer />
                     <v-btn @click="submit" class="blue white--text mr-2">Sign in</v-btn>
                   </v-card-actions>
@@ -96,23 +96,9 @@ export default {
       }
 
       this.loading = true;
-      await this.wait(2000);
-      this.loading = false;
-
       await this.login(this.user);
-      this.$router.push("/clinic/clinicCenterAdmin");
-    },
-
-    async gotoRegister() {
-      this.loading = true;
-      await this.wait(750);
       this.loading = false;
-      this.$router.push("/");
-    },
-    async wait(ms) {
-      return new Promise(resolve => {
-        setTimeout(resolve, ms);
-      });
+      this.$router.push("/clinic");
     }
   }
 };
