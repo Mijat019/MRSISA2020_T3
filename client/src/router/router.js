@@ -33,6 +33,9 @@ const routes = [
   {
     path: "/clinic",
     component: MainComponent,
+    meta: {
+      authenticatedRoute: true,
+    },
     children: [
       clinicCenterAdminRoutes,
       clinicAdminRoutes,

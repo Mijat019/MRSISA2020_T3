@@ -12,7 +12,9 @@
 
       <v-tab-item :value="'basicInfo'">basicInfo</v-tab-item>
       <v-tab-item :value="'freeApointments'">freeApointments</v-tab-item>
-      <v-tab-item :value="'doctors'">doctors</v-tab-item>
+      <v-tab-item :value="'doctors'">
+        <Doctors />
+      </v-tab-item>
       <v-tab-item :value="'rooms'">rooms</v-tab-item>
       <v-tab-item :value="'appointmentTypes'">appointmentTypes</v-tab-item>
       <v-tab-item :value="'report'">report</v-tab-item>
@@ -21,8 +23,12 @@
 </template>
 
 <script>
+import Doctors from "./Doctors/Doctors";
 export default {
   name: "ClinicProfile",
+  components: {
+    Doctors
+  },
   data: () => ({
     tab: null
   })
