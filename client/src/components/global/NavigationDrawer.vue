@@ -1,9 +1,9 @@
 <template>
   <nav>
-    <v-navigation-drawer v-model="drawer" :mini-variant.sync="mini" app>
+    <v-navigation-drawer v-model="drawer" :mini-variant.sync="mini" app dark>
       <v-list-item class="px-2">
         <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+          <v-icon>mdi-account</v-icon>
         </v-list-item-avatar>
 
         <v-list-item-title>John Leider</v-list-item-title>
@@ -16,12 +16,7 @@
       <v-divider></v-divider>
 
       <v-list dense>
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          link
-          :to="item.link"
-        >
+        <v-list-item v-for="item in items" :key="item.title" link :to="item.link">
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -43,21 +38,21 @@ export default {
       {
         title: "Users",
         icon: "mdi-home-city",
-        link: "/clinic/clinicCenterAdmin/users",
+        link: "/clinic/clinicCenterAdmin/users"
       },
       {
         title: "Clinics",
         icon: "mdi-account-group-outline",
-        link: "/clinic/clinicCenterAdmin/clinics",
+        link: "/clinic/clinicCenterAdmin/clinics"
       },
       {
         title: "Sifarik",
         icon: "mdi-account",
-        link: "/clinic/clinicCenterAdmin/sifarnik",
-      },
+        link: "/clinic/clinicCenterAdmin/sifarnik"
+      }
     ],
-    mini: true,
-  }),
+    mini: true
+  })
 };
 </script>
 
