@@ -2,7 +2,7 @@
   <nav>
     <v-navigation-drawer v-model="drawer" :mini-variant="mini" app dark>
       <v-list-item class="px-2">
-        <v-list-item-avatar>
+        <v-list-item-avatar v-if="mini">
           <v-icon @click.stop="mini=false">mdi-menu</v-icon>
         </v-list-item-avatar>
 
@@ -50,8 +50,8 @@ export default {
     mini: true,
     clinicCenterAdmin: [
       {
-        title: "Users",
-        icon: "mdi-account-multiple",
+        title: "Administration",
+        icon: "mdi-account-supervisor",
         link: "/clinic/clinicCenterAdmin/users"
       },
       {
@@ -90,7 +90,18 @@ export default {
       }
     ],
 
-    patient: []
+    patient: [
+      {
+        title: "Medical record",
+        icon: "mdi-folder-heart",
+        link: "/clinic/patient/medicalRecord"
+      },
+      {
+        title: "Schedule an appointment",
+        icon: "mdi-calendar-heart",
+        link: "/clinic/patient/appointment"
+      }
+    ]
   }),
 
   computed: {
