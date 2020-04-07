@@ -3,11 +3,10 @@
     <v-navigation-drawer v-model="drawer" :mini-variant="mini" app dark>
       <v-list-item class="px-2">
         <v-list-item-avatar v-if="mini">
-          <v-icon @click.stop="mini=false">mdi-menu</v-icon>
+          <v-icon @click.stop="mini=false">mdi-chevron-right</v-icon>
         </v-list-item-avatar>
 
         <v-list-item-title>{{getFullName}}</v-list-item-title>
-        <v-list-item-title>{{getRole}}</v-list-item-title>
 
         <v-btn icon @click.stop="mini=true">
           <v-icon>mdi-chevron-left</v-icon>
