@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3>Clinic admin</h3>
     <router-view></router-view>
   </div>
 </template>
