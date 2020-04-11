@@ -18,6 +18,24 @@ class DoctorsController {
             res.status(400).send(error);
         }
     }
+
+    public async delete(req: any, res: any) {
+        try {
+            await DoctorsService.delete(req.body);
+            res.send("Doctor deleted.");
+        } catch (error) {
+            res.status(400).send(error);
+        }
+    }
+
+    public async update(req: any, res: any) {
+        try {
+            const newDoctor = await DoctorsService.update(req.body);
+            res.send(newDoctor);
+        } catch (error) {
+            res.status(400).send(error);
+        }
+    }
 }
 
 export default new DoctorsController();

@@ -12,9 +12,10 @@
             ></v-text-field>
         </v-card-title>
 
+        <v-btn dark class="mb-2" @click="showAddDialog">Add doctor</v-btn>
         <DoctorDialog></DoctorDialog>
 
-        <v-data-table :headers="headers" :items="getDoctors" :search="search">
+        <v-data-table :headers="headers" :items="getDoctors" :search="search" @click:row="showEditDialog">\
         </v-data-table>
     </v-card>
 
@@ -22,7 +23,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import DoctorDialog from "./DoctorDialog";
 export default {
     name: "ManageDoctors",
@@ -52,6 +53,11 @@ export default {
     methods: {
         ...mapActions("doctors", {
             getDoctorsAction: "getDoctorsAction"
+        }),
+
+        ...mapMutations("doctors", {
+            showAddDialog: "openAddDialog",
+            showEditDialog: "openEditDialog"
         })
     },
 
