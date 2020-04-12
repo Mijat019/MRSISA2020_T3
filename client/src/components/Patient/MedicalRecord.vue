@@ -18,7 +18,7 @@
 <script>
 export default {
   name: "MedicalRecord",
-  data: () => ({})
+  data: () => ({ tab: null })
 };
 </script>
 

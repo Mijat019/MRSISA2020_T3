@@ -54,12 +54,12 @@ export default {
 
   methods: {
     ...mapActions("clinics", {
-      getClinicsActions: "getClinicsActions"
+      getClinicsAction: "getClinicsAction"
     })
   },
 
   async mounted() {
-    await this.getClinicsActions();
+    await this.getClinicsAction();
   },
 
   computed: {

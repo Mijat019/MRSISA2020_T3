@@ -6,16 +6,19 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "EditDeleteActions",
   data: () => ({}),
   props: ["item"],
   methods: {
+    ...mapActions("clinics", { deleteClinicAction: "deleteClinicAction" }),
     editItem(item) {
-      alert(item);
+      item;
+      alert("Not implemented");
     },
-    deleteItem(item) {
-      alert(item);
+    async deleteItem({ item }) {
+      await this.deleteClinicAction(item.id);
     }
   }
 };
