@@ -2,7 +2,7 @@ import Vue from "vue";
 var jwt = require("jsonwebtoken");
 
 const state = {
-  user: null,
+  user: null
 };
 
 const mutations = {
@@ -17,7 +17,7 @@ const mutations = {
     state.user = null;
     localStorage.removeItem("token");
     Vue.$axios.defaults.headers.Authorization = "";
-  },
+  }
 };
 
 const actions = {
@@ -26,25 +26,25 @@ const actions = {
       let { data } = await Vue.$axios.post("/auth/login", credentialsPayload);
       commit("logUser", data);
       dispatch("snackbar/showSuccess", "You are now logged in.", {
-        root: true,
+        root: true
       });
     } catch (error) {
       dispatch("snackbar/showError", "Wrong email or password", {
-        root: true,
+        root: true
       });
     }
   },
 
   async logout({ commit }) {
     commit("logoutUser");
-  },
+  }
 };
 
 const getters = {
-  isAuthenticated: (state) => (state.user ? true : false),
-  getUser: (state) => state.user,
-  getRole: (state) => state.user.role,
-  getFullName: (state) => `${state.user.firstName} ${state.user.lastName}`,
+  isAuthenticated: state => (state.user ? true : false),
+  getUser: state => state.user,
+  getRole: state => state.user.role,
+  getFullName: state => `${state.user.firstName} ${state.user.lastName}`
 };
 
 export default {
@@ -52,5 +52,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };

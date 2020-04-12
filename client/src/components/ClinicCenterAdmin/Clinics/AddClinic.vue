@@ -9,7 +9,17 @@
         <v-form ref="form" lazy-validation>
           <v-text-field v-model="clinic.name" :rules="rules" label="Name" required></v-text-field>
           <v-text-field v-model="clinic.description" :rules="lengthRules" label="Description"></v-text-field>
-          <v-text-field v-model="clinic.address" :rules="rules" label="Address"></v-text-field>
+          <v-row>
+            <v-col>
+              <v-text-field v-model="clinic.city" :rules="rules" label="City"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field v-model="clinic.street" :rules="rules" label="Street"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field v-model="clinic.streetNumber" :rules="rules" label="Street number"></v-text-field>
+            </v-col>
+          </v-row>
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -30,9 +40,9 @@ export default {
     clinic: {
       name: "",
       description: "",
-      address: "",
-      lat: null,
-      lon: null
+      street: "",
+      city: "",
+      streetNumber: ""
     },
     dialog: false,
     rules: [

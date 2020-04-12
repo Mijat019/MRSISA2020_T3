@@ -36,8 +36,16 @@ export default {
           value: "name"
         },
         {
-          text: "Address",
-          value: "address"
+          text: "City",
+          value: "city"
+        },
+        {
+          text: "Street",
+          value: "street"
+        },
+        {
+          text: "Street number",
+          value: "streetNumber"
         },
         {
           text: "Description",
