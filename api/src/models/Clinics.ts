@@ -1,35 +1,36 @@
 import db from "./database";
-import { Model, STRING, INTEGER } from "sequelize";
+import { Model, STRING, INTEGER, Association } from "sequelize";
+import Users from "./Users";
 
 class Clinics extends Model {
-    public id!: number;
-    public name!: string;
-    public address!: string;
-    public description!: string;
+  public id!: number;
+  public name!: string;
+  public address!: string;
+  public description!: string;
 }
 
 Clinics.init(
-    {
-        id: {
-            type: INTEGER.UNSIGNED,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        name: {
-            type: STRING,
-            allowNull: false,
-            unique: true
-        },
-        address: {
-            type: STRING,
-            allowNull: false
-        },
-        description: STRING
+  {
+    id: {
+      type: INTEGER.UNSIGNED,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    {
-        sequelize: db,
-        tableName: "clinics"
-    }
+    name: {
+      type: STRING,
+      allowNull: false,
+      unique: true,
+    },
+    address: {
+      type: STRING,
+      allowNull: false,
+    },
+    description: STRING,
+  },
+  {
+    sequelize: db,
+    tableName: "clinics",
+  }
 );
 
 export default Clinics;

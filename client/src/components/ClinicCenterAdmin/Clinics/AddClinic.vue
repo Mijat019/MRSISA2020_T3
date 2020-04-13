@@ -10,15 +10,6 @@
           <v-text-field v-model="clinic.name" :rules="rules" label="Name" required></v-text-field>
           <v-text-field v-model="clinic.description" :rules="lengthRules" label="Description"></v-text-field>
           <v-text-field v-model="clinic.address" :rules="rules" label="Address"></v-text-field>
-
-          <!-- <v-autocomplete
-            v-model="clinic.address"
-            label="Street"
-            :items="addressList"
-            item-text="display_name"
-            :search-input.sync="searchAddress"
-            allow-overflow
-          ></v-autocomplete>-->
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -32,9 +23,6 @@
 
 <script>
 import { mapActions } from "vuex";
-import config from "../../../config";
-import axios from "axios";
-import urlencode from "urlencode";
 
 export default {
   name: "AddClinic",
@@ -42,9 +30,7 @@ export default {
     clinic: {
       name: "",
       description: "",
-      address: "",
-      lat: null,
-      lon: null
+      address: ""
     },
     dialog: false,
     rules: [
@@ -55,11 +41,7 @@ export default {
     ],
     lengthRules: [
       v => v.length <= 255 || "This field can't be longer than 255 characters"
-    ],
-
-    addressList: [],
-    searchAddress: null,
-    isLoading: false
+    ]
   }),
 
   methods: {
@@ -81,28 +63,6 @@ export default {
       this.clinic.description = "";
       this.clinic.address = "";
       this.dialog = false;
-    }
-  },
-
-  watch: {
-    async searchAddress(newValue) {
-      if (this.isLoading) {
-        return;
-      }
-
-      if (!newValue) {
-        this.addressList = [];
-        return;
-      }
-
-      this.isLoading = true;
-      const query = urlencode(newValue);
-      const { data } = await axios.get(
-        `http://localhost:8080/v1/search.php?key=${config.apiKey}&country=Serbia&city=Novi%20Sad&street=${query}&format=json&limit=50`
-      );
-      console.log(data);
-      this.addressList = data;
-      this.isLoading = false;
     }
   }
 };

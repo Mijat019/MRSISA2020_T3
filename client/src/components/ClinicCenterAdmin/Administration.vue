@@ -8,20 +8,22 @@
       <v-tab :href="`#clinicCenterAdmins`">Clinic center admins</v-tab>
 
       <v-tab-item :value="'requests'">patients</v-tab-item>
-      <v-tab-item :value="'clinicAdmins'">clinic admins</v-tab-item>
-      <v-tab-item :value="'clinicCenterAdmins'">
-        clinic center admins</v-tab-item
-      >
+      <v-tab-item :value="'clinicAdmins'">
+        <ManageClinicAdmins />
+      </v-tab-item>
+      <v-tab-item :value="'clinicCenterAdmins'">clinic center admins</v-tab-item>
     </v-tabs>
   </div>
 </template>
 
 <script>
+import ManageClinicAdmins from "./ManageClinicAdmins/ManageClinicAdmins";
 export default {
-  name: "Users",
+  name: "Administration",
+  components: { ManageClinicAdmins },
   data: () => ({
-    tab: null,
-  }),
+    tab: null
+  })
 };
 </script>
 
