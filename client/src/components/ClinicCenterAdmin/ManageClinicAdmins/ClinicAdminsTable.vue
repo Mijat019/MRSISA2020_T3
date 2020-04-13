@@ -1,0 +1,62 @@
+<template>
+  <v-card>
+    <v-card-title>
+      Clinic admins
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
+    <v-data-table :headers="headers" :items="getClinicAdmins" :search="search">
+      <template v-slot:top>
+        <slot name="addClinicAdmin"></slot>
+      </template>
+    </v-data-table>
+  </v-card>
+</template> 
+
+<script>
+import { mapActions, mapGetters } from "vuex";
+export default {
+  name: "ClinicAdminsTable",
+  data: () => ({
+    search: "",
+    headers: [
+      {
+        text: "First name",
+        value: "admin.firstName"
+      },
+      {
+        text: "Last name",
+        value: "admin.lastName"
+      },
+      {
+        text: "Email",
+        value: "admin.email"
+      },
+      {
+        text: "Clinic",
+        value: "clinic.name"
+      }
+    ]
+  }),
+  methods: {
+    ...mapActions("clinicAdmins", {
+      getClinicAdminsAction: "getClinicAdminsAction"
+    })
+  },
+  async mounted() {
+    await this.getClinicAdminsAction();
+  },
+  computed: {
+    ...mapGetters("clinicAdmins", { getClinicAdmins: "getClinicAdmins" })
+  }
+};
+</script>
+
+<style>
+</style>

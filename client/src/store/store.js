@@ -5,23 +5,25 @@ import VuexPersist from "vuex-persist";
 import clinics from "./modules/clinics";
 import doctors from "./modules/doctors";
 import snackbar from "./modules/snackbar";
-import authentication from "./modules/authentication"
-import users from "./modules/users"
+import authentication from "./modules/authentication";
+import patients from "./modules/patients";
+import clinicAdmins from "./modules/clinicAdmins";
 
 Vue.use(Vuex);
 
 const vuexPersist = new VuexPersist({
   key: "my-app",
-  storage: window.localStorage,
+  storage: window.localStorage
 });
 
 export default new Vuex.Store({
   plugins: [vuexPersist.plugin],
   modules: {
     authentication,
-    users,
+    patients,
     clinics,
     doctors,
+    clinicAdmins,
     snackbar
   }
 });

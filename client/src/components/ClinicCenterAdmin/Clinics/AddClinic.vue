@@ -40,9 +40,13 @@ export default {
     clinic: {
       name: "",
       description: "",
+<<<<<<< HEAD
+      address: ""
+=======
       street: "",
       city: "",
       streetNumber: ""
+>>>>>>> develop
     },
     dialog: false,
     rules: [
@@ -53,11 +57,7 @@ export default {
     ],
     lengthRules: [
       v => v.length <= 255 || "This field can't be longer than 255 characters"
-    ],
-
-    addressList: [],
-    searchAddress: null,
-    isLoading: false
+    ]
   }),
 
   methods: {

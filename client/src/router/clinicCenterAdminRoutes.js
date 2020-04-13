@@ -1,6 +1,6 @@
 import ManageClinics from "../components/ClinicCenterAdmin/Clinics/ManageClinics";
 import Sifarnik from "../components/ClinicCenterAdmin/Sifarnik";
-import Users from "../components/ClinicCenterAdmin/Users";
+import Administration from "../components/ClinicCenterAdmin/Administration";
 import ClinicCenterAdminPage from "../views/ClinicCenterAdminPage";
 
 export default {
@@ -9,27 +9,27 @@ export default {
   component: ClinicCenterAdminPage,
   meta: {
     authenticatedRoute: true,
-    clinicCenterAdmin: true,
+    clinicCenterAdmin: true
   },
 
   children: [
     {
       path: "users",
       name: "Users",
-      component: Users,
-      clinicCenterAdmin: true,
+      component: Administration,
+      clinicCenterAdmin: true
     },
     {
       path: "sifarnik",
       name: "Sifarnik",
       component: Sifarnik,
-      clinicCenterAdmin: true,
+      clinicCenterAdmin: true
     },
     {
       path: "clinics",
       name: "Clinics",
       component: ManageClinics,
-      clinicCenterAdmin: true,
-    },
-  ],
+      clinicCenterAdmin: true
+    }
+  ]
 };

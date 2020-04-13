@@ -8,7 +8,6 @@ const state = {
 const mutations = {
   async logUser(state, data) {
     state.user = await jwt.decode(data.token);
-    console.log(state.user);
     localStorage.setItem("token", data.token);
     Vue.$axios.defaults.headers["Authorization"] = data.token;
   },

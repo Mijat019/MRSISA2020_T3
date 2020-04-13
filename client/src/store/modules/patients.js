@@ -1,32 +1,28 @@
 import Vue from "vue";
 
 const state = {
-  users: [],
+  patients: []
 };
 
 const mutations = {
-  addUser(state, user) {
-    state.users.push(user);
-  },
+  addUser(state, patient) {
+    state.patients.push(patient);
+  }
 };
 
 const actions = {
-  async register({ dispatch }, credentialsPayload) {
+  async addPatientAction({ dispatch }, patientPayload) {
     try {
-      const { data } = await Vue.$axios.post(
-        "/users/register",
-        credentialsPayload
-      );
-
+      const { data } = await Vue.$axios.post("/patients", patientPayload);
       dispatch("snackbar/showSuccess", data, {
-        root: true,
+        root: true
       });
     } catch (error) {
       dispatch("snackbar/showError", error.response.data, {
-        root: true,
+        root: true
       });
     }
-  },
+  }
 };
 
 const getters = {};
@@ -36,5 +32,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };

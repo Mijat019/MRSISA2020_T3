@@ -1,7 +1,7 @@
 const state = {
   text: "",
   snackbar: false,
-  color: "",
+  color: ""
 };
 
 const mutations = {
@@ -19,7 +19,7 @@ const mutations = {
 
   setSnackbar(state, value) {
     state.snackbar = value;
-  },
+  }
 };
 
 const actions = {
@@ -32,15 +32,14 @@ const actions = {
   },
 
   showSuccess({ commit }, text) {
-    console.log(text);
     commit("showSnackbar", { text, color: "success" });
-  },
+  }
 };
 
 const getters = {
-  getSnackbar: (state) => state.snackbar,
-  getText: (state) => state.text,
-  getColor: (state) => state.color,
+  getSnackbar: state => state.snackbar,
+  getText: state => state.text,
+  getColor: state => state.color
 };
 
 export default {
@@ -48,5 +47,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };

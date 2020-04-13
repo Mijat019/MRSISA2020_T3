@@ -1,7 +1,8 @@
-import { INTEGER, STRING, Model } from "sequelize";
+import { INTEGER, STRING, Model, Association } from "sequelize";
 import db from "./database";
 import AccountStatus from "./AccountStatus";
 import UserRole from "./UserRole";
+import AdminOf from "./AdminOf";
 
 class Users extends Model {
   public id!: number;
@@ -79,3 +80,17 @@ Users.init(
 );
 
 export default Users;
+
+export const usersSelect = [
+  "id",
+  "email",
+  "firstName",
+  "lastName",
+  "jmbg",
+  "city",
+  "country",
+  "address",
+  "phoneNumber",
+  "accountStatus",
+  "role",
+];
