@@ -1,11 +1,14 @@
 import db from "./database";
 import { Model, STRING, INTEGER, Association } from "sequelize";
 import Users from "./Users";
+import AdminOf from "./AdminOf";
 
 class Clinics extends Model {
   public id!: number;
   public name!: string;
-  public address!: string;
+  public city!: string;
+  public street!: string;
+  public streetNumber!: string;
   public description!: string;
 }
 
@@ -36,6 +39,7 @@ Clinics.init(
     description: STRING,
   },
   {
+    timestamps: false,
     sequelize: db,
     tableName: "clinics",
   }
@@ -43,6 +47,7 @@ Clinics.init(
 
 export default Clinics;
 
+export const clinicsSelectForAdmins = ["name"];
 export const clinicsSelect = [
   "id",
   "name",

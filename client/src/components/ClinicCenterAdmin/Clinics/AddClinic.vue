@@ -40,13 +40,9 @@ export default {
     clinic: {
       name: "",
       description: "",
-<<<<<<< HEAD
-      address: ""
-=======
       street: "",
       city: "",
       streetNumber: ""
->>>>>>> develop
     },
     dialog: false,
     rules: [
