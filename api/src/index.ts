@@ -9,6 +9,8 @@ import doctorsRoutes from "./routes/doctorsRoutes";
 import authenticationRoutes from "./routes/authenticationRoutes";
 import usersRoutes from "./routes/usersRoutes";
 import clinicAdminRoutes from "./routes/clinicAdminRoutes";
+import UsersService from "./services/UsersService";
+import UserRole from "./models/UserRole";
 
 // connect to the database
 (async () => {
@@ -21,7 +23,19 @@ import clinicAdminRoutes from "./routes/clinicAdminRoutes";
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
 
-    // await db.sync({ force: true });
+    await db.sync({ force: true });
+    const admin = {
+      firstName: "Mijat",
+      lastName: "Miletic",
+      email: "4",
+      password: "4",
+      jmbg: "1232132312312312",
+      phoneNumber: "4",
+      country: "Serbia",
+      city: "Zajecar",
+      address: "Vojvode stepe 20",
+    };
+    await UsersService.createUser(admin, UserRole.CLINIC_CENTER_ADMIN);
   } catch (error) {
     console.log(error);
   }

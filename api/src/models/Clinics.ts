@@ -34,3 +34,5 @@ Clinics.init(
 );
 
 export default Clinics;
+
+export const clinicsSelect = ["id", "name", "address", "description"];

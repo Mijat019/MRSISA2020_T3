@@ -48,12 +48,7 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-select
-                required
-                :items="clinicNames"
-                v-model="clinicAdmin.clinicName"
-                label="Clinic"
-              ></v-select>
+              <v-select required :items="clinicNames" v-model="clinicName" label="Clinic"></v-select>
             </v-col>
           </v-row>
           <v-row align="center" justify="center" class="pt-3">
@@ -158,7 +153,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -172,9 +167,10 @@ export default {
         address: "",
         city: "",
         country: "",
-        password: "",
-        clinicName: ""
+        password: ""
       },
+      clinicId: null,
+      clinicName: "",
       confirmed_password: "",
 
       // FORM VALIDATION RULES
@@ -195,12 +191,23 @@ export default {
     };
   },
   methods: {
+    ...mapActions("clinicAdmins", {
+      addClinicAdminAction: "addClinicAdminAction"
+    }),
+
     async save() {
       if (!this.$refs.form.validate()) {
         return;
       }
-
-      this.dialog = false;
+      try {
+        await this.addClinicAdminAction({
+          clinicAdminPayload: this.clinicAdmin,
+          clinicId: this.clinicId
+        });
+        this.dialog = false;
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     close() {
@@ -213,6 +220,13 @@ export default {
     clinicNames() {
       const clinicNames = this.getClinics.map(clinic => clinic.name);
       return clinicNames;
+    }
+  },
+
+  watch: {
+    clinicName(clinicName) {
+      const { id } = this.getClinics.find(clinic => clinic.name === clinicName);
+      this.clinicId = id;
     }
   }
 };

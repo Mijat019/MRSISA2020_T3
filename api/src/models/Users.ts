@@ -80,3 +80,17 @@ Users.init(
 );
 
 export default Users;
+
+export const usersSelect = [
+  "id",
+  "email",
+  "firstName",
+  "lastName",
+  "jmbg",
+  "city",
+  "country",
+  "address",
+  "phoneNumber",
+  "accountStatus",
+  "role",
+];
