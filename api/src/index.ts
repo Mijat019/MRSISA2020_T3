@@ -3,14 +3,13 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import config from "./config";
 import db from "./models/database";
+import initModel from "./models/initModel";
 
 import clinicsRoutes from "./routes/clinicsRoutes";
 import doctorsRoutes from "./routes/doctorsRoutes";
 import authenticationRoutes from "./routes/authenticationRoutes";
 import usersRoutes from "./routes/patientsRoutes";
 import clinicAdminRoutes from "./routes/clinicAdminRoutes";
-import UsersService from "./services/UsersService";
-import UserRole from "./models/UserRole";
 
 // connect to the database
 (async () => {
@@ -24,18 +23,7 @@ import UserRole from "./models/UserRole";
     // uncomment next line if you want to apply changes to the schema
 
     await db.sync({ force: true });
-    const admin = {
-      firstName: "Mijat",
-      lastName: "Miletic",
-      email: "4",
-      password: "4",
-      jmbg: "1232132312312312",
-      phoneNumber: "4",
-      country: "Serbia",
-      city: "Zajecar",
-      address: "Vojvode stepe 20",
-    };
-    await UsersService.createUser(admin, UserRole.CLINIC_CENTER_ADMIN);
+    await initModel();
   } catch (error) {
     console.log(error);
   }
