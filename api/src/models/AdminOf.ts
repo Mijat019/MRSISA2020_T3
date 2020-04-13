@@ -7,47 +7,32 @@ class AdminOf extends Model {
   public id!: number;
   public adminId!: number;
   public clinicId!: number;
-
-  public static associations: {
-    admin: Association<Users, AdminOf>;
-    clinic: Association<Clinics, AdminOf>;
-  };
 }
 
 AdminOf.init(
   {
-    id: {
-      type: INTEGER.UNSIGNED,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    adminId: {
-      type: INTEGER.UNSIGNED,
-      unique: true,
-      allowNull: false,
-    },
-    clinicId: {
+    ClinicId: {
       type: INTEGER.UNSIGNED,
       unique: false,
-      allowNull: false,
+    },
+    UserId: {
+      type: INTEGER.UNSIGNED,
+      primaryKey: true,
     },
   },
   {
+    timestamps: false,
     sequelize: db,
     tableName: "adminOf",
   }
 );
 
-AdminOf.belongsTo(Users, {
-  targetKey: "id",
-  foreignKey: "adminId",
-  as: "admin",
-});
+// one user can have one row in adminOf table
+Users.hasOne(AdminOf);
+AdminOf.belongsTo(Users);
 
-AdminOf.belongsTo(Clinics, {
-  targetKey: "id",
-  foreignKey: "clinicId",
-  as: "clinic",
-});
+// one clinic can have many rows in adminOf table
+Clinics.hasMany(AdminOf);
+AdminOf.belongsTo(Clinics);
 
 export default AdminOf;

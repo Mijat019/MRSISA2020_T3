@@ -2,6 +2,8 @@ import { INTEGER, STRING, Model, Association } from "sequelize";
 import db from "./database";
 import AccountStatus from "./AccountStatus";
 import UserRole from "./UserRole";
+// import AdminOf from "./AdminOf";
+import Clinics from "./Clinics";
 import AdminOf from "./AdminOf";
 
 class Users extends Model {
@@ -74,6 +76,7 @@ Users.init(
     },
   },
   {
+    timestamps: false,
     sequelize: db,
     tableName: "users",
   }

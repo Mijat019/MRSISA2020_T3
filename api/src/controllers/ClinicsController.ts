@@ -6,6 +6,7 @@ class ClinicsController {
       const clinics = await ClinicsService.getAll();
       res.send(clinics);
     } catch (error) {
+      console.log(error);
       res.status(400).send(error);
     }
   }
