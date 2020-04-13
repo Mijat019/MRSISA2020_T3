@@ -6,7 +6,7 @@ import clinics from "./modules/clinics";
 import doctors from "./modules/doctors";
 import snackbar from "./modules/snackbar";
 import authentication from "./modules/authentication";
-import users from "./modules/users";
+import patients from "./modules/patients";
 import clinicAdmins from "./modules/clinicAdmins";
 
 Vue.use(Vuex);
@@ -20,7 +20,7 @@ export default new Vuex.Store({
   plugins: [vuexPersist.plugin],
   modules: {
     authentication,
-    users,
+    patients,
     clinics,
     doctors,
     clinicAdmins,

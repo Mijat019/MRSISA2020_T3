@@ -4,7 +4,7 @@ import Users from "../models/Users";
 import UserRole from "../models/UserRole";
 
 class UsersService {
-  public async registerPatient(userPayload: any): Promise<any> {
+  public async add(userPayload: any): Promise<any> {
     await this.createUser(userPayload, UserRole.PATIENT);
   }
 

@@ -218,7 +218,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      register: "users/register"
+      addPatientAction: "patients/addPatientAction"
     }),
 
     async submit() {
@@ -226,7 +226,7 @@ export default {
         return;
       }
       this.loading = true;
-      await this.register(this.user);
+      await this.addPatientAction(this.user);
       this.loading = false;
       this.$router.push("/");
     }

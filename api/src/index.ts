@@ -7,7 +7,7 @@ import db from "./models/database";
 import clinicsRoutes from "./routes/clinicsRoutes";
 import doctorsRoutes from "./routes/doctorsRoutes";
 import authenticationRoutes from "./routes/authenticationRoutes";
-import usersRoutes from "./routes/usersRoutes";
+import usersRoutes from "./routes/patientsRoutes";
 import clinicAdminRoutes from "./routes/clinicAdminRoutes";
 import UsersService from "./services/UsersService";
 import UserRole from "./models/UserRole";
@@ -52,7 +52,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/clinics", clinicsRoutes);
 app.use("/doctors", doctorsRoutes);
 app.use("/auth", authenticationRoutes);
-app.use("/users", usersRoutes);
+app.use("/patients", usersRoutes);
 app.use("/clinicAdmins", clinicAdminRoutes);
 
 app.listen(config.port, () =>
