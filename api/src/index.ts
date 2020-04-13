@@ -8,8 +8,13 @@ import initModel from "./models/initModel";
 import clinicsRoutes from "./routes/clinicsRoutes";
 import doctorsRoutes from "./routes/doctorsRoutes";
 import authenticationRoutes from "./routes/authenticationRoutes";
+<<<<<<< HEAD
 import usersRoutes from "./routes/patientsRoutes";
 import clinicAdminRoutes from "./routes/clinicAdminRoutes";
+=======
+import usersRoutes from "./routes/usersRoutes";
+import Users from "./models/Users";
+>>>>>>> develop
 
 // connect to the database
 (async () => {

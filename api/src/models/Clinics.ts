@@ -21,7 +21,15 @@ Clinics.init(
       allowNull: false,
       unique: true,
     },
-    address: {
+    city: {
+      type: STRING,
+      allowNull: false,
+    },
+    street: {
+      type: STRING,
+      allowNull: false,
+    },
+    streetNumber: {
       type: STRING,
       allowNull: false,
     },
