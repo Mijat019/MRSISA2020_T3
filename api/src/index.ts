@@ -7,14 +7,10 @@ import initModel from "./models/initModel";
 
 import clinicsRoutes from "./routes/clinicsRoutes";
 import doctorsRoutes from "./routes/doctorsRoutes";
-import authenticationRoutes from "./routes/authenticationRoutes";
-<<<<<<< HEAD
-import usersRoutes from "./routes/patientsRoutes";
 import clinicAdminRoutes from "./routes/clinicAdminRoutes";
-=======
-import usersRoutes from "./routes/usersRoutes";
+import authenticationRoutes from "./routes/authenticationRoutes";
+import patientsRoutes from "./routes/patientsRoutes";
 import Users from "./models/Users";
->>>>>>> develop
 
 // connect to the database
 (async () => {
@@ -45,7 +41,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/clinics", clinicsRoutes);
 app.use("/doctors", doctorsRoutes);
 app.use("/auth", authenticationRoutes);
-app.use("/patients", usersRoutes);
+app.use("/patients", patientsRoutes);
 app.use("/clinicAdmins", clinicAdminRoutes);
 
 app.listen(config.port, () =>

@@ -43,4 +43,11 @@ Clinics.init(
 
 export default Clinics;
 
-export const clinicsSelect = ["id", "name", "address", "description"];
+export const clinicsSelect = [
+  "id",
+  "name",
+  "street",
+  "city",
+  "streetNumber",
+  "description",
+];

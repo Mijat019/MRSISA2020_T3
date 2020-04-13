@@ -22,7 +22,9 @@ export default async () => {
   );
   const { id } = await ClinicsService.add({
     name: "Nasa mala klinka",
-    address: "Beogradska 666",
+    city: "Beograd",
+    street: "Beogradska",
+    streetNumber: "666",
     description: "Najgluplja moguca serija",
   });
 

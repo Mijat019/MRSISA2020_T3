@@ -4,10 +4,6 @@ import Users from "../models/Users";
 import UserRole from "../models/UserRole";
 
 class UsersService {
-  public async add(userPayload: any): Promise<any> {
-    await this.createUser(userPayload, UserRole.PATIENT);
-  }
-
   public async createUser(userPayload: any, role: UserRole) {
     userPayload.role = role;
     userPayload.password = await bcrypt.hash(
