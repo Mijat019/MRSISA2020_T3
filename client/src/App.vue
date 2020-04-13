@@ -14,9 +14,11 @@ export default {
   name: "App",
 
   components: {
-    Snackbar,
+    Snackbar
   },
 
   data: () => ({}),
+
+  mounted() {}
 };
 </script>

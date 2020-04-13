@@ -9,16 +9,17 @@
         <v-form ref="form" lazy-validation>
           <v-text-field v-model="clinic.name" :rules="rules" label="Name" required></v-text-field>
           <v-text-field v-model="clinic.description" :rules="lengthRules" label="Description"></v-text-field>
-          <v-text-field v-model="clinic.address" :rules="rules" label="Address"></v-text-field>
-
-          <!-- <v-autocomplete
-            v-model="clinic.address"
-            label="Street"
-            :items="addressList"
-            item-text="display_name"
-            :search-input.sync="searchAddress"
-            allow-overflow
-          ></v-autocomplete>-->
+          <v-row>
+            <v-col>
+              <v-text-field v-model="clinic.city" :rules="rules" label="City"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field v-model="clinic.street" :rules="rules" label="Street"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field v-model="clinic.streetNumber" :rules="rules" label="Street number"></v-text-field>
+            </v-col>
+          </v-row>
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -32,9 +33,6 @@
 
 <script>
 import { mapActions } from "vuex";
-import config from "../../../config";
-import axios from "axios";
-import urlencode from "urlencode";
 
 export default {
   name: "AddClinic",
@@ -42,9 +40,9 @@ export default {
     clinic: {
       name: "",
       description: "",
-      address: "",
-      lat: null,
-      lon: null
+      street: "",
+      city: "",
+      streetNumber: ""
     },
     dialog: false,
     rules: [
@@ -81,28 +79,6 @@ export default {
       this.clinic.description = "";
       this.clinic.address = "";
       this.dialog = false;
-    }
-  },
-
-  watch: {
-    async searchAddress(newValue) {
-      if (this.isLoading) {
-        return;
-      }
-
-      if (!newValue) {
-        this.addressList = [];
-        return;
-      }
-
-      this.isLoading = true;
-      const query = urlencode(newValue);
-      const { data } = await axios.get(
-        `http://localhost:8080/v1/search.php?key=${config.apiKey}&country=Serbia&city=Novi%20Sad&street=${query}&format=json&limit=50`
-      );
-      console.log(data);
-      this.addressList = data;
-      this.isLoading = false;
     }
   }
 };
