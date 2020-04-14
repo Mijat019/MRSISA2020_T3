@@ -14,9 +14,11 @@ AdminOf.init(
     ClinicId: {
       type: INTEGER.UNSIGNED,
       unique: false,
+      allowNull: false,
     },
     UserId: {
       type: INTEGER.UNSIGNED,
+      allowNull: false,
       primaryKey: true,
     },
   },

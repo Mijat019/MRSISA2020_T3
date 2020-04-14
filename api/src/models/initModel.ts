@@ -30,7 +30,7 @@ export default async () => {
     description: "Najgluplja  serija ikada",
   });
 
-  const { idd } = await ClinicsService.add({
+  const { id: idd } = await ClinicsService.add({
     name: "SNS klinika",
     city: "Beograd",
     street: "Neka tamo ulica",
@@ -78,8 +78,8 @@ export default async () => {
       lastName: "Miletic",
       email: "13",
       password: "13",
-      jmbg: "003231133333322312312",
-      phoneNumber: "400311",
+      jmbg: "420",
+      phoneNumber: "400366611",
       country: "Serbia",
       city: "Zajecar",
       address: "Vojvode stepe 20",
