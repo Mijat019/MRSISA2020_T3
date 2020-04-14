@@ -7,7 +7,6 @@ import PatientsService from "../services/PatientsService";
 export default async () => {
   await UsersService.createUser(
     {
-      id: 4,
       firstName: "Mijat",
       lastName: "Miletic",
       email: "4",
@@ -40,7 +39,6 @@ export default async () => {
 
   await ClinicAdminService.add(
     {
-      id: 3,
       firstName: "Mijat",
       lastName: "Miletic",
       email: "3",
@@ -73,7 +71,6 @@ export default async () => {
 
   await ClinicAdminService.add(
     {
-      id: 13,
       firstName: "Mijat",
       lastName: "Miletic",
       email: "13",
@@ -106,7 +103,6 @@ export default async () => {
 
   await UsersService.createUser(
     {
-      id: 1,
       firstName: "Mijat",
       lastName: "Miletic",
       email: "1",
@@ -122,7 +118,6 @@ export default async () => {
   );
 
   await PatientsService.add({
-    id: 0,
     firstName: "Mijat",
     lastName: "Miletic",
     email: "0",

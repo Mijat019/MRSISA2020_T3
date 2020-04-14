@@ -5,8 +5,8 @@ import Clinics from "./Clinics";
 
 class AdminOf extends Model {
   public id!: number;
-  public adminId!: number;
-  public clinicId!: number;
+  public AdminId!: number;
+  public ClinicId!: number;
 }
 
 AdminOf.init(
