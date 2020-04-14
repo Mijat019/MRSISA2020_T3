@@ -21,6 +21,7 @@ export default async () => {
     },
     UserRole.CLINIC_ADMIN
   );
+
   const { id } = await ClinicsService.add({
     name: "Nasa mala klinka",
     city: "Beograd",
@@ -28,6 +29,7 @@ export default async () => {
     streetNumber: "666",
     description: "Najgluplja  serija ikada",
   });
+
   const { idd } = await ClinicsService.add({
     name: "SNS klinika",
     city: "Beograd",
@@ -36,37 +38,54 @@ export default async () => {
     description: "Izvadimo vam mozak i damo vam 100 jura",
   });
 
-  // await ClinicAdminService.add(
-  //   {
-  //     firstName: "Mijat",
-  //     lastName: "Miletic",
-  //     email: "3",
-  //     password: "3",
-  //     jmbg: "123213231133333322312312",
-  //     phoneNumber: "4311",
-  //     country: "Serbia",
-  //     city: "Zajecar",
-  //     address: "Vojvode stepe 20",
-  //     accountStatus: 4,
-  //   },
-  //   id
-  // );
-
-  await UsersService.createUser(
+  await ClinicAdminService.add(
     {
       id: 3,
       firstName: "Mijat",
       lastName: "Miletic",
       email: "3",
       password: "3",
-      jmbg: "1232132312123123312312",
-      phoneNumber: "43",
+      jmbg: "123213231133333322312312",
+      phoneNumber: "4311",
       country: "Serbia",
       city: "Zajecar",
       address: "Vojvode stepe 20",
       accountStatus: 4,
     },
-    UserRole.CLINIC_ADMIN
+    id
+  );
+
+  await ClinicAdminService.add(
+    {
+      firstName: "Mijat",
+      lastName: "Miletic",
+      email: "s",
+      password: "s",
+      jmbg: "12321",
+      phoneNumber: "412",
+      country: "Serbia",
+      city: "Zajecar",
+      address: "Vojvode stepe 20",
+      accountStatus: 4,
+    },
+    idd
+  );
+
+  await ClinicAdminService.add(
+    {
+      id: 13,
+      firstName: "Mijat",
+      lastName: "Miletic",
+      email: "13",
+      password: "13",
+      jmbg: "003231133333322312312",
+      phoneNumber: "400311",
+      country: "Serbia",
+      city: "Zajecar",
+      address: "Vojvode stepe 20",
+      accountStatus: 4,
+    },
+    id
   );
 
   await UsersService.createUser(
@@ -85,32 +104,34 @@ export default async () => {
     UserRole.CLINIC_ADMIN
   );
 
-  // await UsersService.createUser(
-  //   {
-  //     firstName: "Mijat",
-  //     lastName: "Miletic",
-  //     email: "1",
-  //     password: "1",
-  //     jmbg: "1232312312",
-  //     phoneNumber: "444",
-  //     country: "Serbia",
-  //     city: "Zajecar",
-  //     address: "Vojvode stepe 20",
-  //     accountStatus: 4,
-  //   },
-  //   UserRole.DOCTOR
-  // );
+  await UsersService.createUser(
+    {
+      id: 1,
+      firstName: "Mijat",
+      lastName: "Miletic",
+      email: "1",
+      password: "1",
+      jmbg: "1232312312",
+      phoneNumber: "444",
+      country: "Serbia",
+      city: "Zajecar",
+      address: "Vojvode stepe 20",
+      accountStatus: 4,
+    },
+    UserRole.DOCTOR
+  );
 
-  // await PatientsService.add({
-  //   firstName: "Mijat",
-  //   lastName: "Miletic",
-  //   email: "0",
-  //   password: "0",
-  //   jmbg: "12321323",
-  //   phoneNumber: "423123123",
-  //   country: "Serbia",
-  //   city: "Zajecar",
-  //   address: "Vojvode stepe 20",
-  //   accountStatus: 4,
-  // });
+  await PatientsService.add({
+    id: 0,
+    firstName: "Mijat",
+    lastName: "Miletic",
+    email: "0",
+    password: "0",
+    jmbg: "12321323",
+    phoneNumber: "423123123",
+    country: "Serbia",
+    city: "Zajecar",
+    address: "Vojvode stepe 20",
+    accountStatus: 4,
+  });
 };

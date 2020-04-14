@@ -10,8 +10,6 @@ import doctorsRoutes from "./routes/doctorsRoutes";
 import clinicAdminRoutes from "./routes/clinicAdminRoutes";
 import authenticationRoutes from "./routes/authenticationRoutes";
 import patientsRoutes from "./routes/patientsRoutes";
-import Users from "./models/Users";
-import AdminOf from "./models/AdminOf";
 
 // connect to the database
 (async () => {
@@ -24,9 +22,8 @@ import AdminOf from "./models/AdminOf";
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
 
-    // await db.sync({ force: true });
-    // await initModel();
-    // await AdminOf.findAll();
+    await db.sync({ force: true });
+    await initModel();
   } catch (error) {
     console.log(error);
   }
