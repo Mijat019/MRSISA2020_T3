@@ -1,7 +1,7 @@
 import db from "./database";
 import { Model, STRING, INTEGER } from "sequelize";
 import UserRole from './UserRole'
-import AccountStatus from './AccountStatus'
+import RequestStatus from './RequestStatus'
 
 class PatientRequest extends Model {
   public id!: number;
@@ -14,7 +14,7 @@ class PatientRequest extends Model {
   public country!: string;
   public address!: string;
   public phoneNumber!: string;
-  public accountStatus!: AccountStatus;
+  public requestStatus!: RequestStatus;
 }
 
 PatientRequest.init(
@@ -62,7 +62,7 @@ PatientRequest.init(
         type: STRING,
         allowNull: false,
       },
-      accountStatus: {
+      requestStatus: {
         type: INTEGER,
         defaultValue: 0,
       },

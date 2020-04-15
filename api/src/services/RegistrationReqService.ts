@@ -1,9 +1,11 @@
 import UserRole from "../models/UserRole";
-import AccountStatus from "../models/AccountStatus";
+import RequestStatus from "../models/RequestStatus";
 import UsersService from "../services/UsersService";
 import config from "../config";
 import bcrypt from "bcrypt";
 import PatientRequest from "../models/PatientRequest";
+import Users from "../models/Users";
+import AccountStatus from "../models/AccountStatus";
 
 class RegistrationReqService {
     // Creates a request for registration
@@ -13,7 +15,7 @@ class RegistrationReqService {
         if (exists)
             throw new Error("User with that email address already exists!");
 
-        userPayload.accountStatus = AccountStatus.PENDING;
+        userPayload.requestStatus = RequestStatus.PENDING;
         userPayload.password = await bcrypt.hash(
             userPayload.password,
             config.saltRounds
@@ -26,18 +28,18 @@ class RegistrationReqService {
     // adds patient from request to patients table
     public async confirmRegistration(email: string): Promise<any> {
         let req = await this.getRequest(email);
+        console.log(RequestStatus.APPROVED);
 
         if (!req) throw new Error("Email does not exist");
 
         if (
-            req.accountStatus == AccountStatus.ACTIVATED ||
-            req.accountStatus == AccountStatus.APPROVED
+            req.requestStatus == RequestStatus.APPROVED 
         )
-            throw new Error("Account already activated");
+            throw new Error("Account already approved");
 
         //change account status in requstes to approved
         await PatientRequest.update(
-            { accountStatus: AccountStatus.APPROVED },
+            { requestStatus: RequestStatus.APPROVED },
             { where: { email } }
         );
 
@@ -49,15 +51,10 @@ class RegistrationReqService {
 
         if (!req) throw new Error("Email does not exist");
 
-        if (
-            req.accountStatus == AccountStatus.ACTIVATED ||
-            req.accountStatus == AccountStatus.APPROVED
-        )
-            throw new Error("Account already activated");
 
         //change account status in requstes to rejected
         await PatientRequest.update(
-            { accountStatus: AccountStatus.REJECTED },
+            { requestStatus: RequestStatus.REJECTED },
             { where: { email } }
         );
 
@@ -65,24 +62,19 @@ class RegistrationReqService {
     }
 
     public async activateRegistration(email: string): Promise<any> {
+        
         let req = await this.getRequest(email);
 
         if (!req) throw new Error("Email does not exist");
-
-        if (
-            req.accountStatus == AccountStatus.ACTIVATED ||
-            req.accountStatus == AccountStatus.APPROVED
-        )
-            throw new Error("Account already activated");
-
         
         // add requested patient to users
         let user = this.getUserFromRequest(req);
-        await UsersService.createUser(user, UserRole.PATIENT);
+        user.accountStatus = AccountStatus.ACTIVATED;
+        console.log(user);
+        await Users.create(user);
 
-        //change account status in requstes to activated
-        await PatientRequest.update(
-            { accountStatus: AccountStatus.ACTIVATED },
+        // now we can delete request
+        await PatientRequest.destroy(
             { where: { email } }
         );
 
@@ -96,7 +88,7 @@ class RegistrationReqService {
         return regRequest;
     }
 
-    public async getUserFromRequest(req : any): Promise<any> {
+    public getUserFromRequest(req : any): any {
 
         let user = {
             email: req.email,
@@ -108,6 +100,7 @@ class RegistrationReqService {
             country: req.country,
             address: req.address,
             phoneNumber: req.phoneNumber,
+            role : UserRole.PATIENT,
         };
 
         return user;
