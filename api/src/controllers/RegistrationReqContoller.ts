@@ -25,7 +25,8 @@ class RegistrationReqController {
     public async reject(req: Request, res: Response) {
         try {
             let email = req.params["email"];
-            await RegistrationReqService.rejectRegistration(email);
+            let {reason} = req.body;
+            await RegistrationReqService.rejectRegistration(email, reason);
             res.send("Rejection successful");
         } catch (error) {
             res.status(400).send(error);

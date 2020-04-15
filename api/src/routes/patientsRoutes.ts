@@ -10,7 +10,7 @@ router.post("/register", RegistrationReqContoller.register);
 
 router.get("/register/confirm/:email", RegistrationReqContoller.confirm);
 
-router.get("/register/reject/:email", RegistrationReqContoller.reject);
+router.post("/register/reject/:email", RegistrationReqContoller.reject);
 
 router.get("/register/activate/:email", RegistrationReqContoller.activate);
 

@@ -66,7 +66,7 @@ class RegistrationReqService {
         });
     }
 
-    public async rejectRegistration(email: string): Promise<any> {
+    public async rejectRegistration(email: string, reason: string): Promise<any> {
         let req = await this.getRequest(email);
 
         if (!req) throw new Error("Email does not exist!");
@@ -80,7 +80,7 @@ class RegistrationReqService {
         //now send notification email
         let emailText = `Dear ${
             req.firstName + " " + req.lastName
-        },\n\nYour request to register to covid clinic has been rejected.\nReason: TODO.`;
+        },\n\nYour request to register to covid clinic has been rejected.\nReason: ${reason}.`;
         EmailService.send({
             from: config.mail,
             to: email,
