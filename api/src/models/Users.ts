@@ -1,6 +1,5 @@
 import { INTEGER, STRING, Model, Association } from "sequelize";
 import db from "./database";
-import AccountStatus from "./AccountStatus";
 import UserRole from "./UserRole";
 // import AdminOf from "./AdminOf";
 import Clinics from "./Clinics";
@@ -18,7 +17,6 @@ class Users extends Model {
   public address!: string;
   public phoneNumber!: string;
   public role!: UserRole;
-  public accountStatus!: AccountStatus;
 }
 
 Users.init(
@@ -66,10 +64,6 @@ Users.init(
       type: STRING,
       allowNull: false,
     },
-    accountStatus: {
-      type: INTEGER,
-      defaultValue: 0,
-    },
     role: {
       type: INTEGER,
       allowNull: false,
@@ -94,6 +88,5 @@ export const usersSelect = [
   "country",
   "address",
   "phoneNumber",
-  "accountStatus",
   "role",
 ];

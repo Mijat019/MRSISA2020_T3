@@ -16,7 +16,6 @@ export default async () => {
       country: "Serbia",
       city: "Zajecar",
       address: "Vojvode stepe 20",
-      accountStatus: 4,
     },
     UserRole.CLINIC_ADMIN
   );
@@ -48,7 +47,6 @@ export default async () => {
       country: "Serbia",
       city: "Zajecar",
       address: "Vojvode stepe 20",
-      accountStatus: 4,
     },
     id
   );
@@ -64,7 +62,6 @@ export default async () => {
       country: "Serbia",
       city: "Zajecar",
       address: "Vojvode stepe 20",
-      accountStatus: 4,
     },
     idd
   );
@@ -80,7 +77,6 @@ export default async () => {
       country: "Serbia",
       city: "Zajecar",
       address: "Vojvode stepe 20",
-      accountStatus: 4,
     },
     id
   );
@@ -96,7 +92,6 @@ export default async () => {
       country: "Serbia",
       city: "Zajecar",
       address: "Vojvode stepe 20",
-      accountStatus: 4,
     },
     UserRole.CLINIC_ADMIN
   );
@@ -112,7 +107,6 @@ export default async () => {
       country: "Serbia",
       city: "Zajecar",
       address: "Vojvode stepe 20",
-      accountStatus: 4,
     },
     UserRole.DOCTOR
   );
@@ -127,6 +121,5 @@ export default async () => {
     country: "Serbia",
     city: "Zajecar",
     address: "Vojvode stepe 20",
-    accountStatus: 4,
   });
 };

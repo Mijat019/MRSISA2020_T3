@@ -228,7 +228,7 @@ export default {
       this.loading = true;
       await this.addPatientAction(this.user);
       this.loading = false;
-      this.$router.push("/");
+      this.$router.push("/register");
     }
   },
 

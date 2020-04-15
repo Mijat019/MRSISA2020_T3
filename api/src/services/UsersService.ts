@@ -4,6 +4,7 @@ import Users from "../models/Users";
 import UserRole from "../models/UserRole";
 
 class UsersService {
+
   public async createUser(userPayload: any, role: UserRole) {
     userPayload.role = role;
     userPayload.password = await bcrypt.hash(
