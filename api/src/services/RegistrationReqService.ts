@@ -28,13 +28,10 @@ class RegistrationReqService {
     // adds patient from request to patients table
     public async confirmRegistration(email: string): Promise<any> {
         let req = await this.getRequest(email);
-        console.log(RequestStatus.APPROVED);
 
         if (!req) throw new Error("Email does not exist");
 
-        if (
-            req.requestStatus == RequestStatus.APPROVED 
-        )
+        if (req.requestStatus == RequestStatus.APPROVED)
             throw new Error("Account already approved");
 
         //change account status in requstes to approved
@@ -51,7 +48,6 @@ class RegistrationReqService {
 
         if (!req) throw new Error("Email does not exist");
 
-
         //change account status in requstes to rejected
         await PatientRequest.update(
             { requestStatus: RequestStatus.REJECTED },
@@ -62,21 +58,17 @@ class RegistrationReqService {
     }
 
     public async activateRegistration(email: string): Promise<any> {
-        
         let req = await this.getRequest(email);
 
         if (!req) throw new Error("Email does not exist");
-        
+
         // add requested patient to users
         let user = this.getUserFromRequest(req);
         user.accountStatus = AccountStatus.ACTIVATED;
-        console.log(user);
         await Users.create(user);
 
         // now we can delete request
-        await PatientRequest.destroy(
-            { where: { email } }
-        );
+        await PatientRequest.destroy({ where: { email } });
 
         //now send notification email
     }
@@ -88,8 +80,7 @@ class RegistrationReqService {
         return regRequest;
     }
 
-    public getUserFromRequest(req : any): any {
-
+    public getUserFromRequest(req: any): any {
         let user = {
             email: req.email,
             password: req.password,
@@ -100,7 +91,7 @@ class RegistrationReqService {
             country: req.country,
             address: req.address,
             phoneNumber: req.phoneNumber,
-            role : UserRole.PATIENT,
+            role: UserRole.PATIENT,
         };
 
         return user;
