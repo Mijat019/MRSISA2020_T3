@@ -8,10 +8,10 @@ const router = express.Router();
 
 router.post("/register", RegistrationReqContoller.register);
 
-router.post("/register/confirm/:email", RegistrationReqContoller.confirm);
+router.get("/register/confirm/:email", RegistrationReqContoller.confirm);
 
-router.post("/register/reject/:email", RegistrationReqContoller.reject);
+router.get("/register/reject/:email", RegistrationReqContoller.reject);
 
-router.post("/register/activate/:email", RegistrationReqContoller.activate);
+router.get("/register/activate/:email", RegistrationReqContoller.activate);
 
 export default router;

@@ -15,6 +15,7 @@ class PatientRequest extends Model {
   public address!: string;
   public phoneNumber!: string;
   public requestStatus!: RequestStatus;
+  public approvedAt!:
 }
 
 PatientRequest.init(

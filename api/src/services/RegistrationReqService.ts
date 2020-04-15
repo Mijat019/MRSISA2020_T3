@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import PatientRequest from "../models/PatientRequest";
 import Users from "../models/Users";
 import AccountStatus from "../models/AccountStatus";
+import EmailService from "./EmailService";
 
 class RegistrationReqService {
     // Creates a request for registration
@@ -41,6 +42,13 @@ class RegistrationReqService {
         );
 
         //now send notification email
+        let emailText = `Dear ${req.firstName + " " + req.lastName},\n\nYour Covid clinic account has been approved!\nYou have 24h to activate it: http://localhost:4200/patients/register/activate/${email}`;
+        EmailService.send({
+            from: config.mail,
+            to: email,
+            subject: "Covid Clinic Registration",
+            text: emailText,
+        });
     }
 
     public async rejectRegistration(email: string): Promise<any> {
@@ -55,12 +63,19 @@ class RegistrationReqService {
         );
 
         //now send notification email
+        let emailText = `Dear ${
+            req.firstName + " " + req.lastName
+        },\n\nYour request to register to covid clinic has been rejected.`;
+        EmailService.send({
+            from: config.mail,
+            to: email,
+            subject: "Covid Clinic Registration",
+            text: emailText,
+        });
     }
 
     public async activateRegistration(email: string): Promise<any> {
         let req = await this.getRequest(email);
-
-        if (!req) throw new Error("Email does not exist");
 
         if (req.requestStatus != RequestStatus.APPROVED)
             throw new Error("Request must first be approved!");
@@ -74,6 +89,13 @@ class RegistrationReqService {
         await PatientRequest.destroy({ where: { email } });
 
         //now send notification email
+        let emailText = `Dear ${req.firstName + " " + req.lastName},\n\nYour Covid clinic account has been activated!`;
+        EmailService.send({
+            from: config.mail,
+            to: email,
+            subject: "Covid Clinic Registration",
+            text: emailText,
+        });
     }
 
     public async getRequest(email: string): Promise<any> {
