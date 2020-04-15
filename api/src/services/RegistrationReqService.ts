@@ -32,7 +32,7 @@ class RegistrationReqService {
         if (!req) throw new Error("Email does not exist");
 
         if (req.requestStatus == RequestStatus.APPROVED)
-            throw new Error("Account already approved");
+            throw new Error("Request already approved!");
 
         //change account status in requstes to approved
         await PatientRequest.update(
@@ -46,7 +46,7 @@ class RegistrationReqService {
     public async rejectRegistration(email: string): Promise<any> {
         let req = await this.getRequest(email);
 
-        if (!req) throw new Error("Email does not exist");
+        if (!req) throw new Error("Email does not exist!");
 
         //change account status in requstes to rejected
         await PatientRequest.update(
@@ -61,6 +61,9 @@ class RegistrationReqService {
         let req = await this.getRequest(email);
 
         if (!req) throw new Error("Email does not exist");
+
+        if (req.requestStatus != RequestStatus.APPROVED)
+            throw new Error("Request must first be approved!");
 
         // add requested patient to users
         let user = this.getUserFromRequest(req);
