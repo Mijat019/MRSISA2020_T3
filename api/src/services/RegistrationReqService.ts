@@ -21,8 +21,18 @@ class RegistrationReqService {
             userPayload.password,
             config.saltRounds
         );
-        const user = await PatientRequest.create(userPayload);
-        return user;
+        await PatientRequest.create(userPayload);
+
+        // send email
+        let emailText = `Dear ${
+            userPayload.firstName + " " + userPayload.lastName
+        },\n\nYou have successfully submited a registration request at Covid Clinic!\nExpect an answer from us shortly.`;
+        EmailService.send({
+            from: config.mail,
+            to: userPayload.email,
+            subject: "Covid Clinic Registration",
+            text: emailText,
+        });
     }
 
     // after admin confirmation
@@ -70,7 +80,7 @@ class RegistrationReqService {
         //now send notification email
         let emailText = `Dear ${
             req.firstName + " " + req.lastName
-        },\n\nYour request to register to covid clinic has been rejected.`;
+        },\n\nYour request to register to covid clinic has been rejected.\nReason: TODO.`;
         EmailService.send({
             from: config.mail,
             to: email,
@@ -92,7 +102,9 @@ class RegistrationReqService {
         if (now - req.approvedAt > oneDay) {
             // delete request and throw an error
             await PatientRequest.destroy({ where: { email } });
-            throw new Error("Your link has expired!\n Submit your registration again");
+            throw new Error(
+                "Your link has expired!\n Submit your registration again"
+            );
         }
 
         // add requested patient to users
