@@ -37,12 +37,17 @@ class RegistrationReqService {
 
         //change account status in requstes to approved
         await PatientRequest.update(
-            { requestStatus: RequestStatus.APPROVED },
+            {
+                requestStatus: RequestStatus.APPROVED,
+                approvedAt: new Date().getTime(),
+            },
             { where: { email } }
         );
 
         //now send notification email
-        let emailText = `Dear ${req.firstName + " " + req.lastName},\n\nYour Covid clinic account has been approved!\nYou have 24h to activate it: http://localhost:4200/patients/register/activate/${email}`;
+        let emailText = `Dear ${
+            req.firstName + " " + req.lastName
+        },\n\nYour Covid clinic account has been approved!\nYou have 24h to activate it: http://localhost:4200/patients/register/activate/${email}`;
         EmailService.send({
             from: config.mail,
             to: email,
@@ -80,6 +85,16 @@ class RegistrationReqService {
         if (req.requestStatus != RequestStatus.APPROVED)
             throw new Error("Request must first be approved!");
 
+        let now = new Date().getTime();
+        let oneDay = 8.64e7; //24 hours in milliseconds
+
+        // 24h period has expired
+        if (now - req.approvedAt > oneDay) {
+            // delete request and throw an error
+            await PatientRequest.destroy({ where: { email } });
+            throw new Error("Your link has expired!\n Submit your registration again");
+        }
+
         // add requested patient to users
         let user = this.getUserFromRequest(req);
         user.accountStatus = AccountStatus.ACTIVATED;
@@ -89,7 +104,9 @@ class RegistrationReqService {
         await PatientRequest.destroy({ where: { email } });
 
         //now send notification email
-        let emailText = `Dear ${req.firstName + " " + req.lastName},\n\nYour Covid clinic account has been activated!`;
+        let emailText = `Dear ${
+            req.firstName + " " + req.lastName
+        },\n\nYour Covid clinic account has been activated!`;
         EmailService.send({
             from: config.mail,
             to: email,

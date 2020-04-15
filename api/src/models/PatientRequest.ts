@@ -1,5 +1,5 @@
 import db from "./database";
-import { Model, STRING, INTEGER } from "sequelize";
+import { Model, STRING, INTEGER, DOUBLE } from "sequelize";
 import UserRole from './UserRole'
 import RequestStatus from './RequestStatus'
 
@@ -15,6 +15,7 @@ class PatientRequest extends Model {
   public address!: string;
   public phoneNumber!: string;
   public requestStatus!: RequestStatus;
+  public aprovedAt!: number;
 }
 
 PatientRequest.init(
@@ -64,6 +65,10 @@ PatientRequest.init(
       },
       requestStatus: {
         type: INTEGER,
+        defaultValue: 0,
+      },
+      approvedAt: {
+        type: DOUBLE,
         defaultValue: 0,
       },
   },

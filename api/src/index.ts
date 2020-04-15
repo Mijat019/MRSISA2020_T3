@@ -10,6 +10,7 @@ import doctorsRoutes from "./routes/doctorsRoutes";
 import clinicAdminRoutes from "./routes/clinicAdminRoutes";
 import authenticationRoutes from "./routes/authenticationRoutes";
 import patientsRoutes from "./routes/patientsRoutes";
+import sequelize from "sequelize";
 
 // connect to the database
 (async () => {
@@ -18,6 +19,7 @@ import patientsRoutes from "./routes/patientsRoutes";
             .authenticate()
             .then(() => console.log("Database connected"))
             .catch(() => console.log("ERROR"));
+        
 
         // creates tables from model
         // drops tables if they already exist

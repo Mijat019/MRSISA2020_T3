@@ -38,7 +38,7 @@ class RegistrationReqController {
             await RegistrationReqService.activateRegistration(email);
             res.send("Activation successful");
         } catch (error) {
-            res.status(400).send(error);
+            res.status(400).send(error.message);
         }
     }
 }
