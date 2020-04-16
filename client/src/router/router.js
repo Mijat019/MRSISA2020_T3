@@ -42,6 +42,14 @@ const routes = [
             import(
                 "../components/doctors/Doctors"
             )
+    },
+    {
+        path: "/manageNurses",
+        name: "ManageNurses",
+        component: () =>
+            import(
+                "../components/nurses/Nurses"
+            )
     }
 ];
 
