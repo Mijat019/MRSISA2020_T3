@@ -48,7 +48,12 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-select required :items="clinicNames" v-model="clinicName" label="Clinic"></v-select>
+              <v-select
+                :rules="requiredRule"
+                :items="clinicNames"
+                v-model="clinicName"
+                label="Clinic"
+              ></v-select>
             </v-col>
           </v-row>
           <v-row align="center" justify="center" class="pt-3">
@@ -167,42 +172,49 @@ export default {
         address: "",
         city: "",
         country: "",
-        password: ""
+        password: "",
       },
       clinicId: null,
       clinicName: "",
       confirmed_password: "",
 
       // FORM VALIDATION RULES
-      requiredRule: [v => !!v || "This field is required"],
-      emailRule: [v => !!v || "This field is required"],
+      requiredRule: [(v) => !!v || "This field is required"],
+      emailRule: [(v) => !!v || "This field is required"],
       jmbgRule: [
-        v => !!v || "This field is required",
-        v => !/[a-zA-Z]/.test(v) || "JMBG must not contain letters"
+        (v) => !!v || "This field is required",
+        (v) => !/[a-zA-Z]/.test(v) || "JMBG must not contain letters",
       ],
       passwordRule: [
-        v => !!v || "This field is required",
-        v => v === this.clinicAdmin.password || "Passwords must match!"
+        (v) => !!v || "This field is required",
+        (v) => v === this.clinicAdmin.password || "Passwords must match!",
       ],
       phoneNumRule: [
-        v => !!v || "This field is required",
-        v => !/[a-zA-Z]/.test(v) || "Phone number must not contain letters"
-      ]
+        (v) => !!v || "This field is required",
+        (v) => !/[a-zA-Z]/.test(v) || "Phone number must not contain letters",
+      ],
     };
   },
   methods: {
-    ...mapActions("clinicAdmins", {
-      addClinicAdminAction: "addClinicAdminAction"
+    ...mapActions({
+      addClinicAdminAction: "clinicAdmins/addClinicAdminAction",
+      showError: "snackbar/showError",
     }),
 
     async save() {
       if (!this.$refs.form.validate()) {
         return;
       }
+
+      if (!this.clinicId) {
+        this.showError("You need to select a clinic.");
+        return;
+      }
+
       try {
         await this.addClinicAdminAction({
           clinicAdminPayload: this.clinicAdmin,
-          clinicId: this.clinicId
+          clinicId: this.clinicId,
         });
         this.dialog = false;
       } catch (error) {
@@ -212,25 +224,26 @@ export default {
 
     close() {
       this.dialog = false;
-    }
+    },
   },
 
   computed: {
     ...mapGetters("clinics", { getClinics: "getClinics" }),
     clinicNames() {
-      const clinicNames = this.getClinics.map(clinic => clinic.name);
+      const clinicNames = this.getClinics.map((clinic) => clinic.name);
       return clinicNames;
-    }
+    },
   },
 
   watch: {
     clinicName(clinicName) {
-      const { id } = this.getClinics.find(clinic => clinic.name === clinicName);
+      const { id } = this.getClinics.find(
+        (clinic) => clinic.name === clinicName
+      );
       this.clinicId = id;
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>
