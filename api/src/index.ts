@@ -8,9 +8,9 @@ import initModel from "./models/initModel";
 import clinicsRoutes from "./routes/clinicsRoutes";
 import doctorsRoutes from "./routes/doctorsRoutes";
 import clinicAdminRoutes from "./routes/clinicAdminRoutes";
+import nurseRoutes from "./routes/nursesRoutes";
 import authenticationRoutes from "./routes/authenticationRoutes";
 import patientsRoutes from "./routes/patientsRoutes";
-import sequelize from "sequelize";
 
 // connect to the database
 (async () => {
@@ -42,6 +42,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // routes
 app.use("/clinics", clinicsRoutes);
 app.use("/doctors", doctorsRoutes);
+app.use("/nurses", nurseRoutes);
 app.use("/auth", authenticationRoutes);
 app.use("/patients", patientsRoutes);
 app.use("/clinicAdmins", clinicAdminRoutes);
