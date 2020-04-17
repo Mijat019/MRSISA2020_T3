@@ -1,16 +1,14 @@
 <template>
-  <v-dialog v-model="dialog" width="50%">
-    <template v-slot:activator="{ on }">
-      <v-btn dark class="mb-2" v-on="on">Add doctor</v-btn>
-    </template>
+  <v-dialog v-model="dialog" width="50%" @click:outside="close">
     <v-card>
-      <v-card-title>Add doctor</v-card-title>
+      <v-card-title v-if="type === 'add'">Add Doctor</v-card-title>
+      <v-card-title v-else>Edit Doctor</v-card-title>
       <v-card-text>
         <v-form ref="form" lazy-validation>
           <v-text-field v-model="doctor.firstName" :rules="rules" label="First name" required></v-text-field>
           <v-text-field v-model="doctor.lastName" :rules="rules" label="Last name" required></v-text-field>
-          <v-text-field v-model="doctor.email" :rules="rules" label="E-mail" required></v-text-field>
-          <v-text-field v-model="doctor.jmbg" :rules="rules" label="JMBG" required></v-text-field>
+          <v-text-field :disabled="type === 'edit'" v-model="doctor.email" :rules="rules" label="E-mail" required></v-text-field>
+          <v-text-field :disabled="type === 'edit'" v-model="doctor.jmbg" :rules="rules" label="JMBG" required></v-text-field>
           <v-text-field v-model="doctor.city" :rules="rules" label="City" required></v-text-field>
           <v-text-field v-model="doctor.country" :rules="rules" label="Country" required></v-text-field>
           <v-text-field v-model="doctor.address" :rules="rules" label="Address" required></v-text-field>
@@ -20,34 +18,21 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
+        <v-btn v-if="type === 'edit'" color="red" @click="deleteDoctor">Delete</v-btn>
         <v-btn @click="close">Cancel</v-btn>
-        <v-btn color="primary" @click="save">Save</v-btn>
+        <v-btn v-if="type === 'add'" color="primary" @click="addDoctor">Add</v-btn>
+        <v-btn v-else color="primary" @click="updateDoctor">Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { mapActions } from "vuex";
-//import config from "../../../config";
-//import axios from "axios";
-//import urlencode from "urlencode";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "DoctorDialog",
   data: () => ({
-    doctor: {
-      email: "",
-      password: "",
-      firstName: "",
-      lastName: "",
-      jmbg: "",
-      city: "",
-      country: "",
-      address: "",
-      phoneNumber: ""
-    },
-    dialog: false,
     rules: [
       v => !!v || "This field is required",
       v =>
@@ -65,10 +50,16 @@ export default {
 
   methods: {
     ...mapActions("doctors", {
-      addDoctorAction: "addDoctorAction"
+      addDoctorAction: "addDoctorAction",
+      deleteDoctorAction: "deleteDoctorAction",
+      updateDoctorAction: "updateDoctorAction"
     }),
 
-    async save() {
+    ...mapMutations("doctors", {
+      close: "closeDialog"
+    }),
+
+    async addDoctor() {
       if (!this.$refs.form.validate()) {
         return;
       }
@@ -77,20 +68,31 @@ export default {
       this.close();
     },
 
-    close() {
-      this.doctor = {
-        email: "",
-        password: "",
-        firstName: "",
-        lastName: "",
-        jmbg: "",
-        city: "",
-        country: "",
-        address: "",
-        phoneNumber: ""
+    async deleteDoctor() {
+      if (!this.$refs.form.validate()) {
+        return;
       }
-      this.dialog = false;
+
+      await this.deleteDoctorAction(this.doctor);
+      this.close();
+    },
+
+    async updateDoctor() {
+      if (!this.$refs.form.validate()) {
+        return;
+      }
+
+      await this.updateDoctorAction(this.doctor);
+      this.close();
     }
+  },
+
+  computed: {
+    ...mapGetters("doctors", {
+        dialog: "getShowDialog",
+        doctor: "getDialogDoctor",
+        type: "getDialogType"
+    })
   }
 };
 </script>
