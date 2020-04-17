@@ -1,12 +1,11 @@
-import db from "./database";
-import { Model, STRING, INTEGER, DOUBLE } from "sequelize";
+import { Model, STRING, INTEGER } from "sequelize";
 import UserRole from "./UserRole";
-import RequestStatus from "./RequestStatus";
+import db from "./database";
+import Clinics from "./Clinics";
 
-class PatientRequest extends Model {
+class EmployeeRequests extends Model {
   public id!: number;
   public email!: string;
-  public password!: string;
   public firstName!: string;
   public lastName!: string;
   public jmbg!: string;
@@ -14,11 +13,11 @@ class PatientRequest extends Model {
   public country!: string;
   public address!: string;
   public phoneNumber!: string;
-  public requestStatus!: RequestStatus;
-  public approvedAt!: number;
+  public role!: UserRole;
+  public clinicId!: number;
 }
 
-PatientRequest.init(
+EmployeeRequests.init(
   {
     id: {
       type: INTEGER.UNSIGNED,
@@ -27,11 +26,7 @@ PatientRequest.init(
     },
     email: {
       type: STRING,
-      allowNull: false,
       unique: true,
-    },
-    password: {
-      type: STRING,
       allowNull: false,
     },
     firstName: {
@@ -63,20 +58,25 @@ PatientRequest.init(
       type: STRING,
       allowNull: false,
     },
-    requestStatus: {
+    accountStatus: {
       type: INTEGER,
       defaultValue: 0,
     },
-    approvedAt: {
-      type: DOUBLE,
-      defaultValue: 0,
+    role: {
+      type: INTEGER,
+      allowNull: false,
+    },
+    clinicId: {
+      type: INTEGER.UNSIGNED,
+      allowNull: true,
     },
   },
   {
     timestamps: false,
     sequelize: db,
-    tableName: "patient_requests",
+    tableName: "employeeRequests",
   }
 );
+EmployeeRequests.hasOne(Clinics);
 
-export default PatientRequest;
+export default EmployeeRequests;

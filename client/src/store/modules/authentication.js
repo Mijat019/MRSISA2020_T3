@@ -54,14 +54,11 @@ const actions = {
     }
   },
 
-  async verifyTokenAction({ commit, dispatch }) {
+  async verifyTokenAction({ commit }) {
     try {
       const { data } = await Vue.$axios.post("/auth/verify");
       commit("logUser", data);
     } catch (error) {
-      dispatch("snackbar/showError", error.response.data, {
-        root: true,
-      });
       commit("logoutUser");
     }
   },

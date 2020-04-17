@@ -22,9 +22,9 @@ class AuthenticationController {
     try {
       const token = req.headers["authorization"];
       await jwt.verify(token, config.secret);
-      res.send({ token });
+      return res.send({ token });
     } catch (error) {
-      res.send(403).send("Forbidden");
+      res.status(403).send("Forbidden");
     }
   }
 

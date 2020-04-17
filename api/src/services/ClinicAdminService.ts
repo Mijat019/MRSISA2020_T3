@@ -18,9 +18,11 @@ class ClinicAdminService {
   }
 
   public async add(clinicAdminPayload: any, clinicId: string) {
-    clinicAdminPayload.role = UserRole.CLINIC_ADMIN;
-    clinicAdminPayload.password = "";
-    const { id: clinicAdminId } = await Users.create(clinicAdminPayload);
+    clinicAdminPayload.password = "123";
+    const { id: clinicAdminId } = await UsersService.createUser(
+      clinicAdminPayload,
+      UserRole.CLINIC_ADMIN
+    );
     const { UserId } = await AdminOf.create({
       UserId: clinicAdminId,
       ClinicId: clinicId,
