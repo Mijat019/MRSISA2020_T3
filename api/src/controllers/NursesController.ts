@@ -1,10 +1,10 @@
-import DoctorsService from "../services/DoctorsService";
+import NursesService from "../services/NursesService";
 
-class DoctorsController {
+class NursesController {
     public async getAll(req: any, res: any) {
         try {
-            const doctors = await DoctorsService.getAll();
-            res.send(doctors);
+            const Nurses = await NursesService.getAll();
+            res.send(Nurses);
         } catch (error) {
             res.status(400).send(error);
         }
@@ -12,8 +12,8 @@ class DoctorsController {
 
     public async add(req: any, res: any) {
         try {
-            const newDoctor = await DoctorsService.add(req.body);
-            res.send(newDoctor);
+            const newNurse = await NursesService.add(req.body);
+            res.send(newNurse);
         } catch (error) {
             res.status(400).send(error);
         }
@@ -21,8 +21,8 @@ class DoctorsController {
 
     public async delete(req: any, res: any) {
         try {
-            await DoctorsService.delete(req.body);
-            res.send("Doctor deleted.");
+            await NursesService.delete(req.body);
+            res.send("Nurse deleted.");
         } catch (error) {
             res.status(400).send(error);
         }
@@ -30,12 +30,12 @@ class DoctorsController {
 
     public async update(req: any, res: any) {
         try {
-            const newDoctor = await DoctorsService.update(req.body);
-            res.send(newDoctor);
+            const newNurse = await NursesService.update(req.body);
+            res.send(newNurse);
         } catch (error) {
             res.status(400).send(error);
         }
     }
 }
 
-export default new DoctorsController();
+export default new NursesController();

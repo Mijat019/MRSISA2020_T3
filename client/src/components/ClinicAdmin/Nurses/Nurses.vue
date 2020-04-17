@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-card-title>
-            Doctors
+            Nurses
             <v-spacer></v-spacer>
             <v-text-field
                 v-model="search"
@@ -12,10 +12,10 @@
             ></v-text-field>
         </v-card-title>
 
-        <v-btn dark class="mb-2" @click="showAddDialog">Add doctor</v-btn>
-        <DoctorDialog></DoctorDialog>
+        <v-btn dark class="mb-2" @click="showAddDialog">Add nurse</v-btn>
+        <NurseDialog></NurseDialog>
 
-        <v-data-table :headers="headers" :items="getDoctors" :search="search" @click:row="showEditDialog">\
+        <v-data-table :headers="headers" :items="getNurses" :search="search" @click:row="showEditDialog">\
         </v-data-table>
     </v-card>
 
@@ -24,11 +24,11 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import DoctorDialog from "./DoctorDialog";
+import NurseDialog from "./NurseDialog";
 export default {
-    name: "ManageDoctors",
+    name: "ManageNurses",
     components: {
-        DoctorDialog
+        NurseDialog
     },
     data() {
         return {
@@ -51,23 +51,23 @@ export default {
     },
 
     methods: {
-        ...mapActions("doctors", {
-            getDoctorsAction: "getDoctorsAction"
+        ...mapActions("nurses", {
+            getNursesAction: "getNursesAction"
         }),
 
-        ...mapMutations("doctors", {
+        ...mapMutations("nurses", {
             showAddDialog: "openAddDialog",
             showEditDialog: "openEditDialog"
         })
     },
 
     async mounted() {
-        await this.getDoctorsAction();
+        await this.getNursesAction();
     },
 
     computed: {
-        ...mapGetters("doctors", {
-            getDoctors: "getDoctors"
+        ...mapGetters("nurses", {
+            getNurses: "getNurses"
         })
     }
 };
