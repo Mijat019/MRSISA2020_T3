@@ -18,7 +18,7 @@ export default async () => {
       address: "Vojvode stepe 20",
       accountStatus: 4,
     },
-    UserRole.CLINIC_ADMIN
+    UserRole.CLINIC_CENTER_ADMIN
   );
 
   const { id } = await ClinicsService.add({
