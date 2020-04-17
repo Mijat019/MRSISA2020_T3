@@ -1,4 +1,5 @@
 import ClinicAdminService from "../services/ClinicAdminService";
+import UsersService from "../services/UsersService";
 
 class ClinicAdminController {
   public async getAll(req: any, res: any) {
@@ -17,6 +18,7 @@ class ClinicAdminController {
         clinicAdminPayload,
         clinicId
       );
+      UsersService.sendEmailWithLinkToSetPassword(clinicAdmin.User);
       return res.send(clinicAdmin);
     } catch (error) {
       return res.status(400).send(error.message);

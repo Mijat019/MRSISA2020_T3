@@ -9,6 +9,7 @@
 
 <script>
 import Snackbar from "./components/global/MySnackbar";
+import { mapActions } from "vuex";
 
 export default {
   name: "App",
@@ -19,6 +20,11 @@ export default {
 
   data: () => ({}),
 
-  mounted() {}
+  methods: {
+    ...mapActions({ verifyTokenAction: "authentication/verifyTokenAction" })
+  },
+  async created() {
+    await this.verifyTokenAction();
+  }
 };
 </script>

@@ -83,35 +83,6 @@
           </v-row>
 
           <v-row align="center" justify="center">
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="clinicAdmin.password"
-                :rules="requiredRule"
-                outlined
-                dense
-                id="password"
-                label="Password"
-                name="password"
-                type="password"
-              />
-            </v-col>
-
-            <!-- ne radi kad dam listu za rules nmp -->
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="confirmed_password"
-                :rules="passwordRule"
-                outlined
-                dense
-                id="password2"
-                label="Confirm"
-                name="password2"
-                type="password"
-              />
-            </v-col>
-          </v-row>
-
-          <v-row align="center" justify="center">
             <v-col cols="12" sm="4">
               <v-text-field
                 v-model="clinicAdmin.country"
@@ -172,11 +143,9 @@ export default {
         address: "",
         city: "",
         country: "",
-        password: "",
       },
       clinicId: null,
       clinicName: "",
-      confirmed_password: "",
 
       // FORM VALIDATION RULES
       requiredRule: [(v) => !!v || "This field is required"],
@@ -184,10 +153,6 @@ export default {
       jmbgRule: [
         (v) => !!v || "This field is required",
         (v) => !/[a-zA-Z]/.test(v) || "JMBG must not contain letters",
-      ],
-      passwordRule: [
-        (v) => !!v || "This field is required",
-        (v) => v === this.clinicAdmin.password || "Passwords must match!",
       ],
       phoneNumRule: [
         (v) => !!v || "This field is required",

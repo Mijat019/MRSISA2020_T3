@@ -18,15 +18,14 @@ class ClinicAdminService {
   }
 
   public async add(clinicAdminPayload: any, clinicId: string) {
-    const { id: clinicAdminId } = await UsersService.createUser(
-      clinicAdminPayload,
-      UserRole.CLINIC_ADMIN
-    );
-    const { id } = await AdminOf.create({
+    clinicAdminPayload.role = UserRole.CLINIC_ADMIN;
+    clinicAdminPayload.password = "";
+    const { id: clinicAdminId } = await Users.create(clinicAdminPayload);
+    const { UserId } = await AdminOf.create({
       UserId: clinicAdminId,
       ClinicId: clinicId,
     });
-    const clinicAdmin = await AdminOf.findByPk(id, {
+    const clinicAdmin: any = await AdminOf.findByPk(UserId, {
       include: [
         { model: Users, attributes: usersSelect },
         { model: Clinics, attributes: clinicsSelect },

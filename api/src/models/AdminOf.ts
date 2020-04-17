@@ -4,8 +4,7 @@ import Users from "./Users";
 import Clinics from "./Clinics";
 
 class AdminOf extends Model {
-  public id!: number;
-  public AdminId!: number;
+  public UserId!: number;
   public ClinicId!: number;
 }
 
