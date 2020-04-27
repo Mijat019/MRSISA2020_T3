@@ -19,7 +19,9 @@
       <v-tab-item :value="'nurses'">
         <Nurses />
       </v-tab-item>
-      <v-tab-item :value="'rooms'">rooms</v-tab-item>
+      <v-tab-item :value="'rooms'">
+        <Rooms />
+      </v-tab-item>
       <v-tab-item :value="'appointmentTypes'">appointmentTypes</v-tab-item>
       <v-tab-item :value="'report'">report</v-tab-item>
     </v-tabs>
@@ -29,11 +31,13 @@
 <script>
 import Doctors from "./Doctors/Doctors";
 import Nurses from "./Nurses/Nurses";
+import Rooms from "./Rooms/Rooms";
 export default {
   name: "ClinicProfile",
   components: {
     Doctors,
-    Nurses
+    Nurses,
+    Rooms
   },
   data: () => ({
     tab: null
