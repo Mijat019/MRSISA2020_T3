@@ -12,6 +12,12 @@ class AuthenticationMiddleware {
       return res.status(403).send(error);
     }
   }
+
+  public async isPatient(req: any, res: any, next: any) {}
+  public async isDoctor(req: any, res: any, next: any) {}
+  public async isNurse(req: any, res: any, next: any) {}
+  public async isClinicAdmin(req: any, res: any, next: any) {}
+  public async isClinicCenterAdmin(req: any, res: any, next: any) {}
 }
 
 export default new AuthenticationMiddleware();

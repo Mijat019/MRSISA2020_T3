@@ -5,6 +5,7 @@ class ClinicAdminController {
   public async getAll(req: any, res: any) {
     try {
       const clinicAdmins = await ClinicAdminService.getAll();
+      console.log(req.user);
       return res.send(clinicAdmins);
     } catch (error) {
       return res.status(400).send(error.message);
