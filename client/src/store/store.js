@@ -5,6 +5,7 @@ import VuexPersist from "vuex-persist";
 import clinics from "./modules/clinics";
 import doctors from "./modules/doctors";
 import nurses from "./modules/nurses";
+import rooms from "./modules/rooms";
 import snackbar from "./modules/snackbar";
 import authentication from "./modules/authentication";
 import patients from "./modules/patients";
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     doctors,
     clinicAdmins,
     nurses,
+    rooms,
     snackbar
   }
 });

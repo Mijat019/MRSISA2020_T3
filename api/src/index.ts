@@ -9,6 +9,7 @@ import clinicsRoutes from "./routes/clinicsRoutes";
 import doctorsRoutes from "./routes/doctorsRoutes";
 import clinicAdminRoutes from "./routes/clinicAdminRoutes";
 import nurseRoutes from "./routes/nursesRoutes";
+import roomRoutes from "./routes/roomsRoutes";
 import authenticationRoutes from "./routes/authenticationRoutes";
 import patientsRoutes from "./routes/patientsRoutes";
 
@@ -43,6 +44,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/clinics", clinicsRoutes);
 app.use("/doctors", doctorsRoutes);
 app.use("/nurses", nurseRoutes);
+app.use("/rooms", roomRoutes);
 app.use("/auth", authenticationRoutes);
 app.use("/patients", patientsRoutes);
 app.use("/clinicAdmins", clinicAdminRoutes);

@@ -22,7 +22,6 @@ class NursesService {
     }
 
     public async delete(nursePayload: any) {
-        console.log("Deleting " + nursePayload.jmbg);
         await Users.destroy({ where: { jmbg: nursePayload.jmbg } });
     }
 }
