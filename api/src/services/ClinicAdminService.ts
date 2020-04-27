@@ -17,16 +17,19 @@ class ClinicAdminService {
     return clinicAdmins;
   }
 
-  public async add(clinicAdminPayload: any, clinicId: string) {
-    const { id: clinicAdminId } = await UsersService.createUser(
+  public async add(clinicAdminPayload: any, clinicId: number) {
+    // create a user
+    const { id: clinicAdminId } = await UsersService.createEmployee(
       clinicAdminPayload,
       UserRole.CLINIC_ADMIN
     );
-    const { id } = await AdminOf.create({
+    // add him as an admin of a clinic
+    const { UserId } = await AdminOf.create({
       UserId: clinicAdminId,
       ClinicId: clinicId,
     });
-    const clinicAdmin = await AdminOf.findByPk(id, {
+    // get the new admin and his clinic
+    const clinicAdmin: any = await AdminOf.findByPk(UserId, {
       include: [
         { model: Users, attributes: usersSelect },
         { model: Clinics, attributes: clinicsSelect },
