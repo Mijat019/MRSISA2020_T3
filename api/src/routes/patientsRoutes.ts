@@ -1,17 +1,13 @@
 import express from "express";
 import PatientsController from "../controllers/PatientsController";
-import RegistrationReqContoller from "../controllers/RegistrationReqContoller";
+import RegistrationReqController from "../controllers/RegistrationReqController";
 
 const router = express.Router();
 
-// router.post("/", PatientsController.add);
-
-router.post("/register", RegistrationReqContoller.register);
-
-router.get("/register/confirm/:email", RegistrationReqContoller.confirm);
-
-router.post("/register/reject/:email", RegistrationReqContoller.reject);
-
-router.get("/register/activate/:email", RegistrationReqContoller.activate);
+router.post("/", RegistrationReqController.register);
+router.patch("/confirm/:email", RegistrationReqController.approve);
+router.patch("/reject/:email", RegistrationReqController.reject);
+router.get("/activate/:email", RegistrationReqController.activate);
+router.get("/requests", RegistrationReqController.get);
 
 export default router;

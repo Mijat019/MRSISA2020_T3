@@ -15,22 +15,21 @@ import patientsRoutes from "./routes/patientsRoutes";
 
 // connect to the database
 (async () => {
-    try {
-        await db
-            .authenticate()
-            .then(() => console.log("Database connected"))
-            .catch(() => console.log("ERROR"));
-        
+  try {
+    await db
+      .authenticate()
+      .then(() => console.log("Database connected"))
+      .catch(() => console.log("ERROR"));
 
-        // creates tables from model
-        // drops tables if they already exist
-        // uncomment next line if you want to apply changes to the schema
+    // creates tables from model
+    // drops tables if they already exist
+    // uncomment next line if you want to apply changes to the schema
 
-        await db.sync({ force: true });
-        await initModel();
-    } catch (error) {
-        console.log(error);
-    }
+    // await db.sync({ force: true });
+    // await initModel();
+  } catch (error) {
+    console.log(error);
+  }
 })();
 
 const app: Application = express();
@@ -50,5 +49,5 @@ app.use("/patients", patientsRoutes);
 app.use("/clinicAdmins", clinicAdminRoutes);
 
 app.listen(config.port, () =>
-    console.log(`Server listening on port ${config.port}`)
+  console.log(`Server listening on port ${config.port}`)
 );
