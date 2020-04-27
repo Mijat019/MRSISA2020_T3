@@ -34,6 +34,16 @@ const actions = {
       dispatch("snackbar/showError", error.response.data, { root: true });
     }
   },
+
+  async rejectPatientRequestAction({ commit, dispatch }, { email, reason }) {
+    try {
+      await Vue.$axios.patch(`/patients/reject/${email}`, { reason });
+      commit("removePatientRequest", email);
+      dispatch("snackbar/showSuccess", "Rejected", { root: true });
+    } catch (error) {
+      dispatch("snackbar/showError", error.response.data, { root: true });
+    }
+  },
 };
 
 const getters = {
