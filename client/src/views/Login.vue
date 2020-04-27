@@ -27,6 +27,7 @@
                         <v-col cols="12">
                           <v-text-field
                             v-model="user.email"
+                            @keyup.enter="submit"
                             :rules="fieldRules"
                             outlined
                             dense
@@ -40,6 +41,7 @@
                       <v-row align="center" justify="center">
                         <v-col cols="12">
                           <v-text-field
+                            @keyup.enter="submit"
                             v-model="user.password"
                             :rules="fieldRules"
                             outlined

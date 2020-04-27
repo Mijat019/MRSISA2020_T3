@@ -26,6 +26,7 @@
                       <v-text-field
                         v-model="password"
                         :rules="requiredRule"
+                        @keyup.enter="submit"
                         outlined
                         dense
                         id="password"
@@ -36,6 +37,7 @@
                       <v-text-field
                         v-model="confirmedPassword"
                         :rules="passwordRule"
+                        @keyup.enter="submit"
                         outlined
                         dense
                         id="password2"
