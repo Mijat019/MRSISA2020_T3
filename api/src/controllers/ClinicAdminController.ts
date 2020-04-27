@@ -14,6 +14,7 @@ class ClinicAdminController {
   public async add(req: any, res: any) {
     try {
       const { clinicId, clinicAdminPayload } = req.body;
+      // clinicAdmin is from junction table AdminOf
       const clinicAdmin = await ClinicAdminService.add(
         clinicAdminPayload,
         clinicId
