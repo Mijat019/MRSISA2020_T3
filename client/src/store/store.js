@@ -10,12 +10,13 @@ import snackbar from "./modules/snackbar";
 import authentication from "./modules/authentication";
 import patients from "./modules/patients";
 import clinicAdmins from "./modules/clinicAdmins";
+import patientRequests from "./modules/patientRequests";
 
 Vue.use(Vuex);
 
 const vuexPersist = new VuexPersist({
   key: "my-app",
-  storage: window.localStorage
+  storage: window.localStorage,
 });
 
 export default new Vuex.Store({
@@ -28,6 +29,7 @@ export default new Vuex.Store({
     clinicAdmins,
     nurses,
     rooms,
-    snackbar
-  }
+    snackbar,
+    patientRequests,
+  },
 });
