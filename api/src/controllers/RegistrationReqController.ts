@@ -21,10 +21,10 @@ class RegistrationReqController {
     }
   }
 
-  public async confirm(req: Request, res: Response) {
+  public async approve(req: Request, res: Response) {
     try {
       let email = req.params["email"];
-      await RegistrationReqService.confirmRegistration(email);
+      await RegistrationReqService.approveRegistration(email);
       res.send("Approval successful");
     } catch (error) {
       res.status(400).send(error);

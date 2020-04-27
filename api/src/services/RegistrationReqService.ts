@@ -43,7 +43,7 @@ class RegistrationReqService {
 
   // after admin confirmation
   // adds patient from request to patients table
-  public async confirmRegistration(email: string): Promise<any> {
+  public async approveRegistration(email: string): Promise<any> {
     let req = await this.getRequest(email);
 
     if (!req) throw new Error("Email does not exist");
@@ -63,7 +63,8 @@ class RegistrationReqService {
     //now send notification email
     let emailText = `Dear ${
       req.firstName + " " + req.lastName
-    },\n\nYour Covid clinic account has been approved!\nYou have 24h to activate it: http://localhost:4200/patients/register/activate/${email}`;
+    },\n\nYour Covid clinic account has been approved!\nYou have 24h to activate it: http://localhost:4200/patients/activate/${email}`;
+    console.log(emailText);
     EmailService.send({
       from: config.mail,
       to: email,

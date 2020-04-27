@@ -12,7 +12,13 @@
       ></v-text-field>
     </v-card-title>
     <v-data-table :headers="headers" :items="getPatientRequests" :search="search">
-      <template></template>
+      <template v-slot:item.actions="{item}">
+        <div>
+          <v-btn @click="approve(item)" color="success" small>Approve</v-btn>
+          {{" "}}
+          <v-btn @click="reject(item)" color="error" small>reject</v-btn>
+        </div>
+      </template>
     </v-data-table>
   </v-card>
 </template>
@@ -39,8 +45,17 @@ export default {
 
   methods: {
     ...mapActions("patientRequests", {
-      getPatientRequestsAction: "getPatientRequestsAction"
-    })
+      getPatientRequestsAction: "getPatientRequestsAction",
+      confirmPatientRequestAction: "confirmPatientRequestAction"
+    }),
+
+    approve(item) {
+      this.confirmPatientRequestAction(item.email);
+    },
+
+    reject(item) {
+      alert(item.email);
+    }
   },
   async created() {
     await this.getPatientRequestsAction();
