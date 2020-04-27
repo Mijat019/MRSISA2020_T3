@@ -1,5 +1,6 @@
 import config from "../config";
 import jwt from "jsonwebtoken";
+import UserRole from "../models/UserRole";
 
 class AuthenticationMiddleware {
   public async verifyToken(req: any, res: any, next: any) {
@@ -9,15 +10,18 @@ class AuthenticationMiddleware {
       req.user = userDecoded;
       next();
     } catch (error) {
-      return res.status(403).send(error);
+      res.status(403).send("Forbidden");
     }
   }
 
-  public async isPatient(req: any, res: any, next: any) {}
-  public async isDoctor(req: any, res: any, next: any) {}
-  public async isNurse(req: any, res: any, next: any) {}
-  public async isClinicAdmin(req: any, res: any, next: any) {}
-  public async isClinicCenterAdmin(req: any, res: any, next: any) {}
+  public hasRole(role: UserRole) {
+    return async function (req: any, res: any, next: any) {
+      if (req.user.role === role) {
+        return next();
+      }
+      res.status(401).send("Unauthorized");
+    };
+  }
 }
 
 export default new AuthenticationMiddleware();

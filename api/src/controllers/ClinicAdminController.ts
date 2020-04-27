@@ -5,7 +5,6 @@ class ClinicAdminController {
   public async getAll(req: any, res: any) {
     try {
       const clinicAdmins = await ClinicAdminService.getAll();
-      console.log(req.user);
       return res.send(clinicAdmins);
     } catch (error) {
       return res.status(400).send(error.message);
@@ -15,7 +14,7 @@ class ClinicAdminController {
   public async add(req: any, res: any) {
     try {
       const { clinicId, clinicAdminPayload } = req.body;
-      // clinicAdmin is from junction table AdminOf
+      // clinicAdmin is from junction table "AdminOf"
       const clinicAdmin = await ClinicAdminService.add(
         clinicAdminPayload,
         clinicId
