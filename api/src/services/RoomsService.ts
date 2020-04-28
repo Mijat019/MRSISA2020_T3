@@ -9,13 +9,13 @@ class RoomsService {
     }
 
     public async add(roomPayload: any, clinicId: number): Promise<any> {
-        roomPayload.clinicId = clinicId;
+        roomPayload.ClinicId = clinicId;
         const room = await Rooms.create(roomPayload);
         return room;
     }
 
     public async update(roomPayload: any, clinicId: number): Promise<any> {
-        roomPayload.clinicId = clinicId;
+        roomPayload.ClinicId = clinicId;
         await Rooms.update(roomPayload, { where : { id: roomPayload.id }});
         return await Rooms.findOne({ where: { id: roomPayload.id } });
     }

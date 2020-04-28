@@ -5,7 +5,7 @@ import AccountStatus from "./AccountStatus";
 class Rooms extends Model {
     public id!: number;
     public name!: string;
-    public clinicId!: number;
+    public ClinicId!: number;
 }
 
 Rooms.init(
@@ -19,7 +19,7 @@ Rooms.init(
             type: STRING,
             allowNull: false
         },
-        clinicId: {
+        ClinicId: {
             type: INTEGER.UNSIGNED,
             allowNull: false
         }
@@ -32,9 +32,3 @@ Rooms.init(
 );
 
 export default Rooms;
-
-export const roomsSelect = [
-    "id",
-    "name",
-    "clinicId"
-];

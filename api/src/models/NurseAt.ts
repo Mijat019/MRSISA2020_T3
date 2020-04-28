@@ -25,7 +25,7 @@ NurseAt.init(
   {
     timestamps: false,
     sequelize: db,
-    tableName: "nurseAt",
+    tableName: "nurseat",
   }
 );
 
