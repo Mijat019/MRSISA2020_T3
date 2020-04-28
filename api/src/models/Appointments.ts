@@ -1,0 +1,72 @@
+import { Model, INTEGER, DATE } from "sequelize";
+import db from "./database";
+import AppointmentTypes from "./AppointmentTypes";
+import Rooms from "./Rooms";
+
+class Appointments extends Model {
+  public id!: number;
+  public AppointmentTypeId!: number;
+  public DoctorAtId!: number;
+  public PatientMedicalRecordId!: number;
+  public RoomId!: number;
+  public start!: Date;
+  public duration!: number;
+}
+
+Appointments.init(
+  {
+    id: {
+      type: INTEGER.UNSIGNED,
+      allowNull: false,
+      primaryKey: true,
+    },
+
+    AppointmentTypeId: {
+      type: INTEGER.UNSIGNED,
+      unique: false,
+      allowNull: false,
+    },
+
+    DoctorAtId: {
+      type: INTEGER.UNSIGNED,
+      unique: false,
+      allowNull: false,
+    },
+
+    PatientMedicalRecordId: {
+      type: INTEGER.UNSIGNED,
+      unique: false,
+      allowNull: true,
+    },
+
+    RoomId: {
+      type: INTEGER.UNSIGNED,
+      unique: false,
+      allowNull: false,
+    },
+
+    start: {
+      type: DATE,
+      allowNull: false,
+    },
+
+    duration: {
+      type: INTEGER,
+      allowNull: false,
+    },
+  },
+  {
+    timestamps: false,
+    tableName: "appointments",
+    sequelize: db,
+  }
+);
+
+// id from appointment types is propagated to appointments
+AppointmentTypes.hasMany(Appointments);
+Appointments.belongsTo(AppointmentTypes);
+
+Rooms.hasMany(Appointments);
+Appointments.belongsTo(Rooms);
+
+export default Appointments;
