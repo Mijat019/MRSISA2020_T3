@@ -62,7 +62,7 @@ Appointments.init(
   }
 );
 
-// id from appointment types is propagated to appointments
+// id from appointmentTypes is propagated to appointments
 AppointmentTypes.hasMany(Appointments);
 Appointments.belongsTo(AppointmentTypes);
 

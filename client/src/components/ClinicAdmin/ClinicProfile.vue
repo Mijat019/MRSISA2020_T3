@@ -12,7 +12,9 @@
       <v-tab :href="`#report`">report</v-tab>
 
       <v-tab-item :value="'basicInfo'">basicInfo</v-tab-item>
-      <v-tab-item :value="'freeApointments'">freeApointments</v-tab-item>
+      <v-tab-item :value="'freeApointments'">
+        <ManageAppointments />
+      </v-tab-item>
       <v-tab-item :value="'doctors'">
         <Doctors />
       </v-tab-item>
@@ -32,12 +34,14 @@
 import Doctors from "./Doctors/Doctors";
 import Nurses from "./Nurses/Nurses";
 import Rooms from "./Rooms/Rooms";
+import ManageAppointments from "./Appointments/ManageAppointments";
 export default {
   name: "ClinicProfile",
   components: {
     Doctors,
     Nurses,
-    Rooms
+    Rooms,
+    ManageAppointments
   },
   data: () => ({
     tab: null

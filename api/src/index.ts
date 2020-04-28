@@ -12,9 +12,6 @@ import nurseRoutes from "./routes/nursesRoutes";
 import roomRoutes from "./routes/roomsRoutes";
 import authenticationRoutes from "./routes/authenticationRoutes";
 import patientsRoutes from "./routes/patientsRoutes";
-import Appointments from "./models/Appointments";
-import AppointmentTypes from "./models/AppointmentTypes";
-import Rooms from "./models/Rooms";
 
 // connect to the database
 (async () => {
