@@ -12,7 +12,7 @@ class RoomsController {
 
     public async add(req: any, res: any) {
         try {
-            const newRoom = await RoomsService.add(req.body);
+            const newRoom = await RoomsService.add(req.body, req.user.clinicId);
             res.send(newRoom);
         } catch (error) {
             res.status(400).send(error);
@@ -30,7 +30,7 @@ class RoomsController {
 
     public async update(req: any, res: any) {
         try {
-            const newRoom = await RoomsService.update(req.body);
+            const newRoom = await RoomsService.update(req.body, req.user.clinicId);
             res.send(newRoom);
         } catch (error) {
             res.status(400).send(error);

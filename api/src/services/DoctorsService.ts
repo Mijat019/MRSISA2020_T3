@@ -1,6 +1,7 @@
 import Users from "../models/Users";
 import UserRole from "../models/UserRole";
 import UsersService from "./UsersService";
+import DoctorAt from "../models/DoctorAt";
 
 class DoctorsService {
   public async getAll(): Promise<any> {
@@ -8,11 +9,15 @@ class DoctorsService {
     return doctors;
   }
 
-  public async add(doctorPayload: any): Promise<any> {
+  public async add(doctorPayload: any, clinicId: number): Promise<any> {
+    // Create user
     const doctor = await UsersService.createEmployee(
       doctorPayload,
       UserRole.DOCTOR
     );
+
+    // Link with clinic
+    await DoctorAt.create({ DoctorId: doctor.id, ClinicId: clinicId });
     return doctor;
   }
 
@@ -22,7 +27,6 @@ class DoctorsService {
   }
 
   public async delete(doctorPayload: any) {
-    console.log("Deleting " + doctorPayload.jmbg);
     await Users.destroy({ where: { jmbg: doctorPayload.jmbg } });
   }
 }

@@ -6,6 +6,8 @@ import AccountStatus from "../models/AccountStatus";
 import Users from "../models/Users";
 import UserRole from "../models/UserRole";
 import AdminOf from "../models/AdminOf";
+import DoctorAt from "../models/DoctorAt";
+import NurseAt from "../models/NurseAt";
 
 class AuthenticationService {
   public async authenticateUser(email: string, password: string): Promise<any> {
@@ -49,10 +51,12 @@ class AuthenticationService {
         payload.clinicId = adminOf?.ClinicId;
         return payload;
       case UserRole.DOCTOR:
-        // TODO: uradi kao sto sam ja uradio za admina klinike
+        const doctorAt = await DoctorAt.findByPk(payload.id);
+        payload.clinicId = doctorAt?.ClinicId;
         return payload;
       case UserRole.NURSE:
-        // TODO: uradi kao sto sam ja uradio za admina klinike
+        const nurseAt = await NurseAt.findByPk(payload.id);
+        payload.clinicId = nurseAt?.ClinicId;
         return payload;
       default:
         return payload;

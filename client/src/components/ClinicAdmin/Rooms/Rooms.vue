@@ -35,10 +35,6 @@ export default {
             search: "",
             headers: [
                 {
-                    text: "ID",
-                    value: "id"
-                },
-                {
                     text: "Name",
                     value: "name"
                 }

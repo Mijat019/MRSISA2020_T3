@@ -1,6 +1,7 @@
 import Users from "../models/Users";
 import UserRole from "../models/UserRole";
 import UsersService from "./UsersService";
+import NurseAt from "../models/NurseAt";
 
 class NursesService {
   public async getAll(): Promise<any> {
@@ -8,11 +9,15 @@ class NursesService {
     return nurses;
   }
 
-  public async add(nursePayload: any): Promise<any> {
+  public async add(nursePayload: any, clinicId: number): Promise<any> {
+    // Create user
     const nurse = await UsersService.createEmployee(
       nursePayload,
       UserRole.NURSE
     );
+
+    // Link with clinic
+    await NurseAt.create({ NurseId: nurse.id, ClinicId: clinicId });
     return nurse;
   }
 
