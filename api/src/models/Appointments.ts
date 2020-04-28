@@ -2,6 +2,7 @@ import { Model, INTEGER, DATE } from "sequelize";
 import db from "./database";
 import AppointmentTypes from "./AppointmentTypes";
 import Rooms from "./Rooms";
+import DoctorAt from "./DoctorAt";
 
 class Appointments extends Model {
   public id!: number;
@@ -67,6 +68,9 @@ AppointmentTypes.hasMany(Appointments);
 Appointments.belongsTo(AppointmentTypes);
 
 Rooms.hasMany(Appointments);
+Appointments.belongsTo(Rooms);
+
+DoctorAt.hasMany(Appointments);
 Appointments.belongsTo(Rooms);
 
 export default Appointments;

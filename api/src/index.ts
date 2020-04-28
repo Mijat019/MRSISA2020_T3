@@ -12,6 +12,7 @@ import nurseRoutes from "./routes/nursesRoutes";
 import roomRoutes from "./routes/roomsRoutes";
 import authenticationRoutes from "./routes/authenticationRoutes";
 import patientsRoutes from "./routes/patientsRoutes";
+import appointmentRoutes from "./routes/appointmentRoutes";
 
 // connect to the database
 (async () => {
@@ -47,6 +48,7 @@ app.use("/rooms", roomRoutes);
 app.use("/auth", authenticationRoutes);
 app.use("/patients", patientsRoutes);
 app.use("/clinicAdmins", clinicAdminRoutes);
+app.use("/appointments", appointmentRoutes);
 
 app.listen(config.port, () =>
   console.log(`Server listening on port ${config.port}`)
