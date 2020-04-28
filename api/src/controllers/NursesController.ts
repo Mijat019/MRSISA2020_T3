@@ -13,7 +13,7 @@ class NursesController {
 
   public async add(req: any, res: any) {
     try {
-      const newNurse = await NursesService.add(req.body);
+      const newNurse = await NursesService.add(req.body, req.user.clinicId);
       UsersService.sendEmailWithLinkToSetPassword(newNurse);
       res.send(newNurse);
     } catch (error) {

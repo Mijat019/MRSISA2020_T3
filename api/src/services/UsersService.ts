@@ -4,6 +4,8 @@ import Users from "../models/Users";
 import UserRole from "../models/UserRole";
 import EmailService from "./EmailService";
 import AccountStatus from "../models/AccountStatus";
+import DoctorAt from "../models/DoctorAt";
+import NurseAt from "../models/NurseAt";
 
 class UsersService {
   /**
@@ -29,6 +31,7 @@ class UsersService {
    * @param userPayload
    */
   public async createEmployee(userPayload: any, role: UserRole) {
+    // Create the user
     userPayload.status = AccountStatus.PENDING;
     userPayload.role = role;
     userPayload.password = "";
