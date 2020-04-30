@@ -1,6 +1,13 @@
 <template>
   <div>
-    <AppointmentsTable />
+    <AppointmentsTable>
+      <template v-slot:top>
+        <!-- buttons for top of  -->
+      </template>
+      <template v-slot:actions>
+        <!-- buttons for rows go here -->
+      </template>
+    </AppointmentsTable>
   </div>
 </template>
 

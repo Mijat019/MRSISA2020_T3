@@ -1,14 +1,13 @@
 <template>
   <div>
     <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-    <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 export default {
-  name: "EditDeleteActions",
+  name: "EditDeleteClinicAction",
   data: () => ({}),
   props: ["item"],
   methods: {

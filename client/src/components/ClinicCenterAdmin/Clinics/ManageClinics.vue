@@ -1,10 +1,10 @@
 <template>
   <ClinicsTable>
-    <template v-slot:addClinic>
+    <template v-slot:top>
       <AddClinic />
     </template>
     <template v-slot:actions="item">
-      <EditDeleteActions :item="item" />
+      <EditDeleteClinicAction :item="item" />
     </template>
   </ClinicsTable>
 </template>
@@ -12,13 +12,13 @@
 <script>
 import AddClinic from "./AddClinic";
 import ClinicsTable from "./ClinicsTable";
-import EditDeleteActions from "./EditDeleteActions";
+import EditDeleteClinicAction from "./EditDeleteClinicAction";
 export default {
   name: "ManageClinics",
   components: {
     AddClinic,
     ClinicsTable,
-    EditDeleteActions
+    EditDeleteClinicAction
   }
 };
 </script>

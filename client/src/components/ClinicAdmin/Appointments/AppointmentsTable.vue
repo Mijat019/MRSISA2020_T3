@@ -1,5 +1,6 @@
 <template>
   <v-card>
+    <v-card-title>Appointments for clinic {{}}</v-card-title>
     <v-card-title>
       <v-select
         :items="getDoctors"
@@ -18,7 +19,14 @@
       ></v-text-field>
     </v-card-title>
     <v-card-text>
-      <v-data-table :headers="headers" :items="getAppointments" :search="search"></v-data-table>
+      <v-data-table :headers="headers" :items="getAppointments" :search="search">
+        <template v-slot:top>
+          <slot name="top"></slot>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <slot name="actions" :appointment="item"></slot>
+        </template>
+      </v-data-table>
     </v-card-text>
   </v-card>
 </template>
@@ -34,7 +42,8 @@ export default {
       { text: "Room", value: "Room.name" },
       { text: "Doctor", value: "DoctorAt.User.firstName" },
       { text: "Appointment type", value: "AppointmentType.name" },
-      { text: "Price", value: "AppointmentType.price" }
+      { text: "Price", value: "AppointmentType.price" },
+      { text: "Actions", value: "actions", sortable: false }
     ],
     doctor: null
   }),

@@ -13,7 +13,7 @@
     </v-card-title>
     <v-data-table :headers="headers" :items="getClinics" :search="search">
       <template v-slot:top>
-        <slot name="addClinic"></slot>
+        <slot name="top"></slot>
       </template>
 
       <template v-slot:item.actions="{ item }">
