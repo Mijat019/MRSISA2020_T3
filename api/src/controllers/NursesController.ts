@@ -14,7 +14,6 @@ class NursesController {
   public async add(req: any, res: any) {
     try {
       const newNurse = await NursesService.add(req.body, req.user.clinicId);
-      UsersService.sendEmailWithLinkToSetPassword(newNurse);
       res.send(newNurse);
     } catch (error) {
       res.status(400).send(error);

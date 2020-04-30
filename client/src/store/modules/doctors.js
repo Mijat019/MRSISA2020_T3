@@ -3,18 +3,18 @@ import Vue from "vue";
 const state = {
   doctors: [],
   dialogDoctor: {
-      email: "",
-      password: "",
-      firstName: "",
-      lastName: "",
-      jmbg: "",
-      city: "",
-      country: "",
-      address: "",
-      phoneNumber: ""
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    jmbg: "",
+    city: "",
+    country: "",
+    address: "",
+    phoneNumber: "",
   },
   showDialog: false,
-  dialogType: "add"
+  dialogType: "add",
 };
 
 const mutations = {
@@ -25,27 +25,24 @@ const mutations = {
     state.doctors.push(newDoctor);
   },
   removeDoctor(state, jmbg) {
-    const index = state.doctors.findIndex(doc => doc.jmbg === jmbg);
+    const index = state.doctors.findIndex((doc) => doc.jmbg === jmbg);
     state.doctors.splice(index, 1);
   },
   updateDoctor(state, newDoctor) {
-    const index = state.doctors.findIndex(doc => doc.jmbg === newDoctor.jmbg);
-    Object.assign(
-      state.doctors[index],
-      newDoctor
-    );
+    const index = state.doctors.findIndex((doc) => doc.jmbg === newDoctor.jmbg);
+    Object.assign(state.doctors[index], newDoctor);
   },
   openAddDialog(state) {
     state.dialogDoctor = {
-        email: "",
-        password: "",
-        firstName: "",
-        lastName: "",
-        jmbg: "",
-        city: "",
-        country: "",
-        address: "",
-        phoneNumber: ""
+      email: "",
+      password: "",
+      firstName: "",
+      lastName: "",
+      jmbg: "",
+      city: "",
+      country: "",
+      address: "",
+      phoneNumber: "",
     };
     state.showDialog = true;
     state.dialogType = "add";
@@ -57,7 +54,7 @@ const mutations = {
   },
   closeDialog(state) {
     state.showDialog = false;
-  }
+  },
 };
 
 const actions = {
@@ -85,10 +82,7 @@ const actions = {
 
   async deleteDoctorAction({ commit, dispatch }, doctorPayload) {
     try {
-      await Vue.$axios.post(
-        "/doctors/delete",
-        doctorPayload
-      );
+      await Vue.$axios.post("/doctors/delete", doctorPayload);
       commit("removeDoctor", doctorPayload.jmbg);
       dispatch("snackbar/showSuccess", "Doctor removed.", { root: true });
     } catch (error) {
@@ -114,7 +108,7 @@ const getters = {
   getDoctors: (state) => state.doctors,
   getShowDialog: (state) => state.showDialog,
   getDialogDoctor: (state) => state.dialogDoctor,
-  getDialogType: (state) => state.dialogType
+  getDialogType: (state) => state.dialogType,
 };
 
 export default {

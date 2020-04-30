@@ -1,10 +1,16 @@
 <template>
-  <p>manageAppointments</p>
+  <div>
+    <AppointmentsTable />
+  </div>
 </template>
 
 <script>
+import AppointmentsTable from "./AppointmentsTable";
 export default {
-  name: "ManageAppointments"
+  name: "ManageAppointments",
+  components: {
+    AppointmentsTable
+  }
 };
 </script>
 

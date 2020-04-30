@@ -17,7 +17,7 @@ class DoctorsService {
     );
 
     // Link with clinic
-    await DoctorAt.create({ DoctorId: doctor.id, ClinicId: clinicId });
+    await DoctorAt.create({ UserId: doctor.id, ClinicId: clinicId });
     return doctor;
   }
 

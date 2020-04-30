@@ -19,15 +19,15 @@ import appointmentRoutes from "./routes/appointmentRoutes";
   try {
     await db
       .authenticate()
-      .then(() => console.log("Database connected"))
+      .then(() => console.log("Connected to the database"))
       .catch(() => console.log("ERROR"));
 
     // creates tables from model
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
 
-    await db.sync({ force: true });
-    await initModel();
+    // await db.sync({ force: true });
+    // await initModel();
   } catch (error) {
     console.log(error);
   }

@@ -11,6 +11,7 @@ import authentication from "./modules/authentication";
 import patients from "./modules/patients";
 import clinicAdmins from "./modules/clinicAdmins";
 import patientRequests from "./modules/patientRequests";
+import appointments from "./modules/appointments";
 
 Vue.use(Vuex);
 
@@ -31,5 +32,6 @@ export default new Vuex.Store({
     rooms,
     snackbar,
     patientRequests,
+    appointments,
   },
 });

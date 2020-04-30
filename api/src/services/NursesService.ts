@@ -17,7 +17,7 @@ class NursesService {
     );
 
     // Link with clinic
-    await NurseAt.create({ NurseId: nurse.id, ClinicId: clinicId });
+    await NurseAt.create({ UserId: nurse.id, ClinicId: clinicId });
     return nurse;
   }
 

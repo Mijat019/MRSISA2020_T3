@@ -32,7 +32,7 @@ class ClinicAdminService {
     const clinicAdmin: any = await AdminOf.findByPk(UserId, {
       include: [
         { model: Users, attributes: usersSelect },
-        { model: Clinics, attributes: clinicsSelect },
+        { model: Clinics, attributes: clinicsSelectForAdmins },
       ],
     });
     return clinicAdmin;

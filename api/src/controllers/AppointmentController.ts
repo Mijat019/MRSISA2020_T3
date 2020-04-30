@@ -5,7 +5,7 @@ class AppointmentController {
     try {
       const { doctorId } = req.params;
       const appointments = await AppointmentService.getAllForDoctor(doctorId);
-      return appointments;
+      res.send(appointments);
     } catch (error) {
       res.status(400).send(error.message);
     }

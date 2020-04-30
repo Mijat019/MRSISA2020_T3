@@ -13,6 +13,7 @@ AppointmentTypes.init(
       type: INTEGER.UNSIGNED,
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
     },
 
     price: {

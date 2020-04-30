@@ -15,7 +15,6 @@ class DoctorsController {
   public async add(req: any, res: any) {
     try {
       const newDoctor = await DoctorsService.add(req.body, req.user.clinicId);
-      UsersService.sendEmailWithLinkToSetPassword(newDoctor);
       res.send(newDoctor);
     } catch (error) {
       res.status(400).send(error);

@@ -16,11 +16,11 @@ NurseAt.init(
       unique: false,
       allowNull: false,
     },
-    NurseId: {
+    UserId: {
       type: INTEGER.UNSIGNED,
       allowNull: false,
       primaryKey: true,
-    }
+    },
   },
   {
     timestamps: false,

@@ -31,11 +31,11 @@ class UsersService {
    * @param userPayload
    */
   public async createEmployee(userPayload: any, role: UserRole) {
-    // Create the user
     userPayload.status = AccountStatus.PENDING;
     userPayload.role = role;
     userPayload.password = "";
     const user = await Users.create(userPayload);
+    await this.sendEmailWithLinkToSetPassword(user);
     return user;
   }
 
@@ -46,6 +46,8 @@ class UsersService {
 
   public async sendEmailWithLinkToSetPassword(user: any) {
     const link = `http://localhost:8080/setPassword/${user.id}`;
+    // log this so you can click on it without checking your email
+    console.log(link);
     const emailText = `Dear ${user.firstName} ${user.lastName} \n You have been registered to Covid19Clinic, to login you need to set a password. You can do that by clicking on this link ${link}`;
     EmailService.send({
       from: config.mail,
@@ -53,9 +55,6 @@ class UsersService {
       subject: "Covid Clinic Registration",
       text: emailText,
     });
-
-    // log this so you can click on it without checking your email
-    console.log(link);
   }
 }
 

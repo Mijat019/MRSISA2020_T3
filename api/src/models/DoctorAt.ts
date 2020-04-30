@@ -1,5 +1,5 @@
 import db from "./database";
-import { Model, STRING, INTEGER, Association } from "sequelize";
+import { Model, INTEGER } from "sequelize";
 import Users from "./Users";
 import Clinics from "./Clinics";
 
@@ -16,11 +16,11 @@ DoctorAt.init(
       unique: false,
       allowNull: false,
     },
-    DoctorId: {
+    UserId: {
       type: INTEGER.UNSIGNED,
       allowNull: false,
       primaryKey: true,
-    }
+    },
   },
   {
     timestamps: false,

@@ -7,7 +7,7 @@ import DoctorAt from "./DoctorAt";
 class Appointments extends Model {
   public id!: number;
   public AppointmentTypeId!: number;
-  public DoctorAtId!: number;
+  public DoctorAtUserId!: number;
   public PatientMedicalRecordId!: number;
   public RoomId!: number;
   public start!: Date;
@@ -28,7 +28,7 @@ Appointments.init(
       allowNull: false,
     },
 
-    DoctorAtId: {
+    DoctorAtUserId: {
       type: INTEGER.UNSIGNED,
       unique: false,
       allowNull: false,
@@ -71,6 +71,6 @@ Rooms.hasMany(Appointments);
 Appointments.belongsTo(Rooms);
 
 DoctorAt.hasMany(Appointments);
-Appointments.belongsTo(Rooms);
+Appointments.belongsTo(DoctorAt);
 
 export default Appointments;
