@@ -8,7 +8,6 @@ export default {
   name: "ClinicCenterAdminPage",
   component: ClinicCenterAdminPage,
   meta: {
-    authenticatedRoute: true,
     clinicCenterAdmin: true,
   },
 
@@ -17,19 +16,25 @@ export default {
       path: "users",
       name: "Users",
       component: Administration,
-      clinicCenterAdmin: true,
+      meta: {
+        clinicCenterAdmin: true,
+      },
     },
     {
       path: "sifarnik",
       name: "Sifarnik",
       component: Sifarnik,
-      clinicCenterAdmin: true,
+      meta: {
+        clinicCenterAdmin: true,
+      },
     },
     {
       path: "clinics",
       name: "Clinics",
       component: ManageClinics,
-      clinicCenterAdmin: true,
+      meta: {
+        clinicCenterAdmin: true,
+      },
     },
   ],
 };

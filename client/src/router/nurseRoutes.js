@@ -6,7 +6,6 @@ export default {
   name: "NursePage",
   component: NursePage,
   meta: {
-    authenticatedRoute: true,
     nurse: true,
   },
   children: [
@@ -16,7 +15,6 @@ export default {
       component: NurseAppointments,
       meta: {
         nurse: true,
-        authenticatedRoute: true,
       },
     },
   ],

@@ -7,7 +7,6 @@ export default {
   component: DoctorPage,
   meta: {
     doctor: true,
-    authenticatedRoute: true,
   },
   children: [
     {
@@ -16,7 +15,6 @@ export default {
       component: DoctorAppointments,
       meta: {
         doctor: true,
-        authenticatedRoute: true,
       },
     },
   ],

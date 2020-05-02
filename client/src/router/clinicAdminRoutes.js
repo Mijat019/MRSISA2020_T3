@@ -1,12 +1,11 @@
 import ClinicAdminPage from "../views/ClinicAdminPage";
-import ClinicProfile from "../components/ClinicAdmin/ClinicProfile";
+import ClinicProfile from "../components/ClinicAdmin/ClinicAdminTabs";
 
 export default {
   path: "clinicAdmin",
   name: "ClinicAdminPage",
   component: ClinicAdminPage,
   meta: {
-    authenticatedRoute: true,
     clinicAdmin: true,
   },
   children: [
@@ -14,7 +13,7 @@ export default {
       path: "clinicProfile",
       name: "ClinicProfile",
       component: ClinicProfile,
-      meta: { clinicAdmin: true, authenticatedRoute: true },
+      meta: { clinicAdmin: true },
     },
   ],
 };

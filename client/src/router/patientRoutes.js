@@ -7,7 +7,6 @@ export default {
   name: "PatientPage",
   component: PatientPage,
   meta: {
-    authenticatedRoute: true,
     patient: true,
   },
   children: [
@@ -15,13 +14,13 @@ export default {
       path: "medicalRecord",
       name: "MedicalRecord",
       component: MedicalRecord,
-      meta: { authenticatedRoute: true, patient: true },
+      meta: { patient: true },
     },
     {
       path: "appointment",
       name: "PatientAppointment",
       component: PatientAppointment,
-      meta: { authenticatedRoute: true, patient: true },
+      meta: { patient: true },
     },
   ],
 };
