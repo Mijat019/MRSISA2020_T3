@@ -9,7 +9,9 @@
       <v-tab :href="`#viewPatients`">View patients</v-tab>
 
       <v-tab-item :value="'apointments'">apointments</v-tab-item>
-      <v-tab-item :value="'calendar'">calendar</v-tab-item>
+      <v-tab-item :value="'calendar'">
+        <CalendarTab />
+      </v-tab-item>
       <v-tab-item :value="'scheduleAppointment'">scheduleAppointment</v-tab-item>
       <v-tab-item :value="'viewPatients'">viewPatients</v-tab-item>
     </v-tabs>
@@ -17,8 +19,10 @@
 </template>
 
 <script>
+import CalendarTab from "./CalendarTab";
 export default {
-  name: "DoctorAppointments",
+  name: "DoctorAppointmentsTabs",
+  components: { CalendarTab },
   data: () => ({
     tab: null
   })
