@@ -1,6 +1,6 @@
 import ManageClinics from "../components/ClinicCenterAdmin/Clinics/ManageClinics";
-import Sifarnik from "../components/ClinicCenterAdmin/Sifarnik";
-import Administration from "../components/ClinicCenterAdmin/AdministationTabs/Administration";
+import SifarnikTabs from "../components/ClinicCenterAdmin/SifarnikTabs/SifarnikTabs";
+import AdministrationTabs from "../components/ClinicCenterAdmin/AdministationTabs/AdministrationTabs";
 import ClinicCenterAdminPage from "../views/ClinicCenterAdminPage";
 
 export default {
@@ -13,17 +13,17 @@ export default {
 
   children: [
     {
-      path: "users",
-      name: "Users",
-      component: Administration,
+      path: "administration",
+      name: "AdministrationTabs",
+      component: AdministrationTabs,
       meta: {
         clinicCenterAdmin: true,
       },
     },
     {
       path: "sifarnik",
-      name: "Sifarnik",
-      component: Sifarnik,
+      name: "SifarnikTabs",
+      component: SifarnikTabs,
       meta: {
         clinicCenterAdmin: true,
       },

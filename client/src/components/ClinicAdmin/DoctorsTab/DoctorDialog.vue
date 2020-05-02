@@ -7,13 +7,24 @@
         <v-form ref="form" lazy-validation>
           <v-text-field v-model="doctor.firstName" :rules="rules" label="First name" required></v-text-field>
           <v-text-field v-model="doctor.lastName" :rules="rules" label="Last name" required></v-text-field>
-          <v-text-field :disabled="type === 'edit'" v-model="doctor.email" :rules="rules" label="E-mail" required></v-text-field>
-          <v-text-field :disabled="type === 'edit'" v-model="doctor.jmbg" :rules="rules" label="JMBG" required></v-text-field>
+          <v-text-field
+            :disabled="type === 'edit'"
+            v-model="doctor.email"
+            :rules="rules"
+            label="E-mail"
+            required
+          ></v-text-field>
+          <v-text-field
+            :disabled="type === 'edit'"
+            v-model="doctor.jmbg"
+            :rules="rules"
+            label="JMBG"
+            required
+          ></v-text-field>
           <v-text-field v-model="doctor.city" :rules="rules" label="City" required></v-text-field>
           <v-text-field v-model="doctor.country" :rules="rules" label="Country" required></v-text-field>
           <v-text-field v-model="doctor.address" :rules="rules" label="Address" required></v-text-field>
           <v-text-field v-model="doctor.phoneNumber" :rules="rules" label="Phone number" required></v-text-field>
-
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -89,9 +100,9 @@ export default {
 
   computed: {
     ...mapGetters("doctors", {
-        dialog: "getShowDialog",
-        doctor: "getDialogDoctor",
-        type: "getDialogType"
+      dialog: "getShowDialog",
+      doctor: "getDialogDoctor",
+      type: "getDialogType"
     })
   }
 };

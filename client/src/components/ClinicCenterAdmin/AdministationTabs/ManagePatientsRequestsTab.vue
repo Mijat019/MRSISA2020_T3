@@ -41,7 +41,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
-  name: "ManagePatientsRequests",
+  name: "ManagePatientsRequestsTab",
 
   data: () => ({
     dialog: false,

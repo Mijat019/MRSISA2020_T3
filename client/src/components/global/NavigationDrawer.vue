@@ -51,7 +51,7 @@ export default {
       {
         title: "Administration",
         icon: "mdi-account-supervisor",
-        link: "/clinic/clinicCenterAdmin/users"
+        link: "/clinic/clinicCenterAdmin/administration"
       },
       {
         title: "Clinics",

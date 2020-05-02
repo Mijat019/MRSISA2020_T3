@@ -31,10 +31,10 @@
 </template>
 
 <script>
-import Doctors from "./Doctors/Doctors";
-import Nurses from "./Nurses/Nurses";
-import Rooms from "./Rooms/Rooms";
-import ManageFreeAppointments from "./Appointments/ManageFreeAppointments";
+import Doctors from "./DoctorsTab/Doctors";
+import Nurses from "./NursesTab/Nurses";
+import Rooms from "./RoomsTab/Rooms";
+import ManageFreeAppointments from "./AppointmentsTab/ManageFreeAppointments";
 export default {
   name: "ClinicProfile",
   components: {
