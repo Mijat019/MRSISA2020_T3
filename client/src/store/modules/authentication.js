@@ -67,8 +67,8 @@ const actions = {
 const getters = {
   isAuthenticated: (state) => (state.user ? true : false),
   getUser: (state) => state.user,
-  getRole: (state) => state.user.role,
-  getFullName: (state) => `${state.user.firstName} ${state.user.lastName}`,
+  getRole: (state) => state.user?.role,
+  getFullName: (state) => `${state.user?.firstName} ${state.user?.lastName}`,
 };
 
 export default {
