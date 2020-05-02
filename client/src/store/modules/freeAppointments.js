@@ -11,10 +11,10 @@ const mutations = {
 };
 
 const actions = {
-  async getAppointmentsAction({ commit, dispatch }, doctorId) {
+  async getFreeAppointmentsAction({ commit, dispatch }, doctorId) {
     try {
       const { data: appointments } = await Vue.$axios.get(
-        `/appointments/${doctorId}`
+        `/freeAppointments/${doctorId}`
       );
       commit("setAppointments", appointments);
     } catch (error) {
@@ -24,7 +24,7 @@ const actions = {
 };
 
 const getters = {
-  getAppointments: (state) => state.appointments,
+  getFreeAppointments: (state) => state.appointments,
 };
 
 export default {

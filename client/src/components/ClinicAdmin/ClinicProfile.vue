@@ -13,7 +13,7 @@
 
       <v-tab-item :value="'basicInfo'">basicInfo</v-tab-item>
       <v-tab-item :value="'freeApointments'">
-        <ManageAppointments />
+        <ManageFreeAppointments />
       </v-tab-item>
       <v-tab-item :value="'doctors'">
         <Doctors />
@@ -34,14 +34,14 @@
 import Doctors from "./Doctors/Doctors";
 import Nurses from "./Nurses/Nurses";
 import Rooms from "./Rooms/Rooms";
-import ManageAppointments from "./Appointments/ManageAppointments";
+import ManageFreeAppointments from "./Appointments/ManageFreeAppointments";
 export default {
   name: "ClinicProfile",
   components: {
     Doctors,
     Nurses,
     Rooms,
-    ManageAppointments
+    ManageFreeAppointments
   },
   data: () => ({
     tab: null

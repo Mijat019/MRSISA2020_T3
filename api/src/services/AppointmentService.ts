@@ -1,4 +1,4 @@
-import Appointments from "../models/Appointments";
+import Appointments from "../models/FreeAppointments";
 import DoctorAt from "../models/DoctorAt";
 import Rooms from "../models/Rooms";
 import Users from "../models/Users";

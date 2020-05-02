@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title>Appointments for clinic {{}}</v-card-title>
+    <v-card-title>Free appointments</v-card-title>
     <v-card-title>
       <v-select
         :items="getDoctors"
@@ -19,7 +19,7 @@
       ></v-text-field>
     </v-card-title>
     <v-card-text>
-      <v-data-table :headers="headers" :items="getAppointments" :search="search">
+      <v-data-table :headers="headers" :items="getFreeAppointments" :search="search">
         <template v-slot:top>
           <slot name="top"></slot>
         </template>
@@ -34,7 +34,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "AppointmentsTable",
+  name: "FreeAppointmentsTable",
   data: () => ({
     search: "",
     headers: [
@@ -51,7 +51,7 @@ export default {
   methods: {
     ...mapActions({
       getDoctorsAction: "doctors/getDoctorsAction",
-      getAppointmentsAction: "appointments/getAppointmentsAction"
+      getFreeAppointmentsAction: "freeAppointments/getFreeAppointmentsAction"
     })
   },
 
@@ -62,13 +62,13 @@ export default {
   computed: {
     ...mapGetters({
       getDoctors: "doctors/getDoctors",
-      getAppointments: "appointments/getAppointments"
+      getFreeAppointments: "freeAppointments/getFreeAppointments"
     })
   },
 
   watch: {
     doctor(value) {
-      this.getAppointmentsAction(value.id);
+      this.getFreeAppointmentsAction(value.id);
     }
   }
 };

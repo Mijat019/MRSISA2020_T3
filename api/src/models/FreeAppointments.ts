@@ -4,7 +4,7 @@ import AppointmentTypes from "./AppointmentTypes";
 import Rooms from "./Rooms";
 import DoctorAt from "./DoctorAt";
 
-class Appointments extends Model {
+class FreeAppointments extends Model {
   public id!: number;
   public AppointmentTypeId!: number;
   public DoctorAtUserId!: number;
@@ -14,7 +14,7 @@ class Appointments extends Model {
   public duration!: number;
 }
 
-Appointments.init(
+FreeAppointments.init(
   {
     id: {
       type: INTEGER.UNSIGNED,
@@ -32,12 +32,6 @@ Appointments.init(
       type: INTEGER.UNSIGNED,
       unique: false,
       allowNull: false,
-    },
-
-    PatientMedicalRecordId: {
-      type: INTEGER.UNSIGNED,
-      unique: false,
-      allowNull: true,
     },
 
     RoomId: {
@@ -58,19 +52,19 @@ Appointments.init(
   },
   {
     timestamps: false,
-    tableName: "appointments",
+    tableName: "FreeAppointments",
     sequelize: db,
   }
 );
 
-// id from appointmentTypes is propagated to appointments
-AppointmentTypes.hasMany(Appointments);
-Appointments.belongsTo(AppointmentTypes);
+// id from appointmentTypes is propagated to FreeAppointments
+AppointmentTypes.hasMany(FreeAppointments);
+FreeAppointments.belongsTo(AppointmentTypes);
 
-Rooms.hasMany(Appointments);
-Appointments.belongsTo(Rooms);
+Rooms.hasMany(FreeAppointments);
+FreeAppointments.belongsTo(Rooms);
 
-DoctorAt.hasMany(Appointments);
-Appointments.belongsTo(DoctorAt);
+DoctorAt.hasMany(FreeAppointments);
+FreeAppointments.belongsTo(DoctorAt);
 
-export default Appointments;
+export default FreeAppointments;

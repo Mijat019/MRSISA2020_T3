@@ -1,22 +1,22 @@
 <template>
   <div>
-    <AppointmentsTable>
+    <FreeAppointmentsTable>
       <template v-slot:top>
         <!-- buttons for top of  -->
       </template>
       <template v-slot:actions>
         <!-- buttons for rows go here -->
       </template>
-    </AppointmentsTable>
+    </FreeAppointmentsTable>
   </div>
 </template>
 
 <script>
-import AppointmentsTable from "./AppointmentsTable";
+import FreeAppointmentsTable from "./FreeAppointmentsTable";
 export default {
-  name: "ManageAppointments",
+  name: "ManageFreeAppointments",
   components: {
-    AppointmentsTable
+    FreeAppointmentsTable
   }
 };
 </script>
