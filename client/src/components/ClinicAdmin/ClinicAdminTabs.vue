@@ -24,7 +24,9 @@
       <v-tab-item :value="'rooms'">
         <Rooms />
       </v-tab-item>
-      <v-tab-item :value="'appointmentTypes'">appointmentTypes</v-tab-item>
+      <v-tab-item :value="'appointmentTypes'">
+        <ManageAppointmentTypes/>
+      </v-tab-item>
       <v-tab-item :value="'report'">report</v-tab-item>
     </v-tabs>
   </div>
@@ -35,13 +37,15 @@ import Doctors from "./DoctorsTab/Doctors";
 import Nurses from "./NursesTab/Nurses";
 import Rooms from "./RoomsTab/Rooms";
 import ManageFreeAppointments from "./AppointmentsTab/ManageFreeAppointments";
+import ManageAppointmentTypes from './AppointmentTypesTab/ManageAppointmentTypes';
 export default {
   name: "ClinicProfile",
   components: {
     Doctors,
     Nurses,
     Rooms,
-    ManageFreeAppointments
+    ManageFreeAppointments,
+    ManageAppointmentTypes
   },
   data: () => ({
     tab: null

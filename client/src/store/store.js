@@ -4,6 +4,7 @@ import VuexPersist from "vuex-persist";
 
 import clinics from "./modules/clinics";
 import doctors from "./modules/doctors";
+import appointmentTypes from './modules/appointmentTypes'
 import nurses from "./modules/nurses";
 import rooms from "./modules/rooms";
 import snackbar from "./modules/snackbar";
@@ -33,5 +34,6 @@ export default new Vuex.Store({
     snackbar,
     patientRequests,
     freeAppointments,
+    appointmentTypes
   },
 });
