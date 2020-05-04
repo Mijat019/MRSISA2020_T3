@@ -56,12 +56,12 @@ export default async () => {
     id
   );
 
+  // pass je 3
   // await ClinicAdminService.add(
   //   {
   //     firstName: "1",
   //     lastName: "1",
-  //     email: "rpigknrwpmrnsrwnib@ttirv.com",
-  //     pass je 3
+  //     email: "tsqenbqrvnmbbbdaim@ttirv.net",
   //     jmbg: "1",
   //     phoneNumber: "1",
   //     country: "Serbia",

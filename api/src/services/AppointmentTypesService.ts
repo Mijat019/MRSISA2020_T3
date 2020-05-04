@@ -8,7 +8,6 @@ class AppointmentTypesService {
     }
 
     public async add(typePayload: any): Promise<any> {
-
         if(await this.get(typePayload.name))
             throw new Error('Appointment type with that name already exists!');
 

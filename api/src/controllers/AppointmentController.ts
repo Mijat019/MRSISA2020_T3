@@ -16,6 +16,7 @@ class AppointmentController {
       const newApp = await AppointmentService.addFreeAppointment(req.body);
       res.send(newApp);
     }catch (error) {
+      console.log(error);
       res.status(400).send(error.message);
     }
   }

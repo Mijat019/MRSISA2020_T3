@@ -24,7 +24,8 @@ class AppointmentService {
       duration : appointmentPayload.duration,
     };
 
-    await FreeAppointments.create(newFreeApp)
+    console.log('---------------------------')
+    console.log(await FreeAppointments.create(newFreeApp));
     return await this.getFreeAppointment(appointmentPayload.start, appointmentPayload.room.id, appointmentPayload.doctor.id);
   }
 
