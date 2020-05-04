@@ -24,12 +24,12 @@ const mutations = {
   addNurse(state, newNurse) {
     state.nurses.push(newNurse);
   },
-  removeNurse(state, jmbg) {
-    const index = state.nurses.findIndex(nurse => nurse.jmbg === jmbg);
+  removeNurse(state, id) {
+    const index = state.nurses.findIndex(nurse => nurse.id === id);
     state.nurses.splice(index, 1);
   },
   updateNurse(state, newNurse) {
-    const index = state.nurses.findIndex(nurse => nurse.jmbg === newNurse.jmbg);
+    const index = state.nurses.findIndex(nurse => nurse.id === newNurse.id);
     Object.assign(
       state.nurses[index],
       newNurse
@@ -83,13 +83,12 @@ const actions = {
     }
   },
 
-  async deleteNurseAction({ commit, dispatch }, nursePayload) {
+  async deleteNurseAction({ commit, dispatch }, nurseId) {
     try {
-      await Vue.$axios.post(
-        "/nurses/delete",
-        nursePayload
+      await Vue.$axios.delete(
+        "/nurses/" + nurseId
       );
-      commit("removeNurse", nursePayload.jmbg);
+      commit("removeNurse", nurseId);
       dispatch("snackbar/showSuccess", "Nurse removed.", { root: true });
     } catch (error) {
       dispatch("snackbar/showError", error.response.data, { root: true });
@@ -98,8 +97,8 @@ const actions = {
 
   async updateNurseAction({ commit, dispatch }, nursePayload) {
     try {
-      const { data: newNurse } = await Vue.$axios.post(
-        "/nurses/update",
+      const { data: newNurse } = await Vue.$axios.patch(
+        "/nurses",
         nursePayload
       );
       commit("updateNurse", newNurse);

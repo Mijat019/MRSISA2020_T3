@@ -1,5 +1,5 @@
 import PatientPage from "../views/PatientPage";
-import PatientAppointment from "../components/Patient/PatientAppointment";
+import ClinicCenterPanel from "../components/Patient/ClinicCenterPanel/ClinicCenterPanel";
 import MedicalRecord from "../components/Patient/MedicalRecord";
 
 export default {
@@ -17,9 +17,9 @@ export default {
       meta: { patient: true },
     },
     {
-      path: "appointment",
-      name: "PatientAppointment",
-      component: PatientAppointment,
+      path: "cCenterPanel",
+      name: "ClinicCenterPanel",
+      component: ClinicCenterPanel,
       meta: { patient: true },
     },
   ],
