@@ -96,9 +96,9 @@ export default {
         link: "/clinic/patient/medicalRecord"
       },
       {
-        title: "Schedule an appointment",
+        title: "Clinic Center Panel",
         icon: "mdi-calendar-heart",
-        link: "/clinic/patient/appointment"
+        link: "/clinic/patient/cCenterPanel"
       }
     ]
   }),

@@ -60,7 +60,14 @@ const mutations = {
 const actions = {
   async getDoctorsAction({ commit, dispatch }) {
     try {
-      const { data: doctors } = await Vue.$axios.get("/doctors");
+      let { data: doctors } = await Vue.$axios.get("/doctors");
+      doctors = doctors.map(doc => ({
+        ...doc,
+        User: {
+          ...doc.User,
+          fullName: `${doc.User.firstName} ${doc.User.lastName}`
+        }
+      }));
       commit("setDoctors", doctors);
     } catch (error) {
       dispatch("snackbar/showError", error.response.data, { root: true });

@@ -1,11 +1,17 @@
-import Users from "../models/Users";
+import Users, { usersSelect } from "../models/Users";
 import UserRole from "../models/UserRole";
 import UsersService from "./UsersService";
 import DoctorAt from "../models/DoctorAt";
+import Clinics from "../models/Clinics";
 
 class DoctorsService {
   public async getAll(): Promise<any> {
-    const doctors = await Users.findAll({ where: { role: UserRole.DOCTOR } });
+    const doctors: any = await DoctorAt.findAll({
+      include: [
+        { model: Users, attributes: usersSelect },
+        { model: Clinics, attributes: ["name"] },
+      ],
+    });
     return doctors;
   }
 
