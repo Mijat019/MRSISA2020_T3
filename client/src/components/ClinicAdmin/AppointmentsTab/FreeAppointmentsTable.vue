@@ -43,7 +43,7 @@ export default {
   data: () => ({
     search: "",
     headers: [
-      { text: "Date", value: "start" },
+      { text: "Start", value: "start" },
       { text: "Room", value: "room.name" },
       { text: "Doctors first name", value: "doctor.user.firstName" },
       { text: "Doctors last name", value: "doctor.user.lastName" },

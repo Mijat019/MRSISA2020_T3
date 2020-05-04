@@ -5,30 +5,26 @@ import UserRole from "../models/UserRole";
 
 const router = express.Router();
 
-router.get(
-    "/",
-    AuthenticationMiddleware.verifyToken,
-    RoomsController.getAll
-);
+router.use(AuthenticationMiddleware.verifyToken);
+
+router.get("/:id", RoomsController.getAllForClinic);
 
 router.post(
-    "/",
-    AuthenticationMiddleware.verifyToken,
-    AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
-    RoomsController.add
+  "/",
+  AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
+  RoomsController.add
 );
 
-router.post(
-    "/delete",
-    AuthenticationMiddleware.verifyToken,
-    AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
-    RoomsController.delete
+router.delete(
+  "/:id",
+  AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
+  RoomsController.delete
 );
 
-router.post(
-    "/update",
-    AuthenticationMiddleware.verifyToken,
-    AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
-    RoomsController.update);
+router.patch(
+  "/:id",
+  AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
+  RoomsController.update
+);
 
 export default router;
