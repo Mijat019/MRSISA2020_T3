@@ -1,18 +1,20 @@
 import { Model, INTEGER, DOUBLE, STRING } from "sequelize";
 import db from "./database";
+import Clinics from "./Clinics";
 
 class AppointmentTypes extends Model {
   public id!: number;
   public price!: number;
   public name!: string;
+  public clinicId!: number;
 }
 
 AppointmentTypes.init(
   {
     id: {
       type: INTEGER.UNSIGNED,
-      allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
     },
 
     price: {
@@ -37,5 +39,7 @@ AppointmentTypes.init(
     sequelize: db,
   }
 );
+
+AppointmentTypes.belongsTo(Clinics, { as: "clinic", foreignKey: "clinicId" });
 
 export default AppointmentTypes;

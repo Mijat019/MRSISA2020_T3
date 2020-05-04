@@ -1,9 +1,10 @@
-import ApointmentTypesService from '../services/AppointmentTypesService'
+import AppointmentTypesService from "../services/AppointmentTypesService";
 
 class AppointmentTypesController {
-  public async getAll(req: any, res: any) {
+  public async getAllForClinic(req: any, res: any) {
     try {
-      const types = await ApointmentTypesService.getAll();
+      const { clinicId } = req.params;
+      const types = await AppointmentTypesService.getAllForClinic(clinicId);
       res.send(types);
     } catch (error) {
       res.status(400).send(error);
@@ -12,7 +13,8 @@ class AppointmentTypesController {
 
   public async add(req: any, res: any) {
     try {
-      const newType = await ApointmentTypesService.add(req.body);
+      const { clinicId } = req.user;
+      const newType = await AppointmentTypesService.add(clinicId, req.body);
       res.send(newType);
     } catch (error) {
       res.status(400).send(error);
@@ -21,7 +23,8 @@ class AppointmentTypesController {
 
   public async delete(req: any, res: any) {
     try {
-      await ApointmentTypesService.delete(req.body);
+      const { id } = req.params;
+      await AppointmentTypesService.delete(id);
       res.send("Appointment type deleted.");
     } catch (error) {
       res.status(400).send(error);
@@ -30,7 +33,8 @@ class AppointmentTypesController {
 
   public async update(req: any, res: any) {
     try {
-      const newType = await ApointmentTypesService.update(req.body);
+      const { id } = req.params;
+      const newType = await AppointmentTypesService.update(id, req.body);
       res.send(newType);
     } catch (error) {
       res.status(400).send(error);

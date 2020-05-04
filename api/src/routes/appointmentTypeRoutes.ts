@@ -4,32 +4,25 @@ import AuthenticationMiddleware from "../middleware/AuthenticationMiddleware";
 import UserRole from "../models/UserRole";
 
 const router = express.Router();
-
-router.get(
-    "/",
-    AuthenticationMiddleware.verifyToken,
-    AppointmentTypesController.getAll
-);
+router.use(AuthenticationMiddleware.verifyToken);
+router.get("/:clinicId", AppointmentTypesController.getAllForClinic);
 
 router.post(
-    "/",
-    AuthenticationMiddleware.verifyToken,
-    AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
-    AppointmentTypesController.add
+  "/",
+  AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
+  AppointmentTypesController.add
 );
 
-router.post(
-    "/delete",
-    AuthenticationMiddleware.verifyToken,
-    AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
-    AppointmentTypesController.delete
+router.delete(
+  "/:id",
+  AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
+  AppointmentTypesController.delete
 );
 
-router.post(
-    "/update",
-    AuthenticationMiddleware.verifyToken,
-    AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
-    AppointmentTypesController.update
+router.patch(
+  "/:id",
+  AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
+  AppointmentTypesController.update
 );
 
 export default router;

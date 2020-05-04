@@ -13,8 +13,8 @@
     </v-card-title>
 
     <v-btn dark class="mb-2" @click="showAddDialog">Add new type</v-btn>
-      <!-- @click:row="showEditDialog" -->
-    <AppointmentTypeDialog/>
+    <!-- @click:row="showEditDialog" -->
+    <AppointmentTypeDialog />
     <v-data-table
       :headers="headers"
       :items="getAppointmentTypes"
@@ -38,7 +38,7 @@ import AppointmentTypeDialog from "./AppointmentTypeDialog";
 export default {
   name: "AppointmentTypeTable",
   components: {
-    AppointmentTypeDialog
+    AppointmentTypeDialog,
   },
   data() {
     return {
@@ -46,8 +46,8 @@ export default {
       headers: [
         { text: "Name", value: "name" },
         { text: "Price", value: "price" },
-        { text: "Actions", value: "actions", sortable: false }
-      ]
+        { text: "Actions", value: "actions", sortable: false },
+      ],
     };
   },
 
@@ -59,32 +59,31 @@ export default {
 
     ...mapMutations("appointmentTypes", {
       showAddDialog: "openAddDialog",
-      showEditDialog: "openEditDialog"
+      showEditDialog: "openEditDialog",
     }),
 
-    editItem(item){
+    editItem(item) {
       this.showEditDialog(item.item);
     },
 
     deleteItem(item) {
-      if(confirm("Are you sure you want to delete this type?")){
+      if (confirm("Are you sure you want to delete this type?")) {
         this.deleteAppointmentTypeAction(item.item);
       }
     },
-
   },
 
   async mounted() {
-    await this.getAppointmentTypesAction();
+    await this.getAppointmentTypesAction(this.getUser.clinicId);
   },
 
   computed: {
-    ...mapGetters("appointmentTypes", {
-      getAppointmentTypes: "getAppointmentTypes"
-    })
-  }
+    ...mapGetters({
+      getAppointmentTypes: "appointmentTypes/getAppointmentTypes",
+      getUser: "authentication/getUser",
+    }),
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>
