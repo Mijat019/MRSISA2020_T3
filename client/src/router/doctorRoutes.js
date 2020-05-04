@@ -1,5 +1,5 @@
 import DoctorPage from "../views/DoctorPage";
-import DoctorAppointments from "../components/Doctor/DoctorAppointments";
+import DoctorAppointmentsTabs from "../components/Doctor/DoctorAppointmentsTabs/DoctorAppointmentsTabs";
 
 export default {
   path: "doctor",
@@ -11,8 +11,8 @@ export default {
   children: [
     {
       path: "appointments",
-      name: "DoctorAppointments",
-      component: DoctorAppointments,
+      name: "DoctorAppointmentsTabs",
+      component: DoctorAppointmentsTabs,
       meta: {
         doctor: true,
       },

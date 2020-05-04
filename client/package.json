@@ -12,6 +12,7 @@
     "core-js": "^3.6.4",
     "jquery": "^3.5.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.25.1",
     "luxon": "^1.23.0",
     "urlencode": "^1.1.0",
     "vue": "^2.6.11",
