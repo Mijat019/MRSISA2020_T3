@@ -56,7 +56,7 @@ class AuthenticationService {
         return payload;
       case UserRole.NURSE:
         const nurseAt = await NurseAt.findByPk(payload.id);
-        payload.clinicId = nurseAt?.ClinicId;
+        payload.clinicId = nurseAt?.clinicId;
         return payload;
       default:
         return payload;
@@ -64,11 +64,11 @@ class AuthenticationService {
   }
 
   public async setPassword(id: string, password: string) {
-    const hashedPassword = await bcrypt.hash(password, config.saltRounds);
     let user: any = await Users.findByPk(id);
     if (user.status === AccountStatus.PENDING) {
       throw new Error("The password has already been set.");
     }
+    const hashedPassword = await bcrypt.hash(password, config.saltRounds);
     await user.update({
       password: hashedPassword,
       status: AccountStatus.ACTIVATED,

@@ -4,19 +4,18 @@ import Users from "./Users";
 import Clinics from "./Clinics";
 
 class NurseAt extends Model {
-  public id!: number;
-  public NurseId!: number;
-  public ClinicId!: number;
+  public userId!: number;
+  public clinicId!: number;
 }
 
 NurseAt.init(
   {
-    ClinicId: {
+    clinicId: {
       type: INTEGER.UNSIGNED,
       unique: false,
       allowNull: false,
     },
-    UserId: {
+    userId: {
       type: INTEGER.UNSIGNED,
       allowNull: false,
       primaryKey: true,
@@ -30,11 +29,9 @@ NurseAt.init(
 );
 
 // one user can have one row in NurseAt table
-Users.hasOne(NurseAt);
-NurseAt.belongsTo(Users);
+NurseAt.belongsTo(Users, { as: "user", foreignKey: "userId" });
 
 // one clinic can have many rows in NurseAt table
-Clinics.hasMany(NurseAt);
-NurseAt.belongsTo(Clinics);
+NurseAt.belongsTo(Clinics, { as: "clinic", foreignKey: "clinicId" });
 
 export default NurseAt;

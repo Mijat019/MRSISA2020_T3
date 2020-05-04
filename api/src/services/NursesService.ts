@@ -1,23 +1,35 @@
-import Users from "../models/Users";
+import Users, { usersSelect } from "../models/Users";
 import UserRole from "../models/UserRole";
 import UsersService from "./UsersService";
 import NurseAt from "../models/NurseAt";
+import Clinics from "../models/Clinics";
 
 class NursesService {
   public async getAll(): Promise<any> {
-    const nurses = await Users.findAll({ where: { role: UserRole.NURSE } });
+    const nurses = await NurseAt.findAll({
+      include: [
+        { model: Users, as: "user", attributes: usersSelect },
+        { model: Clinics, as: "clinic" },
+      ],
+    });
     return nurses;
   }
 
   public async add(nursePayload: any, clinicId: number): Promise<any> {
     // Create user
-    const nurse = await UsersService.createEmployee(
+    const { id: userId } = await UsersService.createEmployee(
       nursePayload,
       UserRole.NURSE
     );
 
     // Link with clinic
-    await NurseAt.create({ UserId: nurse.id, ClinicId: clinicId });
+    await NurseAt.create({ userId, clinicId });
+    const nurse = await NurseAt.findByPk(userId, {
+      include: [
+        { model: Users, as: "user", attributes: usersSelect },
+        { model: Clinics, as: "clinic" },
+      ],
+    });
     return nurse;
   }
 

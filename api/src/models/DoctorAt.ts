@@ -29,11 +29,9 @@ DoctorAt.init(
 );
 
 // one user can have one row in doctorAt table
-Users.hasOne(DoctorAt, { as: "user", foreignKey: "userId" });
 DoctorAt.belongsTo(Users, { as: "user", foreignKey: "userId" });
 
 // one clinic can have many rows in doctorAt table
-Clinics.hasMany(DoctorAt, { as: "clinic", foreignKey: "clinicId" });
 DoctorAt.belongsTo(Clinics, { as: "clinic", foreignKey: "clinicId" });
 
 export default DoctorAt;
