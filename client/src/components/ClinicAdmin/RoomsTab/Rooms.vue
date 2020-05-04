@@ -12,15 +12,16 @@
       ></v-text-field>
     </v-card-title>
 
-    <v-btn dark class="mb-2" @click="showAddDialog">Add Room</v-btn>
     <RoomDialog></RoomDialog>
 
-    <v-data-table
-      :headers="headers"
-      :items="getRooms"
-      :search="search"
-      @click:row="showEditDialog"
-      >\
+    <v-data-table :headers="headers" :items="getRooms" :search="search">
+      <template v-slot:top>
+        <v-btn dark class="mb-2" @click="showAddDialog">Add Room</v-btn>
+      </template>
+      <template v-slot:item.actions="{ item }">
+        <v-icon small @click="showEditDialog(item)">mdi-pencil</v-icon>
+        <v-icon small @click="deleteRoomAction(item.id)">mdi-delete</v-icon>
+      </template>
     </v-data-table>
   </v-card>
 </template>
@@ -41,6 +42,7 @@ export default {
           text: "Name",
           value: "name",
         },
+        { text: "Actoins", value: "actions", sortable: false },
       ],
     };
   },
@@ -48,9 +50,10 @@ export default {
   methods: {
     ...mapActions("rooms", {
       getRoomsAction: "getRoomsAction",
+      deleteRoomAction: "deleteRoomAction",
     }),
 
-    ...mapMutations("rooms", {
+    ...mapMutations("roomsDialog", {
       showAddDialog: "openAddDialog",
       showEditDialog: "openEditDialog",
     }),

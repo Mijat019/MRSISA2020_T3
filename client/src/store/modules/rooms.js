@@ -2,11 +2,6 @@ import Vue from "vue";
 
 const state = {
   rooms: [],
-  dialogRoom: {
-    name: "",
-  },
-  showDialog: false,
-  dialogType: "add",
 };
 
 const mutations = {
@@ -23,21 +18,6 @@ const mutations = {
   updateRoom(state, newRoom) {
     const index = state.rooms.findIndex((room) => room.id === newRoom.id);
     Object.assign(state.rooms[index], newRoom);
-  },
-  openAddDialog(state) {
-    state.dialogRoom = {
-      name: "",
-    };
-    state.showDialog = true;
-    state.dialogType = "add";
-  },
-  openEditDialog(state, room) {
-    state.dialogRoom = room;
-    state.showDialog = true;
-    state.dialogType = "edit";
-  },
-  closeDialog(state) {
-    state.showDialog = false;
   },
 };
 
@@ -87,9 +67,6 @@ const actions = {
 
 const getters = {
   getRooms: (state) => state.rooms,
-  getShowDialog: (state) => state.showDialog,
-  getDialogRoom: (state) => state.dialogRoom,
-  getDialogType: (state) => state.dialogType,
 };
 
 export default {

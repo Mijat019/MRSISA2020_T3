@@ -20,8 +20,8 @@ class RoomsService {
     return updatedRoom;
   }
 
-  public async delete(roomPayload: any) {
-    await Rooms.destroy({ where: { id: roomPayload.id } });
+  public async delete(id: number) {
+    await Rooms.destroy({ where: { id } });
   }
 }
 

@@ -19,7 +19,6 @@
       ></v-text-field>
     </v-card-title>
     <v-card-text>
-      <!-- @click:row="showEditDialog" -->
       <v-data-table
         :headers="headers"
         :items="getFreeAppointments"

@@ -31,7 +31,8 @@ class RoomsController {
 
   public async delete(req: any, res: any) {
     try {
-      await RoomsService.delete(req.params.id);
+      const { id } = req.params;
+      await RoomsService.delete(id);
       res.send("Room deleted.");
     } catch (error) {
       res.status(400).send(error);

@@ -169,17 +169,18 @@ export default {
 
     appointments() {
       const result = this.getFreeAppointments.map((item) => {
-        const end = moment(item.start);
+        console.log(item);
+        const end = moment.utc(item.start);
         end.add(item.duration, "seconds");
         return {
-          appointmentType: item.AppointmentType.name,
-          roomName: item.Room.name,
-          name: `${item.AppointmentType.name} ${item.Room.name}`,
-          start: moment(item.start).format("YYYY-MM-DD HH:mm"),
+          appointmentType: item.appointmentType.name,
+          roomName: item.room.name,
+          name: `${item.appointmentType.name} ${item.room.name}`,
+          start: moment.utc(item.start).format("YYYY-MM-DD HH:mm"),
           end: end.format("YYYY-MM-DD HH:mm"),
         };
       });
-
+      console.log(result);
       return result;
     },
 

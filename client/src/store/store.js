@@ -7,6 +7,7 @@ import doctors from "./modules/doctors";
 import appointmentTypes from "./modules/appointmentTypes";
 import nurses from "./modules/nurses";
 import rooms from "./modules/rooms";
+import roomsDialog from "./modules/roomsDialog";
 import snackbar from "./modules/snackbar";
 import authentication from "./modules/authentication";
 import patients from "./modules/patients";
@@ -32,6 +33,7 @@ export default new Vuex.Store({
     clinicAdmins,
     nurses,
     rooms,
+    roomsDialog,
     snackbar,
     patientRequests,
     freeAppointments,
