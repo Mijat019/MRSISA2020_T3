@@ -4,7 +4,7 @@
     <v-card-title>
       <v-select
         :items="getDoctors"
-        item-text="firstName"
+        item-text="fullName"
         v-model="doctor"
         label="Select a doctor"
         return-object
@@ -19,7 +19,7 @@
       ></v-text-field>
     </v-card-title>
     <v-card-text>
-      <v-data-table :headers="headers" :items="getFreeAppointments" :search="search">
+      <v-data-table :headers="headers" :items="getFreeAppointments" :search="search" @click:row="showEditDialog">
         <template v-slot:top>
           <slot name="top"></slot>
         </template>
@@ -32,17 +32,16 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "FreeAppointmentsTable",
   data: () => ({
     search: "",
     headers: [
-      { text: "Date", value: "start" },
-      { text: "Room", value: "Room.name" },
-      { text: "Doctor", value: "DoctorAt.User.firstName" },
-      { text: "Appointment type", value: "AppointmentType.name" },
-      { text: "Price", value: "AppointmentType.price" },
+      { text: "Date", value: "date" },
+      { text: "Room", value: "room.name" },
+      { text: "Doctor", value: "doctor.fullName" },
+      { text: "Appointment type", value: "appointmentType.name" },
       { text: "Actions", value: "actions", sortable: false }
     ],
     doctor: null
@@ -52,7 +51,13 @@ export default {
     ...mapActions({
       getDoctorsAction: "doctors/getDoctorsAction",
       getFreeAppointmentsAction: "freeAppointments/getFreeAppointmentsAction"
-    })
+    }),
+
+    ...mapMutations("freeAppointments", {
+      showAddDialog: "openAddDialog",
+      showEditDialog: "openEditDialog"
+    }),
+
   },
 
   mounted() {
@@ -63,7 +68,7 @@ export default {
     ...mapGetters({
       getDoctors: "doctors/getDoctors",
       getFreeAppointments: "freeAppointments/getFreeAppointments"
-    })
+    }),
   },
 
   watch: {

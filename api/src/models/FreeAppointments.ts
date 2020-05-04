@@ -8,7 +8,6 @@ class FreeAppointments extends Model {
   public id!: number;
   public AppointmentTypeId!: number;
   public DoctorAtUserId!: number;
-  public PatientMedicalRecordId!: number;
   public RoomId!: number;
   public start!: Date;
   public duration!: number;
@@ -20,6 +19,7 @@ FreeAppointments.init(
       type: INTEGER.UNSIGNED,
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
     },
 
     AppointmentTypeId: {

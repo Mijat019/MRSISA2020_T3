@@ -56,6 +56,21 @@ export default async () => {
     id
   );
 
+  // await ClinicAdminService.add(
+  //   {
+  //     firstName: "1",
+  //     lastName: "1",
+  //     email: "rpigknrwpmrnsrwnib@ttirv.com",
+  //     pass je 3
+  //     jmbg: "1",
+  //     phoneNumber: "1",
+  //     country: "Serbia",
+  //     city: "Zajecar",
+  //     address: "Vojvode stepe 20",
+  //   },
+  //   id
+  // );
+
   await DoctorsService.add(
     {
       firstName: "Mijat",

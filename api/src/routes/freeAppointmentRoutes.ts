@@ -10,4 +10,22 @@ router.get(
   AppointmentController.getAllForDoctor
 );
 
+router.post(
+  "/add",
+  AuthenticationMiddleware.verifyToken,
+  AppointmentController.addFreeApointment
+);
+
+router.post(
+  "/update",
+  AuthenticationMiddleware.verifyToken,
+  AppointmentController.updateFreeApointment
+);
+
+router.post(
+  "/delete",
+  AuthenticationMiddleware.verifyToken,
+  AppointmentController.deleteFreeApointment
+);
+
 export default router;

@@ -64,8 +64,9 @@ const actions = {
                 typePayload
             );
             commit("addAppointmentType", newType);
-            dispatch("snackbar/showSuccess", "Appointment type successfully added.", { root: true });
+            dispatch("snackbar/showSuccess", "Appointment successfully added.", { root: true });
         } catch (error) {
+            console.log(error);
             dispatch("snackbar/showError", error.response.data, { root: true });
         }
     },
@@ -74,7 +75,7 @@ const actions = {
         try {
             await Vue.$axios.post("/appointmentTypes/delete", typePayload);
             commit("removeAppointmentType", typePayload.id);
-            dispatch("snackbar/showSuccess", "Appointment type successfully removed.", { root: true });
+            dispatch("snackbar/showSuccess", "Appointment successfully removed.", { root: true });
         } catch (error) {
             dispatch("snackbar/showError", error.response.data, { root: true });
         }
@@ -87,7 +88,7 @@ const actions = {
                 typePayload
             );
             commit("updateAppointmentType", newType);
-            dispatch("snackbar/showSuccess", "Appointment type successfully updated.", { root: true });
+            dispatch("snackbar/showSuccess", "Appointment successfully updated.", { root: true });
         } catch (error) {
             dispatch("snackbar/showError", error.response.data, { root: true });
         }
