@@ -1,5 +1,6 @@
 import { INTEGER, STRING, Model, Association } from "sequelize";
 import db from "./database";
+import Clinics from "./Clinics";
 
 class Rooms extends Model {
   public id!: number;
@@ -29,5 +30,7 @@ Rooms.init(
     tableName: "rooms",
   }
 );
+
+Rooms.belongsTo(Clinics, { as: "clinic", foreignKey: "clinicId" });
 
 export default Rooms;

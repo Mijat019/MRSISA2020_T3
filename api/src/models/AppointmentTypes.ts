@@ -13,7 +13,6 @@ AppointmentTypes.init(
       type: INTEGER.UNSIGNED,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
     },
 
     price: {
@@ -24,6 +23,11 @@ AppointmentTypes.init(
     name: {
       type: STRING,
       unique: true,
+      allowNull: false,
+    },
+
+    clinicId: {
+      type: INTEGER.UNSIGNED,
       allowNull: false,
     },
   },

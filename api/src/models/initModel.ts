@@ -8,11 +8,6 @@ import Rooms from "./Rooms";
 import DoctorsService from "../services/DoctorsService";
 
 export default async () => {
-  await AppointmentTypes.create({
-    name: "appoitnmetn 1",
-    price: 123,
-  });
-
   await UsersService.createUser(
     {
       firstName: "Mijat",
@@ -37,11 +32,6 @@ export default async () => {
     description: "Izvadimo vam mozak i damo vam 100 jura",
   });
 
-  await Rooms.create({
-    name: "soba 1",
-    ClinicId: id,
-  });
-
   await ClinicAdminService.add(
     {
       firstName: "Mijat",
@@ -55,21 +45,6 @@ export default async () => {
     },
     id
   );
-
-  // pass je 3
-  // await ClinicAdminService.add(
-  //   {
-  //     firstName: "1",
-  //     lastName: "1",
-  //     email: "tsqenbqrvnmbbbdaim@ttirv.net",
-  //     jmbg: "1",
-  //     phoneNumber: "1",
-  //     country: "Serbia",
-  //     city: "Zajecar",
-  //     address: "Vojvode stepe 20",
-  //   },
-  //   id
-  // );
 
   await DoctorsService.add(
     {
