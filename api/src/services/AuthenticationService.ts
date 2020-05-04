@@ -5,7 +5,7 @@ import UsersService from "../services/UsersService";
 import AccountStatus from "../models/AccountStatus";
 import Users from "../models/Users";
 import UserRole from "../models/UserRole";
-import AdminOf from "../models/AdminAt";
+import AdminAt from "../models/AdminAt";
 import DoctorAt from "../models/DoctorAt";
 import NurseAt from "../models/NurseAt";
 
@@ -47,8 +47,8 @@ class AuthenticationService {
   private async addClinicIdToTokenPayload(payload: any) {
     switch (payload.role) {
       case UserRole.CLINIC_ADMIN:
-        const adminOf = await AdminOf.findByPk(payload.id);
-        payload.clinicId = adminOf?.ClinicId;
+        const adminAt = await AdminAt.findByPk(payload.id);
+        payload.clinicId = adminAt?.clinicId;
         return payload;
       case UserRole.DOCTOR:
         const doctorAt = await DoctorAt.findByPk(payload.id);

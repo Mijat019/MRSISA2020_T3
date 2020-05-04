@@ -15,16 +15,16 @@ export default {
   name: "App",
 
   components: {
-    Snackbar
+    Snackbar,
   },
 
   data: () => ({}),
 
   methods: {
-    ...mapActions({ verifyTokenAction: "authentication/verifyTokenAction" })
+    ...mapActions({ verifyTokenAction: "authentication/verifyTokenAction" }),
   },
   async created() {
     await this.verifyTokenAction();
-  }
+  },
 };
 </script>

@@ -59,6 +59,7 @@ const actions = {
 
   async updateFreeAppointmentAction({ commit, dispatch }, appointmentUpdate) {
     try {
+      console.log(appointmentUpdate);
       const { data: newAppointment } = await Vue.$axios.patch(
         `/freeAppointments/${appointmentUpdate.id}`,
         appointmentUpdate
@@ -72,10 +73,10 @@ const actions = {
     }
   },
 
-  async deleteFreeAppointmentAction({ commit, dispatch }, appointmentPayload) {
+  async deleteFreeAppointmentAction({ commit, dispatch }, appointmentId) {
     try {
-      await Vue.$axios.post("/freeAppointments/delete", appointmentPayload);
-      commit("removeAppointment", appointmentPayload.id);
+      await Vue.$axios.delete(`/freeAppointments/${appointmentId}`);
+      commit("removeAppointment", appointmentId);
       dispatch("snackbar/showSuccess", "Appointment successfully deleted", {
         root: true,
       });

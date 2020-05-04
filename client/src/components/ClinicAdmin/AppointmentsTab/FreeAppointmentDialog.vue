@@ -1,8 +1,5 @@
 <template>
   <v-dialog v-model="dialog" width="50%" @click:outside="close">
-    <template v-slot:activator="{on}">
-      <v-btn v-on="on" dark>New Appointment</v-btn>
-    </template>
     <v-card>
       <v-card-title v-if="type === 'add'">Add New Appointment</v-card-title>
       <v-card-title v-else>Edit Appointment</v-card-title>
@@ -20,7 +17,11 @@
               />
             </div>
           </div>
-          <v-text-field type="number" label="Duration(in minutes)" v-model="appointment.duration" />
+          <v-text-field
+            type="number"
+            label="Duration(in minutes)"
+            v-model="appointment.duration"
+          />
           <v-select
             :items="getRooms"
             v-model="appointment.roomId"
@@ -45,7 +46,10 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" @click="addAppointment">Add</v-btn>
+        <v-btn v-if="type === 'add'" color="primary" @click="addAppointment"
+          >Add</v-btn
+        >
+        <v-btn v-else color="primary" @click="updateAppointment">Save</v-btn>
         <v-btn @click="close">Cancel</v-btn>
       </v-card-actions>
     </v-card>
@@ -53,73 +57,57 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import { Datetime } from "vue-datetime";
-
 export default {
-  name: "AddFreeAppointmentDialog",
+  name: "AppointmentDialog",
   components: {
-    datetime: Datetime
+    datetime: Datetime,
   },
   data: () => ({
-    rules: [v => !!v || "This field is required"],
-    addressList: [],
-    appointment: {
-      appointmentTypeId: null,
-      doctorId: null,
-      roomId: null,
-      start: "",
-      duration: 30
-    },
-    defaultAppointment: {
-      appointmentTypeId: null,
-      doctorId: null,
-      roomId: null,
-      start: "",
-      duration: 30
-    }
+    rules: [(v) => !!v || "This field is required"],
   }),
-
   mounted() {
     this.getRoomsAction();
     this.getDoctorsAction();
     this.getAppointmentTypesAction();
   },
-
   methods: {
     ...mapActions({
       addAppointmentAction: "freeAppointments/addFreeAppointmentAction",
+      updateAppointmentAction: "freeAppointments/updateFreeAppointmentAction",
       getRoomsAction: "rooms/getRoomsAction",
       getAppointmentTypesAction: "appointmentTypes/getAppointmentTypesAction",
-      getDoctorsAction: "doctors/getDoctorsAction"
+      getDoctorsAction: "doctors/getDoctorsAction",
     }),
-
+    ...mapMutations("freeAppointmentsDialog", {
+      close: "closeDialog",
+    }),
     async addAppointment() {
-      console.log(this.appointment);
       if (!this.$refs.form.validate()) {
         return;
       }
-
       await this.addAppointmentAction(this.appointment);
       this.close();
     },
-
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.appointment = Object.assign({}, this.defaultAppointment);
-      });
-    }
+    async updateAppointment() {
+      if (!this.$refs.form.validate()) {
+        return;
+      }
+      await this.updateAppointmentAction(this.appointment);
+      this.close();
+    },
   },
-
   computed: {
     ...mapGetters({
-      appointment: "freeAppointments/getDialogAppointment",
+      dialog: "freeAppointmentsDialog/getShowDialog",
+      appointment: "freeAppointmentsDialog/getDialogAppointment",
+      type: "freeAppointmentsDialog/getDialogType",
       getRooms: "rooms/getRooms",
       getDoctors: "doctors/getDoctors",
-      getAppointmentTypes: "appointmentTypes/getAppointmentTypes"
-    })
-  }
+      getAppointmentTypes: "appointmentTypes/getAppointmentTypes",
+    }),
+  },
 };
 </script>
 

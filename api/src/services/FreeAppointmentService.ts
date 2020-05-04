@@ -38,10 +38,24 @@ class FreeAppointmentService {
     return freeAppointment;
   }
 
-  public async update(appointmentPayload: any) {}
+  public async update(id: number, appointmentPayload: any) {
+    await FreeAppointments.update(appointmentPayload, { where: { id } });
+    const updatedAppointment = await FreeAppointments.findByPk(id, {
+      include: [
+        { model: Rooms, as: "room" },
+        {
+          model: DoctorAt,
+          as: "doctor",
+          include: [{ model: Users, as: "user", attributes: usersSelect }],
+        },
+        { model: AppointmentTypes, as: "appointmentType" },
+      ],
+    });
+    return updatedAppointment;
+  }
 
-  public async delete(appointmentPayload: any) {
-    await FreeAppointments.destroy({ where: { id: appointmentPayload.id } });
+  public async delete(id: any) {
+    await FreeAppointments.destroy({ where: { id } });
   }
 }
 

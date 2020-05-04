@@ -12,6 +12,7 @@ router.post(
   AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
   DoctorsController.add
 );
+
 router.delete(
   "/:id",
   AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),

@@ -15,6 +15,7 @@ class DoctorsController {
 
   public async add(req: any, res: any) {
     try {
+      console.log(req.user);
       const newDoctor = await DoctorsService.add(req.body, req.user.clinicId);
       res.send(newDoctor);
     } catch (error) {

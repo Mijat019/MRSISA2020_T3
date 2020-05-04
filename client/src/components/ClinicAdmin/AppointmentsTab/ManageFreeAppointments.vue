@@ -1,12 +1,19 @@
 <template>
   <div>
+    <FreeAppointmentsDialog />
     <FreeAppointmentsTable>
       <template v-slot:top>
-        <AddFreeAppointmentDialog />
+        <!-- buttons for top of  -->
+        <v-btn @click="showAddDialog" dark>New Appointment</v-btn>
       </template>
       <template v-slot:actions="item">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+        <!-- buttons for rows go here -->
+        <v-icon small class="mr-2" @click="editItem(item)">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="deleteItem(item)">
+          mdi-delete
+        </v-icon>
       </template>
     </FreeAppointmentsTable>
   </div>
@@ -14,16 +21,41 @@
 
 <script>
 import FreeAppointmentsTable from "./FreeAppointmentsTable";
-import AddFreeAppointmentDialog from "./AddFreeAppointmentDialog";
-
+import FreeAppointmentsDialog from "./FreeAppointmentDialog";
+import { mapActions, mapMutations } from "vuex";
 export default {
   name: "ManageFreeAppointments",
   components: {
     FreeAppointmentsTable,
-    AddFreeAppointmentDialog
-  }
+    FreeAppointmentsDialog,
+  },
+  methods: {
+    ...mapActions("freeAppointments", {
+      deleteAppointmentAction: "deleteFreeAppointmentAction",
+    }),
+    ...mapMutations("freeAppointmentsDialog", {
+      showAddDialog: "openAddDialog",
+      showEditDialog: "openEditDialog",
+    }),
+
+    editItem({ appointment }) {
+      this.showEditDialog({
+        id: appointment.id,
+        start: appointment.start,
+        duration: appointment.duration,
+        roomId: appointment.room.id,
+        appointmentTypeId: appointment.appointmentType.id,
+        doctorId: appointment.doctor.userId,
+      });
+    },
+
+    async deleteItem({ appointment }) {
+      if (confirm("Are you sure you want to delete this item?")) {
+        await this.deleteAppointmentAction(appointment.id);
+      }
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

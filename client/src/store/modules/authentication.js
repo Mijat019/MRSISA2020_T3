@@ -1,5 +1,5 @@
 import Vue from "vue";
-var jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 const state = {
   user: null,
@@ -56,6 +56,9 @@ const actions = {
 
   async verifyTokenAction({ commit }) {
     try {
+      Vue.$axios.defaults.headers["Authorization"] = localStorage.getItem(
+        "token"
+      );
       const { data } = await Vue.$axios.post("/auth/verify");
       commit("logUser", data);
     } catch (error) {

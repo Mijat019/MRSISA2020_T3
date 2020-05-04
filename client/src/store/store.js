@@ -4,7 +4,7 @@ import VuexPersist from "vuex-persist";
 
 import clinics from "./modules/clinics";
 import doctors from "./modules/doctors";
-import appointmentTypes from './modules/appointmentTypes'
+import appointmentTypes from "./modules/appointmentTypes";
 import nurses from "./modules/nurses";
 import rooms from "./modules/rooms";
 import snackbar from "./modules/snackbar";
@@ -13,6 +13,7 @@ import patients from "./modules/patients";
 import clinicAdmins from "./modules/clinicAdmins";
 import patientRequests from "./modules/patientRequests";
 import freeAppointments from "./modules/freeAppointments";
+import freeAppointmentsDialog from "./modules/freeAppointmentsDialog";
 
 Vue.use(Vuex);
 
@@ -34,6 +35,7 @@ export default new Vuex.Store({
     snackbar,
     patientRequests,
     freeAppointments,
-    appointmentTypes
+    freeAppointmentsDialog,
+    appointmentTypes,
   },
 });

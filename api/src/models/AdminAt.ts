@@ -4,8 +4,8 @@ import Users from "./Users";
 import Clinics from "./Clinics";
 
 class AdminAt extends Model {
-  public UserId!: number;
-  public ClinicId!: number;
+  public userId!: number;
+  public clinicId!: number;
 }
 
 AdminAt.init(

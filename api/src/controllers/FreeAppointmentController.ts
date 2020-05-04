@@ -25,7 +25,9 @@ class AppointmentController {
 
   public async update(req: any, res: any) {
     try {
+      const { id } = req.params;
       const updatedFreeAppointment = await FreeAppointmentService.update(
+        id,
         req.body
       );
       res.send(updatedFreeAppointment);
@@ -37,7 +39,8 @@ class AppointmentController {
 
   public async delete(req: any, res: any) {
     try {
-      await FreeAppointmentService.delete(req.body);
+      const { id } = req.params;
+      await FreeAppointmentService.delete(id);
       res.send("Appointment successfully deleted.");
     } catch (error) {
       res.status(400).send(error.message);
