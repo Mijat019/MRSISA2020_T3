@@ -52,7 +52,7 @@ class AuthenticationService {
         return payload;
       case UserRole.DOCTOR:
         const doctorAt = await DoctorAt.findByPk(payload.id);
-        payload.clinicId = doctorAt?.ClinicId;
+        payload.clinicId = doctorAt?.clinicId;
         return payload;
       case UserRole.NURSE:
         const nurseAt = await NurseAt.findByPk(payload.id);

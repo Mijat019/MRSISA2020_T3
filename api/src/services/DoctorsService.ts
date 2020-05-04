@@ -6,10 +6,10 @@ import Clinics from "../models/Clinics";
 
 class DoctorsService {
   public async getAll(): Promise<any> {
-    const doctors: any = await DoctorAt.findAll({
+    const doctors = await DoctorAt.findAll({
       include: [
-        { model: Users, attributes: usersSelect },
-        { model: Clinics, attributes: ["name"] },
+        { model: Users, attributes: usersSelect, as: "user" },
+        { model: Clinics, attributes: ["name"], as: "clinic" },
       ],
     });
     return doctors;
@@ -17,13 +17,19 @@ class DoctorsService {
 
   public async add(doctorPayload: any, clinicId: number): Promise<any> {
     // Create user
-    const doctor = await UsersService.createEmployee(
+    const { id: userId } = await UsersService.createEmployee(
       doctorPayload,
       UserRole.DOCTOR
     );
 
     // Link with clinic
-    await DoctorAt.create({ UserId: doctor.id, ClinicId: clinicId });
+    await DoctorAt.create({ userId, clinicId });
+    const doctor = await DoctorAt.findByPk(userId, {
+      include: [
+        { model: Users, attributes: usersSelect, as: "user" },
+        { model: Clinics, attributes: ["name"], as: "clinic" },
+      ],
+    });
     return doctor;
   }
 

@@ -38,15 +38,15 @@ export default {
       headers: [
         {
           text: "First name",
-          value: "firstName"
+          value: "user.firstName"
         },
         {
           text: "Last name",
-          value: "lastName"
+          value: "user.lastName"
         },
         {
           text: "City",
-          value: "city"
+          value: "user.city"
         }
       ]
     };

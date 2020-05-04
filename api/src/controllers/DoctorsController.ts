@@ -8,6 +8,7 @@ class DoctorsController {
 
       res.send(doctors);
     } catch (error) {
+      console.log(error);
       res.status(400).send(error);
     }
   }
@@ -17,6 +18,7 @@ class DoctorsController {
       const newDoctor = await DoctorsService.add(req.body, req.user.clinicId);
       res.send(newDoctor);
     } catch (error) {
+      console.log(error);
       res.status(400).send(error);
     }
   }

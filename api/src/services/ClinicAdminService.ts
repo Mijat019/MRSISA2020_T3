@@ -11,7 +11,8 @@ class ClinicAdminService {
     const clinicAdmins: any = await AdminOf.findAll({
       include: [
         { model: Users, attributes: usersSelect },
-        { model: Clinics, attributes: clinicsSelectForAdmins },
+        { model: Clinics, attributes: clinicsSelectForAdmins},
+
       ],
     });
     return clinicAdmins;
