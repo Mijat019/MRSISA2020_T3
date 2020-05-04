@@ -19,7 +19,8 @@
       ></v-text-field>
     </v-card-title>
     <v-card-text>
-      <v-data-table :headers="headers" :items="getFreeAppointments" :search="search" @click:row="showEditDialog">
+      <!-- @click:row="showEditDialog" -->
+      <v-data-table :headers="headers" :items="getFreeAppointments" :search="search">
         <template v-slot:top>
           <slot name="top"></slot>
         </template>
@@ -42,6 +43,7 @@ export default {
       { text: "Room", value: "room.name" },
       { text: "Doctor", value: "doctor.fullName" },
       { text: "Appointment type", value: "appointmentType.name" },
+      { text: "Duration", value: "duration" },
       { text: "Actions", value: "actions", sortable: false }
     ],
     doctor: null

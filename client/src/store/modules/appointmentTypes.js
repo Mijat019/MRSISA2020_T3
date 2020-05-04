@@ -38,7 +38,7 @@ const mutations = {
         state.dialogType = "add";
     },
     openEditDialog(state, type) {
-        state.dialogAppointmentType = type;
+        state.dialogAppointmentType = Object.assign({}, type);
         state.showDialog = true;
         state.dialogType = "edit";
     },

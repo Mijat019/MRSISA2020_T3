@@ -46,7 +46,7 @@ const mutations = {
         state.dialogType = "add";
     },
     openEditDialog(state, appointment) {
-        state.dialogAppointment = appointment;
+        state.dialogAppointment = Object.assign({}, appointment);
         state.dialogAppointment.doctor.fullName = state.dialogAppointment.doctor.firstName + " " + state.dialogAppointment.doctor.lastName;
         state.showDialog = true;
         state.dialogType = "edit";

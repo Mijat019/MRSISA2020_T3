@@ -16,11 +16,13 @@ class AppointmentTypesService {
     }
 
     public async update(typePayload: any): Promise<any> {
-        const oldType = await this.get(typePayload.name);
+        
         // if try to change name to already
         // existing appointment type
-        if(oldType.id != typePayload.id)
+        const oldType = await this.get(typePayload.name);
+        if(oldType && oldType.id != typePayload.id){
             throw new Error('Appointment type with that name already exists!');
+        }
 
         await AppointmentTypes.update(typePayload, { where: { id : typePayload.id } });
         return await await this.get(typePayload.name);
@@ -29,6 +31,7 @@ class AppointmentTypesService {
     public async get(typeName : string): Promise<any> {
         return await AppointmentTypes.findOne({ where: { name : typeName } }); 
     }
+
 
     public async delete(typePayload: any) {
         await AppointmentTypes.destroy({ where: { id: typePayload.id } });

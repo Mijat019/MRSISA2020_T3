@@ -22,7 +22,6 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn v-if="type === 'edit'" color="red" @click="deleteAppointment">Delete</v-btn>
         <v-btn @click="close">Cancel</v-btn>
         <v-btn v-if="type === 'add'" color="primary" @click="addAppointment">Add</v-btn>
         <v-btn v-else color="primary" @click="updateAppointment">Save</v-btn>
@@ -59,7 +58,6 @@ export default {
   methods: {
     ...mapActions({
       addAppointmentAction: "freeAppointments/addFreeAppointmentAction",
-      deleteAppointmentAction: "freeAppointments/deleteFreeAppointmentAction",
       updateAppointmentAction: "freeAppointments/updateFreeAppointmentAction",
       getRoomsAction : "rooms/getRoomsAction",
       getAppointmentTypesAction : "appointmentTypes/getAppointmentTypesAction",
@@ -76,15 +74,6 @@ export default {
       }
 
       await this.addAppointmentAction(this.appointment);
-      this.close();
-    },
-
-    async deleteAppointment() {
-      if (!this.$refs.form.validate()) {
-        return;
-      }
-
-      await this.deleteAppointmentAction(this.appointment);
       this.close();
     },
 
