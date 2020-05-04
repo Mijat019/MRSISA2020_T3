@@ -28,19 +28,19 @@ export default {
     headers: [
       {
         text: "First name",
-        value: "User.firstName"
+        value: "user.firstName"
       },
       {
         text: "Last name",
-        value: "User.lastName"
+        value: "user.lastName"
       },
       {
         text: "Email",
-        value: "User.email"
+        value: "user.email"
       },
       {
         text: "Clinic",
-        value: "Clinic.name"
+        value: "clinic.name"
       }
     ]
   }),

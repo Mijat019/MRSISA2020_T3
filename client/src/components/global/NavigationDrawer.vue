@@ -59,7 +59,7 @@ export default {
         link: "/clinic/clinicCenterAdmin/clinics"
       },
       {
-        title: "Sifarik",
+        title: "Sifarnik",
         icon: "mdi-clipboard",
         link: "/clinic/clinicCenterAdmin/sifarnik"
       }

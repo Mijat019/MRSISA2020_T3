@@ -3,19 +3,19 @@ import { Model, STRING, INTEGER, Association } from "sequelize";
 import Users from "./Users";
 import Clinics from "./Clinics";
 
-class AdminOf extends Model {
+class AdminAt extends Model {
   public UserId!: number;
   public ClinicId!: number;
 }
 
-AdminOf.init(
+AdminAt.init(
   {
-    ClinicId: {
+    clinicId: {
       type: INTEGER.UNSIGNED,
       unique: false,
       allowNull: false,
     },
-    UserId: {
+    userId: {
       type: INTEGER.UNSIGNED,
       allowNull: false,
       primaryKey: true,
@@ -24,16 +24,14 @@ AdminOf.init(
   {
     timestamps: false,
     sequelize: db,
-    tableName: "adminOf",
+    tableName: "AdminAt",
   }
 );
 
-// one user can have one row in adminOf table
-Users.hasOne(AdminOf);
-AdminOf.belongsTo(Users);
+// one user can have one row in AdminAt table
+AdminAt.belongsTo(Users, { as: "user", foreignKey: "userId" });
 
-// one clinic can have many rows in adminOf table
-Clinics.hasMany(AdminOf);
-AdminOf.belongsTo(Clinics);
+// one clinic can have many rows in AdminAt table
+AdminAt.belongsTo(Clinics, { as: "clinic", foreignKey: "clinicId" });
 
-export default AdminOf;
+export default AdminAt;

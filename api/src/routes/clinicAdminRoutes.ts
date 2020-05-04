@@ -5,15 +5,14 @@ import UserRole from "../models/UserRole";
 
 const router = express.Router();
 
+router.use(AuthenticationMiddleware.verifyToken);
 router.get(
   "/",
-  AuthenticationMiddleware.verifyToken,
   AuthenticationMiddleware.hasRole(UserRole.CLINIC_CENTER_ADMIN),
   ClinicAdminController.getAll
 );
 router.post(
   "/",
-  AuthenticationMiddleware.verifyToken,
   AuthenticationMiddleware.hasRole(UserRole.CLINIC_CENTER_ADMIN),
   ClinicAdminController.add
 );

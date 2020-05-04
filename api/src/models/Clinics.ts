@@ -1,7 +1,7 @@
 import db from "./database";
 import { Model, STRING, INTEGER, Association } from "sequelize";
 import Users from "./Users";
-import AdminOf from "./AdminOf";
+import AdminOf from "./AdminAt";
 
 class Clinics extends Model {
   public id!: number;

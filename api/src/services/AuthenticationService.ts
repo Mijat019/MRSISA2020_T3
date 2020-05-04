@@ -5,7 +5,7 @@ import UsersService from "../services/UsersService";
 import AccountStatus from "../models/AccountStatus";
 import Users from "../models/Users";
 import UserRole from "../models/UserRole";
-import AdminOf from "../models/AdminOf";
+import AdminOf from "../models/AdminAt";
 import DoctorAt from "../models/DoctorAt";
 import NurseAt from "../models/NurseAt";
 

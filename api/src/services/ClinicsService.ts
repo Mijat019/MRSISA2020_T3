@@ -1,5 +1,5 @@
 import Clinics from "../models/Clinics";
-import AdminOf from "../models/AdminOf";
+import AdminOf from "../models/AdminAt";
 import Users from "../models/Users";
 
 class ClinicsService {
