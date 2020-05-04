@@ -4,8 +4,8 @@
       <AddDoctorDialog />
     </template>
 
-    <template v-slot:actions="doctor">
-      <DeleteDoctorDialog :doctor="doctor" />
+    <template v-slot:actions="doctorId">
+      <DeleteDoctorDialog :doctorId="doctorId" />
     </template>
   </DoctorsTable>
 </template>

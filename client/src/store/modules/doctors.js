@@ -47,7 +47,7 @@ const actions = {
 
   async deleteDoctorAction({ commit, dispatch }, doctorId) {
     try {
-      await Vue.$axios.delete("/doctors/" + doctorId);
+      await Vue.$axios.delete(`/doctors/${doctorId}`);
       commit("removeDoctor", doctorId);
       dispatch("snackbar/showSuccess", "Doctor removed.", { root: true });
     } catch (error) {

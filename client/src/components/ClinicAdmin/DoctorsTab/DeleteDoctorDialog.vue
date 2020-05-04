@@ -18,7 +18,7 @@
 import { mapActions } from "vuex";
 export default {
   name: "DeleteDoctorDialog",
-  props: ["doctor"],
+  props: ["doctorId"],
   data: () => ({
     dialog: false
   }),
@@ -29,7 +29,7 @@ export default {
     }),
 
     deleteDoctor() {
-      this.deleteDoctorAction(this.doctor.userId);
+      this.deleteDoctorAction(this.doctorId);
       this.dialog = false;
     }
   }

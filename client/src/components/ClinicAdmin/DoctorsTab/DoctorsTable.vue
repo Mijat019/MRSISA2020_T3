@@ -17,7 +17,7 @@
         <slot name="top"></slot>
       </template>
       <template v-slot:item.actions="{item}">
-        <slot name="actions" :doctor="item"></slot>
+        <slot name="actions" :doctorId="item.userId"></slot>
       </template>
     </v-data-table>
   </v-card>

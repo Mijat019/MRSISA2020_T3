@@ -33,11 +33,10 @@ class DoctorsService {
     return doctor;
   }
 
-  public async update(doctorPayload: any): Promise<any> {
-    await Users.update(doctorPayload, { where: { jmbg: doctorPayload.jmbg } });
-    return await Users.findOne({ where: { jmbg: doctorPayload.jmbg } });
-  }
-
+  /**
+   * OVO TREBA DA SE ISPRAVI DA PROVERAVA DA LI DOKTOR IMA ZAKAZANE PREGLEDE
+   * ILI DODELJENE SLOBODNE PREGLEDE
+   */
   public async delete(doctorId: number) {
     await Users.destroy({ where: { id: doctorId } });
   }
