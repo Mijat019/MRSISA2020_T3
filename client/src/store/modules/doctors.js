@@ -24,12 +24,12 @@ const mutations = {
   addDoctor(state, newDoctor) {
     state.doctors.push(newDoctor);
   },
-  removeDoctor(state, jmbg) {
-    const index = state.doctors.findIndex((doc) => doc.jmbg === jmbg);
+  removeDoctor(state, id) {
+    const index = state.doctors.findIndex((doc) => doc.id === id);
     state.doctors.splice(index, 1);
   },
   updateDoctor(state, newDoctor) {
-    const index = state.doctors.findIndex((doc) => doc.jmbg === newDoctor.jmbg);
+    const index = state.doctors.findIndex((doc) => doc.id === newDoctor.id);
     Object.assign(state.doctors[index], newDoctor);
   },
   openAddDialog(state) {
@@ -80,10 +80,10 @@ const actions = {
     }
   },
 
-  async deleteDoctorAction({ commit, dispatch }, doctorPayload) {
+  async deleteDoctorAction({ commit, dispatch }, doctorId) {
     try {
-      await Vue.$axios.post("/doctors/delete", doctorPayload);
-      commit("removeDoctor", doctorPayload.jmbg);
+      await Vue.$axios.delete("/doctors/" + doctorId);
+      commit("removeDoctor", doctorId);
       dispatch("snackbar/showSuccess", "Doctor removed.", { root: true });
     } catch (error) {
       dispatch("snackbar/showError", error.response.data, { root: true });
@@ -92,8 +92,8 @@ const actions = {
 
   async updateDoctorAction({ commit, dispatch }, doctorPayload) {
     try {
-      const { data: newDoctor } = await Vue.$axios.post(
-        "/doctors/update",
+      const { data: newDoctor } = await Vue.$axios.patch(
+        "/doctors",
         doctorPayload
       );
       commit("updateDoctor", newDoctor);

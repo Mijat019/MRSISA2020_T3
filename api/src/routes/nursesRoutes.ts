@@ -18,15 +18,15 @@ router.post(
     NursesController.add
 );
 
-router.post(
-    "/delete",
+router.delete(
+    "/:id",
     AuthenticationMiddleware.verifyToken,
     AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
     NursesController.delete
 );
 
-router.post(
-    "/update",
+router.patch(
+    "/",
     AuthenticationMiddleware.verifyToken,
     AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
     NursesController.update

@@ -23,7 +23,7 @@ class DoctorsController {
 
   public async delete(req: any, res: any) {
     try {
-      await DoctorsService.delete(req.body);
+      await DoctorsService.delete(req.params["id"]);
       res.send("Doctor deleted.");
     } catch (error) {
       res.status(400).send(error);

@@ -26,8 +26,8 @@ class NursesService {
     return await Users.findOne({ where: { jmbg: nursePayload.jmbg } });
   }
 
-  public async delete(nursePayload: any) {
-    await Users.destroy({ where: { jmbg: nursePayload.jmbg } });
+  public async delete(nurseId: number) {
+    await Users.destroy({ where: { id: nurseId } });
   }
 }
 

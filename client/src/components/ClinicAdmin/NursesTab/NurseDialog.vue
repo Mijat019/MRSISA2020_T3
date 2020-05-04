@@ -73,7 +73,7 @@ export default {
         return;
       }
 
-      await this.deleteNurseAction(this.nurse);
+      await this.deleteNurseAction(this.nurse.id);
       this.close();
     },
 
