@@ -19,6 +19,7 @@ const state = {
 
 const mutations = {
   setDoctors(state, doctors) {
+    doctors.map(doc => {doc.fullName = doc.firstName + " " + doc.lastName})
     state.doctors = doctors;
   },
   addDoctor(state, newDoctor) {
