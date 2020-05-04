@@ -1,5 +1,5 @@
 import express from "express";
-import DoctorsController from "../controllers/DoctorsController";
+import AppointmentTypesController from "../controllers/AppointmentTypesController";
 import AuthenticationMiddleware from "../middleware/AuthenticationMiddleware";
 import UserRole from "../models/UserRole";
 
@@ -8,28 +8,28 @@ const router = express.Router();
 router.get(
     "/",
     AuthenticationMiddleware.verifyToken,
-    DoctorsController.getAll
+    AppointmentTypesController.getAll
 );
 
 router.post(
     "/",
     AuthenticationMiddleware.verifyToken,
     AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
-    DoctorsController.add
+    AppointmentTypesController.add
 );
 
-router.delete(
-    "/:id",
+router.post(
+    "/delete",
     AuthenticationMiddleware.verifyToken,
     AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
-    DoctorsController.delete
+    AppointmentTypesController.delete
 );
 
-router.patch(
-    "/",
+router.post(
+    "/update",
     AuthenticationMiddleware.verifyToken,
     AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
-    DoctorsController.update
+    AppointmentTypesController.update
 );
 
 export default router;

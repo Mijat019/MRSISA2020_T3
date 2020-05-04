@@ -14,7 +14,12 @@ class EmailService {
     // mailOption is an object 
     // with from, to, subject and text fields
     public async send(mailOptions: any): Promise<any> {
-        await transporter.sendMail(mailOptions);
+        try{
+            await transporter.sendMail(mailOptions);
+        }
+        catch(e){
+            console.log('email error');
+        }
     }
 }
 

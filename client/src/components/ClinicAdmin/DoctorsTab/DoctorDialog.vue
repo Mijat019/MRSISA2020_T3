@@ -84,7 +84,7 @@ export default {
         return;
       }
 
-      await this.deleteDoctorAction(this.doctor);
+      await this.deleteDoctorAction(this.doctor.id);
       this.close();
     },
 
