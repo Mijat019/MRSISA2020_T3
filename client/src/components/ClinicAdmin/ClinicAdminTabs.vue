@@ -19,7 +19,7 @@
         <ManageDoctors />
       </v-tab-item>
       <v-tab-item :value="'nurses'">
-        <Nurses />
+        <ManageNurses />
       </v-tab-item>
       <v-tab-item :value="'rooms'">
         <Rooms />
@@ -34,7 +34,7 @@
 
 <script>
 import ManageDoctors from "./DoctorsTab/ManageDoctors";
-import Nurses from "./NursesTab/Nurses";
+import ManageNurses from "./NursesTab/ManageNurses";
 import Rooms from "./RoomsTab/Rooms";
 import ManageFreeAppointments from "./AppointmentsTab/ManageFreeAppointments";
 import ManageAppointmentTypes from "./AppointmentTypesTab/ManageAppointmentTypes";
@@ -42,7 +42,7 @@ export default {
   name: "ClinicProfile",
   components: {
     ManageDoctors,
-    Nurses,
+    ManageNurses,
     Rooms,
     ManageFreeAppointments,
     ManageAppointmentTypes
