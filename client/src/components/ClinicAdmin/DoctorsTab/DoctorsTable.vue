@@ -12,26 +12,21 @@
       ></v-text-field>
     </v-card-title>
 
-    <v-btn dark class="mb-2" @click="showAddDialog">Add doctor</v-btn>
-    <DoctorDialog></DoctorDialog>
-
-    <v-data-table
-      :headers="headers"
-      :items="getDoctors"
-      :search="search"
-      @click:row="showEditDialog"
-    >\</v-data-table>
+    <v-data-table :headers="headers" :items="getDoctors" :search="search">
+      <template v-slot:top>
+        <slot name="top"></slot>
+      </template>
+      <template v-slot:item.actions="{item}">
+        <slot name="actions" :doctor="item"></slot>
+      </template>
+    </v-data-table>
   </v-card>
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
-import DoctorDialog from "./DoctorDialog";
+import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "ManageDoctors",
-  components: {
-    DoctorDialog
-  },
+  name: "DoctorsTable",
   data() {
     return {
       search: "",
@@ -47,6 +42,11 @@ export default {
         {
           text: "City",
           value: "user.city"
+        },
+        {
+          text: "Actions",
+          value: "actions",
+          sortable: false
         }
       ]
     };
@@ -55,11 +55,6 @@ export default {
   methods: {
     ...mapActions("doctors", {
       getDoctorsAction: "getDoctorsAction"
-    }),
-
-    ...mapMutations("doctors", {
-      showAddDialog: "openAddDialog",
-      showEditDialog: "openEditDialog"
     })
   },
 

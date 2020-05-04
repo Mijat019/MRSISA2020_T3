@@ -16,7 +16,7 @@
         <ManageFreeAppointments />
       </v-tab-item>
       <v-tab-item :value="'doctors'">
-        <Doctors />
+        <ManageDoctors />
       </v-tab-item>
       <v-tab-item :value="'nurses'">
         <Nurses />
@@ -25,7 +25,7 @@
         <Rooms />
       </v-tab-item>
       <v-tab-item :value="'appointmentTypes'">
-        <ManageAppointmentTypes/>
+        <ManageAppointmentTypes />
       </v-tab-item>
       <v-tab-item :value="'report'">report</v-tab-item>
     </v-tabs>
@@ -33,15 +33,15 @@
 </template>
 
 <script>
-import Doctors from "./DoctorsTab/Doctors";
+import ManageDoctors from "./DoctorsTab/ManageDoctors";
 import Nurses from "./NursesTab/Nurses";
 import Rooms from "./RoomsTab/Rooms";
 import ManageFreeAppointments from "./AppointmentsTab/ManageFreeAppointments";
-import ManageAppointmentTypes from './AppointmentTypesTab/ManageAppointmentTypes';
+import ManageAppointmentTypes from "./AppointmentTypesTab/ManageAppointmentTypes";
 export default {
   name: "ClinicProfile",
   components: {
-    Doctors,
+    ManageDoctors,
     Nurses,
     Rooms,
     ManageFreeAppointments,
