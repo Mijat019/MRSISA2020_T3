@@ -39,9 +39,10 @@ export default {
   data: () => ({
     search: "",
     headers: [
-      { text: "Date", value: "date" },
+      { text: "Date", value: "start" },
       { text: "Room", value: "room.name" },
-      { text: "Doctor", value: "doctor.fullName" },
+      { text: "Doctors first name", value: "doctor.user.firstName" },
+      { text: "Doctors last name", value: "doctor.user.lastName" },
       { text: "Appointment type", value: "appointmentType.name" },
       { text: "Duration", value: "duration" },
       { text: "Actions", value: "actions", sortable: false }
@@ -58,8 +59,7 @@ export default {
     ...mapMutations("freeAppointments", {
       showAddDialog: "openAddDialog",
       showEditDialog: "openEditDialog"
-    }),
-
+    })
   },
 
   mounted() {
@@ -70,12 +70,12 @@ export default {
     ...mapGetters({
       getDoctors: "doctors/getDoctors",
       getFreeAppointments: "freeAppointments/getFreeAppointments"
-    }),
+    })
   },
 
   watch: {
     doctor(value) {
-      this.getFreeAppointmentsAction(value.id);
+      this.getFreeAppointmentsAction(value.userId);
     }
   }
 };

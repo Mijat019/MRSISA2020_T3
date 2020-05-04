@@ -6,9 +6,9 @@ import DoctorAt from "./DoctorAt";
 
 class FreeAppointments extends Model {
   public id!: number;
-  public AppointmentTypeId!: number;
-  public DoctorAtUserId!: number;
-  public RoomId!: number;
+  public appointmentTypeId!: number;
+  public doctorId!: number;
+  public roomId!: number;
   public start!: Date;
   public duration!: number;
 }
@@ -22,19 +22,19 @@ FreeAppointments.init(
       autoIncrement: true,
     },
 
-    AppointmentTypeId: {
+    appointmentTypeId: {
       type: INTEGER.UNSIGNED,
       unique: false,
       allowNull: false,
     },
 
-    DoctorAtUserId: {
+    doctorId: {
       type: INTEGER.UNSIGNED,
       unique: false,
       allowNull: false,
     },
 
-    RoomId: {
+    roomId: {
       type: INTEGER.UNSIGNED,
       unique: false,
       allowNull: false,
@@ -57,14 +57,13 @@ FreeAppointments.init(
   }
 );
 
-// id from appointmentTypes is propagated to FreeAppointments
-AppointmentTypes.hasMany(FreeAppointments);
-FreeAppointments.belongsTo(AppointmentTypes);
+FreeAppointments.belongsTo(AppointmentTypes, {
+  as: "appointmentType",
+  foreignKey: "appointmentTypeId",
+});
 
-Rooms.hasMany(FreeAppointments);
-FreeAppointments.belongsTo(Rooms);
+FreeAppointments.belongsTo(Rooms, { as: "room", foreignKey: "roomId" });
 
-DoctorAt.hasMany(FreeAppointments);
-FreeAppointments.belongsTo(DoctorAt);
+FreeAppointments.belongsTo(DoctorAt, { as: "doctor", foreignKey: "doctorId" });
 
 export default FreeAppointments;

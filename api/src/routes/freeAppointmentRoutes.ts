@@ -1,31 +1,16 @@
 import express from "express";
-import AppointmentController from "../controllers/AppointmentController";
+import FreeAppointmentController from "../controllers/FreeAppointmentController";
 import AuthenticationMiddleware from "../middleware/AuthenticationMiddleware";
 
 const router = express.Router();
 
-router.get(
-  "/:doctorId",
-  AuthenticationMiddleware.verifyToken,
-  AppointmentController.getAllForDoctor
-);
+router.use(AuthenticationMiddleware.verifyToken);
+router.get("/:doctorId", FreeAppointmentController.getAllForDoctor);
 
-router.post(
-  "/add",
-  AuthenticationMiddleware.verifyToken,
-  AppointmentController.addFreeApointment
-);
+router.post("/", FreeAppointmentController.add);
 
-router.post(
-  "/update",
-  AuthenticationMiddleware.verifyToken,
-  AppointmentController.updateFreeApointment
-);
+router.patch("/:id", FreeAppointmentController.update);
 
-router.post(
-  "/delete",
-  AuthenticationMiddleware.verifyToken,
-  AppointmentController.deleteFreeApointment
-);
+router.delete("/:id", FreeAppointmentController.delete);
 
 export default router;
