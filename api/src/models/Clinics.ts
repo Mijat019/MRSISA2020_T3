@@ -1,14 +1,12 @@
 import db from "./database";
-import { Model, STRING, INTEGER, Association } from "sequelize";
-import Users from "./Users";
-import AdminOf from "./AdminAt";
+import { Model, STRING, INTEGER } from "sequelize";
 
 class Clinics extends Model {
   public id!: number;
   public name!: string;
+  public country!: string;
   public city!: string;
-  public street!: string;
-  public streetNumber!: string;
+  public address!: string;
   public description!: string;
 }
 
@@ -28,11 +26,11 @@ Clinics.init(
       type: STRING,
       allowNull: false,
     },
-    street: {
+    country: {
       type: STRING,
       allowNull: false,
     },
-    streetNumber: {
+    address: {
       type: STRING,
       allowNull: false,
     },
@@ -51,8 +49,8 @@ export const clinicsSelectForAdmins = ["name"];
 export const clinicsSelect = [
   "id",
   "name",
-  "street",
+  "country",
   "city",
-  "streetNumber",
+  "address",
   "description",
 ];

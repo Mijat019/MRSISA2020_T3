@@ -2,13 +2,6 @@ import Vue from "vue";
 
 const state = {
   appointmentTypes: [],
-  dialogAppointmentType: {
-    id: "",
-    name: "",
-    price: "",
-  },
-  showDialog: false,
-  dialogType: "add",
 };
 
 const mutations = {
@@ -27,22 +20,6 @@ const mutations = {
       (type) => type.id === newType.id
     );
     Object.assign(state.appointmentTypes[index], newType);
-  },
-  openAddDialog(state) {
-    state.dialogAppointmentType = {
-      name: "",
-      price: "",
-    };
-    state.showDialog = true;
-    state.dialogType = "add";
-  },
-  openEditDialog(state, type) {
-    state.dialogAppointmentType = Object.assign({}, type);
-    state.showDialog = true;
-    state.dialogType = "edit";
-  },
-  closeDialog(state) {
-    state.showDialog = false;
   },
 };
 
@@ -104,9 +81,6 @@ const actions = {
 
 const getters = {
   getAppointmentTypes: (state) => state.appointmentTypes,
-  getShowDialog: (state) => state.showDialog,
-  getDialogAppointmentType: (state) => state.dialogAppointmentType,
-  getDialogType: (state) => state.dialogType,
 };
 
 export default {

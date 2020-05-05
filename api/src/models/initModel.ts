@@ -2,9 +2,6 @@ import UsersService from "../services/UsersService";
 import UserRole from "./UserRole";
 import ClinicsService from "../services/ClinicsService";
 import ClinicAdminService from "../services/ClinicAdminService";
-import PatientsService from "../services/PatientsService";
-import AppointmentTypes from "./AppointmentTypes";
-import Rooms from "./Rooms";
 import DoctorsService from "../services/DoctorsService";
 
 export default async () => {
@@ -27,8 +24,8 @@ export default async () => {
   const { id } = await ClinicsService.add({
     name: "SNS klinika",
     city: "Beograd",
-    street: "Neka tamo ulica",
-    streetNumber: "420",
+    address: "Neka tamo ulica",
+    country: "Srbija",
     description: "Izvadimo vam mozak i damo vam 100 jura",
   });
 
