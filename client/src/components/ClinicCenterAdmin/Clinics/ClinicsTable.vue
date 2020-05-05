@@ -36,16 +36,16 @@ export default {
           value: "name"
         },
         {
+          text: "Country",
+          value: "country"
+        },
+        {
           text: "City",
           value: "city"
         },
         {
-          text: "Street",
-          value: "street"
-        },
-        {
-          text: "Street number",
-          value: "streetNumber"
+          text: "Address",
+          value: "address"
         },
         {
           text: "Description",

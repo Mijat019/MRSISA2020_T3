@@ -14,7 +14,6 @@
     <v-data-table :headers="headers" :items="getPatientRequests" :search="search">
       <template v-slot:item.actions="{item}">
         <div>
-          <!-- @click="reject(item)" -->
           <v-btn @click="approve(item)" color="success" small>Approve</v-btn>
           {{" "}}
           <v-dialog v-model="dialog">

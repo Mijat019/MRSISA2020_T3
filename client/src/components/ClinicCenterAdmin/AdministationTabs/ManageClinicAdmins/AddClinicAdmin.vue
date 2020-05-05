@@ -120,8 +120,9 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" @click="save">Save</v-btn>
+        <v-spacer></v-spacer>
         <v-btn @click="close">Cancel</v-btn>
+        <v-btn color="primary" @click="save">Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -141,28 +142,28 @@ export default {
         phoneNumber: "",
         address: "",
         city: "",
-        country: "",
+        country: ""
       },
       clinicId: null,
       clinicName: "",
 
       // FORM VALIDATION RULES
-      requiredRule: [(v) => !!v || "This field is required"],
-      emailRule: [(v) => !!v || "This field is required"],
+      requiredRule: [v => !!v || "This field is required"],
+      emailRule: [v => !!v || "This field is required"],
       jmbgRule: [
-        (v) => !!v || "This field is required",
-        (v) => !/[a-zA-Z]/.test(v) || "JMBG must not contain letters",
+        v => !!v || "This field is required",
+        v => !/[a-zA-Z]/.test(v) || "JMBG must not contain letters"
       ],
       phoneNumRule: [
-        (v) => !!v || "This field is required",
-        (v) => !/[a-zA-Z]/.test(v) || "Phone number must not contain letters",
-      ],
+        v => !!v || "This field is required",
+        v => !/[a-zA-Z]/.test(v) || "Phone number must not contain letters"
+      ]
     };
   },
   methods: {
     ...mapActions({
       addClinicAdminAction: "clinicAdmins/addClinicAdminAction",
-      showError: "snackbar/showError",
+      showError: "snackbar/showError"
     }),
 
     async save() {
@@ -178,7 +179,7 @@ export default {
       try {
         await this.addClinicAdminAction({
           clinicAdminPayload: this.clinicAdmin,
-          clinicId: this.clinicId,
+          clinicId: this.clinicId
         });
         this.dialog = false;
       } catch (error) {
@@ -188,25 +189,23 @@ export default {
 
     close() {
       this.dialog = false;
-    },
+    }
   },
 
   computed: {
     ...mapGetters("clinics", { getClinics: "getClinics" }),
     clinicNames() {
-      const clinicNames = this.getClinics.map((clinic) => clinic.name);
+      const clinicNames = this.getClinics.map(clinic => clinic.name);
       return clinicNames;
-    },
+    }
   },
 
   watch: {
     clinicName(clinicName) {
-      const { id } = this.getClinics.find(
-        (clinic) => clinic.name === clinicName
-      );
+      const { id } = this.getClinics.find(clinic => clinic.name === clinicName);
       this.clinicId = id;
-    },
-  },
+    }
+  }
 };
 </script>
 

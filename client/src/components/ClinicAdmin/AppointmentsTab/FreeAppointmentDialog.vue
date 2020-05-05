@@ -46,11 +46,12 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn @click="close">Cancel</v-btn>
         <v-btn v-if="type === 'add'" color="primary" @click="addAppointment"
           >Add</v-btn
         >
         <v-btn v-else color="primary" @click="updateAppointment">Save</v-btn>
-        <v-btn @click="close">Cancel</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

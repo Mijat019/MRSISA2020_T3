@@ -1,5 +1,3 @@
-import config from "../config";
-import bcrypt from "bcrypt";
 import Rooms from "../models/Rooms";
 
 class RoomsService {

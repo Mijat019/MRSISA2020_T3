@@ -18,8 +18,9 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" @click="addNurse">Add</v-btn>
+        <v-spacer></v-spacer>
         <v-btn @click="close">Cancel</v-btn>
+        <v-btn color="primary" @click="addNurse">Add</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

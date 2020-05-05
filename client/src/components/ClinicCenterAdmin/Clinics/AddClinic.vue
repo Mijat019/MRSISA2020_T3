@@ -11,13 +11,13 @@
           <v-text-field v-model="clinic.description" :rules="lengthRules" label="Description"></v-text-field>
           <v-row>
             <v-col>
+              <v-text-field v-model="clinic.country" :rules="rules" label="Country"></v-text-field>
+            </v-col>
+            <v-col>
               <v-text-field v-model="clinic.city" :rules="rules" label="City"></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field v-model="clinic.street" :rules="rules" label="Street"></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="clinic.streetNumber" :rules="rules" label="Street number"></v-text-field>
+              <v-text-field v-model="clinic.address" :rules="rules" label="Address"></v-text-field>
             </v-col>
           </v-row>
         </v-form>
@@ -40,9 +40,9 @@ export default {
     clinic: {
       name: "",
       description: "",
-      street: "",
+      country: "",
       city: "",
-      streetNumber: ""
+      address: ""
     },
     dialog: false,
     rules: [
