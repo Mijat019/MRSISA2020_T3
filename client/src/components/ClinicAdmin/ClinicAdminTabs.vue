@@ -22,7 +22,7 @@
         <ManageNurses />
       </v-tab-item>
       <v-tab-item :value="'rooms'">
-        <Rooms />
+        <ManageRooms />
       </v-tab-item>
       <v-tab-item :value="'appointmentTypes'">
         <ManageAppointmentTypes />
@@ -35,23 +35,29 @@
 <script>
 import ManageDoctors from "./DoctorsTab/ManageDoctors";
 import ManageNurses from "./NursesTab/ManageNurses";
-import Rooms from "./RoomsTab/Rooms";
+import ManageRooms from "./RoomsTab/ManageRooms";
 import ManageFreeAppointments from "./AppointmentsTab/ManageFreeAppointments";
 import ManageAppointmentTypes from "./AppointmentTypesTab/ManageAppointmentTypes";
+import { mapActions } from "vuex";
 export default {
   name: "ClinicProfile",
   components: {
     ManageDoctors,
     ManageNurses,
-    Rooms,
+    ManageRooms,
     ManageFreeAppointments,
-    ManageAppointmentTypes
+    ManageAppointmentTypes,
   },
   data: () => ({
-    tab: null
-  })
+    tab: null,
+  }),
+
+  methods: {
+    ...mapActions({}),
+  },
+
+  created() {},
 };
 </script>
 
-<style>
-</style>
+<style></style>

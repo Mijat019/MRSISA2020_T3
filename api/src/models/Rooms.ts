@@ -17,7 +17,7 @@ Rooms.init(
     },
     name: {
       type: STRING,
-      allowNull: false,
+      primaryKey: true,
     },
     clinicId: {
       type: INTEGER.UNSIGNED,

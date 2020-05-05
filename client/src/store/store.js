@@ -5,6 +5,7 @@ import VuexPersist from "vuex-persist";
 import clinics from "./modules/clinics";
 import doctors from "./modules/doctors";
 import appointmentTypes from "./modules/appointmentTypes";
+import appointmentTypesDialog from "./modules/appointmentTypesDialog";
 import nurses from "./modules/nurses";
 import rooms from "./modules/rooms";
 import roomsDialog from "./modules/roomsDialog";
@@ -39,5 +40,6 @@ export default new Vuex.Store({
     freeAppointments,
     freeAppointmentsDialog,
     appointmentTypes,
+    appointmentTypesDialog,
   },
 });

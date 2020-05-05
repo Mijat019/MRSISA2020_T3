@@ -57,7 +57,7 @@ export default {
       deleteAppointmentTypeAction: "deleteAppointmentTypeAction",
     }),
 
-    ...mapMutations("appointmentTypes", {
+    ...mapMutations("appointmentTypesDialog", {
       showAddDialog: "openAddDialog",
       showEditDialog: "openEditDialog",
     }),

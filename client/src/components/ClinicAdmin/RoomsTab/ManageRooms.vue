@@ -12,7 +12,7 @@
       ></v-text-field>
     </v-card-title>
 
-    <RoomDialog></RoomDialog>
+    <RoomDialog />
 
     <v-data-table :headers="headers" :items="getRooms" :search="search">
       <template v-slot:top>
