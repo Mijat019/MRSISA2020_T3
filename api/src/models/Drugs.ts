@@ -17,6 +17,7 @@ Drugs.init(
 
     name: {
       type: STRING,
+      unique: true,
       allowNull: false,
     },
   },

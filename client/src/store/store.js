@@ -16,6 +16,7 @@ import clinicAdmins from "./modules/clinicAdmins";
 import patientRequests from "./modules/patientRequests";
 import freeAppointments from "./modules/freeAppointments";
 import freeAppointmentsDialog from "./modules/freeAppointmentsDialog";
+import drugs from "./modules/drugs";
 
 Vue.use(Vuex);
 
@@ -41,5 +42,6 @@ export default new Vuex.Store({
     freeAppointmentsDialog,
     appointmentTypes,
     appointmentTypesDialog,
+    drugs,
   },
 });
