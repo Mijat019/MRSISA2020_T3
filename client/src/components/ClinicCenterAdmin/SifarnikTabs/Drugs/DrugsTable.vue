@@ -3,8 +3,10 @@
     <v-card-title>Drugs</v-card-title>
     <v-card-text>
       <v-data-table :items="getDrugs" :headers="headers">
-        <template v-slot:top></template>
-        <template v-slot:actions="{ item }">
+        <template v-slot:top>
+          <slot name="top"></slot>
+        </template>
+        <template v-slot:item.actions="{ item }">
           <slot name="actions" :drug="item"></slot>
         </template>
       </v-data-table>

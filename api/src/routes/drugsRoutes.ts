@@ -1,14 +1,23 @@
 import express from "express";
-import AuthenticationMiddleware from "../middleware/AuthenticationMiddleware";
+import authenticationMiddleware from "../middleware/AuthenticationMiddleware";
 import drugsController from "../controllers/DrugsController";
+import UserRole from "../models/UserRole";
 
 const router = express.Router();
 
-router.use(AuthenticationMiddleware.verifyToken);
+router.use(authenticationMiddleware.verifyToken);
 
 router.get("/", drugsController.getAll);
-router.post("/");
-router.patch("/:id");
+router.post(
+  "/",
+  authenticationMiddleware.hasRole(UserRole.CLINIC_CENTER_ADMIN),
+  drugsController.add
+);
+router.patch(
+  "/:id",
+  authenticationMiddleware.hasRole(UserRole.CLINIC_CENTER_ADMIN),
+  drugsController.update
+);
 router.delete("/:id");
 
 export default router;

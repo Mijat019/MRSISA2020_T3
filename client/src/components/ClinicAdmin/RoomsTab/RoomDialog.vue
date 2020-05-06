@@ -29,9 +29,6 @@ export default {
       v =>
         (v && v.length <= 255) ||
         "This field can't be longer than 255 characters"
-    ],
-    lengthRules: [
-      v => v.length <= 255 || "This field can't be longer than 255 characters"
     ]
   }),
 

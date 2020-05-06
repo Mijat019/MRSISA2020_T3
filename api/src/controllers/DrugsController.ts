@@ -14,7 +14,16 @@ class DrugsController {
   public async add(req: Request, res: Response) {
     try {
       const newDrug = await drugsService.add(req.body);
-      res.send(newDrug);
+      res.status(201).send(newDrug);
+    } catch (error) {
+      res.status(400).send(error.message);
+    }
+  }
+
+  public async update(req: Request, res: Response) {
+    try {
+      const updatedDrug = await drugsService.update(req.body);
+      res.send(updatedDrug);
     } catch (error) {
       res.status(400).send(error.message);
     }
