@@ -10,6 +10,15 @@ class DrugsController {
       res.status(400).send(error.message);
     }
   }
+
+  public async add(req: Request, res: Response) {
+    try {
+      const newDrug = await drugsService.add(req.body);
+      res.send(newDrug);
+    } catch (error) {
+      res.status(400).send(error.message);
+    }
+  }
 }
 
 export default new DrugsController();
