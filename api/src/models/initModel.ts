@@ -3,8 +3,13 @@ import UserRole from "./UserRole";
 import ClinicsService from "../services/ClinicsService";
 import ClinicAdminService from "../services/ClinicAdminService";
 import DoctorsService from "../services/DoctorsService";
+import Drugs from "./Drugs";
 
 export default async () => {
+  await Drugs.create({ name: "Percocet" });
+  await Drugs.create({ name: "Molly" });
+  await Drugs.create({ name: "Percocets" });
+
   await UsersService.createUser(
     {
       firstName: "Mijat",

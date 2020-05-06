@@ -1,4 +1,4 @@
-import { Model, NUMBER, STRING } from "sequelize";
+import { Model, INTEGER, STRING } from "sequelize";
 import db from "./database";
 
 class Drugs extends Model {
@@ -9,9 +9,10 @@ class Drugs extends Model {
 Drugs.init(
   {
     id: {
-      type: NUMBER.UNSIGNED,
-      primaryKey: true,
+      type: INTEGER.UNSIGNED,
+      allowNull: true,
       autoIncrement: true,
+      primaryKey: true,
     },
 
     name: {
@@ -20,6 +21,7 @@ Drugs.init(
     },
   },
   {
+    timestamps: false,
     tableName: "drugs",
     sequelize: db,
   }
