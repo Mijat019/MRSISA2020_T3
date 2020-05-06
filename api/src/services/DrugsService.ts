@@ -16,6 +16,10 @@ class DrugsService {
     const updatedDrug = await Drugs.findByPk(id);
     return updatedDrug;
   }
+
+  public async delete(id: string) {
+    await Drugs.destroy({ where: { id } });
+  }
 }
 
 export default new DrugsService();

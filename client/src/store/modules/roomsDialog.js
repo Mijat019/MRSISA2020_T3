@@ -15,7 +15,7 @@ const mutations = {
     state.dialogType = "add";
   },
   openEditDialog(state, room) {
-    state.dialogRoom = Object.assign({}, room);
+    Object.assign(state.dialogRoom, room);
     state.showDialog = true;
     state.dialogType = "edit";
   },

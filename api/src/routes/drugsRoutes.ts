@@ -18,6 +18,10 @@ router.patch(
   authenticationMiddleware.hasRole(UserRole.CLINIC_CENTER_ADMIN),
   drugsController.update
 );
-router.delete("/:id");
+router.delete(
+  "/:id",
+  authenticationMiddleware.hasRole(UserRole.CLINIC_CENTER_ADMIN),
+  drugsController.delete
+);
 
 export default router;

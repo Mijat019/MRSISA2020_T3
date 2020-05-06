@@ -7,7 +7,7 @@
       </template>
       <template v-slot:actions="{drug}">
         <v-icon small @click="openEditDialog(drug)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteDrug(drug)">mdi-delete</v-icon>
+        <v-icon small @click="deleteDrug(drug.id)">mdi-delete</v-icon>
       </template>
     </DrugsTable>
   </div>
@@ -16,7 +16,7 @@
 <script>
 import DrugsTable from "./DrugsTable";
 import DrugsDialog from "./DrugsDialog";
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 export default {
   name: "ManageDrugs",
   components: {
@@ -26,13 +26,17 @@ export default {
   data: () => ({}),
 
   methods: {
+    ...mapActions("drugs", { deleteDrugAction: "deleteDrugAction" }),
+
     ...mapMutations("drugsDialog", {
       openAddDialog: "openAddDialog",
       openEditDialog: "openEditDialog"
     }),
 
-    deleteDrug(drug) {
-      console.log(drug);
+    async deleteDrug(id) {
+      if (confirm("Are you sure that you want to delete this drug?")) {
+        await this.deleteDrugAction(id);
+      }
     }
   }
 };

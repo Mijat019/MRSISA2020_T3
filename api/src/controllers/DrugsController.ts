@@ -29,6 +29,16 @@ class DrugsController {
       res.status(400).send(error.message);
     }
   }
+
+  public async delete(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      await drugsService.delete(id);
+      res.send("Drug deleted.");
+    } catch (error) {
+      res.status(400).send(error.message);
+    }
+  }
 }
 
 export default new DrugsController();

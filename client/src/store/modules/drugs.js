@@ -17,6 +17,11 @@ const mutations = {
     const index = state.drugs.findIndex((drug) => drug.id === updatedDrug.id);
     Object.assign(state.drugs[index], updatedDrug);
   },
+
+  deleteDrug(state, id) {
+    const index = state.drugs.findIndex((drug) => drug.id === id);
+    state.drugs.splice(index, 1);
+  },
 };
 
 const actions = {
@@ -47,6 +52,16 @@ const actions = {
       );
       commit("updateDrug", updatedDrug);
       dispatch("snackbar/showSuccess", "Drug updated.", { root: true });
+    } catch (error) {
+      dispatch("snackbar/showError", error.response.data, { root: true });
+    }
+  },
+
+  async deleteDrugAction({ commit, dispatch }, drugId) {
+    try {
+      await Vue.$axios.delete(`/drugs/${drugId}`);
+      commit("deleteDrug", drugId);
+      dispatch("snackbar/showSuccess", "Drug deleted.", { root: true });
     } catch (error) {
       dispatch("snackbar/showError", error.response.data, { root: true });
     }
