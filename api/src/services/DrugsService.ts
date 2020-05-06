@@ -10,6 +10,12 @@ class DrugsService {
     const newDrug = await Drugs.create(drugPayload);
     return newDrug;
   }
+
+  public async update(id: string, drugUpdate: any) {
+    await Drugs.update(drugUpdate, { where: { id } });
+    const updatedDrug = await Drugs.findByPk(id);
+    return updatedDrug;
+  }
 }
 
 export default new DrugsService();

@@ -22,7 +22,8 @@ class DrugsController {
 
   public async update(req: Request, res: Response) {
     try {
-      const updatedDrug = await drugsService.update(req.body);
+      const { id } = req.params;
+      const updatedDrug = await drugsService.update(id, req.body);
       res.send(updatedDrug);
     } catch (error) {
       res.status(400).send(error.message);

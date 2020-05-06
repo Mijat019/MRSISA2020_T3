@@ -33,7 +33,10 @@ export default {
   }),
 
   methods: {
-    ...mapActions("drugs", { addDrugAction: "addDrugAction" }),
+    ...mapActions("drugs", {
+      addDrugAction: "addDrugAction",
+      updateDrugAction: "updateDrugAction"
+    }),
     ...mapMutations("drugsDialog", {
       closeDialog: "closeDialog"
     }),
@@ -47,7 +50,14 @@ export default {
       this.closeDialog();
     },
 
-    updateDrug() {}
+    async updateDrug() {
+      if (!this.$refs.form.validate()) {
+        return;
+      }
+
+      await this.updateDrugAction(this.getDialogDrug);
+      this.closeDialog();
+    }
   },
 
   computed: {
