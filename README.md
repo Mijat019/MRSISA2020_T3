@@ -1,9 +1,9 @@
 # Internet software architectures and methodologies of software development group project
 ### Team members
 
-* Stefan Kandić
-* Stefan Stegić
-* Mijat Miletić
+* [Stefan Kandić](https://github.com/ssttefann)
+* [Stefan Stegić](https://github.com/phuskus)
+* [Mijat Miletić](https://github.com/Mijat019)
 
 
 ### Technology stack
