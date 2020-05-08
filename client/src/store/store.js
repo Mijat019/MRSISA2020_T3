@@ -20,6 +20,7 @@ import drugs from "./modules/drugs";
 import drugsDialog from "./modules/drugsDialog";
 import diagnosis from "./modules/diagnosis";
 import diagnosisDialog from "./modules/diagnosisDialog";
+import clinicCenterAdmins from "./modules/clinicCenterAdmins";
 
 Vue.use(Vuex);
 
@@ -49,5 +50,6 @@ export default new Vuex.Store({
     drugsDialog,
     diagnosis,
     diagnosisDialog,
+    clinicCenterAdmins,
   },
 });

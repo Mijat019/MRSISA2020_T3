@@ -16,6 +16,7 @@ import freeAppointmentRoutes from "./routes/freeAppointmentRoutes";
 import appointmentTypeRoutes from "./routes/appointmentTypeRoutes";
 import drugsRoutes from "./routes/drugsRoutes";
 import diagnosisRoutes from "./routes/diagnosisRoutes";
+import clinicCenterAdminRoutes from "./routes/clinicCenterAdminRoutes";
 
 // connect to the database
 (async () => {
@@ -30,7 +31,6 @@ import diagnosisRoutes from "./routes/diagnosisRoutes";
     // creates tables from model
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
-
     // await db.sync({ force: true });
     // await initModel();
   } catch (error) {
@@ -57,6 +57,7 @@ app.use("/freeAppointments", freeAppointmentRoutes);
 app.use("/appointmentTypes", appointmentTypeRoutes);
 app.use("/drugs", drugsRoutes);
 app.use("/diagnosis", diagnosisRoutes);
+app.use("/clinicCenterAdmins", clinicCenterAdminRoutes);
 
 app.listen(config.port, () =>
   console.log(`Server listening on port ${config.port}`)

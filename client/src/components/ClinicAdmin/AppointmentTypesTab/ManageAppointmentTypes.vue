@@ -12,23 +12,19 @@
       ></v-text-field>
     </v-card-title>
 
-    <v-btn dark class="mb-2" @click="showAddDialog">Add new type</v-btn>
     <!-- @click:row="showEditDialog" -->
     <AppointmentTypeDialog />
-    <v-data-table
-      :headers="headers"
-      :items="getAppointmentTypes"
-      :search="search"
-    >
-      <template v-slot:item.actions="item">
-        <v-icon small class="mr-2" @click="editItem(item)">
-          mdi-pencil
-        </v-icon>
-        <v-icon small @click="deleteItem(item)">
-          mdi-delete
-        </v-icon>
-      </template>
-    </v-data-table>
+    <v-card-text>
+      <v-data-table :headers="headers" :items="getAppointmentTypes" :search="search">
+        <template v-slot:top>
+          <v-btn dark class="mb-2" @click="showAddDialog">Add new type</v-btn>
+        </template>
+        <template v-slot:item.actions="item">
+          <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+          <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+        </template>
+      </v-data-table>
+    </v-card-text>
   </v-card>
 </template>
 
@@ -38,7 +34,7 @@ import AppointmentTypeDialog from "./AppointmentTypeDialog";
 export default {
   name: "AppointmentTypeTable",
   components: {
-    AppointmentTypeDialog,
+    AppointmentTypeDialog
   },
   data() {
     return {
@@ -46,20 +42,20 @@ export default {
       headers: [
         { text: "Name", value: "name" },
         { text: "Price", value: "price" },
-        { text: "Actions", value: "actions", sortable: false },
-      ],
+        { text: "Actions", value: "actions", sortable: false }
+      ]
     };
   },
 
   methods: {
     ...mapActions("appointmentTypes", {
       getAppointmentTypesAction: "getAppointmentTypesAction",
-      deleteAppointmentTypeAction: "deleteAppointmentTypeAction",
+      deleteAppointmentTypeAction: "deleteAppointmentTypeAction"
     }),
 
     ...mapMutations("appointmentTypesDialog", {
       showAddDialog: "openAddDialog",
-      showEditDialog: "openEditDialog",
+      showEditDialog: "openEditDialog"
     }),
 
     editItem(item) {
@@ -70,7 +66,7 @@ export default {
       if (confirm("Are you sure you want to delete this type?")) {
         this.deleteAppointmentTypeAction(item.item);
       }
-    },
+    }
   },
 
   async mounted() {
@@ -80,9 +76,9 @@ export default {
   computed: {
     ...mapGetters({
       getAppointmentTypes: "appointmentTypes/getAppointmentTypes",
-      getUser: "authentication/getUser",
-    }),
-  },
+      getUser: "authentication/getUser"
+    })
+  }
 };
 </script>
 

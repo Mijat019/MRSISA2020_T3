@@ -11,15 +11,16 @@
         hide-details
       ></v-text-field>
     </v-card-title>
-
-    <v-data-table :headers="headers" :items="getNurses" :search="search">
-      <template v-slot:top>
-        <slot name="top"></slot>
-      </template>
-      <template v-slot:item.actions="{item}">
-        <slot name="actions" :nurseId="item.userId"></slot>
-      </template>
-    </v-data-table>
+    <v-card-text>
+      <v-data-table :headers="headers" :items="getNurses" :search="search">
+        <template v-slot:top>
+          <slot name="top"></slot>
+        </template>
+        <template v-slot:item.actions="{item}">
+          <slot name="actions" :nurseId="item.userId"></slot>
+        </template>
+      </v-data-table>
+    </v-card-text>
   </v-card>
 </template>
 

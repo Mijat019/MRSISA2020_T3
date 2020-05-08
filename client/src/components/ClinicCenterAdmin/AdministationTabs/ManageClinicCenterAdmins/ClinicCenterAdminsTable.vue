@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      Doctors
+      ClinicCenterAdmins
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -11,14 +11,10 @@
         hide-details
       ></v-text-field>
     </v-card-title>
-
     <v-card-text>
-      <v-data-table :headers="headers" :items="getDoctors" :search="search">
+      <v-data-table :headers="headers" :items="getClinicCenterAdmins" :search="search">
         <template v-slot:top>
           <slot name="top"></slot>
-        </template>
-        <template v-slot:item.actions="{item}">
-          <slot name="actions" :doctorId="item.userId"></slot>
         </template>
       </v-data-table>
     </v-card-text>
@@ -28,45 +24,44 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "DoctorsTable",
+  name: "ClinicCenterAdminsTable",
   data() {
     return {
       search: "",
       headers: [
         {
           text: "First name",
-          value: "user.firstName"
+          value: "firstName"
         },
         {
           text: "Last name",
-          value: "user.lastName"
+          value: "lastName"
+        },
+        {
+          text: "Email",
+          value: "email"
         },
         {
           text: "City",
-          value: "user.city"
-        },
-        {
-          text: "Actions",
-          value: "actions",
-          sortable: false
+          value: "city"
         }
       ]
     };
   },
 
   methods: {
-    ...mapActions("doctors", {
-      getDoctorsAction: "getDoctorsAction"
+    ...mapActions("clinicCenterAdmins", {
+      getClinicCenterAdminsAction: "getClinicCenterAdminsAction"
     })
   },
 
-  async mounted() {
-    await this.getDoctorsAction();
+  async created() {
+    await this.getClinicCenterAdminsAction();
   },
 
   computed: {
-    ...mapGetters("doctors", {
-      getDoctors: "getDoctors"
+    ...mapGetters("clinicCenterAdmins", {
+      getClinicCenterAdmins: "getClinicCenterAdmins"
     })
   }
 };

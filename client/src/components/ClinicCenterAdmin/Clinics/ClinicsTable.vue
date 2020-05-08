@@ -11,15 +11,17 @@
         hide-details
       ></v-text-field>
     </v-card-title>
-    <v-data-table :headers="headers" :items="getClinics" :search="search">
-      <template v-slot:top>
-        <slot name="top"></slot>
-      </template>
+    <v-card-text>
+      <v-data-table :headers="headers" :items="getClinics" :search="search">
+        <template v-slot:top>
+          <slot name="top"></slot>
+        </template>
 
-      <template v-slot:item.actions="{ item }">
-        <slot name="actions" :item="item"></slot>
-      </template>
-    </v-data-table>
+        <template v-slot:item.actions="{ item }">
+          <slot name="actions" :item="item"></slot>
+        </template>
+      </v-data-table>
+    </v-card-text>
   </v-card>
 </template>
 

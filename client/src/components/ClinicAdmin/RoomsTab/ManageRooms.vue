@@ -14,15 +14,17 @@
 
     <RoomDialog />
 
-    <v-data-table :headers="headers" :items="getRooms" :search="search">
-      <template v-slot:top>
-        <v-btn dark class="mb-2" @click="showAddDialog">Add Room</v-btn>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon small @click="showEditDialog(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteRoomAction(item.id)">mdi-delete</v-icon>
-      </template>
-    </v-data-table>
+    <v-card-text>
+      <v-data-table :headers="headers" :items="getRooms" :search="search">
+        <template v-slot:top>
+          <v-btn dark class="mb-2" @click="showAddDialog">Add Room</v-btn>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-icon small @click="showEditDialog(item)">mdi-pencil</v-icon>
+          <v-icon small @click="deleteRoomAction(item.id)">mdi-delete</v-icon>
+        </template>
+      </v-data-table>
+    </v-card-text>
   </v-card>
 </template>
 
@@ -32,7 +34,7 @@ import RoomDialog from "./RoomDialog";
 export default {
   name: "ManageRooms",
   components: {
-    RoomDialog,
+    RoomDialog
   },
   data() {
     return {
@@ -40,23 +42,23 @@ export default {
       headers: [
         {
           text: "Name",
-          value: "name",
+          value: "name"
         },
-        { text: "Actoins", value: "actions", sortable: false },
-      ],
+        { text: "Actoins", value: "actions", sortable: false }
+      ]
     };
   },
 
   methods: {
     ...mapActions("rooms", {
       getRoomsAction: "getRoomsAction",
-      deleteRoomAction: "deleteRoomAction",
+      deleteRoomAction: "deleteRoomAction"
     }),
 
     ...mapMutations("roomsDialog", {
       showAddDialog: "openAddDialog",
-      showEditDialog: "openEditDialog",
-    }),
+      showEditDialog: "openEditDialog"
+    })
   },
 
   async mounted() {
@@ -66,9 +68,9 @@ export default {
   computed: {
     ...mapGetters({
       getRooms: "rooms/getRooms",
-      getUser: "authentication/getUser",
-    }),
-  },
+      getUser: "authentication/getUser"
+    })
+  }
 };
 </script>
 

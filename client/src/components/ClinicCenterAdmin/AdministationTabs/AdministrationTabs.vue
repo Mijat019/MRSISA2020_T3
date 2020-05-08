@@ -13,7 +13,9 @@
       <v-tab-item :value="'clinicAdmins'">
         <ManageClinicAdmins />
       </v-tab-item>
-      <v-tab-item :value="'clinicCenterAdmins'">clinic center admins</v-tab-item>
+      <v-tab-item :value="'clinicCenterAdmins'">
+        <ManageClinicCenterAdmins />
+      </v-tab-item>
     </v-tabs>
   </div>
 </template>
@@ -21,9 +23,14 @@
 <script>
 import ManageClinicAdmins from "./ManageClinicAdmins/ManageClinicAdmins";
 import ManagePatientsRequestsTab from "./ManagePatientsRequestsTab";
+import ManageClinicCenterAdmins from "./ManageClinicCenterAdmins/ManageClinicCenterAdmins";
 export default {
   name: "AdministrationTabs",
-  components: { ManageClinicAdmins, ManagePatientsRequestsTab },
+  components: {
+    ManageClinicAdmins,
+    ManagePatientsRequestsTab,
+    ManageClinicCenterAdmins
+  },
   data: () => ({
     tab: null
   })
