@@ -11,11 +11,13 @@ Diagnosis.init(
     id: {
       type: INTEGER.UNSIGNED,
       primaryKey: true,
+      autoIncrement: true,
       allowNull: true,
     },
     name: {
       type: STRING,
       allowNull: false,
+      unique: true,
     },
   },
   { tableName: "diagnosis", sequelize: db, timestamps: false }

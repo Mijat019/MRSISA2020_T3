@@ -4,8 +4,13 @@ import ClinicsService from "../services/ClinicsService";
 import ClinicAdminService from "../services/ClinicAdminService";
 import DoctorsService from "../services/DoctorsService";
 import Drugs from "./Drugs";
+import Diagnosis from "./Diagnosis";
 
 export default async () => {
+  await Diagnosis.create({ name: "Loco" });
+  await Diagnosis.create({ name: "Insane in the membrane" });
+  await Diagnosis.create({ name: "Vucic" });
+
   await Drugs.create({ name: "Percocet" });
   await Drugs.create({ name: "Molly" });
   await Drugs.create({ name: "Percocets" });
