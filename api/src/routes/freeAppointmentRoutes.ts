@@ -5,6 +5,7 @@ import AuthenticationMiddleware from "../middleware/AuthenticationMiddleware";
 const router = express.Router();
 
 router.use(AuthenticationMiddleware.verifyToken);
+
 router.get("/:doctorId", FreeAppointmentController.getAllForDoctor);
 
 router.post("/", FreeAppointmentController.add);
