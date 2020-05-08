@@ -18,6 +18,8 @@ import freeAppointments from "./modules/freeAppointments";
 import freeAppointmentsDialog from "./modules/freeAppointmentsDialog";
 import drugs from "./modules/drugs";
 import drugsDialog from "./modules/drugsDialog";
+import diagnosis from "./modules/diagnosis";
+import diagnosisDialog from "./modules/diagnosisDialog";
 
 Vue.use(Vuex);
 
@@ -45,5 +47,7 @@ export default new Vuex.Store({
     appointmentTypesDialog,
     drugs,
     drugsDialog,
+    diagnosis,
+    diagnosisDialog,
   },
 });

@@ -1,8 +1,7 @@
 const state = {
-  dialogDrug: {
+  dialogDiagnosis: {
     id: "",
     name: "",
-    price: "",
   },
   showDialog: false,
   dialogType: "add",
@@ -10,15 +9,14 @@ const state = {
 
 const mutations = {
   openAddDialog(state) {
-    state.dialogDrug = {
+    state.dialogDiagnosis = {
       name: "",
-      price: "",
     };
     state.showDialog = true;
     state.dialogType = "add";
   },
-  openEditDialog(state, drug) {
-    Object.assign(state.dialogDrug, drug);
+  openEditDialog(state, diagnosis) {
+    Object.assign(state.dialogDiagnosis, diagnosis);
     state.showDialog = true;
     state.dialogType = "edit";
   },
@@ -29,7 +27,7 @@ const mutations = {
 
 const getters = {
   getShowDialog: (state) => state.showDialog,
-  getDialogDrug: (state) => state.dialogDrug,
+  getDialogDiagnosis: (state) => state.dialogDiagnosis,
   getDialogType: (state) => state.dialogType,
 };
 

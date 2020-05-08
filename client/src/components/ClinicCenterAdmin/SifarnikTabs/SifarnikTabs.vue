@@ -9,17 +9,21 @@
       <v-tab-item :value="'drugs'">
         <ManageDrugs />
       </v-tab-item>
-      <v-tab-item :value="'diagnosis'">diagnosis</v-tab-item>
+      <v-tab-item :value="'diagnosis'">
+        <ManageDiagnosis />
+      </v-tab-item>
     </v-tabs>
   </div>
 </template>
 
 <script>
 import ManageDrugs from "./Drugs/ManageDrugs";
+import ManageDiagnosis from "./Diagnosis/ManageDiagnosis";
 export default {
   name: "SifarnikTabs",
   components: {
-    ManageDrugs
+    ManageDrugs,
+    ManageDiagnosis
   },
   data: () => ({
     tab: null
