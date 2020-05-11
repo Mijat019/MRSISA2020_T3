@@ -24,10 +24,10 @@ const mutations = {
 };
 
 const actions = {
-  async getAppointmentTypesAction({ commit, dispatch }, clinicId) {
+  async getAppointmentTypesAction({ commit, dispatch }) {
     try {
       const { data: types } = await Vue.$axios.get(
-        `/appointmentTypes/${clinicId}`
+        `/appointmentTypes/`
       );
       commit("setAppointmentTypes", types);
     } catch (error) {
@@ -53,6 +53,7 @@ const actions = {
 
   async deleteAppointmentTypeAction({ commit, dispatch }, appointmentTypeId) {
     try {
+      console.log(appointmentTypeId)
       await Vue.$axios.delete(`/appointmentTypes/${appointmentTypeId}`);
       commit("removeAppointmentType", appointmentTypeId);
       dispatch("snackbar/showSuccess", "Appointment successfully removed.", {

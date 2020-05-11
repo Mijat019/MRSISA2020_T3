@@ -17,6 +17,9 @@ import appointmentTypeRoutes from "./routes/appointmentTypeRoutes";
 import drugsRoutes from "./routes/drugsRoutes";
 import diagnosisRoutes from "./routes/diagnosisRoutes";
 import clinicCenterAdminRoutes from "./routes/clinicCenterAdminRoutes";
+import priceListsRoutes from './routes/priceListsRoutes';
+
+import PriceLists from './models/PriceLists'
 
 // connect to the database
 (async () => {
@@ -33,6 +36,7 @@ import clinicCenterAdminRoutes from "./routes/clinicCenterAdminRoutes";
     // uncomment next line if you want to apply changes to the schema
     // await db.sync({ force: true });
     // await initModel();
+
   } catch (error) {
     console.log(error);
   }
@@ -55,6 +59,7 @@ app.use("/patients", patientsRoutes);
 app.use("/clinicAdmins", clinicAdminRoutes);
 app.use("/freeAppointments", freeAppointmentRoutes);
 app.use("/appointmentTypes", appointmentTypeRoutes);
+app.use("/priceLists", priceListsRoutes);
 app.use("/drugs", drugsRoutes);
 app.use("/diagnosis", diagnosisRoutes);
 app.use("/clinicCenterAdmins", clinicCenterAdminRoutes);

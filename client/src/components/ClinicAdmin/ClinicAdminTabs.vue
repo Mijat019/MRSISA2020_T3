@@ -8,7 +8,7 @@
       <v-tab :href="`#doctors`">doctors</v-tab>
       <v-tab :href="`#nurses`">nurses</v-tab>
       <v-tab :href="`#rooms`">rooms</v-tab>
-      <v-tab :href="`#appointmentTypes`">appointment types</v-tab>
+      <v-tab :href="`#priceLists`">Price Lists</v-tab>
       <v-tab :href="`#report`">report</v-tab>
 
       <v-tab-item :value="'basicInfo'">basicInfo</v-tab-item>
@@ -24,8 +24,8 @@
       <v-tab-item :value="'rooms'">
         <ManageRooms />
       </v-tab-item>
-      <v-tab-item :value="'appointmentTypes'">
-        <ManageAppointmentTypes />
+      <v-tab-item :value="'priceLists'">
+        <ManagePriceLists />
       </v-tab-item>
       <v-tab-item :value="'report'">report</v-tab-item>
     </v-tabs>
@@ -37,7 +37,8 @@ import ManageDoctors from "./DoctorsTab/ManageDoctors";
 import ManageNurses from "./NursesTab/ManageNurses";
 import ManageRooms from "./RoomsTab/ManageRooms";
 import ManageFreeAppointments from "./AppointmentsTab/ManageFreeAppointments";
-import ManageAppointmentTypes from "./AppointmentTypesTab/ManageAppointmentTypes";
+import ManagePriceLists from './PriceListsTab/ManagePriceLists'
+// import ManageAppointmentTypes from "./AppointmentTypesTab/ManageAppointmentTypes";
 import { mapActions } from "vuex";
 export default {
   name: "ClinicProfile",
@@ -46,7 +47,7 @@ export default {
     ManageNurses,
     ManageRooms,
     ManageFreeAppointments,
-    ManageAppointmentTypes,
+    ManagePriceLists,
   },
   data: () => ({
     tab: null,

@@ -6,6 +6,7 @@
       <v-tab :href="`#requests`">Patient requests</v-tab>
       <v-tab :href="`#clinicAdmins`">Clinic admins</v-tab>
       <v-tab :href="`#clinicCenterAdmins`">Clinic center admins</v-tab>
+      <v-tab :href="`#appointmentTypes`">Appointment Types</v-tab>
 
       <v-tab-item :value="'requests'">
         <ManagePatientsRequestsTab />
@@ -16,6 +17,9 @@
       <v-tab-item :value="'clinicCenterAdmins'">
         <ManageClinicCenterAdmins />
       </v-tab-item>
+      <v-tab-item :value="'appointmentTypes'">
+        <ManageAppointmentTypes/>
+      </v-tab-item>
     </v-tabs>
   </div>
 </template>
@@ -24,12 +28,15 @@
 import ManageClinicAdmins from "./ManageClinicAdmins/ManageClinicAdmins";
 import ManagePatientsRequestsTab from "./ManagePatientsRequestsTab";
 import ManageClinicCenterAdmins from "./ManageClinicCenterAdmins/ManageClinicCenterAdmins";
+import ManageAppointmentTypes from './AppointmentTypesTab/ManageAppointmentTypes'
+
 export default {
   name: "AdministrationTabs",
   components: {
     ManageClinicAdmins,
     ManagePatientsRequestsTab,
-    ManageClinicCenterAdmins
+    ManageClinicCenterAdmins,
+    ManageAppointmentTypes,
   },
   data: () => ({
     tab: null

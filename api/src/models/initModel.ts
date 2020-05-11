@@ -5,6 +5,7 @@ import ClinicAdminService from "../services/ClinicAdminService";
 import DoctorsService from "../services/DoctorsService";
 import Drugs from "./Drugs";
 import Diagnosis from "./Diagnosis";
+import PriceLists from './PriceLists'
 
 export default async () => {
   await Diagnosis.create({ name: "Loco" });
@@ -14,6 +15,8 @@ export default async () => {
   await Drugs.create({ name: "Percocet" });
   await Drugs.create({ name: "Molly" });
   await Drugs.create({ name: "Percocets" });
+
+  await PriceLists.findAll({});
 
   await UsersService.createUser(
     {

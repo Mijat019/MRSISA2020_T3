@@ -6,18 +6,10 @@
       <v-card-text>
         <v-form ref="form" lazy-validation>
           <v-text-field v-model="appointmentType.name" :rules="rules" label="Name"></v-text-field>
-          <v-text-field
-            v-model="appointmentType.price"
-            type="number"
-            :rules="rules"
-            label="Price"
-            required
-          ></v-text-field>
         </v-form>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn v-if="type === 'edit'" color="red" @click="deleteType">Delete</v-btn>
         <v-btn @click="close">Cancel</v-btn>
         <v-btn v-if="type === 'add'" color="primary" @click="addType">Add</v-btn>
         <v-btn v-else color="primary" @click="updateType">Save</v-btn>

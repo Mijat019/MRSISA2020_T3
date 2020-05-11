@@ -1,10 +1,9 @@
 import AppointmentTypesService from "../services/AppointmentTypesService";
 
 class AppointmentTypesController {
-  public async getAllForClinic(req: any, res: any) {
+  public async getAll(req: any, res: any) {
     try {
-      const { clinicId } = req.params;
-      const types = await AppointmentTypesService.getAllForClinic(clinicId);
+      const types = await AppointmentTypesService.getAll();
       res.send(types);
     } catch (error) {
       res.status(400).send(error);
@@ -13,8 +12,7 @@ class AppointmentTypesController {
 
   public async add(req: any, res: any) {
     try {
-      const { clinicId } = req.user;
-      const newType = await AppointmentTypesService.add(clinicId, req.body);
+      const newType = await AppointmentTypesService.add(req.body);
       res.send(newType);
     } catch (error) {
       res.status(400).send(error);

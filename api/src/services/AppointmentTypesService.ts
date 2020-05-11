@@ -1,15 +1,12 @@
 import AppointmentTypes from "../models/AppointmentTypes";
 
 class AppointmentTypesService {
-  public async getAllForClinic(clinicId: number): Promise<any> {
-    const appointmentTypes = await AppointmentTypes.findAll({
-      where: { clinicId },
-    });
+  public async getAll(): Promise<any> {
+    const appointmentTypes = await AppointmentTypes.findAll({});
     return appointmentTypes;
   }
 
-  public async add(clinicId: number, typePayload: any): Promise<any> {
-    typePayload.clinicId = clinicId;
+  public async add(typePayload: any): Promise<any> {
     const appointmentType = await AppointmentTypes.create(typePayload);
     return appointmentType;
   }
@@ -23,8 +20,8 @@ class AppointmentTypesService {
     return updatedAppointmentType;
   }
 
-  public async delete(typePayload: any) {
-    await AppointmentTypes.destroy({ where: { id: typePayload.id } });
+  public async delete(id: any) {
+    await AppointmentTypes.destroy({ where: { id: id } });
   }
 }
 

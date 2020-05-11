@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      Appointment Types
+      Price Lists
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -13,11 +13,11 @@
     </v-card-title>
 
     <!-- @click:row="showEditDialog" -->
-    <AppointmentTypeDialog />
+    <PriceListsDialog />
     <v-card-text>
-      <v-data-table :headers="headers" :items="getAppointmentTypes" :search="search">
+      <v-data-table :headers="headers" :items="getPriceLists" :search="search">
         <template v-slot:top>
-          <v-btn dark class="mb-2" @click="showAddDialog">Add new type</v-btn>
+          <v-btn dark class="mb-2" @click="showAddDialog">Add new price list</v-btn>
         </template>
         <template v-slot:item.actions="item">
           <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
@@ -30,17 +30,17 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import AppointmentTypeDialog from "./AppointmentTypeDialog";
+import PriceListsDialog from "./PriceListsDialog";
 export default {
   name: "AppointmentTypeTable",
   components: {
-    AppointmentTypeDialog
+    PriceListsDialog
   },
   data() {
     return {
       search: "",
       headers: [
-        { text: "Name", value: "name" },
+        { text: "Appointment Type", value: "appointmentType.name" },
         { text: "Price", value: "price" },
         { text: "Actions", value: "actions", sortable: false }
       ]
@@ -48,12 +48,12 @@ export default {
   },
 
   methods: {
-    ...mapActions("appointmentTypes", {
-      getAppointmentTypesAction: "getAppointmentTypesAction",
-      deleteAppointmentTypeAction: "deleteAppointmentTypeAction"
+    ...mapActions("priceLists", {
+      getPriceListsAction: "getPriceListsAction",
+      deletePriceListAction: "deletePriceListAction"
     }),
 
-    ...mapMutations("appointmentTypesDialog", {
+    ...mapMutations("priceLists", {
       showAddDialog: "openAddDialog",
       showEditDialog: "openEditDialog"
     }),
@@ -63,20 +63,22 @@ export default {
     },
 
     deleteItem(item) {
-      if (confirm("Are you sure you want to delete this type?")) {
-        this.deleteAppointmentTypeAction(item.item);
+      console.log(item);
+      if (confirm("Are you sure you want to delete this price list?")) {
+        this.deletePriceListAction(item.item.id);
       }
     }
   },
 
   async mounted() {
-    await this.getAppointmentTypesAction(this.getUser.clinicId);
+    await this.getPriceListsAction(this.getUser.clinicId);
   },
 
   computed: {
     ...mapGetters({
+      getPriceLists: "priceLists/getPriceLists",
       getAppointmentTypes: "appointmentTypes/getAppointmentTypes",
-      getUser: "authentication/getUser"
+      getUser: "authentication/getUser",
     })
   }
 };

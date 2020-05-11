@@ -85,14 +85,14 @@ export default {
       close: "closeDialog",
     }),
     async addAppointment() {
-      if (!this.$refs.form.validate()) {
+      if (!this.$refs.form.validate() || !this.appointment.start) {
         return;
       }
       await this.addAppointmentAction(this.appointment);
       this.close();
     },
     async updateAppointment() {
-      if (!this.$refs.form.validate()) {
+      if (!this.$refs.form.validate() || !this.appointment.start) {
         return;
       }
       await this.updateAppointmentAction(this.appointment);

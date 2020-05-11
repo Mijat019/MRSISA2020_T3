@@ -2,7 +2,6 @@ const state = {
   dialogAppointmentType: {
     id: "",
     name: "",
-    price: "",
   },
   showDialog: false,
   dialogType: "add",
@@ -12,7 +11,6 @@ const mutations = {
   openAddDialog(state) {
     state.dialogAppointmentType = {
       name: "",
-      price: "",
     };
     state.showDialog = true;
     state.dialogType = "add";
