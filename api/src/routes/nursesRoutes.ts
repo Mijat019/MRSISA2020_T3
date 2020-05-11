@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.use(AuthenticationMiddleware.verifyToken);
 router.get("/", NursesController.getAll);
+router.get("/:clinicId", NursesController.getByClinic);
 
 router.post(
   "/",

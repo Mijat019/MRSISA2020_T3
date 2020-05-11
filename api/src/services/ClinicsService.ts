@@ -4,7 +4,7 @@ import Users from "../models/Users";
 
 class ClinicsService {
   public async getAll(): Promise<any> {
-    const clinics = await Clinics.findAll({});
+    const clinics = await Clinics.findAll();
     return clinics;
   }
 

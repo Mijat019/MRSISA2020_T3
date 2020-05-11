@@ -1,7 +1,8 @@
 import Vue from "vue";
 
 const state = {
-  clinicAdmins: []
+  clinicAdmins: [],
+  doctors: []
 };
 
 const mutations = {
@@ -10,7 +11,8 @@ const mutations = {
   },
   addClinicAdmin(state, clinicAdmin) {
     state.clinicAdmins.push(clinicAdmin);
-  }
+  },
+
 };
 
 const actions = {

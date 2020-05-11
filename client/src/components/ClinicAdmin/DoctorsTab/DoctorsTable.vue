@@ -56,17 +56,20 @@ export default {
 
   methods: {
     ...mapActions("doctors", {
-      getDoctorsAction: "getDoctorsAction"
+      getDoctorsByClinicAction: "getDoctorsByClinicAction"
     })
   },
 
   async mounted() {
-    await this.getDoctorsAction();
+    await this.getDoctorsByClinicAction(this.getUser.clinicId);
   },
 
   computed: {
     ...mapGetters("doctors", {
       getDoctors: "getDoctors"
+    }),
+    ...mapGetters("authentication", {
+      getUser: "getUser"
     })
   }
 };

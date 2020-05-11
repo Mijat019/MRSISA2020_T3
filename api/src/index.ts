@@ -4,6 +4,7 @@ import cors from "cors";
 import config from "./config";
 import db from "./models/database";
 import initModel from "./models/initModel";
+import initModelStega from "./models/initModelStega";
 
 import clinicsRoutes from "./routes/clinicsRoutes";
 import doctorsRoutes from "./routes/doctorsRoutes";
@@ -34,8 +35,9 @@ import PriceLists from './models/PriceLists'
     // creates tables from model
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
-    // await db.sync({ force: true });
-    // await initModel();
+    //await db.sync({ force: true });
+    //await initModelStega();
+    //await initModel();
 
   } catch (error) {
     console.log(error);

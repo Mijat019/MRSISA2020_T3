@@ -51,17 +51,20 @@ export default {
 
   methods: {
     ...mapActions("nurses", {
-      getNursesAction: "getNursesAction"
+      getNursesByClinicAction: "getNursesByClinicAction"
     })
   },
 
   async mounted() {
-    await this.getNursesAction();
+    await this.getNursesByClinicAction(this.getUser.clinicId);
   },
 
   computed: {
     ...mapGetters("nurses", {
       getNurses: "getNurses"
+    }),
+    ...mapGetters("authentication", {
+      getUser: "getUser"
     })
   }
 };

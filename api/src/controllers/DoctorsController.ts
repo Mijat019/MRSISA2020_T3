@@ -1,10 +1,27 @@
 import DoctorsService from "../services/DoctorsService";
 import UsersService from "../services/UsersService";
+import UserRole from "../models/UserRole";
+
 
 class DoctorsController {
   public async getAll(req: any, res: any) {
     try {
       const doctors = await DoctorsService.getAll();
+
+      res.send(doctors);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  }
+
+  public async getByClinic(req: any, res: any) {
+    try {
+      if (req.user.role != UserRole.CLINIC_ADMIN) {
+        res.status(403).send("Only clinic admins may use this route.");
+        return;
+      }
+      const doctors = await DoctorsService.getByClinicId(req.params["clinicId"], req.user.id);
 
       res.send(doctors);
     } catch (error) {

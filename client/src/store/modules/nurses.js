@@ -27,6 +27,15 @@ const actions = {
     }
   },
 
+  async getNursesByClinicAction({ commit, dispatch }, clinicId) {
+    try {
+      const { data: nurses } = await Vue.$axios.get("/nurses/" + clinicId);
+      commit("setNurses", nurses);
+    } catch (error) {
+      dispatch("snackbar/showError", error.response.data, { root: true });
+    }
+  },
+
   async addNurseAction({ commit, dispatch }, nursePayload) {
     try {
       const { data: newNurse } = await Vue.$axios.post("/nurses", nursePayload);
