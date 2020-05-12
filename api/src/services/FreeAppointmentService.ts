@@ -35,11 +35,11 @@ class FreeAppointmentService {
   }
 
   public async add(appointmentPayload: any) {
-    // If no appo type was sent, allocate it
-    if (appointmentPayload.appointmentTypeId == undefined || appointmentPayload.appointmentTypeId == null) {
-      const priceList = await PriceLists.findByPk(appointmentPayload.priceListId);
-      appointmentPayload.appointmentTypeId = priceList?.appointmentTypeId;
-    }
+    // Allocate appropriate appo type
+    const priceList = await PriceLists.findOne({ where: { 
+      id: appointmentPayload.priceListId
+    }});
+    appointmentPayload.appointmentTypeId = priceList?.appointmentTypeId;
 
     const { id } = await FreeAppointments.create(appointmentPayload);
     const freeAppointment = FreeAppointments.findByPk(id, {
@@ -50,11 +50,11 @@ class FreeAppointmentService {
   }
 
   public async update(id: number, appointmentPayload: any) {
-    // If no appo type was sent, allocate it
-    if (appointmentPayload.appointmentTypeId == undefined || appointmentPayload.appointmentTypeId == null) {
-      const priceList = await PriceLists.findByPk(appointmentPayload.priceListId);
-      appointmentPayload.appointmentTypeId = priceList?.appointmentTypeId;
-    }
+    // Allocate appropriate appo type
+    const priceList = await PriceLists.findOne({ where: { 
+      id: appointmentPayload.priceListId
+    }});
+    appointmentPayload.appointmentTypeId = priceList?.appointmentTypeId;
 
     await FreeAppointments.update(appointmentPayload, { where: { id } });
     const updatedAppointment = await FreeAppointments.findByPk(id, {
