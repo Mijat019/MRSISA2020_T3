@@ -101,7 +101,8 @@ export default {
       this.dialog = true;
     },
     makeAppointment: function() {
-      this.makeAppointmentAction(this.dialogAppo);
+      console.log(this.getUser.id);
+      this.makeAppointmentAction({ appoId: this.dialogAppo.id, userId: this.getUser.id });
       this.dialog = false;
     }
   },
@@ -116,6 +117,9 @@ export default {
     }),
     ...mapGetters("freeAppointments", {
       getFreeAppointments: "getFreeAppointments"
+    }),
+    ...mapGetters("authentication", {
+      getUser: "getUser"
     })
   },
 
