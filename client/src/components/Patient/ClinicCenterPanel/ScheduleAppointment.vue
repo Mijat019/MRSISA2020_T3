@@ -1,7 +1,6 @@
 <template>
   <v-card>
-    <v-card-title>
-    </v-card-title>
+    <v-card-title></v-card-title>
 
     <v-card-title>
       <v-autocomplete
@@ -15,82 +14,71 @@
     </v-card-title>
 
     <v-card-text v-if="appoType != null">
-      <v-data-table
-        :items="getFreeAppointments"
-        :headers="headers"
-      >
+      <v-data-table :items="getFreeAppointments" :headers="headers">
         <template v-slot:item.actions="{ item }">
-        <v-icon
-          small
-          class="mr-2"
-          @click="showDialog(item)"
-        >
-          mdi-check-bold
-        </v-icon>
-      </template>
+          <v-icon small class="mr-2" @click="showDialog(item)">mdi-check-bold</v-icon>
+        </template>
       </v-data-table>
     </v-card-text>
-    
+
     <v-dialog v-model="dialog" width="500">
       <v-card>
-        Appointment type: {{ dialogAppo.appointmentType.name }}
-        <br>
+        Appointment type: {{ dialogAppo.priceList.appointmentType.name }}
+        <br />
         Doctor: {{ dialogAppo.doctor.user.firstName }} {{ dialogAppo.doctor.user.lastName }}
-        <br>
+        <br />
         Room: {{ dialogAppo.room.name }}
-        <br>
+        <br />
         Time: {{ dialogAppo.start }}
-        <br>
-        <v-spacer/>
-        <v-btn color="primary" @click="makeAppointment()">
-          Make appointment
-        </v-btn>
+        <br />
+        <v-spacer />
+        <v-btn color="primary" @click="makeAppointment()">Make appointment</v-btn>
       </v-card>
     </v-dialog>
   </v-card>
-
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "ScheduleAppointment",
-  components: {
-  },
+  components: {},
   data() {
     return {
       appoType: null,
       headers: [
-      { text: "Start", value: "start" },
-      { text: "Room", value: "room.name" },
-      { text: "Doctors first name", value: "doctor.user.firstName" },
-      { text: "Doctors last name", value: "doctor.user.lastName" },
-      { text: "Appointment type", value: "appointmentType.name" },
-      { text: "Duration", value: "duration" },
-      { text: "Actions", value: "actions", sortable: false },
-    ],
-    dialog: false,
-    dialogAppo: {
-      appointmentType: {
-        name: ""
-      },
-      doctor: {
-        user: {
-          firstName: "",
-          lastName: ""
-        }
-      },
-      room: {
-        name: ""
-      },
-      start: ""
-    }
+        { text: "Start", value: "start" },
+        { text: "Room", value: "room.name" },
+        { text: "Doctors first name", value: "doctor.user.firstName" },
+        { text: "Doctors last name", value: "doctor.user.lastName" },
+        { text: "Appointment type", value: "priceList.appointmentType.name" },
+        { text: "Duration", value: "duration" },
+        { text: "Actions", value: "actions", sortable: false }
+      ],
+      dialog: false,
+      dialogAppo: {
+        priceList: {
+          appointmentType: {
+            name: ""
+          }
+        },
+        doctor: {
+          user: {
+            firstName: "",
+            lastName: ""
+          }
+        },
+        room: {
+          name: ""
+        },
+        start: ""
+      }
     };
   },
 
   methods: {
     ...mapActions("appointmentTypes", {
-      getAppointmentTypesAction: "getAppointmentTypesAction",
+      getAppointmentTypesAction: "getAppointmentTypesAction"
     }),
     ...mapActions("freeAppointments", {
       getFreeAppointmentsByTypeAction: "getFreeAppointmentsByTypeAction",
@@ -101,8 +89,10 @@ export default {
       this.dialog = true;
     },
     makeAppointment: function() {
-      console.log(this.getUser.id);
-      this.makeAppointmentAction({ appoId: this.dialogAppo.id, userId: this.getUser.id });
+      this.makeAppointmentAction({
+        appoId: this.dialogAppo.id,
+        userId: this.getUser.id
+      });
       this.dialog = false;
     }
   },
@@ -126,7 +116,7 @@ export default {
   watch: {
     appoType(value) {
       this.getFreeAppointmentsByTypeAction(value.id);
-    },
+    }
   }
 };
 </script>
