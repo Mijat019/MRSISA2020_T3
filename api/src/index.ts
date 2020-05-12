@@ -14,13 +14,12 @@ import roomRoutes from "./routes/roomsRoutes";
 import authenticationRoutes from "./routes/authenticationRoutes";
 import patientsRoutes from "./routes/patientsRoutes";
 import freeAppointmentRoutes from "./routes/freeAppointmentRoutes";
+import confirmedAppointmentRoutes from "./routes/confirmedAppointmentRoutes";
 import appointmentTypeRoutes from "./routes/appointmentTypeRoutes";
 import drugsRoutes from "./routes/drugsRoutes";
 import diagnosisRoutes from "./routes/diagnosisRoutes";
 import clinicCenterAdminRoutes from "./routes/clinicCenterAdminRoutes";
 import priceListsRoutes from './routes/priceListsRoutes';
-
-import PriceLists from './models/PriceLists'
 
 // connect to the database
 (async () => {
@@ -60,6 +59,7 @@ app.use("/auth", authenticationRoutes);
 app.use("/patients", patientsRoutes);
 app.use("/clinicAdmins", clinicAdminRoutes);
 app.use("/freeAppointments", freeAppointmentRoutes);
+app.use("/confirmedAppointments", confirmedAppointmentRoutes);
 app.use("/appointmentTypes", appointmentTypeRoutes);
 app.use("/priceLists", priceListsRoutes);
 app.use("/drugs", drugsRoutes);

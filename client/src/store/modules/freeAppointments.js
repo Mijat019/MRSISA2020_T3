@@ -41,6 +41,23 @@ const actions = {
     }
   },
 
+  async getFreeAppointmentsByTypeAction({ commit, dispatch }, typeId) {
+    // no selected doctors
+    if (!typeId) {
+      commit("setAppointments", []);
+      return;
+    }
+
+    try {
+      let { data: appointments } = await Vue.$axios.get(
+        `/freeAppointments/type/${typeId}`
+      );
+      commit("setAppointments", appointments);
+    } catch (error) {
+      dispatch("snackbar/showError", error.response.data, { root: true });
+    }
+  },
+
   async addFreeAppointmentAction({ commit, dispatch }, appointmentPayload) {
     try {
       const { data: newAppointment } = await Vue.$axios.post(
@@ -78,6 +95,18 @@ const actions = {
       await Vue.$axios.delete(`/freeAppointments/${appointmentId}`);
       commit("removeAppointment", appointmentId);
       dispatch("snackbar/showSuccess", "Appointment successfully deleted", {
+        root: true,
+      });
+    } catch (error) {
+      dispatch("snackbar/showError", error.response.data, { root: true });
+    }
+  },
+
+  async makeAppointmentAction({ commit, dispatch }, { appoId, userId }) {
+    try {
+      await Vue.$axios.post(`/freeAppointments/schedule`, { appoId: appoId, userId: userId });
+      commit("removeAppointment", appoId);
+      dispatch("snackbar/showSuccess", "Appointment successfully confirmed", {
         root: true,
       });
     } catch (error) {
