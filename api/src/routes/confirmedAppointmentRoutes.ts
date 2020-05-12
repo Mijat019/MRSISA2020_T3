@@ -8,6 +8,8 @@ router.use(AuthenticationMiddleware.verifyToken);
 
 router.get("/", ConfirmedAppointmentController.getAll);
 
+router.get("/:doctorId", ConfirmedAppointmentController.getAllForDoctor);
+
 router.patch("/", ConfirmedAppointmentController.update);
 
 router.delete("/", ConfirmedAppointmentController.delete);

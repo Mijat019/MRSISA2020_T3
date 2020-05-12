@@ -104,7 +104,10 @@ const actions = {
 
   async makeAppointmentAction({ commit, dispatch }, { appoId, userId }) {
     try {
-      await Vue.$axios.post(`/freeAppointments/schedule`, { appoId: appoId, userId: userId });
+      await Vue.$axios.post(`/freeAppointments/schedule`, {
+        appoId: appoId,
+        userId: userId,
+      });
       commit("removeAppointment", appoId);
       dispatch("snackbar/showSuccess", "Appointment successfully confirmed", {
         root: true,
@@ -118,33 +121,6 @@ const actions = {
 const getters = {
   getFreeAppointments: (state) => state.appointments,
 };
-
-/** Use this function to convert FreeApp obj returned from back-end
- * to simpler JS object to use on front
- */
-// function convertAppointment(appointment) {
-//   let x = {
-//     id: appointment.id,
-//     appointmentType: appointment.AppointmentType,
-//     doctor: appointment.DoctorAt.User,
-//     room: appointment.Room,
-//     start: appointment.start,
-//     date: formatDate(appointment.start),
-//     duration: appointment.duration,
-//   };
-//   x.doctor.fullName = x.doctor.firstName + " " + x.doctor.lastName;
-
-//   return x;
-// }
-
-// function formatDate(val) {
-//   if (!val) return "";
-
-//   return val
-//     .split(".")[0]
-//     .replace("T", " ")
-//     .slice(0, -3);
-// }
 
 export default {
   namespaced: true,

@@ -7,7 +7,6 @@ import PriceLists from "./PriceLists";
 
 class FreeAppointments extends Model {
   public id!: number;
-  public appointmentTypeId!: number;
   public priceListId!: number;
   public doctorId!: number;
   public roomId!: number;
@@ -22,12 +21,6 @@ FreeAppointments.init(
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
-    },
-
-    appointmentTypeId: {
-      type: INTEGER.UNSIGNED,
-      unique: false,
-      allowNull: false,
     },
 
     priceListId: {
@@ -64,11 +57,6 @@ FreeAppointments.init(
     sequelize: db,
   }
 );
-
-FreeAppointments.belongsTo(AppointmentTypes, {
-  as: "appointmentType",
-  foreignKey: "appointmentTypeId",
-});
 
 FreeAppointments.belongsTo(PriceLists, {
   as: "priceList",

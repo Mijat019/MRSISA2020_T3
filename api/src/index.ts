@@ -19,7 +19,7 @@ import appointmentTypeRoutes from "./routes/appointmentTypeRoutes";
 import drugsRoutes from "./routes/drugsRoutes";
 import diagnosisRoutes from "./routes/diagnosisRoutes";
 import clinicCenterAdminRoutes from "./routes/clinicCenterAdminRoutes";
-import priceListsRoutes from './routes/priceListsRoutes';
+import priceListsRoutes from "./routes/priceListsRoutes";
 
 // connect to the database
 (async () => {
@@ -34,10 +34,10 @@ import priceListsRoutes from './routes/priceListsRoutes';
     // creates tables from model
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
-    //await db.sync({ force: true });
-    //await initModelStega();
-    //await initModel();
 
+    // await db.sync({ force: true });
+    //await initModelStega();
+    // await initModel();
   } catch (error) {
     console.log(error);
   }

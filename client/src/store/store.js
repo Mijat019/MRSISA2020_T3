@@ -21,7 +21,8 @@ import drugsDialog from "./modules/drugsDialog";
 import diagnosis from "./modules/diagnosis";
 import diagnosisDialog from "./modules/diagnosisDialog";
 import clinicCenterAdmins from "./modules/clinicCenterAdmins";
-import priceLists from './modules/priceLists'
+import priceLists from "./modules/priceLists";
+import confirmedAppointments from "./modules/confirmedAppointments";
 
 Vue.use(Vuex);
 
@@ -52,6 +53,7 @@ export default new Vuex.Store({
     diagnosis,
     diagnosisDialog,
     clinicCenterAdmins,
-    priceLists
+    priceLists,
+    confirmedAppointments,
   },
 });

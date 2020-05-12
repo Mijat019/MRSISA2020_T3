@@ -1,9 +1,10 @@
 import DoctorAt from "../models/DoctorAt";
 import Rooms from "../models/Rooms";
 import Users, { usersSelect } from "../models/Users";
-import AppointmentTypes from "../models/AppointmentTypes";
 import ConfirmedAppointments from "../models/ConfirmedAppointments";
 import FreeAppointments from "../models/FreeAppointments";
+import PriceLists from "../models/PriceLists";
+import AppointmentTypes from "../models/AppointmentTypes";
 
 class ConfirmedAppointmentService {
   private include = [
@@ -13,12 +14,25 @@ class ConfirmedAppointmentService {
       as: "doctor",
       include: [{ model: Users, as: "user", attributes: usersSelect }],
     },
-    { model: AppointmentTypes, as: "appointmentType" }
+    {
+      model: PriceLists,
+      as: "priceList",
+      include: [{ model: AppointmentTypes, as: "appointmentType" }],
+    },
+    { model: Users, as: "patient" },
   ];
+
+  public async getAllForDoctor(doctorId: string) {
+    const appointments = await ConfirmedAppointments.findAll({
+      where: { doctorId },
+      include: this.include,
+    });
+    return appointments;
+  }
 
   public async getAll() {
     const appointments = await ConfirmedAppointments.findAll({
-      include: this.include
+      include: this.include,
     });
     return appointments;
   }
@@ -42,10 +56,9 @@ class ConfirmedAppointmentService {
       userId: _userId,
       roomId: freeAppo.roomId,
       start: freeAppo.start,
-      duration: freeAppo.duration
+      duration: freeAppo.duration,
     });
   }
-
 }
 
 export default new ConfirmedAppointmentService();

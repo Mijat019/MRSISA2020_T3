@@ -3,9 +3,7 @@
     <v-col>
       <v-sheet height="64">
         <v-toolbar flat color="white">
-          <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
-            Today
-          </v-btn>
+          <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">Today</v-btn>
           <v-btn fab text small color="grey darken-2" @click="prev">
             <v-icon small>mdi-chevron-left</v-icon>
           </v-btn>
@@ -51,6 +49,7 @@
           @click:more="viewDay"
           @click:date="viewDay"
           @change="updateRange"
+          :event-color="getEventColor"
           first-interval="7"
           interval-minutes="60"
           interval-count="8"
@@ -72,9 +71,7 @@
               Room: {{ selectedEvent.roomName }}
             </v-card-text>
             <v-card-actions>
-              <v-btn text color="secondary" @click="selectedOpen = false">
-                Cancel
-              </v-btn>
+              <v-btn text color="secondary" @click="selectedOpen = false">Cancel</v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
@@ -100,13 +97,15 @@ export default {
       month: "Month",
       week: "Week",
       day: "Day",
-      "4day": "4 Days",
-    },
+      "4day": "4 Days"
+    }
   }),
 
   methods: {
     ...mapActions({
       getFreeAppointmentsAction: "freeAppointments/getFreeAppointmentsAction",
+      getConfirmedAppointmentsAction:
+        "confirmedAppointments/getConfirmedAppointmentsAction"
     }),
 
     updateRange({ start, end }) {
@@ -159,28 +158,43 @@ export default {
         ? `${a.getFullYear()}-${a.getMonth() +
             1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`
         : `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()}`;
-    },
+    }
   },
   computed: {
     ...mapGetters({
       getFreeAppointments: "freeAppointments/getFreeAppointments",
-      getUser: "authentication/getUser",
+      getConfirmedAppointments:
+        "confirmedAppointments/getConfirmedAppointments",
+      getUser: "authentication/getUser"
     }),
 
     appointments() {
-      const result = this.getFreeAppointments.map((item) => {
-        console.log(item);
-        const end = moment.utc(item.start);
-        end.add(item.duration, "seconds");
-        return {
-          appointmentType: item.appointmentType.name,
-          roomName: item.room.name,
-          name: `${item.appointmentType.name} ${item.room.name}`,
-          start: moment.utc(item.start).format("YYYY-MM-DD HH:mm"),
-          end: end.format("YYYY-MM-DD HH:mm"),
-        };
-      });
-      console.log(result);
+      const result = [
+        ...this.getFreeAppointments.map(item => {
+          const end = moment.utc(item.start);
+          end.add(item.duration, "seconds");
+          return {
+            color: "green",
+            appointmentType: item.priceList.appointmentType.name,
+            roomName: item.room.name,
+            name: `${item.priceList.appointmentType.name} ${item.room.name}`,
+            start: moment.utc(item.start).format("YYYY-MM-DD HH:mm"),
+            end: end.format("YYYY-MM-DD HH:mm")
+          };
+        }),
+        ...this.getConfirmedAppointments.map(item => {
+          const end = moment.utc(item.start);
+          end.add(item.duration, "seconds");
+          return {
+            color: "red",
+            appointmentType: item.priceList.appointmentType.name,
+            roomName: item.room.name,
+            name: `${item.priceList.appointmentType.name} ${item.room.name}`,
+            start: moment.utc(item.start).format("YYYY-MM-DD HH:mm"),
+            end: end.format("YYYY-MM-DD HH:mm")
+          };
+        })
+      ];
       return result;
     },
 
@@ -215,13 +229,14 @@ export default {
     monthFormatter() {
       return this.$refs.calendar.getFormatter({
         timeZone: "UTC",
-        month: "long",
+        month: "long"
       });
-    },
+    }
   },
   async created() {
     await this.getFreeAppointmentsAction(this.getUser.id);
-  },
+    await this.getConfirmedAppointmentsAction(this.getUser.id);
+  }
 };
 </script>
 

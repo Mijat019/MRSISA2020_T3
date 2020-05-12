@@ -5,18 +5,17 @@ import ClinicAdminService from "../services/ClinicAdminService";
 import DoctorsService from "../services/DoctorsService";
 import Drugs from "./Drugs";
 import Diagnosis from "./Diagnosis";
-import PriceLists from './PriceLists'
+import PriceLists from "./PriceLists";
+import AppointmentTypes from "./AppointmentTypes";
+import Rooms from "./Rooms";
 
 export default async () => {
-  await Diagnosis.create({ name: "Loco" });
   await Diagnosis.create({ name: "Insane in the membrane" });
   await Diagnosis.create({ name: "Vucic" });
 
   await Drugs.create({ name: "Percocet" });
   await Drugs.create({ name: "Molly" });
   await Drugs.create({ name: "Percocets" });
-
-  await PriceLists.findAll({});
 
   await UsersService.createUser(
     {
@@ -41,6 +40,14 @@ export default async () => {
     country: "Srbija",
     description: "Izvadimo vam mozak i damo vam 100 jura",
   });
+
+  await Rooms.create({ clinicId: id, name: "soba neka tamo" });
+
+  const { id: appointmentTypeId } = await AppointmentTypes.create({
+    name: "Ocni pregled",
+  });
+
+  await PriceLists.create({ clinicId: id, appointmentTypeId, price: 420 });
 
   await ClinicAdminService.add(
     {

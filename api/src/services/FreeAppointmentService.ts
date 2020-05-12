@@ -15,13 +15,17 @@ class FreeAppointmentService {
       as: "doctor",
       include: [{ model: Users, as: "user", attributes: usersSelect }],
     },
-    { model: AppointmentTypes, as: "appointmentType" }
+    {
+      model: PriceLists,
+      as: "priceList",
+      include: [{ model: AppointmentTypes, as: "appointmentType" }],
+    },
   ];
 
   public async getAllForDoctor(doctorId: string) {
     const appointments = await FreeAppointments.findAll({
       where: { doctorId },
-      include: this.include
+      include: this.include,
     });
     return appointments;
   }
@@ -29,16 +33,18 @@ class FreeAppointmentService {
   public async getAllOfType(typeId: string) {
     const appointments = await FreeAppointments.findAll({
       where: { appointmentTypeId: typeId },
-      include: this.include
+      include: this.include,
     });
     return appointments;
   }
 
   public async add(appointmentPayload: any) {
     // Allocate appropriate appo type
-    const priceList = await PriceLists.findOne({ where: { 
-      id: appointmentPayload.priceListId
-    }});
+    const priceList = await PriceLists.findOne({
+      where: {
+        id: appointmentPayload.priceListId,
+      },
+    });
     appointmentPayload.appointmentTypeId = priceList?.appointmentTypeId;
 
     const { id } = await FreeAppointments.create(appointmentPayload);
@@ -51,9 +57,11 @@ class FreeAppointmentService {
 
   public async update(id: number, appointmentPayload: any) {
     // Allocate appropriate appo type
-    const priceList = await PriceLists.findOne({ where: { 
-      id: appointmentPayload.priceListId
-    }});
+    const priceList = await PriceLists.findOne({
+      where: {
+        id: appointmentPayload.priceListId,
+      },
+    });
     appointmentPayload.appointmentTypeId = priceList?.appointmentTypeId;
 
     await FreeAppointments.update(appointmentPayload, { where: { id } });
@@ -70,13 +78,16 @@ class FreeAppointmentService {
   public async schedule(appoId: number, userId: number) {
     // Get free appointment
     const freeAppo = await FreeAppointments.findByPk(appoId, {
-      include: this.include
+      include: this.include,
     });
 
     if (freeAppo == null) throw "Free appointment " + appoId + " not found.";
 
     // Make confirmed appointment from free
-    const confAppo = await ConfirmedAppointmentService.createFromFree(freeAppo, userId);
+    const confAppo = await ConfirmedAppointmentService.createFromFree(
+      freeAppo,
+      userId
+    );
 
     // Delete free appointment
     await FreeAppointments.destroy({ where: { id: freeAppo.id } });
