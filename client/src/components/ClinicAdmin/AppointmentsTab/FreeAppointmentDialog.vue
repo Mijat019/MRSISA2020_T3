@@ -37,11 +37,11 @@
             label="Doctor"
           />
           <v-select
-            :items="getAppointmentTypes"
-            v-model="appointment.appointmentTypeId"
-            item-text="name"
+            :items="getPriceLists"
+            v-model="appointment.priceListId"
+            item-text="appointmentType.name"
             item-value="id"
-            label="Appointment Type"
+            label="Price list entry"
           />
         </v-form>
       </v-card-text>
@@ -71,14 +71,14 @@ export default {
   mounted() {
     this.getRoomsAction();
     this.getDoctorsAction();
-    this.getAppointmentTypesAction();
+    this.getPriceListsAction(this.getUser.clinicId);
   },
   methods: {
     ...mapActions({
       addAppointmentAction: "freeAppointments/addFreeAppointmentAction",
       updateAppointmentAction: "freeAppointments/updateFreeAppointmentAction",
       getRoomsAction: "rooms/getRoomsAction",
-      getAppointmentTypesAction: "appointmentTypes/getAppointmentTypesAction",
+      getPriceListsAction: "priceLists/getPriceListsAction",
       getDoctorsAction: "doctors/getDoctorsAction",
     }),
     ...mapMutations("freeAppointmentsDialog", {
@@ -106,7 +106,8 @@ export default {
       type: "freeAppointmentsDialog/getDialogType",
       getRooms: "rooms/getRooms",
       getDoctors: "doctors/getDoctors",
-      getAppointmentTypes: "appointmentTypes/getAppointmentTypes",
+      getPriceLists: "priceLists/getPriceLists",
+      getUser: "authentication/getUser"
     }),
   },
 };

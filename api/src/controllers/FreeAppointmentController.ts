@@ -13,6 +13,27 @@ class AppointmentController {
     }
   }
 
+  public async getAllOfType(req: any, res: any) {
+    try {
+      const { typeId } = req.params;
+      const appointments = await FreeAppointmentService.getAllOfType(
+        typeId
+      );
+      res.send(appointments);
+    } catch (error) {
+      res.status(400).send(error.message);
+    }
+  }
+
+  public async schedule(req: any, res: any) {
+    try {
+      const confAppo = await FreeAppointmentService.schedule(req.body.appoId, req.body.userId);
+      res.send(confAppo);
+    } catch (error) {
+      res.status(400).send(error.message);
+    }
+  }
+
   public async add(req: any, res: any) {
     try {
       const newFreeAppointment = await FreeAppointmentService.add(req.body);
@@ -41,7 +62,7 @@ class AppointmentController {
     try {
       const { id } = req.params;
       await FreeAppointmentService.delete(id);
-      res.send("Appointment successfully deleted.");
+      res.send("Free appointment successfully deleted.");
     } catch (error) {
       res.status(400).send(error.message);
     }

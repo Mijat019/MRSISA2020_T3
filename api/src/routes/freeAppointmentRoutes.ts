@@ -7,8 +7,10 @@ const router = express.Router();
 router.use(AuthenticationMiddleware.verifyToken);
 
 router.get("/:doctorId", FreeAppointmentController.getAllForDoctor);
+router.get("/type/:typeId", FreeAppointmentController.getAllOfType);
 
 router.post("/", FreeAppointmentController.add);
+router.post("/schedule/", FreeAppointmentController.schedule);
 
 router.patch("/:id", FreeAppointmentController.update);
 

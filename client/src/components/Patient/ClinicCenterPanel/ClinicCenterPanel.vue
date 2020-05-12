@@ -5,15 +5,13 @@
       <v-tabs-slider></v-tabs-slider>
 
       <v-tab :href="`#scheduleAppointment`">Schedule Appointment</v-tab>
-      <v-tab :href="`#clinics`">Browse Clinics</v-tab>
-      <v-tab :href="`#doctors`">Browse Doctors</v-tab>
+      <v-tab :href="`#clinicsdoctors`">Clinics and Doctors</v-tab>
 
       <v-tab-item :value="'scheduleAppointment'">
         <ScheduleAppointment></ScheduleAppointment>
       </v-tab-item>
       
-      <v-tab-item :value="'clinics'">clinics</v-tab-item>
-      <v-tab-item :value="'doctors'">doctors</v-tab-item>
+      <v-tab-item :value="'clinicsdoctors'">clinicsdoctors</v-tab-item>
     </v-tabs>
   </div>
 </template>

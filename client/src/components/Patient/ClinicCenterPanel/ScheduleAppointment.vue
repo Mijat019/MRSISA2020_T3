@@ -1,33 +1,54 @@
 <template>
   <v-card>
     <v-card-title>
-      Schedule appointment
-      <v-spacer></v-spacer>
     </v-card-title>
 
     <v-card-title>
-      <v-select
-        :items="getClinics"
+      <v-autocomplete
+        v-model="appoType"
+        :items="getAppointmentTypes"
         item-text="name"
-        v-model="clinic"
-        label="Select a clinic"
+        label="Appointment Type"
+        placeholder="Enter appointment type"
         return-object
-      ></v-select>
-      <v-spacer></v-spacer>
-      <v-select
-        v-if="clinic != null"
-        :items="clinicDoctors"
-        item-text="User.fullName"
-        v-model="doctor"
-        label="Select a doctor"
-        return-object
-      ></v-select>
+      ></v-autocomplete>
     </v-card-title>
 
-    <v-card-text v-if="doctor != null">
-      Calendar view
+    <v-card-text v-if="appoType != null">
+      <v-data-table
+        :items="getFreeAppointments"
+        :headers="headers"
+      >
+        <template v-slot:item.actions="{ item }">
+        <v-icon
+          small
+          class="mr-2"
+          @click="showDialog(item)"
+        >
+          mdi-check-bold
+        </v-icon>
+      </template>
+      </v-data-table>
     </v-card-text>
+    
+    <v-dialog v-model="dialog" width="500">
+      <v-card>
+        Appointment type: {{ dialogAppo.appointmentType.name }}
+        <br>
+        Doctor: {{ dialogAppo.doctor.user.firstName }} {{ dialogAppo.doctor.user.lastName }}
+        <br>
+        Room: {{ dialogAppo.room.name }}
+        <br>
+        Time: {{ dialogAppo.start }}
+        <br>
+        <v-spacer/>
+        <v-btn color="primary" @click="makeAppointment()">
+          Make appointment
+        </v-btn>
+      </v-card>
+    </v-dialog>
   </v-card>
+
 </template>
 
 <script>
@@ -38,41 +59,70 @@ export default {
   },
   data() {
     return {
-      clinic: null,
-      clinicDoctors: [],
-      doctor: null
+      appoType: null,
+      headers: [
+      { text: "Start", value: "start" },
+      { text: "Room", value: "room.name" },
+      { text: "Doctors first name", value: "doctor.user.firstName" },
+      { text: "Doctors last name", value: "doctor.user.lastName" },
+      { text: "Appointment type", value: "appointmentType.name" },
+      { text: "Duration", value: "duration" },
+      { text: "Actions", value: "actions", sortable: false },
+    ],
+    dialog: false,
+    dialogAppo: {
+      appointmentType: {
+        name: ""
+      },
+      doctor: {
+        user: {
+          firstName: "",
+          lastName: ""
+        }
+      },
+      room: {
+        name: ""
+      },
+      start: ""
+    }
     };
   },
 
   methods: {
-    ...mapActions("doctors", {
-      getDoctorsAction: "getDoctorsAction",
+    ...mapActions("appointmentTypes", {
+      getAppointmentTypesAction: "getAppointmentTypesAction",
     }),
-
-    ...mapActions("clinics", {
-      getClinicsAction: "getClinicsAction"
-    })
+    ...mapActions("freeAppointments", {
+      getFreeAppointmentsByTypeAction: "getFreeAppointmentsByTypeAction",
+      makeAppointmentAction: "makeAppointmentAction"
+    }),
+    showDialog: function(item) {
+      this.dialogAppo = item;
+      this.dialog = true;
+    },
+    makeAppointment: function() {
+      this.makeAppointmentAction(this.dialogAppo);
+      this.dialog = false;
+    }
   },
 
   async mounted() {
-    await this.getDoctorsAction();
-    await this.getClinicsAction();
+    await this.getAppointmentTypesAction();
   },
 
   computed: {
-    ...mapGetters("clinics", {
-      getClinics: "getClinics"
+    ...mapGetters("appointmentTypes", {
+      getAppointmentTypes: "getAppointmentTypes"
     }),
-    ...mapGetters("doctors", {
-      getAllDoctors: "getDoctors"
+    ...mapGetters("freeAppointments", {
+      getFreeAppointments: "getFreeAppointments"
     })
   },
 
   watch: {
-    clinic(value) {
-      this.clinicDoctors = this.getAllDoctors.filter(doc => doc.ClinicId === value.id);
-      console.log(this.clinicDoctors);
-    }
+    appoType(value) {
+      this.getFreeAppointmentsByTypeAction(value.id);
+    },
   }
 };
 </script>
