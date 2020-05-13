@@ -35,8 +35,8 @@ import priceListsRoutes from "./routes/priceListsRoutes";
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
 
-    await db.sync({ force: true });
-    await initModel();
+    // await db.sync({ force: true });
+    // await initModel();
     //await initModelStega();
   } catch (error) {
     console.log(error);

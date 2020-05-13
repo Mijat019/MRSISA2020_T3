@@ -37,6 +37,7 @@ const actions = {
   async logout({ commit }) {
     commit("logoutUser");
   },
+
   async setPasswordAction({ dispatch }, payload) {
     try {
       await Vue.$axios.post("/auth/setPassword", payload);
