@@ -46,6 +46,7 @@ class RegistrationReqController {
     try {
       let email = req.params["email"];
       await RegistrationReqService.activateRegistration(email);
+
       res.send("Activation successful");
     } catch (error) {
       res.status(400).send(error.message);

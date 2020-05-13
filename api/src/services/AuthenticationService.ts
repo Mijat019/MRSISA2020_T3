@@ -8,6 +8,7 @@ import UserRole from "../models/UserRole";
 import AdminAt from "../models/AdminAt";
 import DoctorAt from "../models/DoctorAt";
 import NurseAt from "../models/NurseAt";
+import PatientMedicalRecord from "../models/PatientMedicalRecord";
 
 class AuthenticationService {
   public async authenticateUser(email: string, password: string): Promise<any> {
@@ -40,11 +41,11 @@ class AuthenticationService {
       address: user.address,
       role: user.role,
     };
-    payload = await this.addClinicIdToTokenPayload(payload);
+    payload = await this.addDataToTokenPayload(payload);
     return await jwt.sign(payload, config.secret, { expiresIn: "2h" });
   }
 
-  private async addClinicIdToTokenPayload(payload: any) {
+  private async addDataToTokenPayload(payload: any) {
     switch (payload.role) {
       case UserRole.CLINIC_ADMIN:
         const adminAt = await AdminAt.findByPk(payload.id);
@@ -57,6 +58,13 @@ class AuthenticationService {
       case UserRole.NURSE:
         const nurseAt = await NurseAt.findByPk(payload.id);
         payload.clinicId = nurseAt?.clinicId;
+        return payload;
+      case UserRole.PATIENT:
+        const patientMedicalRecord: any = await PatientMedicalRecord.findByPk(
+          payload.id
+        );
+        const { height, weight, bloodType } = patientMedicalRecord;
+        payload.medicalRecord = { height, weight, bloodType };
         return payload;
       default:
         return payload;

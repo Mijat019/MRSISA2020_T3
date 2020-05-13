@@ -9,16 +9,22 @@ import PriceLists from "../models/PriceLists";
 
 class FreeAppointmentService {
   private include = [
-    { model: Rooms, as: "room" },
+    { model: Rooms, as: "room", required: true },
     {
       model: DoctorAt,
       as: "doctor",
-      include: [{ model: Users, as: "user", attributes: usersSelect }],
+      required: true,
+      include: [
+        { model: Users, as: "user", attributes: usersSelect, required: true },
+      ],
     },
     {
       model: PriceLists,
       as: "priceList",
-      include: [{ model: AppointmentTypes, as: "appointmentType" }],
+      required: true,
+      include: [
+        { model: AppointmentTypes, as: "appointmentType", required: true },
+      ],
     },
   ];
 
@@ -32,7 +38,7 @@ class FreeAppointmentService {
 
   public async getAllOfType(typeId: string) {
     const appointments = await FreeAppointments.findAll({
-      where: { appointmentTypeId: typeId },
+      where: { priceListId: typeId },
       include: this.include,
     });
     return appointments;

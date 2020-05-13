@@ -8,7 +8,9 @@
       <v-tab :href="`#diagnosisHisotry`">diagnosis hisotry</v-tab>
       <v-tab :href="`#appointmentHisotry`">Appointment hisotry</v-tab>
 
-      <v-tab-item :value="'basicInfo'">basicInfo</v-tab-item>
+      <v-tab-item :value="'basicInfo'">
+        <BasicInfo />
+      </v-tab-item>
       <v-tab-item :value="'diagnosisHisotry'">diagnosisHisotry</v-tab-item>
       <v-tab-item :value="'appointmentHisotry'">appointmentHisotry</v-tab-item>
     </v-tabs>
@@ -16,8 +18,14 @@
 </template>
 
 <script>
+import BasicInfo from "./BasicInfo";
 export default {
-  name: "MedicalRecord",
+  name: "MedicalRecordTabs",
+
+  components: {
+    BasicInfo
+  },
+
   data: () => ({ tab: null })
 };
 </script>

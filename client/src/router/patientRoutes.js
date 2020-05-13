@@ -1,6 +1,6 @@
 import PatientPage from "../views/PatientPage";
 import ClinicCenterPanel from "../components/Patient/ClinicCenterPanel/ClinicCenterPanel";
-import MedicalRecord from "../components/Patient/MedicalRecord";
+import MedicalRecordTabs from "../components/Patient/MedicalRecordTabs/MedicalRecordTabs";
 
 export default {
   path: "patient",
@@ -12,8 +12,8 @@ export default {
   children: [
     {
       path: "medicalRecord",
-      name: "MedicalRecord",
-      component: MedicalRecord,
+      name: "MedicalRecordTabs",
+      component: MedicalRecordTabs,
       meta: { patient: true },
     },
     {

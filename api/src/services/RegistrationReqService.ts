@@ -7,6 +7,7 @@ import PatientRequest from "../models/PatientRequest";
 import Users from "../models/Users";
 import AccountStatus from "../models/AccountStatus";
 import EmailService from "./EmailService";
+import PatientMedicalRecord from "../models/PatientMedicalRecord";
 
 class RegistrationReqService {
   public async getAll() {
@@ -18,10 +19,6 @@ class RegistrationReqService {
 
   // Creates a request for registration
   public async register(userPayload: any): Promise<any> {
-    // check if there is already registered user with address
-    let exists = await UsersService.getUser(userPayload.email);
-    if (exists) throw new Error("User with that email address already exists!");
-
     userPayload.requestStatus = RequestStatus.PENDING;
     userPayload.password = await bcrypt.hash(
       userPayload.password,
@@ -117,7 +114,9 @@ class RegistrationReqService {
     // add requested patient to users
     let user = this.getUserFromRequest(req);
     user.accountStatus = AccountStatus.ACTIVATED;
-    await Users.create(user);
+    // create a patient and his medical record
+    const { id: userId } = await Users.create(user);
+    await PatientMedicalRecord.create({ userId });
 
     // now we can delete request
     await PatientRequest.destroy({ where: { email } });
