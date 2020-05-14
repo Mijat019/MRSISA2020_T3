@@ -60,8 +60,8 @@ export default {
     }),
   },
 
-  mounted() {
-    this.getDoctorsAction();
+  async mounted() {
+    await this.getDoctorsAction();
   },
 
   computed: {
