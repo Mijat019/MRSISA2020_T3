@@ -46,7 +46,7 @@ export default {
       { text: "Room", value: "room.name" },
       { text: "Doctors first name", value: "doctor.user.firstName" },
       { text: "Doctors last name", value: "doctor.user.lastName" },
-      { text: "Appointment type", value: "appointmentType.name" },
+      { text: "Appointment type", value: "priceList.appointmentType.name" },
       { text: "Duration", value: "duration" },
       { text: "Actions", value: "actions", sortable: false },
     ],

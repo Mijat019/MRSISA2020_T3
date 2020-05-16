@@ -45,7 +45,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn @click="close">Cancel</v-btn>
-          <v-btn color="primary" @click="scheduleAppointment">Schedule</v-btn>
+          <v-btn color="primary" @click="requestAppointment">Schedule</v-btn>
         </v-card-actions>
       </v-card>
   </v-dialog>
@@ -75,17 +75,17 @@ export default {
     ...mapActions({
       getPriceListsAction : "priceLists/getPriceListsAction",
       getDoctorsByClinicAction : "doctors/getDoctorsByClinicAction",
-      scheduleAction : "scheduleCustomAppointment/scheduleAction",
+      requestAppointmentAction : "scheduleCustomAppointment/requestAppointmentAction",
     }),
 
-    async scheduleAppointment() {
+    async requestAppointment() {
       if (!this.$refs.form.validate() || !this.appointment.start) {
         return;
       }
 
-      this.appointment.userId = this.getUser.id;
+      this.appointment.patientMedicalRecordId = this.getUser.id;
       this.appointment.clinicId = this.clinic;
-      await this.scheduleAction(this.appointment);
+      await this.requestAppointmentAction(this.appointment);
       this.close();
     },
   },

@@ -19,7 +19,7 @@ const mutations = {
 
 const actions = {
 
-  async scheduleAction({ commit, dispatch }, typePayload) {
+  async requestAppointmentAction({ commit, dispatch }, typePayload) {
     try {
       const { data: newReq } = await Vue.$axios.post(
         `/appointmentRequests`,
@@ -55,7 +55,7 @@ const actions = {
     }
   },
 
-  async rejectRequestAction({ commit, dispatch }, { reqPayload }) {
+  async rejectRequestAction({ commit, dispatch }, reqPayload ) {
     try {
       await Vue.$axios.patch(`/appointmentRequests/reject`, reqPayload );
       commit("removeAppointmentRequest", reqPayload.id);

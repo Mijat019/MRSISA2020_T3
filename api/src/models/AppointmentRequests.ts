@@ -4,6 +4,7 @@ import Users from './Users'
 import DoctorAt from './DoctorAt'
 import Clinics from './Clinics'
 import PriceLists from './PriceLists'
+import PatientMedicalRecord from './PatientMedicalRecord'
 
 class AppointmentRequests extends Model {
   public id!: number;
@@ -37,7 +38,7 @@ AppointmentRequests.init(
       allowNull: false,
     },
 
-    userId : {
+    patientMedicalRecordId : {
         type: INTEGER.UNSIGNED,
         unique: false,
         allowNull: false,
@@ -66,7 +67,8 @@ AppointmentRequests.init(
   }
 );
 
-AppointmentRequests.belongsTo(Users, { as: "patient", foreignKey: "userId" });
+// AppointmentRequests.belongsTo(Users, { as: "patient", foreignKey: "userId" });
+AppointmentRequests.belongsTo(PatientMedicalRecord, { as: "patientMedicalRecord", foreignKey: "patientMedicalRecordId" });
 AppointmentRequests.belongsTo(DoctorAt, { as: "doctor", foreignKey: "doctorId" });
 AppointmentRequests.belongsTo(PriceLists, { as: "priceList", foreignKey: "priceListId"});
 AppointmentRequests.belongsTo(Clinics, { as: "clinic", foreignKey: "clinicId"});

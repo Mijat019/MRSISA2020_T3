@@ -10,13 +10,13 @@ import { where } from "sequelize/types";
 
 class FreeAppointmentService {
   private include = [
-    { model: Rooms, as: "room", required: true },
+    { model: Rooms, as: "room", },
     {
       model: DoctorAt,
       as: "doctor",
       required: true,
       include: [
-        { model: Users, as: "user", attributes: usersSelect, required: true },
+        { model: Users, as: "user", attributes: usersSelect, required: true, },
       ],
     },
     {
@@ -24,7 +24,7 @@ class FreeAppointmentService {
       as: "priceList",
       required: true,
       include: [
-        { model: AppointmentTypes, as: "appointmentType", required: true },
+        { model: AppointmentTypes, as: "appointmentType", required: true, },
       ],
     },
   ];
@@ -34,9 +34,6 @@ class FreeAppointmentService {
       where: { doctorId },
       include: this.include,
     });
-    // console.log('------------------------doso');
-    // console.log(doctorId);
-    // console.log(appointments);
     return appointments;
   }
 
@@ -106,11 +103,11 @@ class FreeAppointmentService {
     return confAppo;
   }
 
-  public async checkForConflicts(freeAppo : any) {
+  public async checkForConflicts(appointment : any) {
     
     // first check if room is occupied
-    const time = freeAppo.start;
-    const room = freeAppo.roomId;
+    const time = appointment.start;
+    const room = appointment.roomId;
 
     if(await ConfirmedAppointments.findOne({where : {start : time, roomId : room}}) 
       || await FreeAppointments.findOne({where : {start : time, roomId : room}})) {
@@ -118,7 +115,7 @@ class FreeAppointmentService {
     }
     
     // now check if doctor is occupied
-    const doctor = freeAppo.doctorId;
+    const doctor = appointment.doctorId;
 
     if(await ConfirmedAppointments.findOne({where : {start : time, doctorId : doctor}}) 
       || await FreeAppointments.findOne({where : {start : time, doctorId : doctor}})) {
