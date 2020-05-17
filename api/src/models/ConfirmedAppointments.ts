@@ -1,9 +1,24 @@
+<<<<<<< HEAD
 import { Model, INTEGER, DATE, BOOLEAN } from "sequelize";
+=======
+import {
+  Model,
+  INTEGER,
+  DATE,
+  Options,
+  ModelAttributeColumnOptions,
+} from "sequelize";
+>>>>>>> develop
 import db from "./database";
 import Rooms from "./Rooms";
 import DoctorAt from "./DoctorAt";
 import PriceLists from "./PriceLists";
-import Users from "./Users";
+import PatientMedicalRecord from "./PatientMedicalRecord";
+
+const requiredUnsignedInteger: ModelAttributeColumnOptions = {
+  type: INTEGER.UNSIGNED,
+  allowNull: false,
+};
 
 class ConfirmedAppointments extends Model {
   public id!: number;
@@ -25,29 +40,13 @@ ConfirmedAppointments.init(
       autoIncrement: true,
     },
 
-    priceListId: {
-      type: INTEGER.UNSIGNED,
-      unique: false,
-      allowNull: false,
-    },
+    priceListId: requiredUnsignedInteger,
 
-    doctorId: {
-      type: INTEGER.UNSIGNED,
-      unique: false,
-      allowNull: false,
-    },
+    doctorId: requiredUnsignedInteger,
 
-    userId: {
-      type: INTEGER.UNSIGNED,
-      unique: false,
-      allowNull: false,
-    },
+    patientId: requiredUnsignedInteger,
 
-    roomId: {
-      type: INTEGER.UNSIGNED,
-      unique: false,
-      allowNull: false,
-    },
+    roomId: requiredUnsignedInteger,
 
     start: {
       type: DATE,
@@ -77,9 +76,9 @@ ConfirmedAppointments.belongsTo(PriceLists, {
   foreignKey: "priceListId",
 });
 
-ConfirmedAppointments.belongsTo(Users, {
+ConfirmedAppointments.belongsTo(PatientMedicalRecord, {
   as: "patient",
-  foreignKey: "userId",
+  foreignKey: "patientId",
 });
 
 ConfirmedAppointments.belongsTo(Rooms, { as: "room", foreignKey: "roomId" });

@@ -5,6 +5,7 @@ import ConfirmedAppointments from "../models/ConfirmedAppointments";
 import FreeAppointments from "../models/FreeAppointments";
 import PriceLists from "../models/PriceLists";
 import AppointmentTypes from "../models/AppointmentTypes";
+import PatientMedicalRecord from "../models/PatientMedicalRecord";
 import { IncludeOptions } from "sequelize/types";
 
 const include: IncludeOptions[] = [
@@ -19,17 +20,13 @@ const include: IncludeOptions[] = [
     as: "priceList",
     include: [{ model: AppointmentTypes, as: "appointmentType" }],
   },
-  { model: Users, as: "patient" },
+  {
+    model: PatientMedicalRecord,
+    as: "patient",
+    include: [{ model: Users, as: "user", attributes: usersSelect }],
+  },
 ];
-
 class ConfirmedAppointmentService {
-  public async getAll() {
-    const appointments = await ConfirmedAppointments.findAll({
-      include,
-    });
-    return appointments;
-  }
-
   public async getAllForDoctor(doctorId: string) {
     const appointments = await ConfirmedAppointments.findAll({
       where: { doctorId },
@@ -40,17 +37,13 @@ class ConfirmedAppointmentService {
 
   public async getAllUnfinishedForDoctor(doctorId: string) {
     const appointments = await ConfirmedAppointments.findAll({
-      where: { doctorId, finished: false },
       include,
-      order: [["start", "ASC"]],
     });
     return appointments;
   }
 
   public async add(appoPayload: any): Promise<any> {
-    const appointment = await ConfirmedAppointments.create(
-      appoPayload
-    );
+    const appointment = await ConfirmedAppointments.create(appoPayload);
     return appointment;
   }
 
@@ -76,8 +69,6 @@ class ConfirmedAppointmentService {
       duration: freeAppo.duration,
     });
   }
-
-
 }
 
 export default new ConfirmedAppointmentService();
