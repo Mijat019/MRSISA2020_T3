@@ -49,6 +49,7 @@
                   </v-card-text>
 
                   <v-card-actions>
+                    <v-spacer />
                     <v-btn @click="submit" class="blue white--text mr-2">Set password</v-btn>
                   </v-card-actions>
                 </v-col>
