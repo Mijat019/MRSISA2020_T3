@@ -45,8 +45,8 @@ import priceListsRoutes from "./routes/priceListsRoutes";
 
 const app: Application = express();
 
-// middleware for express
 app.use(cors());
+// middleware for express
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

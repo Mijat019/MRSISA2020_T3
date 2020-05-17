@@ -1,6 +1,6 @@
 import { Model, INTEGER, BOOLEAN } from "sequelize";
 import sequelize from "./database";
-import AppointmentReport from "./AppointmentReport";
+import AppointmentReport from "./AppointmentReports";
 import NurseAt from "./NurseAt";
 import Drugs from "./Drugs";
 

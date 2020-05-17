@@ -4,7 +4,7 @@ import PatientMedicalRecord from "./PatientMedicalRecord";
 import ConfirmedAppointments from "./ConfirmedAppointments";
 import Diagnosis from "./Diagnosis";
 
-class AppointmentReport extends Model {
+class AppointmentReports extends Model {
   public id!: number;
   public patientMedicalRecordId!: number;
   public confirmedAppointmentId!: number;
@@ -13,7 +13,7 @@ class AppointmentReport extends Model {
   public notes!: string;
 }
 
-AppointmentReport.init(
+AppointmentReports.init(
   {
     id: {
       type: INTEGER.UNSIGNED,
@@ -50,17 +50,17 @@ AppointmentReport.init(
   { sequelize, tableName: "appointmentReport", timestamps: false }
 );
 
-AppointmentReport.belongsTo(PatientMedicalRecord, {
+AppointmentReports.belongsTo(PatientMedicalRecord, {
   as: "patientMedicalRecord",
   foreignKey: "patientMedicalRecordId",
 });
-AppointmentReport.belongsTo(ConfirmedAppointments, {
+AppointmentReports.belongsTo(ConfirmedAppointments, {
   as: "confirmedAppointment",
   foreignKey: "confirmedAppointmentId",
 });
-AppointmentReport.belongsTo(Diagnosis, {
+AppointmentReports.belongsTo(Diagnosis, {
   as: "diagnosis",
   foreignKey: "diagnosisId",
 });
 
-export default AppointmentReport;
+export default AppointmentReports;
