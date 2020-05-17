@@ -9,16 +9,17 @@ import PatientMedicalRecord from "../models/PatientMedicalRecord";
 import { IncludeOptions } from "sequelize/types";
 
 const include: IncludeOptions[] = [
-  { model: Rooms, as: "room" },
+  { model: Rooms, as: "room", attributes: ["name", "id"] },
   {
     model: DoctorAt,
     as: "doctor",
-    attributes: ["userId", "clinicId"],
+    attributes: [],
     include: [{ model: Users, as: "user", attributes: usersSelect }],
   },
   {
     model: PriceLists,
     as: "priceList",
+    attributes: ["id", "price"],
     include: [{ model: AppointmentTypes, as: "appointmentType" }],
   },
   {

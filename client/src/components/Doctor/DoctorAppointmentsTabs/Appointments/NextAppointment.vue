@@ -1,158 +1,132 @@
 <template>
   <v-card>
-    <div v-if="patientInformation">
-      <v-card-title>
-        Next appointment
-        <v-spacer />
-        <v-card-actions>
-          <v-btn color="error">Skip</v-btn>
-          <v-btn color="primary">Start</v-btn>
-        </v-card-actions>
-      </v-card-title>
-      <v-card-text>
-        <v-row>
-          <v-col>
-            <v-card>
-              <v-card-title>Patient information</v-card-title>
-              <v-card-text>
-                <hr />
-                <v-list dense>
-                  <v-list-item :key="information.title" v-for="information in patientInformation">
-                    <v-list-item-avatar>
-                      <v-icon>{{ information.icon }}</v-icon>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                      <v-list-item-title>{{ information.title }}</v-list-item-title>
-                      <v-list-item-subtitle>{{ information.subtitle }}</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col>
-            <v-card>
-              <v-card-title>Appointment information</v-card-title>
-              <v-card-text>
-                <hr />
-                <v-list dense>
-                  <v-list-item
-                    :key="information.title"
-                    v-for="information in appointmentInformation"
-                  >
-                    <v-list-item-avatar>
-                      <v-icon>{{ information.icon }}</v-icon>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                      <v-list-item-title>{{ information.title }}</v-list-item-title>
-                      <v-list-item-subtitle>{{ information.subtitle }}</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </div>
-    <div v-else>kurcina</div>
+    <v-card-title>
+      Next appointment
+      <v-spacer />
+      <v-card-actions>
+        <v-btn color="error">Skip</v-btn>
+        <v-btn @click="$emit(`changeComponent`)" color="primary">Start</v-btn>
+      </v-card-actions>
+    </v-card-title>
+    <v-card-text>
+      <v-row>
+        <v-col>
+          <v-card>
+            <v-card-title>Patient information</v-card-title>
+            <v-card-text>
+              <hr />
+              <v-list dense>
+                <v-list-item :key="information.title" v-for="information in patientInformation">
+                  <v-list-item-avatar>
+                    <v-icon>{{ information.icon }}</v-icon>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ information.title }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ information.subtitle }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col>
+          <v-card>
+            <v-card-title>Appointment information</v-card-title>
+            <v-card-text>
+              <hr />
+              <v-list dense>
+                <v-list-item :key="information.title" v-for="information in appointmentInformation">
+                  <v-list-item-avatar>
+                    <v-icon>{{ information.icon }}</v-icon>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ information.title }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ information.subtitle }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-card-text>
   </v-card>
 </template>
 
 <script>
 import moment from "moment";
-import { mapActions, mapGetters } from "vuex";
 export default {
   name: "NextAppointment",
 
+  props: ["appointment"],
+
   data: () => ({}),
 
-  methods: {
-    ...mapActions("confirmedAppointments", {
-      getUnfinishedConfirmedAppointmentsAction:
-        "getUnfinishedConfirmedAppointmentsAction"
-    })
-  },
+  methods: {},
 
   computed: {
-    ...mapGetters({
-      getUnfinishedConfirmedAppointments:
-        "confirmedAppointments/getUnfinishedConfirmedAppointments",
-      getUser: "authentication/getUser"
-    }),
-
     patientInformation() {
-      const {
-        patient: medicalRecord
-      } = this.getUnfinishedConfirmedAppointments[0];
-      if (!medicalRecord) {
-        return null;
-      }
-
+      const { patient } = this.appointment;
       return [
         {
           icon: "mdi-account",
           title: "First name",
-          subtitle: medicalRecord.user.firstName
+          subtitle: patient?.user.firstName
         },
         {
           icon: "mdi-account",
           title: "Last name",
-          subtitle: medicalRecord.user.lastName
+          subtitle: patient?.user.lastName
         },
         {
           icon: "mdi-email",
           title: "Email",
-          subtitle: medicalRecord.user.email
+          subtitle: patient?.user.email
         },
         {
           icon: "mdi-cellphone",
           title: "Phone number",
-          subtitle: medicalRecord.user.phoneNumber
+          subtitle: patient?.user.phoneNumber
         },
         {
           icon: "mdi-human-male-height",
           title: "Height",
-          subtitle: medicalRecord.height || "Not provided"
+          subtitle: patient?.height || "Not provided"
         },
         {
           icon: "mdi-weight-kilogram",
           title: "Weight",
-          subtitle: medicalRecord.weight || "Not provided"
+          subtitle: patient?.weight || "Not provided"
         },
         {
           icon: "mdi-blood-bag",
           title: "Blood type",
-          subtitle: medicalRecord.bloodType || "Not provided"
+          subtitle: patient?.bloodType || "Not provided"
         }
       ];
     },
 
     appointmentInformation() {
-      const appointment = this.getUnfinishedConfirmedAppointments[0];
-      if (!appointment) {
-        return null;
-      }
-
       return [
         {
           icon: "mdi-clipboard-text",
           title: "Appointment type",
-          subtitle: appointment.priceList.appointmentType.name
+          subtitle: this.appointment?.priceList.appointmentType.name
         },
-        { icon: "mdi-door", title: "Room", subtitle: appointment.room.name },
+        {
+          icon: "mdi-door",
+          title: "Room",
+          subtitle: this.appointment?.room.name
+        },
         {
           icon: "mdi-clock",
           title: "Appointment starts at",
-          subtitle: moment().format("Do MMM YYYY LT")
+          subtitle: moment(this.appointment?.start)
+            .subtract(2, "hours")
+            .format("Do MMM YYYY LT")
         }
       ];
     }
-  },
-
-  async created() {
-    await this.getUnfinishedConfirmedAppointmentsAction(this.getUser.id);
-    console.log(this.getUnfinishedConfirmedAppointments);
   }
 };
 </script>
