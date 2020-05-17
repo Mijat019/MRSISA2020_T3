@@ -13,7 +13,7 @@ const include: IncludeOptions[] = [
 const attributes: string[] = ["id", "approved"];
 
 class AppointmentReportService {
-  public async getAllForPatient(patientMedicalRecordId: number) {
+  public async getAllForPatient(patientMedicalRecordId: string) {
     const appointmentReports = await AppointmentReports.findAll({
       include,
       attributes,
