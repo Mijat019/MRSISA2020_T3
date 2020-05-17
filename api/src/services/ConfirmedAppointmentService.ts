@@ -5,49 +5,52 @@ import ConfirmedAppointments from "../models/ConfirmedAppointments";
 import FreeAppointments from "../models/FreeAppointments";
 import PriceLists from "../models/PriceLists";
 import AppointmentTypes from "../models/AppointmentTypes";
+import PatientMedicalRecord from "../models/PatientMedicalRecord";
+import { IncludeOptions } from "sequelize/types";
 
+const include: IncludeOptions[] = [
+  { model: Rooms, as: "room" },
+  {
+    model: DoctorAt,
+    as: "doctor",
+    include: [{ model: Users, as: "user", attributes: usersSelect }],
+  },
+  {
+    model: PriceLists,
+    as: "priceList",
+    include: [{ model: AppointmentTypes, as: "appointmentType" }],
+  },
+  {
+    model: PatientMedicalRecord,
+    as: "patient",
+    include: [{ model: Users, as: "user", attributes: usersSelect }],
+  },
+];
 class ConfirmedAppointmentService {
-  private include = [
-    { model: Rooms, as: "room" },
-    {
-      model: DoctorAt,
-      as: "doctor",
-      include: [{ model: Users, as: "user", attributes: usersSelect }],
-    },
-    {
-      model: PriceLists,
-      as: "priceList",
-      include: [{ model: AppointmentTypes, as: "appointmentType" }],
-    },
-    { model: Users, as: "patient" },
-  ];
-
   public async getAllForDoctor(doctorId: string) {
     const appointments = await ConfirmedAppointments.findAll({
       where: { doctorId },
-      include: this.include,
+      include,
     });
     return appointments;
   }
 
   public async getAll() {
     const appointments = await ConfirmedAppointments.findAll({
-      include: this.include,
+      include,
     });
     return appointments;
   }
 
   public async add(appoPayload: any): Promise<any> {
-    const appointment = await ConfirmedAppointments.create(
-      appoPayload
-    );
+    const appointment = await ConfirmedAppointments.create(appoPayload);
     return appointment;
   }
 
   public async update(id: number, appointmentPayload: any) {
     await ConfirmedAppointments.update(appointmentPayload, { where: { id } });
     const updatedAppointment = await ConfirmedAppointments.findByPk(id, {
-      include: this.include,
+      include,
     });
     return updatedAppointment;
   }
@@ -66,8 +69,6 @@ class ConfirmedAppointmentService {
       duration: freeAppo.duration,
     });
   }
-
-
 }
 
 export default new ConfirmedAppointmentService();
