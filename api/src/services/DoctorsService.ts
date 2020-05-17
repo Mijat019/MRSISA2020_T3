@@ -19,10 +19,10 @@ class DoctorsService {
   public async getByClinicId(_clinicId: number, _userId: number): Promise<any> {
     // Does the user id match the admin of this clinic?
     const adminAt = await AdminAt.findOne({ where: { userId: _userId, clinicId: _clinicId } });
-    if (adminAt == null) {
-      // Given user is NOT an admin of this clinic or either of them don't exist
-      throw "Given user " + _userId + " is not an admin of clinic " + _clinicId;
-    }
+    // if (adminAt == null) {
+    //   // Given user is NOT an admin of this clinic or either of them don't exist
+    //   throw "Given user " + _userId + " is not an admin of clinic " + _clinicId;
+    // }
 
     const doctors = await DoctorAt.findAll({
       where: { clinicId: _clinicId },

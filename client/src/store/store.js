@@ -23,6 +23,8 @@ import diagnosisDialog from "./modules/diagnosisDialog";
 import clinicCenterAdmins from "./modules/clinicCenterAdmins";
 import priceLists from "./modules/priceLists";
 import confirmedAppointments from "./modules/confirmedAppointments";
+import scheduleCustomAppointment from './modules/customAppointment/scheduleCustomAppointment'
+import scheduleCustomAppointmentDialog from './modules/customAppointment/scheduleCustomAppointmentDialog'
 
 Vue.use(Vuex);
 
@@ -55,5 +57,7 @@ export default new Vuex.Store({
     clinicCenterAdmins,
     priceLists,
     confirmedAppointments,
+    scheduleCustomAppointment,
+    scheduleCustomAppointmentDialog,
   },
 });

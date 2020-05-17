@@ -3,9 +3,14 @@ import UserRole from "./UserRole";
 import ClinicsService from "../services/ClinicsService";
 import ClinicAdminService from "../services/ClinicAdminService";
 import DoctorsService from "../services/DoctorsService";
+import RoomService from '../services/RoomsService';
+import AppointmentTypesService from '../services/AppointmentTypesService'
+import PriceListsService from '../services/PriceListsService'
+
 import Drugs from "./Drugs";
 import Diagnosis from "./Diagnosis";
 import PriceLists from './PriceLists'
+import AppointmentRequests from './AppointmentRequests'
 
 export default async () => {
   await Diagnosis.create({ name: "Loco" });
@@ -17,6 +22,7 @@ export default async () => {
   await Drugs.create({ name: "Cyanide" });
 
   await PriceLists.findAll();
+  await AppointmentRequests.findAll();
 
   await UsersService.createUser(
     {
@@ -85,4 +91,17 @@ export default async () => {
     },
     id
   );
+
+  await RoomService.add({name : "soba 1"}, 1);
+  await RoomService.add({name : "soba 2"}, 1);
+  await RoomService.add({name : "soba 3"}, 1);
+
+  await AppointmentTypesService.add({name: "Ocni pregled"});
+  await AppointmentTypesService.add({name: "Stomacni pregled"})
+  await AppointmentTypesService.add({name: "Vaginalni pregled"});
+
+  await PriceListsService.add({clinicId : 1, appointmentTypeId : 1, price : 100})
+  await PriceListsService.add({clinicId : 1, appointmentTypeId : 2, price : 200})
+  await PriceListsService.add({clinicId : 1, appointmentTypeId : 3, price : 300})
+
 };

@@ -37,6 +37,13 @@ class ConfirmedAppointmentService {
     return appointments;
   }
 
+  public async add(appoPayload: any): Promise<any> {
+    const appointment = await ConfirmedAppointments.create(
+      appoPayload
+    );
+    return appointment;
+  }
+
   public async update(id: number, appointmentPayload: any) {
     await ConfirmedAppointments.update(appointmentPayload, { where: { id } });
     const updatedAppointment = await ConfirmedAppointments.findByPk(id, {
@@ -59,6 +66,8 @@ class ConfirmedAppointmentService {
       duration: freeAppo.duration,
     });
   }
+
+
 }
 
 export default new ConfirmedAppointmentService();

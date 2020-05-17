@@ -9,6 +9,7 @@
       <v-tab :href="`#nurses`">nurses</v-tab>
       <v-tab :href="`#rooms`">rooms</v-tab>
       <v-tab :href="`#priceLists`">Price Lists</v-tab>
+      <v-tab :href="`#requestedAppointments`">Requested Appointments</v-tab>
       <v-tab :href="`#report`">report</v-tab>
 
       <v-tab-item :value="'basicInfo'">basicInfo</v-tab-item>
@@ -27,6 +28,9 @@
       <v-tab-item :value="'priceLists'">
         <ManagePriceLists />
       </v-tab-item>
+      <v-tab-item :value="'requestedAppointments'">
+        <ManageRequestedAppointments />
+      </v-tab-item>
       <v-tab-item :value="'report'">report</v-tab-item>
     </v-tabs>
   </div>
@@ -38,6 +42,7 @@ import ManageNurses from "./NursesTab/ManageNurses";
 import ManageRooms from "./RoomsTab/ManageRooms";
 import ManageFreeAppointments from "./AppointmentsTab/ManageFreeAppointments";
 import ManagePriceLists from './PriceListsTab/ManagePriceLists'
+import ManageRequestedAppointments from './RequestedAppointmentsTab/ManageRequestedAppointments'
 // import ManageAppointmentTypes from "./AppointmentTypesTab/ManageAppointmentTypes";
 import { mapActions } from "vuex";
 export default {
@@ -48,6 +53,7 @@ export default {
     ManageRooms,
     ManageFreeAppointments,
     ManagePriceLists,
+    ManageRequestedAppointments
   },
   data: () => ({
     tab: null,
