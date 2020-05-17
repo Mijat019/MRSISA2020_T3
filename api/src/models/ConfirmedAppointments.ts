@@ -1,4 +1,4 @@
-import { Model, INTEGER, DATE } from "sequelize";
+import { Model, INTEGER, DATE, BOOLEAN } from "sequelize";
 import db from "./database";
 import Rooms from "./Rooms";
 import DoctorAt from "./DoctorAt";
@@ -13,6 +13,7 @@ class ConfirmedAppointments extends Model {
   public roomId!: number;
   public start!: Date;
   public duration!: number;
+  public finished!: boolean;
 }
 
 ConfirmedAppointments.init(
@@ -57,11 +58,17 @@ ConfirmedAppointments.init(
       type: INTEGER,
       allowNull: false,
     },
+
+    finished: {
+      type: BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     timestamps: false,
     tableName: "ConfirmedAppointments",
     sequelize: db,
+    indexes: [{ unique: false, fields: ["finished"] }],
   }
 );
 
@@ -77,6 +84,9 @@ ConfirmedAppointments.belongsTo(Users, {
 
 ConfirmedAppointments.belongsTo(Rooms, { as: "room", foreignKey: "roomId" });
 
-ConfirmedAppointments.belongsTo(DoctorAt, { as: "doctor", foreignKey: "doctorId" });
+ConfirmedAppointments.belongsTo(DoctorAt, {
+  as: "doctor",
+  foreignKey: "doctorId",
+});
 
 export default ConfirmedAppointments;

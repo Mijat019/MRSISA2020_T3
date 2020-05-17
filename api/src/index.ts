@@ -34,9 +34,8 @@ import priceListsRoutes from "./routes/priceListsRoutes";
     // creates tables from model
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
-
-    await db.sync({ force: true });
-    await initModel();
+    // await db.sync({ force: true });
+    // await initModel();
     //await initModelStega();
   } catch (error) {
     console.log(error);
@@ -45,8 +44,8 @@ import priceListsRoutes from "./routes/priceListsRoutes";
 
 const app: Application = express();
 
-app.use(cors());
 // middleware for express
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

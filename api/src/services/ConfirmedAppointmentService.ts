@@ -5,34 +5,44 @@ import ConfirmedAppointments from "../models/ConfirmedAppointments";
 import FreeAppointments from "../models/FreeAppointments";
 import PriceLists from "../models/PriceLists";
 import AppointmentTypes from "../models/AppointmentTypes";
+import { IncludeOptions } from "sequelize/types";
+
+const include: IncludeOptions[] = [
+  { model: Rooms, as: "room" },
+  {
+    model: DoctorAt,
+    as: "doctor",
+    include: [{ model: Users, as: "user", attributes: usersSelect }],
+  },
+  {
+    model: PriceLists,
+    as: "priceList",
+    include: [{ model: AppointmentTypes, as: "appointmentType" }],
+  },
+  { model: Users, as: "patient" },
+];
 
 class ConfirmedAppointmentService {
-  private include = [
-    { model: Rooms, as: "room" },
-    {
-      model: DoctorAt,
-      as: "doctor",
-      include: [{ model: Users, as: "user", attributes: usersSelect }],
-    },
-    {
-      model: PriceLists,
-      as: "priceList",
-      include: [{ model: AppointmentTypes, as: "appointmentType" }],
-    },
-    { model: Users, as: "patient" },
-  ];
-
-  public async getAllForDoctor(doctorId: string) {
+  public async getAll() {
     const appointments = await ConfirmedAppointments.findAll({
-      where: { doctorId },
-      include: this.include,
+      include,
     });
     return appointments;
   }
 
-  public async getAll() {
+  public async getAllForDoctor(doctorId: string) {
     const appointments = await ConfirmedAppointments.findAll({
-      include: this.include,
+      where: { doctorId },
+      include,
+    });
+    return appointments;
+  }
+
+  public async getAllUnfinishedForDoctor(doctorId: string) {
+    const appointments = await ConfirmedAppointments.findAll({
+      where: { doctorId, finished: false },
+      include,
+      order: [["start", "ASC"]],
     });
     return appointments;
   }
@@ -40,7 +50,7 @@ class ConfirmedAppointmentService {
   public async update(id: number, appointmentPayload: any) {
     await ConfirmedAppointments.update(appointmentPayload, { where: { id } });
     const updatedAppointment = await ConfirmedAppointments.findByPk(id, {
-      include: this.include,
+      include,
     });
     return updatedAppointment;
   }

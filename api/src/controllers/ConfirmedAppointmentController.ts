@@ -1,9 +1,9 @@
-import ConfirmedAppointmentService from "../services/ConfirmedAppointmentService";
+import confirmedAppointmentService from "../services/ConfirmedAppointmentService";
 
-class AppointmentController {
+class FreeAppointmentController {
   public async getAll(req: any, res: any) {
     try {
-      const appointments = await ConfirmedAppointmentService.getAll();
+      const appointments = await confirmedAppointmentService.getAll();
       res.send(appointments);
     } catch (error) {
       res.status(400).send(error.message);
@@ -13,7 +13,19 @@ class AppointmentController {
   public async getAllForDoctor(req: any, res: any) {
     try {
       const { doctorId } = req.params;
-      const appointments = await ConfirmedAppointmentService.getAllForDoctor(
+      const appointments = await confirmedAppointmentService.getAllForDoctor(
+        doctorId
+      );
+      res.send(appointments);
+    } catch (error) {
+      res.status(400).send(error.message);
+    }
+  }
+
+  public async getAllUnfinishedForDoctor(req: any, res: any) {
+    try {
+      const { doctorId } = req.params;
+      const appointments = await confirmedAppointmentService.getAllUnfinishedForDoctor(
         doctorId
       );
       res.send(appointments);
@@ -25,7 +37,7 @@ class AppointmentController {
   public async update(req: any, res: any) {
     try {
       const { id } = req.params;
-      const updatedConfirmedAppointment = await ConfirmedAppointmentService.update(
+      const updatedConfirmedAppointment = await confirmedAppointmentService.update(
         id,
         req.body
       );
@@ -39,7 +51,7 @@ class AppointmentController {
   public async delete(req: any, res: any) {
     try {
       const { id } = req.params;
-      await ConfirmedAppointmentService.delete(id);
+      await confirmedAppointmentService.delete(id);
       res.send("Confirmed appointment successfully deleted.");
     } catch (error) {
       res.status(400).send(error.message);
@@ -47,4 +59,4 @@ class AppointmentController {
   }
 }
 
-export default new AppointmentController();
+export default new FreeAppointmentController();
