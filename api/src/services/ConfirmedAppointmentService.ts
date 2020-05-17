@@ -13,6 +13,7 @@ const include: IncludeOptions[] = [
   {
     model: DoctorAt,
     as: "doctor",
+    attributes: ["userId", "clinicId"],
     include: [{ model: Users, as: "user", attributes: usersSelect }],
   },
   {
@@ -23,13 +24,25 @@ const include: IncludeOptions[] = [
   {
     model: PatientMedicalRecord,
     as: "patient",
+    attributes: ["bloodType", "height", "weight"],
     include: [{ model: Users, as: "user", attributes: usersSelect }],
   },
 ];
+
+const attributes: string[] = ["id", "start", "duration", "finished"];
+
 class ConfirmedAppointmentService {
+  public async getAll() {
+    const appointments = await ConfirmedAppointments.findAll({
+      include,
+    });
+    return appointments;
+  }
+
   public async getAllForDoctor(doctorId: string) {
     const appointments = await ConfirmedAppointments.findAll({
       where: { doctorId },
+      attributes,
       include,
     });
     return appointments;
@@ -37,7 +50,10 @@ class ConfirmedAppointmentService {
 
   public async getAllUnfinishedForDoctor(doctorId: string) {
     const appointments = await ConfirmedAppointments.findAll({
+      where: { doctorId, finished: false },
+      attributes,
       include,
+      order: [["start", "ASC"]],
     });
     return appointments;
   }
@@ -51,6 +67,7 @@ class ConfirmedAppointmentService {
     await ConfirmedAppointments.update(appointmentPayload, { where: { id } });
     const updatedAppointment = await ConfirmedAppointments.findByPk(id, {
       include,
+      attributes,
     });
     return updatedAppointment;
   }
@@ -59,11 +76,11 @@ class ConfirmedAppointmentService {
     await ConfirmedAppointments.destroy({ where: { id } });
   }
 
-  public async createFromFree(freeAppo: FreeAppointments, _userId: number) {
+  public async createFromFree(freeAppo: FreeAppointments, patientId: number) {
     await ConfirmedAppointments.create({
+      patientId,
       priceListId: freeAppo.priceListId,
       doctorId: freeAppo.doctorId,
-      userId: _userId,
       roomId: freeAppo.roomId,
       start: freeAppo.start,
       duration: freeAppo.duration,

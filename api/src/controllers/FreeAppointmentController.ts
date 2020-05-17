@@ -25,12 +25,12 @@ class FreeAppointmentController {
 
   public async schedule(req: any, res: any) {
     try {
-      const confAppo = await FreeAppointmentService.schedule(
-        req.body.appoId,
-        req.body.userId
-      );
+      console.log(req.body);
+      const { appoId, patientId } = req.body;
+      const confAppo = await FreeAppointmentService.schedule(appoId, patientId);
       res.send(confAppo);
     } catch (error) {
+      console.log(error);
       res.status(400).send(error.message);
     }
   }

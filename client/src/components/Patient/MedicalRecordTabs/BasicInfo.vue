@@ -44,33 +44,38 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 export default {
   name: "BasicInfo",
+
+  props: ["user"],
 
   methods: {},
 
   computed: {
-    ...mapGetters({
-      getUser: "authentication/getUser",
-      getFullName: "authentication/getFullName"
-    }),
-
     personalInformation() {
       return [
-        { icon: "mdi-account", title: "Full name", subtitle: this.getFullName },
-        { icon: "mdi-flag", title: "Country", subtitle: this.getUser.country },
-        { icon: "mdi-city", title: "City", subtitle: this.getUser.city },
+        {
+          icon: "mdi-account",
+          title: "First name",
+          subtitle: this.user.firstName
+        },
+        {
+          icon: "mdi-account",
+          title: "Last name",
+          subtitle: this.user.lastName
+        },
+        { icon: "mdi-flag", title: "Country", subtitle: this.user.country },
+        { icon: "mdi-city", title: "City", subtitle: this.user.city },
         {
           icon: "mdi-card-account-details",
           title: "Address",
-          subtitle: this.getUser.address
+          subtitle: this.user.address
         },
-        { icon: "mdi-email", title: "Email", subtitle: this.getUser.email },
+        { icon: "mdi-email", title: "Email", subtitle: this.user.email },
         {
           icon: "mdi-cellphone",
           title: "Phone number",
-          subtitle: this.getUser.phoneNumber
+          subtitle: this.user.phoneNumber
         }
       ];
     },
@@ -80,17 +85,17 @@ export default {
         {
           icon: "mdi-human-male-height",
           title: "Height",
-          subtitle: this.getUser.medicalRecord.height || "Not provided"
+          subtitle: this.user.medicalRecord.height || "Not provided"
         },
         {
           icon: "mdi-weight-kilogram",
           title: "Weight",
-          subtitle: this.getUser.medicalRecord.weight || "Not provided"
+          subtitle: this.user.medicalRecord.weight || "Not provided"
         },
         {
           icon: "mdi-blood-bag",
           title: "Blood type",
-          subtitle: this.getUser.medicalRecord.bloodType || "Not provided"
+          subtitle: this.user.medicalRecord.bloodType || "Not provided"
         }
       ];
     }

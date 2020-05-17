@@ -1,10 +1,11 @@
 <template>
   <v-card>
-    <v-card-title></v-card-title>
-    
-    <ScheduleAppointmentDialog/>
+    <ScheduleAppointmentDialog />
 
-    <v-btn @click="openDialog" dark>Custom Appointment</v-btn>
+    <v-card-title>
+      <v-btn @click="openDialog" dark>Custom Appointment</v-btn>
+    </v-card-title>
+
     <v-card-title>
       <v-autocomplete
         v-model="appoType"
@@ -43,7 +44,7 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import ScheduleAppointmentDialog from './ScheduleAppointmentDialog'
+import ScheduleAppointmentDialog from "./ScheduleAppointmentDialog";
 
 export default {
   name: "ScheduleAppointment",
@@ -52,7 +53,7 @@ export default {
   },
   data() {
     return {
-      appoKind : null, // custom or predefined
+      appoKind: null, // custom or predefined
       appoType: null,
       headers: [
         { text: "Start", value: "start" },
@@ -87,11 +88,12 @@ export default {
   methods: {
     ...mapActions({
       getAppointmentTypesAction: "appointmentTypes/getAppointmentTypesAction",
-      getFreeAppointmentsByTypeAction: "freeAppointments/getFreeAppointmentsByTypeAction",
-      makeAppointmentAction: "freeAppointments/makeAppointmentAction",
+      getFreeAppointmentsByTypeAction:
+        "freeAppointments/getFreeAppointmentsByTypeAction",
+      makeAppointmentAction: "freeAppointments/makeAppointmentAction"
     }),
     ...mapMutations("scheduleCustomAppointmentDialog", {
-      openDialog: "openDialog",
+      openDialog: "openDialog"
     }),
     showDialog: function(item) {
       this.dialogAppo = item;
@@ -100,7 +102,7 @@ export default {
     makeAppointment: function() {
       this.makeAppointmentAction({
         appoId: this.dialogAppo.id,
-        userId: this.getUser.id
+        patientId: this.getUser.id
       });
       this.dialog = false;
     }
@@ -114,8 +116,8 @@ export default {
     ...mapGetters({
       getAppointmentTypes: "appointmentTypes/getAppointmentTypes",
       getFreeAppointments: "freeAppointments/getFreeAppointments",
-      getUser: "authentication/getUser",
-    }),
+      getUser: "authentication/getUser"
+    })
   },
 
   watch: {

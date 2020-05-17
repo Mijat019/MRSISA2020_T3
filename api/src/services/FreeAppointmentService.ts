@@ -6,33 +6,32 @@ import FreeAppointments from "../models/FreeAppointments";
 import ConfirmedAppointments from "../models/ConfirmedAppointments";
 import ConfirmedAppointmentService from "./ConfirmedAppointmentService";
 import PriceLists from "../models/PriceLists";
-import { where } from "sequelize/types";
+import { IncludeOptions } from "sequelize/types";
 
+const include: IncludeOptions[] = [
+  { model: Rooms, as: "room" },
+  {
+    model: DoctorAt,
+    as: "doctor",
+    required: true,
+    include: [
+      { model: Users, as: "user", attributes: usersSelect, required: true },
+    ],
+  },
+  {
+    model: PriceLists,
+    as: "priceList",
+    required: true,
+    include: [
+      { model: AppointmentTypes, as: "appointmentType", required: true },
+    ],
+  },
+];
 class FreeAppointmentService {
-  private include = [
-    { model: Rooms, as: "room", },
-    {
-      model: DoctorAt,
-      as: "doctor",
-      required: true,
-      include: [
-        { model: Users, as: "user", attributes: usersSelect, required: true, },
-      ],
-    },
-    {
-      model: PriceLists,
-      as: "priceList",
-      required: true,
-      include: [
-        { model: AppointmentTypes, as: "appointmentType", required: true, },
-      ],
-    },
-  ];
-
   public async getAllForDoctor(doctorId: string) {
     const appointments = await FreeAppointments.findAll({
       where: { doctorId },
-      include: this.include,
+      include,
     });
     return appointments;
   }
@@ -40,7 +39,7 @@ class FreeAppointmentService {
   public async getAllOfType(typeId: string) {
     const appointments = await FreeAppointments.findAll({
       where: { priceListId: typeId },
-      include: this.include,
+      include,
     });
     return appointments;
   }
@@ -53,11 +52,11 @@ class FreeAppointmentService {
       },
     });
     appointmentPayload.appointmentTypeId = priceList?.appointmentTypeId;
-    
+
     await this.checkForConflicts(appointmentPayload);
     const { id } = await FreeAppointments.create(appointmentPayload);
     const freeAppointment = FreeAppointments.findByPk(id, {
-      include: this.include,
+      include,
     });
 
     return freeAppointment;
@@ -74,7 +73,7 @@ class FreeAppointmentService {
 
     await FreeAppointments.update(appointmentPayload, { where: { id } });
     const updatedAppointment = await FreeAppointments.findByPk(id, {
-      include: this.include,
+      include,
     });
     return updatedAppointment;
   }
@@ -83,10 +82,10 @@ class FreeAppointmentService {
     await FreeAppointments.destroy({ where: { id } });
   }
 
-  public async schedule(appoId: number, userId: number) {
+  public async schedule(appoId: number, patientId: number) {
     // Get free appointment
     const freeAppo = await FreeAppointments.findByPk(appoId, {
-      include: this.include,
+      include,
     });
 
     if (freeAppo == null) throw "Free appointment " + appoId + " not found.";
@@ -94,7 +93,7 @@ class FreeAppointmentService {
     // Make confirmed appointment from free
     const confAppo = await ConfirmedAppointmentService.createFromFree(
       freeAppo,
-      userId
+      patientId
     );
 
     // Delete free appointment
@@ -103,25 +102,33 @@ class FreeAppointmentService {
     return confAppo;
   }
 
-  public async checkForConflicts(appointment : any) {
-    
+  public async checkForConflicts(appointment: any) {
     // first check if room is occupied
     const time = appointment.start;
     const room = appointment.roomId;
 
-    if(await ConfirmedAppointments.findOne({where : {start : time, roomId : room}}) 
-      || await FreeAppointments.findOne({where : {start : time, roomId : room}})) {
+    if (
+      (await ConfirmedAppointments.findOne({
+        where: { start: time, roomId: room },
+      })) ||
+      (await FreeAppointments.findOne({ where: { start: time, roomId: room } }))
+    ) {
       throw new Error("Room is occupied at that time");
     }
-    
+
     // now check if doctor is occupied
     const doctor = appointment.doctorId;
 
-    if(await ConfirmedAppointments.findOne({where : {start : time, doctorId : doctor}}) 
-      || await FreeAppointments.findOne({where : {start : time, doctorId : doctor}})) {
+    if (
+      (await ConfirmedAppointments.findOne({
+        where: { start: time, doctorId: doctor },
+      })) ||
+      (await FreeAppointments.findOne({
+        where: { start: time, doctorId: doctor },
+      }))
+    ) {
       throw new Error("Doctor is occupied at that time");
     }
-
   }
 }
 

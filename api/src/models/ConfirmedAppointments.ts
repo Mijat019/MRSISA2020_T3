@@ -1,14 +1,10 @@
-<<<<<<< HEAD
-import { Model, INTEGER, DATE, BOOLEAN } from "sequelize";
-=======
 import {
   Model,
   INTEGER,
   DATE,
-  Options,
   ModelAttributeColumnOptions,
+  BOOLEAN,
 } from "sequelize";
->>>>>>> develop
 import db from "./database";
 import Rooms from "./Rooms";
 import DoctorAt from "./DoctorAt";
@@ -40,13 +36,25 @@ ConfirmedAppointments.init(
       autoIncrement: true,
     },
 
-    priceListId: requiredUnsignedInteger,
+    priceListId: {
+      type: INTEGER.UNSIGNED,
+      allowNull: false,
+    },
 
-    doctorId: requiredUnsignedInteger,
+    doctorId: {
+      type: INTEGER.UNSIGNED,
+      allowNull: false,
+    },
 
-    patientId: requiredUnsignedInteger,
+    patientId: {
+      type: INTEGER.UNSIGNED,
+      allowNull: false,
+    },
 
-    roomId: requiredUnsignedInteger,
+    roomId: {
+      type: INTEGER.UNSIGNED,
+      allowNull: false,
+    },
 
     start: {
       type: DATE,
