@@ -14,21 +14,21 @@ PriceLists.init(
   {
     clinicId: {
         type: INTEGER.UNSIGNED,
-        primaryKey: true,
-        unique: false,
+        // primaryKey: true,
+        // unique: false,
         allowNull: false,
     },
     
     appointmentTypeId : {
         type: INTEGER.UNSIGNED,
-        primaryKey: true,
-        unique: false,
+        // primaryKey: true,
+        // unique: false,
         allowNull: false,
     },
 
     id: {
       type: INTEGER.UNSIGNED,
-      unique: true,
+      primaryKey: true,
       autoIncrement: true,
       allowNull: false,
     },
@@ -42,6 +42,7 @@ PriceLists.init(
   {
     timestamps: false,
     tableName: "priceLists",
+    indexes : [{unique : true, fields: ["clinicId", "appointmentTypeId"]}],
     sequelize: db,
   }
 );

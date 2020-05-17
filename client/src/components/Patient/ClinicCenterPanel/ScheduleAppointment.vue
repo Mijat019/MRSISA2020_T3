@@ -1,7 +1,10 @@
 <template>
   <v-card>
     <v-card-title></v-card-title>
+    
+    <ScheduleAppointmentDialog/>
 
+    <v-btn @click="openDialog" dark>Custom Appointment</v-btn>
     <v-card-title>
       <v-autocomplete
         v-model="appoType"
@@ -39,12 +42,17 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import ScheduleAppointmentDialog from './ScheduleAppointmentDialog'
+
 export default {
   name: "ScheduleAppointment",
-  components: {},
+  components: {
+    ScheduleAppointmentDialog
+  },
   data() {
     return {
+      appoKind : null, // custom or predefined
       appoType: null,
       headers: [
         { text: "Start", value: "start" },
@@ -77,12 +85,13 @@ export default {
   },
 
   methods: {
-    ...mapActions("appointmentTypes", {
-      getAppointmentTypesAction: "getAppointmentTypesAction"
+    ...mapActions({
+      getAppointmentTypesAction: "appointmentTypes/getAppointmentTypesAction",
+      getFreeAppointmentsByTypeAction: "freeAppointments/getFreeAppointmentsByTypeAction",
+      makeAppointmentAction: "freeAppointments/makeAppointmentAction",
     }),
-    ...mapActions("freeAppointments", {
-      getFreeAppointmentsByTypeAction: "getFreeAppointmentsByTypeAction",
-      makeAppointmentAction: "makeAppointmentAction"
+    ...mapMutations("scheduleCustomAppointmentDialog", {
+      openDialog: "openDialog",
     }),
     showDialog: function(item) {
       this.dialogAppo = item;
@@ -102,15 +111,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters("appointmentTypes", {
-      getAppointmentTypes: "getAppointmentTypes"
+    ...mapGetters({
+      getAppointmentTypes: "appointmentTypes/getAppointmentTypes",
+      getFreeAppointments: "freeAppointments/getFreeAppointments",
+      getUser: "authentication/getUser",
     }),
-    ...mapGetters("freeAppointments", {
-      getFreeAppointments: "getFreeAppointments"
-    }),
-    ...mapGetters("authentication", {
-      getUser: "getUser"
-    })
   },
 
   watch: {
