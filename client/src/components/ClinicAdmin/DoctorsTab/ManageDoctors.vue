@@ -5,7 +5,8 @@
     </template>
 
     <template v-slot:actions="doctorId">
-      <DeleteDoctorDialog :doctorId="doctorId" />
+      <DoctorSpecDialog :doctorId="doctorId"/> 
+      <DeleteDoctorDialog :doctorId="doctorId"/>
     </template>
   </DoctorsTable>
 </template>
@@ -14,12 +15,14 @@
 import AddDoctorDialog from "./AddDoctorDialog";
 import DoctorsTable from "./DoctorsTable";
 import DeleteDoctorDialog from "./DeleteDoctorDialog";
+import DoctorSpecDialog from "./DoctorSpecDialog";
 export default {
   name: "ManageDoctors",
   components: {
     AddDoctorDialog,
     DoctorsTable,
-    DeleteDoctorDialog
+    DeleteDoctorDialog,
+    DoctorSpecDialog
   }
 };
 </script>

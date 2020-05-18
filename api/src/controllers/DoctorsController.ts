@@ -48,6 +48,36 @@ class DoctorsController {
       res.status(400).send(error);
     }
   }
+
+  // SPECIALIZATIONS
+  public async getSpecializations(req: any, res: any) {
+    try {
+      const doctorSpec = await DoctorsService.getSpecializations(req.params["doctorId"]);
+      res.send(doctorSpec);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  }
+
+  public async addSpecialization(req: any, res: any) {
+    try {
+      const newSpec = await DoctorsService.addSpecialization(req.body.doctorId, req.body.appoTypeId);
+      res.send(newSpec);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  }
+
+  public async deleteSpecialization(req: any, res: any) {
+    try {
+      await DoctorsService.deleteSpecialization(req.body.doctorId, req.body.appoTypeId);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  }
 }
 
 export default new DoctorsController();

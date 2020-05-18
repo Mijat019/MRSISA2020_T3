@@ -4,6 +4,7 @@ import UsersService from "./UsersService";
 import DoctorAt from "../models/DoctorAt";
 import Clinics from "../models/Clinics";
 import AdminAt from "../models/AdminAt";
+import DoctorSpec from "../models/DoctorSpec";
 
 class DoctorsService {
   public async getAll(): Promise<any> {
@@ -50,6 +51,23 @@ class DoctorsService {
       ],
     });
     return doctor;
+  }
+
+  public async getSpecializations(userId: number) {
+    return await DoctorSpec.findAll({ where: { userId } });
+  }
+
+  public async addSpecialization(userId: number, appointmentTypeId: number) {
+    await DoctorSpec.create({
+      userId,
+      appointmentTypeId
+    });
+  }
+
+  public async deleteSpecialization(userId: number, appointmentTypeId: number) {
+    await DoctorSpec.destroy({
+      where: { userId, appointmentTypeId }
+    });
   }
 
   /**
