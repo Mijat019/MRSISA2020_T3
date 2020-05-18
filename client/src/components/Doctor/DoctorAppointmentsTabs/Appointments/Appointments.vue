@@ -2,7 +2,7 @@
   <div>
     <div v-if="nextAppointment">
       <AppointmentReport
-        v-on:changeComponent="changeComponent"
+        v-on:submited="submited"
         :appointment="nextAppointment"
         v-if="showAppointmentReport"
       />
@@ -20,7 +20,7 @@
 <script>
 import AppointmentReport from "./AppointmentReport";
 import NextAppointment from "./NextAppointment";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "Appointments",
@@ -44,9 +44,19 @@ export default {
         "getUnfinishedConfirmedAppointmentsAction"
     }),
 
-    changeComponent(appointment) {
+    ...mapMutations({
+      removeNextUnfinishedConfirmedAppointment:
+        "confirmedAppointments/removeNextUnfinishedConfirmedAppointment"
+    }),
+
+    changeComponent() {
       this.showAppointmentReport = !this.showAppointmentReport;
-      this.appointment = appointment;
+    },
+
+    submited() {
+      this.showAppointmentReport = !this.showAppointmentReport;
+      this.removeNextUnfinishedConfirmedAppointment();
+      this.nextAppointment = this.getUnfinishedConfirmedAppointments[0];
     }
   },
 

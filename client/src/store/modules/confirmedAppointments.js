@@ -9,6 +9,11 @@ const mutations = {
     state.confirmedAppointments = confirmedAppointments;
   },
 
+  removeNextUnfinishedConfirmedAppointment(state) {
+    state.unfinishedConfirmedAppointments.splice(0, 1);
+    console.log(state.unfinishedConfirmedAppointments);
+  },
+
   setUnfinishedConfirmedAppointments(state, unfinishedConfirmedAppointments) {
     state.unfinishedConfirmedAppointments = unfinishedConfirmedAppointments;
   },

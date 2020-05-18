@@ -3,6 +3,8 @@ import { IncludeOptions } from "sequelize/types";
 import PatientMedicalRecord from "../models/PatientMedicalRecord";
 import ConfirmedAppointments from "../models/ConfirmedAppointments";
 import Diagnosis from "../models/Diagnosis";
+import Prescription from "../models/Prescription";
+import confirmedAppointmentService from "./ConfirmedAppointmentService";
 
 const include: IncludeOptions[] = [
   { model: PatientMedicalRecord, as: "patientMedicalRecord", required: true },
@@ -10,7 +12,7 @@ const include: IncludeOptions[] = [
   { model: Diagnosis, as: "diagnosis", required: true },
 ];
 
-const attributes: string[] = ["id", "approved"];
+const attributes: string[] = ["id"];
 
 class AppointmentReportService {
   public async getAllForPatient(patientMedicalRecordId: string) {
@@ -22,12 +24,32 @@ class AppointmentReportService {
   }
 
   public async add(appointmentReportPayload: any) {
-    const { id } = await AppointmentReports.create(appointmentReportPayload);
+    const { id, confirmedAppointmentId } = await AppointmentReports.create(
+      appointmentReportPayload
+    );
+    await this.createPrescriptionsFromReport(
+      appointmentReportPayload.prescriptions,
+      id
+    );
+    await confirmedAppointmentService.update(confirmedAppointmentId, {
+      finished: true,
+    });
     const appointmentReport = await AppointmentReports.findByPk(id, {
       include,
       attributes,
     });
+    return appointmentReport;
   }
+
+  private createPrescriptionsFromReport = async (
+    prescriptions: any,
+    appointmentReportId: number
+  ) => {
+    prescriptions.forEach(async (prescription: any) => {
+      const { id: drugsId } = prescription;
+      await Prescription.create({ drugsId, appointmentReportId });
+    });
+  };
 }
 
 export default new AppointmentReportService();
