@@ -8,6 +8,11 @@ import Diagnosis from "./Diagnosis";
 import PriceLists from "./PriceLists";
 import AppointmentTypes from "./AppointmentTypes";
 import Rooms from "./Rooms";
+import ConfirmedAppointments from "./ConfirmedAppointments";
+import Users from "./Users";
+import PatientsService from "../services/PatientsService";
+import PatientMedicalRecord from "./PatientMedicalRecord";
+import AccountStatus from "./AccountStatus";
 
 export default async () => {
   await Diagnosis.create({ name: "Insane in the membrane" });
@@ -17,12 +22,12 @@ export default async () => {
   await Drugs.create({ name: "Molly" });
   await Drugs.create({ name: "Percocets" });
 
-  await UsersService.createUser(
+  const { password } = await UsersService.createUser(
     {
       firstName: "Mijat",
       lastName: "Miletic",
       email: "4",
-      password: "4",
+      password: "1",
       jmbg: "1232132312121231231233312312",
       phoneNumber: "4",
       country: "Serbia",
@@ -41,29 +46,22 @@ export default async () => {
     description: "Izvadimo vam mozak i damo vam 100 jura",
   });
 
-  await Rooms.create({ clinicId: id, name: "soba neka tamo" });
+  const { id: roomId } = await Rooms.create({
+    clinicId: id,
+    name: "soba neka tamo",
+  });
 
   const { id: appointmentTypeId } = await AppointmentTypes.create({
     name: "Ocni pregled",
   });
 
-  await PriceLists.create({ clinicId: id, appointmentTypeId, price: 420 });
+  const { id: priceListId } = await PriceLists.create({
+    clinicId: id,
+    appointmentTypeId,
+    price: 420,
+  });
 
-  await ClinicAdminService.add(
-    {
-      firstName: "Mijat",
-      lastName: "Miletic",
-      email: "3",
-      jmbg: "123213231133333322312312",
-      phoneNumber: "4311",
-      country: "Serbia",
-      city: "Zajecar",
-      address: "Vojvode stepe 20",
-    },
-    id
-  );
-
-  await DoctorsService.add(
+  const { userId: doctorId } = await DoctorsService.add(
     {
       firstName: "Mijat",
       lastName: "Miletic",
@@ -73,7 +71,61 @@ export default async () => {
       country: "Serbia",
       city: "Zajecar",
       address: "Vojvode stepe 20",
+      accountStatus: 1,
     },
     id
+  );
+
+  await Users.update(
+    { password, accountStatus: AccountStatus.ACTIVATED },
+    { where: { id: doctorId } }
+  );
+
+  const { id: userId }: any = await UsersService.createUser(
+    {
+      firstName: "Mijat",
+      lastName: "Miletic",
+      email: "s",
+      password: "1",
+      jmbg: "123213231212123331231233312312",
+      phoneNumber: "41",
+      country: "Serbia",
+      city: "Zajecar",
+      address: "Vojvode stepe 20",
+      accountStatus: 1,
+    },
+    UserRole.PATIENT
+  );
+
+  const { userId: patientId } = await PatientMedicalRecord.create({ userId });
+
+  await ConfirmedAppointments.create({
+    priceListId,
+    doctorId,
+    patientId,
+    roomId,
+    start: Date.now(),
+    duration: 60,
+  });
+
+  const { userId: tutu } = await ClinicAdminService.add(
+    {
+      firstName: "Mijat",
+      lastName: "Miletic",
+      email: "3",
+      password,
+      jmbg: "123213231133333322312312",
+      phoneNumber: "4311",
+      country: "Serbia",
+      city: "Zajecar",
+      address: "Vojvode stepe 20",
+      accountStatus: 1,
+    },
+    id
+  );
+
+  await Users.update(
+    { password, accountStatus: AccountStatus.ACTIVATED },
+    { where: { id: tutu } }
   );
 };

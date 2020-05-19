@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="fill-height">
     <v-card-title>
       <h5>DRUGS :D</h5>
     </v-card-title>
