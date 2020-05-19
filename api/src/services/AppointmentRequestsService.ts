@@ -59,10 +59,12 @@ class AppointmentRequestsService {
     await FreeAppointmentService.checkForConflicts(requestPayload);
 
     // add requested appo to confirmed
+    const { id } = requestPayload;
+    delete requestPayload.id;
     await ConfirmedAppointmentService.add(requestPayload);
 
     // now you can delete it from requests
-    await this.delete(requestPayload.id);
+    await this.delete(id);
 
     // now send mail to notify
     const patient = requestPayload.patientMedicalRecord.user;

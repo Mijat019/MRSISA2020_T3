@@ -87,7 +87,7 @@ export default {
       }
 
       //convert datetime to unix seconds
-      this.appointment.start = moment(this.appointment.start).unix();
+      this.appointment.start = moment().unix(this.appointment.start);
       await this.addAppointmentAction(this.appointment);
       this.close();
     },

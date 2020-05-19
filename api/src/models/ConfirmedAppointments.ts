@@ -15,7 +15,7 @@ class ConfirmedAppointments extends Model {
   public id!: number;
   public priceListId!: number;
   public doctorId!: number;
-  public userId!: number;
+  public patientId!: number;
   public roomId!: number;
   public start!: number;
   public duration!: number;
