@@ -124,9 +124,9 @@ export default {
     }),
 
     appointmentTime() {
-      const start = moment(this.dialogAppo.start * 1000).format(
-        "YYYY-MM-DD HH:mm"
-      );
+      const start = moment
+        .unix(this.dialogAppo.start)
+        .format("YYYY-MM-DD HH:mm");
       return start;
     }
   },

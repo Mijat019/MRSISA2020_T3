@@ -28,7 +28,6 @@
           <div class="example-inputs mb-4">
             <datetime
               type="datetime"
-              zone="UTC"
               placeholder="Select date"
               v-model="appointment.start"
               :minute-step="15"

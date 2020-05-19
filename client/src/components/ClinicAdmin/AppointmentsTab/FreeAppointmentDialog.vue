@@ -9,7 +9,6 @@
             <div class="example-inputs my-5">
               <datetime
                 type="datetime"
-                zone="UTC"
                 placeholder="Select date"
                 v-model="appointment.start"
                 :minute-step="15"
@@ -87,7 +86,7 @@ export default {
       }
 
       //convert datetime to unix seconds
-      this.appointment.start = moment().unix(this.appointment.start);
+      this.appointment.start = moment(this.appointment.start).unix();
       await this.addAppointmentAction(this.appointment);
       this.close();
     },
