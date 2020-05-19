@@ -63,7 +63,7 @@ class ConfirmedAppointmentService {
     await ConfirmedAppointments.create({
       priceListId: freeAppo.priceListId,
       doctorId: freeAppo.doctorId,
-      userId: _userId,
+      patientId: _userId,
       roomId: freeAppo.roomId,
       start: freeAppo.start,
       duration: freeAppo.duration,
