@@ -72,7 +72,8 @@ class DoctorsController {
 
   public async deleteSpecialization(req: any, res: any) {
     try {
-      await DoctorsService.deleteSpecialization(req.body.doctorId, req.body.appoTypeId);
+      await DoctorsService.deleteSpecialization(req.params["doctorId"], req.params["appoTypeId"]);
+      res.send();
     } catch (error) {
       console.log(error);
       res.status(400).send(error);

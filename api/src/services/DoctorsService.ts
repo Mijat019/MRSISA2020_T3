@@ -5,6 +5,7 @@ import DoctorAt from "../models/DoctorAt";
 import Clinics from "../models/Clinics";
 import AdminAt from "../models/AdminAt";
 import DoctorSpec from "../models/DoctorSpec";
+import AppointmentTypes from "../models/AppointmentTypes";
 
 class DoctorsService {
   public async getAll(): Promise<any> {
@@ -54,7 +55,20 @@ class DoctorsService {
   }
 
   public async getSpecializations(userId: number) {
-    return await DoctorSpec.findAll({ where: { userId } });
+    let wrappedTypes = await DoctorSpec.findAll({ 
+      where: { userId },
+      include: [
+        { model: AppointmentTypes, attributes: ["id", "name"], as: "appoType" }
+      ],
+      attributes: []
+    });
+
+    let types: any = [];
+    wrappedTypes.filter((e: any) => {
+      types.push(e.appoType);
+    });
+
+    return types;
   }
 
   public async addSpecialization(userId: number, appointmentTypeId: number) {
@@ -62,6 +76,16 @@ class DoctorsService {
       userId,
       appointmentTypeId
     });
+
+    const wrapped: any = await DoctorSpec.findOne({ 
+      where: { userId, appointmentTypeId },
+      include: [
+        { model: AppointmentTypes, attributes: ["id", "name"], as: "appoType" }
+      ],
+      attributes: []
+    });
+
+    return wrapped.appoType;
   }
 
   public async deleteSpecialization(userId: number, appointmentTypeId: number) {
@@ -75,6 +99,7 @@ class DoctorsService {
    * ILI DODELJENE SLOBODNE PREGLEDE
    */
   public async delete(doctorId: number) {
+    await DoctorAt.destroy({ where: { userId: doctorId } });
     await Users.destroy({ where: { id: doctorId } });
   }
 }

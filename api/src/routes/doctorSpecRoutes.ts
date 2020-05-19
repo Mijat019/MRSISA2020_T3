@@ -7,18 +7,21 @@ const router = express.Router();
 
 router.use(AuthenticationMiddleware.verifyToken);
 
-router.get("/", DoctorsController.getAll);
-router.get("/:clinicId", DoctorsController.getByClinic);
+router.get(
+  "/:doctorId",
+  DoctorsController.getSpecializations
+);
+
 router.post(
   "/",
   AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
-  DoctorsController.add
+  DoctorsController.addSpecialization
 );
 
 router.delete(
-  "/:id",
+  "/:doctorId/:appoTypeId",
   AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
-  DoctorsController.delete
+  DoctorsController.deleteSpecialization
 );
 
 

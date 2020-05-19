@@ -14,7 +14,7 @@ const mutations = {
   },
 
   removeSpecType(state, id) {
-    const index = state.specTypes.findIndex((type) => type.appointmentTypeId === id);
+    const index = state.specTypes.findIndex((type) => type.id === id);
     state.specTypes.splice(index, 1);
   },
 };
@@ -22,7 +22,7 @@ const mutations = {
 const actions = {
   async getDoctorSpecAction({ commit, dispatch }, doctorId) {
     try {
-      const { data: specTypes } = await Vue.$axios.get("/doctors/spec/" + doctorId);
+      const { data: specTypes } = await Vue.$axios.get("/doctorSpec/" + doctorId);
       commit("setSpecTypes", specTypes);
     } catch (error) {
       dispatch("snackbar/showError", error.response.data, { root: true });
@@ -32,7 +32,7 @@ const actions = {
   async addDoctorSpecAction({ commit, dispatch }, { doctorId, appoTypeId }) {
     try {
       const { data: newSpecType } = await Vue.$axios.post(
-        "/doctors/spec",
+        "/doctorSpec",
         { doctorId, appoTypeId }
       );
       commit("addSpecType", newSpecType);
@@ -44,7 +44,7 @@ const actions = {
 
   async deleteDoctorSpecAction({ commit, dispatch }, { doctorId, appoTypeId }) {
     try {
-      await Vue.$axios.delete(`/doctors/spec`, { doctorId, appoTypeId });
+      await Vue.$axios.delete(`/doctorSpec/${doctorId}/${appoTypeId}`);
       commit("removeSpecType", appoTypeId);
       dispatch("snackbar/showSuccess", "Doctor specialization removed.", { root: true });
     } catch (error) {
