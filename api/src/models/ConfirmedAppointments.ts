@@ -11,18 +11,13 @@ import DoctorAt from "./DoctorAt";
 import PriceLists from "./PriceLists";
 import PatientMedicalRecord from "./PatientMedicalRecord";
 
-const requiredUnsignedInteger: ModelAttributeColumnOptions = {
-  type: INTEGER.UNSIGNED,
-  allowNull: false,
-};
-
 class ConfirmedAppointments extends Model {
   public id!: number;
   public priceListId!: number;
   public doctorId!: number;
   public userId!: number;
   public roomId!: number;
-  public start!: Date;
+  public start!: number;
   public duration!: number;
   public finished!: boolean;
 }
@@ -57,7 +52,7 @@ ConfirmedAppointments.init(
     },
 
     start: {
-      type: DATE,
+      type: INTEGER,
       allowNull: false,
     },
 

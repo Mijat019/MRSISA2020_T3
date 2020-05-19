@@ -1,3 +1,4 @@
+import moment from "moment";
 import UsersService from "../services/UsersService";
 import UserRole from "./UserRole";
 import ClinicsService from "../services/ClinicsService";
@@ -104,7 +105,7 @@ export default async () => {
     doctorId,
     patientId,
     roomId,
-    start: Date.now(),
+    start: moment().unix(),
     duration: 60,
   });
 

@@ -52,7 +52,7 @@
           :event-color="getEventColor"
           first-interval="7"
           interval-minutes="60"
-          interval-count="8"
+          interval-count="12"
         ></v-calendar>
         <v-menu
           v-model="selectedOpen"
@@ -168,29 +168,33 @@ export default {
       getUser: "authentication/getUser"
     }),
 
+    /**
+     * Convert free appointments and confirmed appointments to
+     * events for the calendar
+     */
     appointments() {
       const result = [
         ...this.getFreeAppointments.map(item => {
-          const end = moment.utc(item.start);
+          const end = moment.unix(item.start);
           end.add(item.duration * 60, "seconds");
           return {
             color: "green",
             appointmentType: item.priceList.appointmentType.name,
             roomName: item.room.name,
             name: `${item.priceList.appointmentType.name} ${item.room.name}`,
-            start: moment.utc(item.start).format("YYYY-MM-DD HH:mm"),
+            start: moment.unix(item.start).format("YYYY-MM-DD HH:mm"),
             end: end.format("YYYY-MM-DD HH:mm")
           };
         }),
         ...this.getConfirmedAppointments.map(item => {
-          const end = moment.utc(item.start);
+          const end = moment.unix(item.start);
           end.add(item.duration * 60, "seconds");
           return {
-            color: "red",
+            color: item.finished ? "grey" : "red",
             appointmentType: item.priceList.appointmentType.name,
             roomName: item.room.name,
             name: `${item.priceList.appointmentType.name} ${item.room.name}`,
-            start: moment.utc(item.start).format("YYYY-MM-DD HH:mm"),
+            start: moment.unix(item.start).format("YYYY-MM-DD HH:mm"),
             end: end.format("YYYY-MM-DD HH:mm")
           };
         })

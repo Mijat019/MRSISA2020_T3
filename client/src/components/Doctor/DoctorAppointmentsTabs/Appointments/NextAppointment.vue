@@ -121,8 +121,8 @@ export default {
         {
           icon: "mdi-clock",
           title: "Appointment starts at",
-          subtitle: moment(this.appointment?.start)
-            .subtract(2, "hours")
+          subtitle: moment
+            .unix(this.appointment?.start)
             .format("Do MMM YYYY LT")
         }
       ];

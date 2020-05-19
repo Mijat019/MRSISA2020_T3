@@ -42,7 +42,7 @@ const actions = {
   ) {
     try {
       const { data: appointments } = await Vue.$axios.get(
-        `/confirmedAppointments/unfinished/${doctorId}`
+        `/confirmedAppointments/unfinishedForToday/${doctorId}`
       );
       commit("setUnfinishedConfirmedAppointments", appointments);
     } catch (error) {
