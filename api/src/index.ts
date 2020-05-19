@@ -8,6 +8,7 @@ import initModelStega from "./models/initModelStega";
 
 import clinicsRoutes from "./routes/clinicsRoutes";
 import doctorsRoutes from "./routes/doctorsRoutes";
+import doctorSpecRoutes from "./routes/doctorSpecRoutes";
 import clinicAdminRoutes from "./routes/clinicAdminRoutes";
 import nurseRoutes from "./routes/nursesRoutes";
 import roomRoutes from "./routes/roomsRoutes";
@@ -56,6 +57,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // routes
 app.use("/clinics", clinicsRoutes);
 app.use("/doctors", doctorsRoutes);
+app.use("/doctorSpec", doctorSpecRoutes);
 app.use("/nurses", nurseRoutes);
 app.use("/rooms", roomRoutes);
 app.use("/auth", authenticationRoutes);
