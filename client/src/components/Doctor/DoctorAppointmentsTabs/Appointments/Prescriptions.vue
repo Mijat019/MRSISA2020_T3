@@ -4,7 +4,7 @@
       <h5>DRUGS :D</h5>
     </v-card-title>
     <v-card-text>
-      <v-data-table dense :items="getPrescriptions" :headers="headers">
+      <v-data-table dense :items="getPrescriptions" :headers="headers" key="index">
         <template v-slot:top>
           <v-dialog max-width="50%" v-model="dialog">
             <template v-slot:activator="{ on }">
@@ -56,7 +56,11 @@ export default {
   },
 
   methods: {
-    ...mapActions({ getDrugsAction: "drugs/getDrugsAction" }),
+    ...mapActions({
+      getDrugsAction: "drugs/getDrugsAction",
+
+      showError: "snackbar/showError"
+    }),
 
     ...mapMutations({
       addPrescription: "prescriptions/addPrescription",
@@ -65,9 +69,15 @@ export default {
 
     add() {
       if (!this.selectedDrug) {
-        alert("You need to select a drug");
+        this.showError("You need to select a drug");
         return;
       }
+
+      if (this.getPrescriptions.includes(this.selectedDrug)) {
+        this.showError("You've already added this drug.");
+        return;
+      }
+
       this.addPrescription(this.selectedDrug);
       this.selectedDrug = null;
       this.dialog = false;

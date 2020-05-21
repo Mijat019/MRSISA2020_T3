@@ -97,6 +97,7 @@ export default {
 
   created() {
     this.getDiagnosisAction();
+    this.setPrescriptions([]);
   }
 };
 </script>
