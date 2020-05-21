@@ -1,16 +1,8 @@
 <template>
   <div>
-    <div v-if="nextAppointment">
-      <AppointmentReport
-        v-on:submited="submited"
-        :appointment="nextAppointment"
-        v-if="showAppointmentReport"
-      />
-      <NextAppointment
-        v-on:changeComponent="changeComponent"
-        v-else
-        :appointment="nextAppointment"
-      />
+    <div v-if="getNextAppointment">
+      <AppointmentReport v-if="getShowComponent === `appointmentReport`" />
+      <NextAppointment v-else-if="getShowComponent === `nextAppointment`" />
     </div>
 
     <div v-else>You have no appointments for today.</div>
@@ -20,49 +12,34 @@
 <script>
 import AppointmentReport from "./AppointmentReport";
 import NextAppointment from "./NextAppointment";
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Appointments",
+
   components: { AppointmentReport, NextAppointment },
-  data: () => ({
-    showAppointmentReport: false,
-    nextAppointment: null
-  }),
+
+  data: () => ({}),
 
   computed: {
     ...mapGetters({
       getUnfinishedConfirmedAppointments:
-        "confirmedAppointments/getUnfinishedConfirmedAppointments",
-      getUser: "authentication/getUser"
+        "appointmentReport/getUnfinishedConfirmedAppointments",
+      getUser: "authentication/getUser",
+      getShowComponent: "appointmentReport/getShowComponent",
+      getNextAppointment: "appointmentReport/getNextAppointment"
     })
   },
 
   methods: {
-    ...mapActions("confirmedAppointments", {
+    ...mapActions("appointmentReport", {
       getUnfinishedConfirmedAppointmentsAction:
         "getUnfinishedConfirmedAppointmentsAction"
-    }),
-
-    ...mapMutations({
-      removeNextUnfinishedConfirmedAppointment:
-        "confirmedAppointments/removeNextUnfinishedConfirmedAppointment"
-    }),
-
-    changeComponent() {
-      this.showAppointmentReport = !this.showAppointmentReport;
-    },
-
-    submited() {
-      this.showAppointmentReport = !this.showAppointmentReport;
-      this.removeNextUnfinishedConfirmedAppointment();
-      this.nextAppointment = this.getUnfinishedConfirmedAppointments[0];
-    }
+    })
   },
 
   async created() {
     await this.getUnfinishedConfirmedAppointmentsAction(this.getUser.id);
-    this.nextAppointment = this.getUnfinishedConfirmedAppointments[0];
   }
 };
 </script>

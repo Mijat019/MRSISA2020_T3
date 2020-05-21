@@ -72,6 +72,7 @@
             </v-card-text>
             <v-card-actions>
               <v-btn text color="secondary" @click="selectedOpen = false">Cancel</v-btn>
+              <v-btn text color="primary" @click="openReport(selectedEvent.id)">Report</v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
@@ -81,7 +82,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import moment from "moment";
 export default {
   data: () => ({
@@ -108,6 +109,16 @@ export default {
         "confirmedAppointments/getConfirmedAppointmentsAction"
     }),
 
+    ...mapMutations({
+      setNextAppointment: "appointmentReport/setNextAppointment"
+    }),
+
+    openReport(reportId) {
+      this.setNextAppointment(reportId);
+      this.selectedOpen = false;
+      this.$emit("changeTab", "appointments");
+    },
+
     updateRange({ start, end }) {
       this.start = start;
       this.end = end;
@@ -117,18 +128,23 @@ export default {
       this.focus = date;
       this.type = "day";
     },
+
     getEventColor(event) {
       return event.color;
     },
+
     setToday() {
       this.focus = this.today;
     },
+
     prev() {
       this.$refs.calendar.prev();
     },
+
     next() {
       this.$refs.calendar.next();
     },
+
     showEvent({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event;
@@ -145,14 +161,17 @@ export default {
 
       nativeEvent.stopPropagation();
     },
+
     nth(d) {
       return d > 3 && d < 21
         ? "th"
         : ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][d % 10];
     },
+
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
+
     formatDate(a, withTime) {
       return withTime
         ? `${a.getFullYear()}-${a.getMonth() +
@@ -178,6 +197,7 @@ export default {
           const end = moment.unix(item.start);
           end.add(item.duration * 60, "seconds");
           return {
+            id: item.id,
             color: "green",
             appointmentType: item.priceList.appointmentType.name,
             roomName: item.room.name,
@@ -190,6 +210,7 @@ export default {
           const end = moment.unix(item.start);
           end.add(item.duration * 60, "seconds");
           return {
+            id: item.id,
             color: item.finished ? "grey" : "red",
             appointmentType: item.priceList.appointmentType.name,
             roomName: item.room.name,
@@ -230,6 +251,7 @@ export default {
       }
       return "";
     },
+
     monthFormatter() {
       return this.$refs.calendar.getFormatter({
         timeZone: "UTC",
@@ -237,6 +259,7 @@ export default {
       });
     }
   },
+
   async created() {
     await this.getFreeAppointmentsAction(this.getUser.id);
     await this.getConfirmedAppointmentsAction(this.getUser.id);

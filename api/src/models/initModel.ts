@@ -14,6 +14,7 @@ import Users from "./Users";
 import PatientsService from "../services/PatientsService";
 import PatientMedicalRecord from "./PatientMedicalRecord";
 import AccountStatus from "./AccountStatus";
+import FreeAppointments from "./FreeAppointments";
 
 export default async () => {
   await Diagnosis.create({ name: "Insane in the membrane" });
@@ -107,6 +108,23 @@ export default async () => {
     roomId,
     start: moment().unix(),
     duration: 60,
+  });
+
+  await ConfirmedAppointments.create({
+    priceListId,
+    doctorId,
+    patientId,
+    roomId,
+    start: moment().add(1, "hour").unix(),
+    duration: 60,
+  });
+
+  await FreeAppointments.create({
+    priceListId,
+    doctorId,
+    roomId,
+    duration: 60,
+    start: moment().add(2, "hour").unix(),
   });
 
   const { userId: tutu } = await ClinicAdminService.add(

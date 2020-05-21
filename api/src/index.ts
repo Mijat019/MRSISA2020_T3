@@ -1,6 +1,8 @@
 import express, { Application } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import morgan from "morgan";
+
 import config from "./config";
 import db from "./models/database";
 import initModel from "./models/initModel";
@@ -50,6 +52,7 @@ const app: Application = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan("dev"));
 
 // routes
 app.use("/clinics", clinicsRoutes);

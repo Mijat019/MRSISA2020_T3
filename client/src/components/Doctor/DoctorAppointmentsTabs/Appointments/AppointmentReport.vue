@@ -37,17 +37,17 @@
                 <v-form ref="medicalRecordForm" lazy-validation>
                   <v-text-field
                     label="Height"
-                    :value="appointment.patient.height"
+                    :value="getNextAppointment.patient.height"
                     v-model="medicalRecord.height"
                   ></v-text-field>
                   <v-text-field
                     label="Weight"
-                    :value="appointment.patient.weight"
+                    :value="getNextAppointment.patient.weight"
                     v-model="medicalRecord.weight"
                   ></v-text-field>
                   <v-text-field
                     label="Blood type"
-                    :value="appointment.patient.bloodType"
+                    :value="getNextAppointment.patient.bloodType"
                     v-model="medicalRecord.bloodType"
                   ></v-text-field>
                 </v-form>
@@ -73,8 +73,6 @@ export default {
     Prescriptions
   },
 
-  props: ["appointment"],
-
   data: () => ({
     report: {
       notes: "",
@@ -93,7 +91,8 @@ export default {
   computed: {
     ...mapGetters({
       getDiagnosis: "diagnosis/getDiagnosis",
-      getPrescriptions: "prescriptions/getPrescriptions"
+      getPrescriptions: "prescriptions/getPrescriptions",
+      getNextAppointment: "appointmentReport/getNextAppointment"
     })
   },
 
@@ -105,18 +104,15 @@ export default {
     }),
 
     ...mapMutations({
-      setPrescriptions: "prescriptions/setPrescriptions",
-      removeNextUnfinishedConfirmedAppointment:
-        "confirmedAppointments/removeNextUnfinishedConfirmedAppointment"
+      setPrescriptions: "prescriptions/setPrescriptions"
     }),
 
     async submitReport() {
-      this.report.confirmedAppointmentId = this.appointment.id;
+      this.report.confirmedAppointmentId = this.getNextAppointment.id;
       this.report.prescriptions = this.getPrescriptions;
-      this.report.patientMedicalRecordId = this.appointment.patient.user.id;
+      this.report.patientMedicalRecordId = this.getNextAppointment.patient.user.id;
       await this.submitAppointmentReportAction(this.report);
       this.setPrescriptions([]);
-      this.$emit("submited");
     }
   },
 
