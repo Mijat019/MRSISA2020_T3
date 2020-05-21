@@ -1,6 +1,6 @@
 import FreeAppointmentService from "../services/FreeAppointmentService";
 
-class AppointmentController {
+class FreeAppointmentController {
   public async getAllForDoctor(req: any, res: any) {
     try {
       const { doctorId } = req.params;
@@ -16,9 +16,7 @@ class AppointmentController {
   public async getAllOfType(req: any, res: any) {
     try {
       const { typeId } = req.params;
-      const appointments = await FreeAppointmentService.getAllOfType(
-        typeId
-      );
+      const appointments = await FreeAppointmentService.getAllOfType(typeId);
       res.send(appointments);
     } catch (error) {
       res.status(400).send(error.message);
@@ -27,9 +25,12 @@ class AppointmentController {
 
   public async schedule(req: any, res: any) {
     try {
-      const confAppo = await FreeAppointmentService.schedule(req.body.appoId, req.body.userId);
+      console.log(req.body);
+      const { appoId, patientId } = req.body;
+      const confAppo = await FreeAppointmentService.schedule(appoId, patientId);
       res.send(confAppo);
     } catch (error) {
+      console.log(error);
       res.status(400).send(error.message);
     }
   }
@@ -69,4 +70,4 @@ class AppointmentController {
   }
 }
 
-export default new AppointmentController();
+export default new FreeAppointmentController();

@@ -9,7 +9,7 @@
       <v-tab :href="`#appointmentHisotry`">Appointment hisotry</v-tab>
 
       <v-tab-item :value="'basicInfo'">
-        <BasicInfo />
+        <BasicInfo :user="getUser" />
       </v-tab-item>
       <v-tab-item :value="'diagnosisHisotry'">diagnosisHisotry</v-tab-item>
       <v-tab-item :value="'appointmentHisotry'">appointmentHisotry</v-tab-item>
@@ -19,6 +19,7 @@
 
 <script>
 import BasicInfo from "./BasicInfo";
+import { mapGetters } from "vuex";
 export default {
   name: "MedicalRecordTabs",
 
@@ -26,7 +27,11 @@ export default {
     BasicInfo
   },
 
-  data: () => ({ tab: null })
+  data: () => ({ tab: null }),
+
+  computed: {
+    ...mapGetters({ getUser: "authentication/getUser" })
+  }
 };
 </script>
 

@@ -172,7 +172,7 @@ export default {
       const result = [
         ...this.getFreeAppointments.map(item => {
           const end = moment.utc(item.start);
-          end.add(item.duration, "seconds");
+          end.add(item.duration * 60, "seconds");
           return {
             color: "green",
             appointmentType: item.priceList.appointmentType.name,
@@ -184,7 +184,7 @@ export default {
         }),
         ...this.getConfirmedAppointments.map(item => {
           const end = moment.utc(item.start);
-          end.add(item.duration, "seconds");
+          end.add(item.duration * 60, "seconds");
           return {
             color: "red",
             appointmentType: item.priceList.appointmentType.name,

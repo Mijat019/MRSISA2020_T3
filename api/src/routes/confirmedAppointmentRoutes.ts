@@ -1,17 +1,22 @@
 import express from "express";
-import ConfirmedAppointmentController from "../controllers/ConfirmedAppointmentController";
+import confirmedAppointmentController from "../controllers/ConfirmedAppointmentController";
 import AuthenticationMiddleware from "../middleware/AuthenticationMiddleware";
 
 const router = express.Router();
 
 router.use(AuthenticationMiddleware.verifyToken);
 
-router.get("/", ConfirmedAppointmentController.getAll);
+router.get("/", confirmedAppointmentController.getAll);
 
-router.get("/:doctorId", ConfirmedAppointmentController.getAllForDoctor);
+router.get("/:doctorId", confirmedAppointmentController.getAllForDoctor);
 
-router.patch("/", ConfirmedAppointmentController.update);
+router.get(
+  "/unfinished/:doctorId",
+  confirmedAppointmentController.getAllUnfinishedForDoctor
+);
 
-router.delete("/", ConfirmedAppointmentController.delete);
+router.patch("/", confirmedAppointmentController.update);
+
+router.delete("/", confirmedAppointmentController.delete);
 
 export default router;

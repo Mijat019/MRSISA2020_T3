@@ -102,11 +102,11 @@ const actions = {
     }
   },
 
-  async makeAppointmentAction({ commit, dispatch }, { appoId, userId }) {
+  async makeAppointmentAction({ commit, dispatch }, { appoId, patientId }) {
     try {
       await Vue.$axios.post(`/freeAppointments/schedule`, {
-        appoId: appoId,
-        userId: userId,
+        appoId,
+        patientId,
       });
       commit("removeAppointment", appoId);
       dispatch("snackbar/showSuccess", "Appointment successfully confirmed", {

@@ -2,8 +2,8 @@ import {
   Model,
   INTEGER,
   DATE,
-  Options,
   ModelAttributeColumnOptions,
+  BOOLEAN,
 } from "sequelize";
 import db from "./database";
 import Rooms from "./Rooms";
@@ -19,6 +19,7 @@ class ConfirmedAppointments extends Model {
   public roomId!: number;
   public start!: Date;
   public duration!: number;
+  public finished!: boolean;
 }
 
 ConfirmedAppointments.init(
@@ -59,11 +60,17 @@ ConfirmedAppointments.init(
       type: INTEGER,
       allowNull: false,
     },
+
+    finished: {
+      type: BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     timestamps: false,
     tableName: "ConfirmedAppointments",
     sequelize: db,
+    indexes: [{ unique: false, fields: ["finished"] }],
   }
 );
 

@@ -21,9 +21,8 @@ import drugsRoutes from "./routes/drugsRoutes";
 import diagnosisRoutes from "./routes/diagnosisRoutes";
 import clinicCenterAdminRoutes from "./routes/clinicCenterAdminRoutes";
 import priceListsRoutes from "./routes/priceListsRoutes";
-import appointmentRequestsRoutes from './routes/appointmentRequestsRoutes';
-
-
+import appointmentRequestsRoutes from "./routes/appointmentRequestsRoutes";
+import appointmentReportRoutes from "./routes/appointmentReportRoutes";
 
 // connect to the database
 (async () => {
@@ -38,7 +37,6 @@ import appointmentRequestsRoutes from './routes/appointmentRequestsRoutes';
     // creates tables from model
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
-
     // await db.sync({ force: true });
     // await initModel();
     // await initModelStega();
@@ -70,7 +68,8 @@ app.use("/priceLists", priceListsRoutes);
 app.use("/drugs", drugsRoutes);
 app.use("/diagnosis", diagnosisRoutes);
 app.use("/clinicCenterAdmins", clinicCenterAdminRoutes);
-app.use('/appointmentRequests', appointmentRequestsRoutes);
+app.use("/appointmentRequests", appointmentRequestsRoutes);
+app.use("/appointmentReport", appointmentReportRoutes);
 
 app.listen(config.port, () =>
   console.log(`Server listening on port ${config.port}`)
