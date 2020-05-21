@@ -4,8 +4,8 @@
       Next appointment
       <v-spacer />
       <v-card-actions>
-        <v-btn color="error">Skip</v-btn>
-        <v-btn @click="$emit(`changeComponent`)" color="primary">Start</v-btn>
+        <v-btn @click="skip">Skip</v-btn>
+        <v-btn @click="setShowComponent(`appointmentReport`)" color="primary">Start</v-btn>
       </v-card-actions>
     </v-card-title>
     <v-card-text>
@@ -55,18 +55,27 @@
 
 <script>
 import moment from "moment";
+import { mapMutations, mapGetters } from "vuex";
 export default {
   name: "NextAppointment",
 
-  props: ["appointment"],
-
   data: () => ({}),
 
-  methods: {},
+  methods: {
+    ...mapMutations({ setShowComponent: "appointmentReport/setShowComponent" }),
+
+    skip() {
+      alert(`Not implemented`);
+    }
+  },
 
   computed: {
+    ...mapGetters({
+      getNextAppointment: "appointmentReport/getNextAppointment"
+    }),
+
     patientInformation() {
-      const { patient } = this.appointment;
+      const { patient } = this.getNextAppointment;
       return [
         {
           icon: "mdi-account",
@@ -111,18 +120,18 @@ export default {
         {
           icon: "mdi-clipboard-text",
           title: "Appointment type",
-          subtitle: this.appointment?.priceList.appointmentType.name
+          subtitle: this.getNextAppointment?.priceList.appointmentType.name
         },
         {
           icon: "mdi-door",
           title: "Room",
-          subtitle: this.appointment?.room.name
+          subtitle: this.getNextAppointment?.room.name
         },
         {
           icon: "mdi-clock",
           title: "Appointment starts at",
-          subtitle: moment(this.appointment?.start)
-            .subtract(2, "hours")
+          subtitle: moment
+            .unix(this.getNextAppointment?.start)
             .format("Do MMM YYYY LT")
         }
       ];

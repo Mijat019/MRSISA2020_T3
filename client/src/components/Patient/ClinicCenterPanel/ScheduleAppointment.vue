@@ -33,7 +33,7 @@
         <br />
         Room: {{ dialogAppo.room.name }}
         <br />
-        Time: {{ dialogAppo.start }}
+        Time: {{ appointmentTime }}
         <br />
         <v-spacer />
         <v-btn color="primary" @click="makeAppointment()">Make appointment</v-btn>
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import ScheduleAppointmentDialog from "./ScheduleAppointmentDialog";
 
@@ -56,7 +57,10 @@ export default {
       appoKind: null, // custom or predefined
       appoType: null,
       headers: [
-        { text: "Start", value: "start" },
+        {
+          text: "Start",
+          value: "start"
+        },
         { text: "Room", value: "room.name" },
         { text: "Doctors first name", value: "doctor.user.firstName" },
         { text: "Doctors last name", value: "doctor.user.lastName" },
@@ -117,7 +121,14 @@ export default {
       getAppointmentTypes: "appointmentTypes/getAppointmentTypes",
       getFreeAppointments: "freeAppointments/getFreeAppointments",
       getUser: "authentication/getUser"
-    })
+    }),
+
+    appointmentTime() {
+      const start = moment
+        .unix(this.dialogAppo.start)
+        .format("YYYY-MM-DD HH:mm");
+      return start;
+    }
   },
 
   watch: {

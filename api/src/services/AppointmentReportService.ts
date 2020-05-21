@@ -46,8 +46,8 @@ class AppointmentReportService {
     appointmentReportId: number
   ) => {
     prescriptions.forEach(async (prescription: any) => {
-      const { id: drugsId } = prescription;
-      await Prescription.create({ drugsId, appointmentReportId });
+      const { id: drugId } = prescription;
+      await Prescription.create({ drugId, appointmentReportId });
     });
   };
 }

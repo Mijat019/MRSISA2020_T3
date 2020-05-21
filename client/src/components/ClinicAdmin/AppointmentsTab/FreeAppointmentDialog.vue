@@ -9,7 +9,6 @@
             <div class="example-inputs my-5">
               <datetime
                 type="datetime"
-                zone="UTC"
                 placeholder="Select date"
                 v-model="appointment.start"
                 :minute-step="15"
@@ -17,11 +16,7 @@
               />
             </div>
           </div>
-          <v-text-field
-            type="number"
-            label="Duration(in minutes)"
-            v-model="appointment.duration"
-          />
+          <v-text-field type="number" label="Duration(in minutes)" v-model="appointment.duration" />
           <v-select
             :items="getRooms"
             v-model="appointment.roomId"
@@ -48,9 +43,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn @click="close">Cancel</v-btn>
-        <v-btn v-if="type === 'add'" color="primary" @click="addAppointment"
-          >Add</v-btn
-        >
+        <v-btn v-if="type === 'add'" color="primary" @click="addAppointment">Add</v-btn>
         <v-btn v-else color="primary" @click="updateAppointment">Save</v-btn>
       </v-card-actions>
     </v-card>
@@ -58,15 +51,16 @@
 </template>
 
 <script>
+import moment from "moment";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { Datetime } from "vue-datetime";
 export default {
   name: "AppointmentDialog",
   components: {
-    datetime: Datetime,
+    datetime: Datetime
   },
   data: () => ({
-    rules: [(v) => !!v || "This field is required"],
+    rules: [v => !!v || "This field is required"]
   }),
   mounted() {
     this.getRoomsAction();
@@ -79,25 +73,31 @@ export default {
       updateAppointmentAction: "freeAppointments/updateFreeAppointmentAction",
       getRoomsAction: "rooms/getRoomsAction",
       getPriceListsAction: "priceLists/getPriceListsAction",
-      getDoctorsAction: "doctors/getDoctorsAction",
+      getDoctorsAction: "doctors/getDoctorsAction"
     }),
+
     ...mapMutations("freeAppointmentsDialog", {
-      close: "closeDialog",
+      close: "closeDialog"
     }),
+
     async addAppointment() {
       if (!this.$refs.form.validate() || !this.appointment.start) {
         return;
       }
+
+      //convert datetime to unix seconds
+      this.appointment.start = moment(this.appointment.start).unix();
       await this.addAppointmentAction(this.appointment);
       this.close();
     },
+
     async updateAppointment() {
       if (!this.$refs.form.validate() || !this.appointment.start) {
         return;
       }
       await this.updateAppointmentAction(this.appointment);
       this.close();
-    },
+    }
   },
   computed: {
     ...mapGetters({
@@ -108,8 +108,8 @@ export default {
       getDoctors: "doctors/getDoctors",
       getPriceLists: "priceLists/getPriceLists",
       getUser: "authentication/getUser"
-    }),
-  },
+    })
+  }
 };
 </script>
 

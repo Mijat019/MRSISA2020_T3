@@ -2,9 +2,12 @@
   <div>
     <v-card>
       <v-card-title>
-        Appointment report
+        Appointment report for patient: {{ `${getNextAppointment.patient.user.firstName} ${getNextAppointment.patient.user.lastName}`}}
         <v-spacer></v-spacer>
-        <v-btn @click="submitReport" color="primary">Submit report</v-btn>
+        <v-card-actions>
+          <v-btn @click="setShowComponent(`nextAppointment`)">Cancel</v-btn>
+          <v-btn @click="submitReport" color="primary">Submit report</v-btn>
+        </v-card-actions>
       </v-card-title>
       <v-card-text>
         <v-row>
@@ -31,28 +34,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-card>
-              <v-card-title>Patients medical record</v-card-title>
-              <v-card-text>
-                <v-form ref="medicalRecordForm" lazy-validation>
-                  <v-text-field
-                    label="Height"
-                    :value="appointment.patient.height"
-                    v-model="medicalRecord.height"
-                  ></v-text-field>
-                  <v-text-field
-                    label="Weight"
-                    :value="appointment.patient.weight"
-                    v-model="medicalRecord.weight"
-                  ></v-text-field>
-                  <v-text-field
-                    label="Blood type"
-                    :value="appointment.patient.bloodType"
-                    v-model="medicalRecord.bloodType"
-                  ></v-text-field>
-                </v-form>
-              </v-card-text>
-            </v-card>
+            <UpdateMedicalRecord />
           </v-col>
           <v-col>
             <Prescriptions />
@@ -65,15 +47,15 @@
 
 <script>
 import Prescriptions from "./Prescriptions";
+import UpdateMedicalRecord from "./UpdateMedicalRecord";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "AppointmentReport",
 
   components: {
-    Prescriptions
+    Prescriptions,
+    UpdateMedicalRecord
   },
-
-  props: ["appointment"],
 
   data: () => ({
     report: {
@@ -81,19 +63,14 @@ export default {
       diagnosisId: null,
       confirmedAppointmentId: null,
       patientMedicalRecordId: null
-    },
-
-    medicalRecord: {
-      height: null,
-      weight: null,
-      bloodType: null
     }
   }),
 
   computed: {
     ...mapGetters({
       getDiagnosis: "diagnosis/getDiagnosis",
-      getPrescriptions: "prescriptions/getPrescriptions"
+      getPrescriptions: "prescriptions/getPrescriptions",
+      getNextAppointment: "appointmentReport/getNextAppointment"
     })
   },
 
@@ -106,22 +83,21 @@ export default {
 
     ...mapMutations({
       setPrescriptions: "prescriptions/setPrescriptions",
-      removeNextUnfinishedConfirmedAppointment:
-        "confirmedAppointments/removeNextUnfinishedConfirmedAppointment"
+      setShowComponent: "appointmentReport/setShowComponent"
     }),
 
     async submitReport() {
-      this.report.confirmedAppointmentId = this.appointment.id;
+      this.report.confirmedAppointmentId = this.getNextAppointment.id;
       this.report.prescriptions = this.getPrescriptions;
-      this.report.patientMedicalRecordId = this.appointment.patient.user.id;
+      this.report.patientMedicalRecordId = this.getNextAppointment.patient.user.id;
       await this.submitAppointmentReportAction(this.report);
       this.setPrescriptions([]);
-      this.$emit("submited");
     }
   },
 
   created() {
     this.getDiagnosisAction();
+    this.setPrescriptions([]);
   }
 };
 </script>

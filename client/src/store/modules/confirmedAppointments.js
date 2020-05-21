@@ -2,22 +2,21 @@ import Vue from "vue";
 
 const state = {
   confirmedAppointments: [],
-  unfinishedConfirmedAppointments: [],
 };
+
 const mutations = {
   setConfirmedAppointments(state, confirmedAppointments) {
     state.confirmedAppointments = confirmedAppointments;
   },
 
-  removeNextUnfinishedConfirmedAppointment(state) {
-    state.unfinishedConfirmedAppointments.splice(0, 1);
-    console.log(state.unfinishedConfirmedAppointments);
-  },
-
-  setUnfinishedConfirmedAppointments(state, unfinishedConfirmedAppointments) {
-    state.unfinishedConfirmedAppointments = unfinishedConfirmedAppointments;
+  finishAppointment(state, confirmedAppointmentId) {
+    const index = state.confirmedAppointments.findIndex(
+      (appointment) => appointment.id === confirmedAppointmentId
+    );
+    state.confirmedAppointments[index].finished = true;
   },
 };
+
 const actions = {
   async getConfirmedAppointmentsAction({ commit, dispatch }, doctorId) {
     // no selected doctors
@@ -35,25 +34,10 @@ const actions = {
       dispatch("snackbar/showError", error.response.data, { root: true });
     }
   },
-
-  async getUnfinishedConfirmedAppointmentsAction(
-    { commit, dispatch },
-    doctorId
-  ) {
-    try {
-      const { data: appointments } = await Vue.$axios.get(
-        `/confirmedAppointments/unfinished/${doctorId}`
-      );
-      commit("setUnfinishedConfirmedAppointments", appointments);
-    } catch (error) {
-      dispatch("snackbar/showError", error.response.data, { root: true });
-    }
-  },
 };
+
 const getters = {
   getConfirmedAppointments: (state) => state.confirmedAppointments,
-  getUnfinishedConfirmedAppointments: (state) =>
-    state.unfinishedConfirmedAppointments,
 };
 
 export default { namespaced: true, state, mutations, actions, getters };

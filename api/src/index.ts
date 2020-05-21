@@ -1,6 +1,8 @@
 import express, { Application } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import morgan from "morgan";
+
 import config from "./config";
 import db from "./models/database";
 import initModel from "./models/initModel";
@@ -23,25 +25,23 @@ import clinicCenterAdminRoutes from "./routes/clinicCenterAdminRoutes";
 import priceListsRoutes from "./routes/priceListsRoutes";
 import appointmentRequestsRoutes from "./routes/appointmentRequestsRoutes";
 import appointmentReportRoutes from "./routes/appointmentReportRoutes";
+import patientMedicalRecordRoutes from "./routes/patientMedicalRecordRoutes";
 
 // connect to the database
 (async () => {
   try {
-    await db
-      .authenticate()
-      .then(() => console.log("Connected to the database"))
-      .catch(() =>
-        console.log("An error occurred while trying to connect to the database")
-      );
+    await db.authenticate();
+    console.log("Connected to the database");
 
     // creates tables from model
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
-    // await db.sync({ force: true });
-    // await initModel();
+    await db.sync({ force: true });
+    await initModel();
     // await initModelStega();
   } catch (error) {
     console.log(error);
+    console.log("An error occurred while trying to connect to the database");
   }
 })();
 
@@ -51,6 +51,7 @@ const app: Application = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan("dev"));
 
 // routes
 app.use("/clinics", clinicsRoutes);
@@ -70,6 +71,7 @@ app.use("/diagnosis", diagnosisRoutes);
 app.use("/clinicCenterAdmins", clinicCenterAdminRoutes);
 app.use("/appointmentRequests", appointmentRequestsRoutes);
 app.use("/appointmentReport", appointmentReportRoutes);
+app.use("/patientMedicalRecord", patientMedicalRecordRoutes);
 
 app.listen(config.port, () =>
   console.log(`Server listening on port ${config.port}`)

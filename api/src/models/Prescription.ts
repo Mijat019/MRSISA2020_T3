@@ -4,11 +4,6 @@ import AppointmentReport from "./AppointmentReports";
 import NurseAt from "./NurseAt";
 import Drugs from "./Drugs";
 
-const requiredUnsigned = {
-  type: INTEGER.UNSIGNED,
-  allowNull: false,
-};
-
 class Prescription extends Model {
   public id!: number;
   public appointmentReportId!: number;
@@ -26,9 +21,15 @@ Prescription.init(
       autoIncrement: true,
     },
 
-    appointmentReportId: requiredUnsigned,
+    appointmentReportId: {
+      type: INTEGER.UNSIGNED,
+      allowNull: false,
+    },
 
-    drugId: requiredUnsigned,
+    drugId: {
+      type: INTEGER.UNSIGNED,
+      allowNull: false,
+    },
 
     nurseId: {
       type: INTEGER.UNSIGNED,
@@ -48,6 +49,6 @@ Prescription.belongsTo(AppointmentReport, {
   foreignKey: "appointmentReportId",
 });
 Prescription.belongsTo(NurseAt, { as: "nurse", foreignKey: "nurseId" });
-Prescription.belongsTo(Drugs, { as: "drug", foreignKey: "drugsId" });
+Prescription.belongsTo(Drugs, { as: "drug", foreignKey: "drugId" });
 
 export default Prescription;

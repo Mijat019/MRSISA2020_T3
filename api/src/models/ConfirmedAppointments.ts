@@ -17,7 +17,7 @@ class ConfirmedAppointments extends Model {
   public doctorId!: number;
   public patientId!: number;
   public roomId!: number;
-  public start!: Date;
+  public start!: number;
   public duration!: number;
   public finished!: boolean;
 }
@@ -52,7 +52,7 @@ ConfirmedAppointments.init(
     },
 
     start: {
-      type: DATE,
+      type: INTEGER,
       allowNull: false,
     },
 
