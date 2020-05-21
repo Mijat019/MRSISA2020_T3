@@ -72,7 +72,6 @@ export default {
 
     patientInformation() {
       const { patient } = this.getNextAppointment;
-      console.log("patientInformation");
       return [
         {
           icon: "mdi-account",

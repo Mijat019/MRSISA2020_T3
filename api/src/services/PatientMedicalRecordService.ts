@@ -13,6 +13,16 @@ class PatientMedicalRecordService {
     });
     return patientMedicalRecord;
   }
+
+  public async update(userId: string, patientMedicalRecordUpdate: any) {
+    await PatientMedicalRecord.update(patientMedicalRecordUpdate, {
+      where: { userId },
+    });
+    const patientMedicalRecord = await PatientMedicalRecord.findByPk(userId, {
+      include,
+    });
+    return patientMedicalRecord;
+  }
 }
 
 export default new PatientMedicalRecordService();

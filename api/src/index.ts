@@ -24,16 +24,13 @@ import clinicCenterAdminRoutes from "./routes/clinicCenterAdminRoutes";
 import priceListsRoutes from "./routes/priceListsRoutes";
 import appointmentRequestsRoutes from "./routes/appointmentRequestsRoutes";
 import appointmentReportRoutes from "./routes/appointmentReportRoutes";
+import patientMedicalRecordRoutes from "./routes/patientMedicalRecordRoutes";
 
 // connect to the database
 (async () => {
   try {
-    await db
-      .authenticate()
-      .then(() => console.log("Connected to the database"))
-      .catch(() =>
-        console.log("An error occurred while trying to connect to the database")
-      );
+    await db.authenticate();
+    console.log("Connected to the database");
 
     // creates tables from model
     // drops tables if they already exist
@@ -43,6 +40,7 @@ import appointmentReportRoutes from "./routes/appointmentReportRoutes";
     // await initModelStega();
   } catch (error) {
     console.log(error);
+    console.log("An error occurred while trying to connect to the database");
   }
 })();
 
@@ -71,6 +69,7 @@ app.use("/diagnosis", diagnosisRoutes);
 app.use("/clinicCenterAdmins", clinicCenterAdminRoutes);
 app.use("/appointmentRequests", appointmentRequestsRoutes);
 app.use("/appointmentReport", appointmentReportRoutes);
+app.use("/patientMedicalRecord", patientMedicalRecordRoutes);
 
 app.listen(config.port, () =>
   console.log(`Server listening on port ${config.port}`)

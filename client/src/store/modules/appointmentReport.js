@@ -32,7 +32,6 @@ const mutations = {
     }
 
     state.nextAppointment = state.unfinishedConfirmedAppointments[0];
-    console.log(state.nextAppointment);
   },
 };
 
@@ -67,6 +66,24 @@ const actions = {
       commit("setShowComponent", "nextAppointment");
       commit("setNextAppointment", null);
       dispatch("snackbar/showSuccess", "Appointment report created", {
+        root: true,
+      });
+    } catch (error) {
+      dispatch("snackbar/showError", error.response.data, { root: true });
+    }
+  },
+
+  async updatePatientMedicalRecordAction(
+    { dispatch },
+    patientMedicalRecordUpdate
+  ) {
+    try {
+      await Vue.$axios.patch(
+        `/patientMedicalRecord/${patientMedicalRecordUpdate.userId}`,
+        patientMedicalRecordUpdate
+      );
+
+      dispatch("snackbar/showSuccess", "Medical record updated.", {
         root: true,
       });
     } catch (error) {

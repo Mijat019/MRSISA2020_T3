@@ -34,28 +34,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-card>
-              <v-card-title>Patients medical record</v-card-title>
-              <v-card-text>
-                <v-form ref="medicalRecordForm" lazy-validation>
-                  <v-text-field
-                    label="Height"
-                    :value="getNextAppointment.patient.height"
-                    v-model="medicalRecord.height"
-                  ></v-text-field>
-                  <v-text-field
-                    label="Weight"
-                    :value="getNextAppointment.patient.weight"
-                    v-model="medicalRecord.weight"
-                  ></v-text-field>
-                  <v-text-field
-                    label="Blood type"
-                    :value="getNextAppointment.patient.bloodType"
-                    v-model="medicalRecord.bloodType"
-                  ></v-text-field>
-                </v-form>
-              </v-card-text>
-            </v-card>
+            <UpdateMedicalRecord />
           </v-col>
           <v-col>
             <Prescriptions />
@@ -68,12 +47,14 @@
 
 <script>
 import Prescriptions from "./Prescriptions";
+import UpdateMedicalRecord from "./UpdateMedicalRecord";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "AppointmentReport",
 
   components: {
-    Prescriptions
+    Prescriptions,
+    UpdateMedicalRecord
   },
 
   data: () => ({
@@ -82,12 +63,6 @@ export default {
       diagnosisId: null,
       confirmedAppointmentId: null,
       patientMedicalRecordId: null
-    },
-
-    medicalRecord: {
-      height: null,
-      weight: null,
-      bloodType: null
     }
   }),
 
