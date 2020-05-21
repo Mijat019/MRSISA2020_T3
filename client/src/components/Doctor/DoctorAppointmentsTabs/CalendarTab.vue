@@ -53,7 +53,9 @@
           first-interval="7"
           interval-minutes="60"
           interval-count="12"
-        ></v-calendar>
+        >
+          <template v-slot:day-body></template>
+        </v-calendar>
         <v-menu
           v-model="selectedOpen"
           :close-on-content-click="false"

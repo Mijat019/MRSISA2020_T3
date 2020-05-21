@@ -4,7 +4,7 @@
       Next appointment
       <v-spacer />
       <v-card-actions>
-        <v-btn>Skip</v-btn>
+        <v-btn @click="skip">Skip</v-btn>
         <v-btn @click="setShowComponent(`appointmentReport`)" color="primary">Start</v-btn>
       </v-card-actions>
     </v-card-title>
@@ -62,7 +62,11 @@ export default {
   data: () => ({}),
 
   methods: {
-    ...mapMutations({ setShowComponent: "appointmentReport/setShowComponent" })
+    ...mapMutations({ setShowComponent: "appointmentReport/setShowComponent" }),
+
+    skip() {
+      alert(`Not implemented`);
+    }
   },
 
   computed: {

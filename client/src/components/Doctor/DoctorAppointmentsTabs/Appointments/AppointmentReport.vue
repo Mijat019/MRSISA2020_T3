@@ -2,7 +2,7 @@
   <div>
     <v-card>
       <v-card-title>
-        Appointment report
+        Appointment report for patient: {{ `${getNextAppointment.patient.user.firstName} ${getNextAppointment.patient.user.lastName}`}}
         <v-spacer></v-spacer>
         <v-card-actions>
           <v-btn @click="setShowComponent(`nextAppointment`)">Cancel</v-btn>
