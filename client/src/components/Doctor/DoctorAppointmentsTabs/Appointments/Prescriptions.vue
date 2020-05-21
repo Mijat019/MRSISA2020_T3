@@ -25,6 +25,10 @@
             </v-card>
           </v-dialog>
         </template>
+
+        <template v-slot:item.actions="{item}">
+          <v-icon small @click="removePrescription(item)">mdi-close</v-icon>
+        </template>
       </v-data-table>
     </v-card-text>
   </v-card>
@@ -37,7 +41,10 @@ export default {
 
   data: () => ({
     dialog: false,
-    headers: [{ text: "Drug name", value: "name" }],
+    headers: [
+      { text: "Drug name", value: "name" },
+      { text: "Actions", value: "actions" }
+    ],
     selectedDrug: null
   }),
 
@@ -51,7 +58,10 @@ export default {
   methods: {
     ...mapActions({ getDrugsAction: "drugs/getDrugsAction" }),
 
-    ...mapMutations({ addPrescription: "prescriptions/addPrescription" }),
+    ...mapMutations({
+      addPrescription: "prescriptions/addPrescription",
+      removePrescription: "prescriptions/removePrescription"
+    }),
 
     add() {
       if (!this.selectedDrug) {

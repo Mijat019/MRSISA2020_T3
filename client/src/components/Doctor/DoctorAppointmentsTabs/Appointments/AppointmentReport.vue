@@ -4,7 +4,10 @@
       <v-card-title>
         Appointment report
         <v-spacer></v-spacer>
-        <v-btn @click="submitReport" color="primary">Submit report</v-btn>
+        <v-card-actions>
+          <v-btn @click="setShowComponent(`nextAppointment`)">Cancel</v-btn>
+          <v-btn @click="submitReport" color="primary">Submit report</v-btn>
+        </v-card-actions>
       </v-card-title>
       <v-card-text>
         <v-row>
@@ -104,7 +107,8 @@ export default {
     }),
 
     ...mapMutations({
-      setPrescriptions: "prescriptions/setPrescriptions"
+      setPrescriptions: "prescriptions/setPrescriptions",
+      setShowComponent: "appointmentReport/setShowComponent"
     }),
 
     async submitReport() {

@@ -71,8 +71,12 @@
               Room: {{ selectedEvent.roomName }}
             </v-card-text>
             <v-card-actions>
-              <v-btn text color="secondary" @click="selectedOpen = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="openReport(selectedEvent.id)">Report</v-btn>
+              <v-btn @click="selectedOpen = false">Close</v-btn>
+              <v-btn
+                v-if="selectedEvent.color === `red`"
+                color="primary"
+                @click="openReport(selectedEvent.id)"
+              >See appointment</v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
