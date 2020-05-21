@@ -88,6 +88,8 @@ class FreeAppointmentService {
       include,
     });
 
+    await this.checkForConflicts_Schedule(userId, freeAppo);
+
     if (freeAppo == null) throw "Free appointment " + appoId + " not found.";
 
     // Make confirmed appointment from free
@@ -102,7 +104,18 @@ class FreeAppointmentService {
     return confAppo;
   }
 
-  public async checkForConflicts(appointment: any) {
+  public async checkForConflicts_Schedule(patientId: number, appointment: any) {
+    const conflictAppo = await ConfirmedAppointments.findOne({ 
+      where: {
+        patientId, 
+        start: appointment.start
+      } 
+    });
+    console.log("Conflict appo: " + conflictAppo);
+    if (conflictAppo) throw new Error("You already have a scheduled appointment at that time.");
+  }
+
+  public async checkForConflicts(appointment : any) {    
     // first check if room is occupied
     const time = appointment.start;
     const room = appointment.roomId;

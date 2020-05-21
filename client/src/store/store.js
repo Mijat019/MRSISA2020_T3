@@ -8,6 +8,7 @@ import appointmentTypes from "./modules/appointmentTypes";
 import appointmentTypesDialog from "./modules/appointmentTypesDialog";
 import nurses from "./modules/nurses";
 import rooms from "./modules/rooms";
+import doctorSpec from "./modules/doctorSpec";
 import roomsDialog from "./modules/roomsDialog";
 import snackbar from "./modules/snackbar";
 import authentication from "./modules/authentication";
@@ -42,6 +43,7 @@ export default new Vuex.Store({
     patients,
     clinics,
     doctors,
+    doctorSpec,
     clinicAdmins,
     nurses,
     rooms,
