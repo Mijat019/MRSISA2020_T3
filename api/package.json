@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node dist/index",
         "dev": "nodemon ./src/index.ts",
-        "build": "echo Building api for production && tsc -p . && echo Done! && cd ../client && echo Building frontend for production &&  npm run build && echo Done!"
+        "build": "tsc -p ."
     },
     "author": "",
     "license": "ISC",

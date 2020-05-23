@@ -7,7 +7,7 @@
     "main": "./api/dist/index.js",
     "scripts": {
         "start": "cd api && npm start",
-        "build": "cd api && npm run build"
+        "build": "cd api && npm install && npm run build && cd ../client && npm install && npm run build"
     },
     "repository": {
         "type": "git",
