@@ -75,6 +75,10 @@ app.use("/appointmentRequests", appointmentRequestsRoutes);
 app.use("/appointmentReport", appointmentReportRoutes);
 app.use("/patientMedicalRecord", patientMedicalRecordRoutes);
 
+app.use(express.static(__dirname + "/public/"));
+
+app.get("*", (req, res) => res.sendFile(__dirname + "/public/index.html"));
+
 app.listen(config.port, () =>
     console.log(`Server listening on port ${config.port}`)
 );

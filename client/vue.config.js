@@ -5,5 +5,5 @@ module.exports = {
     devServer: {
         proxy: "http://localhost:4200",
     },
-    outputDir: path.resolve(__dirname, "../api/src/public"),
+    outputDir: path.resolve(__dirname, "../api/dist/public"),
 };

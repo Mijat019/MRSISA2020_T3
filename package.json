@@ -1,0 +1,25 @@
+{
+    "name": "mrsisa2020_t3",
+    "version": "1.0.0",
+    "description": "* [Stefan Kandić](https://github.com/ssttefann)\r * [Stefan Stegić](https://github.com/phuskus)\r * [Mijat Miletić](https://github.com/Mijat019)",
+    "dependencies": {},
+    "devDependencies": {},
+    "main": "./api/dist/index.js",
+    "scripts": {
+        "start": "cd api && npm start",
+        "build": "cd api && npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Mijat019/MRSISA2020_T3.git"
+    },
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Mijat019/MRSISA2020_T3/issues"
+    },
+    "homepage": "https://github.com/Mijat019/MRSISA2020_T3#readme",
+    "engines": {
+        "node": "12.16.3"
+    }
+}
