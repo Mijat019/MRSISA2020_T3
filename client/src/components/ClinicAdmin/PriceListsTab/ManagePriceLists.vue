@@ -63,7 +63,6 @@ export default {
     },
 
     deleteItem(item) {
-      console.log(item);
       if (confirm("Are you sure you want to delete this price list?")) {
         this.deletePriceListAction(item.item.id);
       }
@@ -78,7 +77,7 @@ export default {
     ...mapGetters({
       getPriceLists: "priceLists/getPriceLists",
       getAppointmentTypes: "appointmentTypes/getAppointmentTypes",
-      getUser: "authentication/getUser",
+      getUser: "authentication/getUser"
     })
   }
 };
