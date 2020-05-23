@@ -1,8 +1,8 @@
 export default {
-  port: 4200,
-  saltRounds: 5,
-  secret: "qwertyuiopasdfghjklzxcvbnm1234567890",
-  mail: "covid19.clinic.llc@gmail.com",
-  password: "M33y4tsuX!",
-  tokenExpirySeconds: 14400,
+    port: process.env.PORT || 4200,
+    saltRounds: 5,
+    secret: "qwertyuiopasdfghjklzxcvbnm1234567890",
+    mail: process.env.EMAIL,
+    password: process.env.EMAIL_PW,
+    tokenExpirySeconds: 14400,
 };

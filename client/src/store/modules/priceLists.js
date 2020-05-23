@@ -69,15 +69,10 @@ const actions = {
                 typePayload
             );
             commit("addPriceList", price);
-            dispatch(
-                "snackbar/showSuccess",
-                "Price List successfully added.",
-                {
-                    root: true,
-                }
-            );
+            dispatch("snackbar/showSuccess", "Price List successfully added.", {
+                root: true,
+            });
         } catch (error) {
-            console.log(error);
             dispatch("snackbar/showError", error.response.data, { root: true });
         }
     },
