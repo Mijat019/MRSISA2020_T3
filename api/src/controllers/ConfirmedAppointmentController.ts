@@ -22,10 +22,10 @@ class FreeAppointmentController {
     }
   }
 
-  public async getAllUnfinishedForDoctor(req: any, res: any) {
+  public async getAllUnfinishedForDoctorForToday(req: any, res: any) {
     try {
       const { doctorId } = req.params;
-      const appointments = await confirmedAppointmentService.getAllUnfinishedForDoctor(
+      const appointments = await confirmedAppointmentService.getAllUnfinishedForDoctorForToday(
         doctorId
       );
       res.send(appointments);

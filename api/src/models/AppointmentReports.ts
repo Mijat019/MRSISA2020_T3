@@ -1,5 +1,6 @@
 import { Model, INTEGER, DATE, STRING } from "sequelize";
 import sequelize from "./database";
+import moment from "moment";
 import PatientMedicalRecord from "./PatientMedicalRecord";
 import ConfirmedAppointments from "./ConfirmedAppointments";
 import Diagnosis from "./Diagnosis";
@@ -9,7 +10,7 @@ class AppointmentReports extends Model {
   public patientMedicalRecordId!: number;
   public confirmedAppointmentId!: number;
   public diagnosisId!: number;
-  public createdAt!: Date;
+  public createdAt!: number;
   public notes!: string;
 }
 
@@ -34,12 +35,12 @@ AppointmentReports.init(
 
     diagnosisId: {
       type: INTEGER.UNSIGNED,
-      allowNull: false,
+      allowNull: true,
     },
 
     createdAt: {
-      type: DATE,
-      defaultValue: Date.now,
+      type: INTEGER,
+      defaultValue: () => moment().unix(),
     },
 
     notes: {

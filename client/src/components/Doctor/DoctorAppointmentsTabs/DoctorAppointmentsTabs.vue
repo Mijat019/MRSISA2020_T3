@@ -11,7 +11,7 @@
         <Appointments />
       </v-tab-item>
       <v-tab-item :value="'calendar'">
-        <CalendarTab />
+        <CalendarTab v-on:changeTab="changeTab" />
       </v-tab-item>
       <v-tab-item :value="'viewPatients'">viewPatients</v-tab-item>
     </v-tabs>
@@ -23,10 +23,18 @@ import CalendarTab from "./CalendarTab";
 import Appointments from "./Appointments/Appointments";
 export default {
   name: "DoctorAppointmentsTabs",
+
   components: { CalendarTab, Appointments },
+
   data: () => ({
     tab: null
-  })
+  }),
+
+  methods: {
+    changeTab(tab) {
+      this.tab = tab;
+    }
+  }
 };
 </script>
 

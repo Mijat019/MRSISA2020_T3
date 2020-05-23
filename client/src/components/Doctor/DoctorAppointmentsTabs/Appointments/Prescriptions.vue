@@ -1,10 +1,10 @@
 <template>
-  <v-card>
+  <v-card class="fill-height">
     <v-card-title>
       <h5>DRUGS :D</h5>
     </v-card-title>
     <v-card-text>
-      <v-data-table dense :items="getPrescriptions" :headers="headers">
+      <v-data-table dense :items="getPrescriptions" :headers="headers" key="index">
         <template v-slot:top>
           <v-dialog max-width="50%" v-model="dialog">
             <template v-slot:activator="{ on }">
@@ -25,6 +25,10 @@
             </v-card>
           </v-dialog>
         </template>
+
+        <template v-slot:item.actions="{item}">
+          <v-icon small @click="removePrescription(item)">mdi-close</v-icon>
+        </template>
       </v-data-table>
     </v-card-text>
   </v-card>
@@ -37,7 +41,10 @@ export default {
 
   data: () => ({
     dialog: false,
-    headers: [{ text: "Drug name", value: "name" }],
+    headers: [
+      { text: "Drug name", value: "name" },
+      { text: "Actions", value: "actions" }
+    ],
     selectedDrug: null
   }),
 
@@ -49,15 +56,28 @@ export default {
   },
 
   methods: {
-    ...mapActions({ getDrugsAction: "drugs/getDrugsAction" }),
+    ...mapActions({
+      getDrugsAction: "drugs/getDrugsAction",
 
-    ...mapMutations({ addPrescription: "prescriptions/addPrescription" }),
+      showError: "snackbar/showError"
+    }),
+
+    ...mapMutations({
+      addPrescription: "prescriptions/addPrescription",
+      removePrescription: "prescriptions/removePrescription"
+    }),
 
     add() {
       if (!this.selectedDrug) {
-        alert("You need to select a drug");
+        this.showError("You need to select a drug");
         return;
       }
+
+      if (this.getPrescriptions.includes(this.selectedDrug)) {
+        this.showError("You've already added this drug.");
+        return;
+      }
+
       this.addPrescription(this.selectedDrug);
       this.selectedDrug = null;
       this.dialog = false;

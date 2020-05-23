@@ -6,7 +6,8 @@ import FreeAppointments from "../models/FreeAppointments";
 import PriceLists from "../models/PriceLists";
 import AppointmentTypes from "../models/AppointmentTypes";
 import PatientMedicalRecord from "../models/PatientMedicalRecord";
-import { IncludeOptions } from "sequelize/types";
+import { IncludeOptions, Op } from "sequelize";
+import { getStartAndEndOfDay } from "../util/dateUtil";
 
 const include: IncludeOptions[] = [
   { model: Rooms, as: "room", attributes: ["name", "id"] },
@@ -49,9 +50,14 @@ class ConfirmedAppointmentService {
     return appointments;
   }
 
-  public async getAllUnfinishedForDoctor(doctorId: string) {
+  public async getAllUnfinishedForDoctorForToday(doctorId: string) {
+    const { startOfDay, endOfDay } = getStartAndEndOfDay(Date.now());
     const appointments = await ConfirmedAppointments.findAll({
-      where: { doctorId, finished: false },
+      where: {
+        doctorId,
+        finished: false,
+        start: { [Op.between]: [startOfDay, endOfDay] },
+      },
       attributes,
       include,
       order: [["start", "ASC"]],

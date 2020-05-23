@@ -10,7 +10,7 @@ class FreeAppointments extends Model {
   public priceListId!: number;
   public doctorId!: number;
   public roomId!: number;
-  public start!: Date;
+  public start!: number;
   public duration!: number;
 }
 
@@ -42,7 +42,7 @@ FreeAppointments.init(
     },
 
     start: {
-      type: DATE,
+      type: INTEGER,
       allowNull: false,
     },
 

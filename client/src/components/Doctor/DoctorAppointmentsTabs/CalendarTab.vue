@@ -52,8 +52,10 @@
           :event-color="getEventColor"
           first-interval="7"
           interval-minutes="60"
-          interval-count="8"
-        ></v-calendar>
+          interval-count="12"
+        >
+          <template v-slot:day-body></template>
+        </v-calendar>
         <v-menu
           v-model="selectedOpen"
           :close-on-content-click="false"
@@ -71,7 +73,12 @@
               Room: {{ selectedEvent.roomName }}
             </v-card-text>
             <v-card-actions>
-              <v-btn text color="secondary" @click="selectedOpen = false">Cancel</v-btn>
+              <v-btn @click="selectedOpen = false">Close</v-btn>
+              <v-btn
+                v-if="selectedEvent.color === `red`"
+                color="primary"
+                @click="openReport(selectedEvent.id)"
+              >See appointment</v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
@@ -81,7 +88,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import moment from "moment";
 export default {
   data: () => ({
@@ -108,6 +115,16 @@ export default {
         "confirmedAppointments/getConfirmedAppointmentsAction"
     }),
 
+    ...mapMutations({
+      setNextAppointment: "appointmentReport/setNextAppointment"
+    }),
+
+    openReport(reportId) {
+      this.setNextAppointment(reportId);
+      this.selectedOpen = false;
+      this.$emit("changeTab", "appointments");
+    },
+
     updateRange({ start, end }) {
       this.start = start;
       this.end = end;
@@ -117,18 +134,23 @@ export default {
       this.focus = date;
       this.type = "day";
     },
+
     getEventColor(event) {
       return event.color;
     },
+
     setToday() {
       this.focus = this.today;
     },
+
     prev() {
       this.$refs.calendar.prev();
     },
+
     next() {
       this.$refs.calendar.next();
     },
+
     showEvent({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event;
@@ -145,14 +167,17 @@ export default {
 
       nativeEvent.stopPropagation();
     },
+
     nth(d) {
       return d > 3 && d < 21
         ? "th"
         : ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][d % 10];
     },
+
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
+
     formatDate(a, withTime) {
       return withTime
         ? `${a.getFullYear()}-${a.getMonth() +
@@ -168,29 +193,35 @@ export default {
       getUser: "authentication/getUser"
     }),
 
+    /**
+     * Convert free appointments and confirmed appointments to
+     * events for the calendar
+     */
     appointments() {
       const result = [
         ...this.getFreeAppointments.map(item => {
-          const end = moment.utc(item.start);
+          const end = moment.unix(item.start);
           end.add(item.duration * 60, "seconds");
           return {
+            id: item.id,
             color: "green",
             appointmentType: item.priceList.appointmentType.name,
             roomName: item.room.name,
             name: `${item.priceList.appointmentType.name} ${item.room.name}`,
-            start: moment.utc(item.start).format("YYYY-MM-DD HH:mm"),
+            start: moment.unix(item.start).format("YYYY-MM-DD HH:mm"),
             end: end.format("YYYY-MM-DD HH:mm")
           };
         }),
         ...this.getConfirmedAppointments.map(item => {
-          const end = moment.utc(item.start);
+          const end = moment.unix(item.start);
           end.add(item.duration * 60, "seconds");
           return {
-            color: "red",
+            id: item.id,
+            color: item.finished ? "grey" : "red",
             appointmentType: item.priceList.appointmentType.name,
             roomName: item.room.name,
             name: `${item.priceList.appointmentType.name} ${item.room.name}`,
-            start: moment.utc(item.start).format("YYYY-MM-DD HH:mm"),
+            start: moment.unix(item.start).format("YYYY-MM-DD HH:mm"),
             end: end.format("YYYY-MM-DD HH:mm")
           };
         })
@@ -226,6 +257,7 @@ export default {
       }
       return "";
     },
+
     monthFormatter() {
       return this.$refs.calendar.getFormatter({
         timeZone: "UTC",
@@ -233,6 +265,7 @@ export default {
       });
     }
   },
+
   async created() {
     await this.getFreeAppointmentsAction(this.getUser.id);
     await this.getConfirmedAppointmentsAction(this.getUser.id);

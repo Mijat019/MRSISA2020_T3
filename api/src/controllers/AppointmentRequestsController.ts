@@ -1,19 +1,19 @@
-import AppointmentRequestsService from "../services/AppointmentRequestsService";
+import appointmentRequestsService from "../services/AppointmentRequestsService";
 
 class AppointmentRequestsController {
   public async getAll(req: any, res: any) {
     try {
-      const requests = await AppointmentRequestsService.getAll();
+      const requests = await appointmentRequestsService.getAll();
       res.send(requests);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(400).send(error.message);
     }
   }
 
   public async getAllForClinic(req: any, res: any) {
     try {
       const { clinicId } = req.params;
-      const appointments = await AppointmentRequestsService.getAllForClinic(
+      const appointments = await appointmentRequestsService.getAllForClinic(
         clinicId
       );
       res.send(appointments);
@@ -24,16 +24,17 @@ class AppointmentRequestsController {
 
   public async confirm(req: any, res: any) {
     try {
-      const request = await AppointmentRequestsService.confirm(req.body);
+      const request = await appointmentRequestsService.confirm(req.body);
       res.send(request);
     } catch (error) {
+      console.log(error);
       res.status(400).send(error.message);
     }
   }
 
   public async reject(req: any, res: any) {
     try {
-      const request = await AppointmentRequestsService.reject(req.body);
+      const request = await appointmentRequestsService.reject(req.body);
       res.send(request);
     } catch (error) {
       res.status(400).send(error.message);
@@ -42,7 +43,7 @@ class AppointmentRequestsController {
 
   public async add(req: any, res: any) {
     try {
-      const newRequest = await AppointmentRequestsService.add(req.body);
+      const newRequest = await appointmentRequestsService.add(req.body);
       res.send(newRequest);
     } catch (error) {
       res.status(400).send(error);
@@ -52,7 +53,7 @@ class AppointmentRequestsController {
   public async delete(req: any, res: any) {
     try {
       const { id } = req.params;
-      await AppointmentRequestsService.delete(id);
+      await appointmentRequestsService.delete(id);
       res.send("Appointment request deleted.");
     } catch (error) {
       res.status(400).send(error);
@@ -62,7 +63,7 @@ class AppointmentRequestsController {
   public async update(req: any, res: any) {
     try {
       const { id } = req.params;
-      const newRequest = await AppointmentRequestsService.update(id, req.body);
+      const newRequest = await appointmentRequestsService.update(id, req.body);
       res.send(newRequest);
     } catch (error) {
       res.status(400).send(error);
