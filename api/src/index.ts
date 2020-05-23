@@ -29,20 +29,22 @@ import patientMedicalRecordRoutes from "./routes/patientMedicalRecordRoutes";
 
 // connect to the database
 (async () => {
-  try {
-    await db.authenticate();
-    console.log("Connected to the database");
+    try {
+        await db.authenticate();
+        console.log("Connected to the database");
 
-    // creates tables from model
-    // drops tables if they already exist
-    // uncomment next line if you want to apply changes to the schema
-    await db.sync({ force: true });
-    await initModel();
-    // await initModelStega();
-  } catch (error) {
-    console.log(error);
-    console.log("An error occurred while trying to connect to the database");
-  }
+        // creates tables from model
+        // drops tables if they already exist
+        // uncomment next line if you want to apply changes to the schema
+        // await db.sync({ force: true });
+        // await initModel();
+        // await initModelStega();
+    } catch (error) {
+        console.log(error);
+        console.log(
+            "An error occurred while trying to connect to the database"
+        );
+    }
 })();
 
 const app: Application = express();
@@ -74,5 +76,5 @@ app.use("/appointmentReport", appointmentReportRoutes);
 app.use("/patientMedicalRecord", patientMedicalRecordRoutes);
 
 app.listen(config.port, () =>
-  console.log(`Server listening on port ${config.port}`)
+    console.log(`Server listening on port ${config.port}`)
 );
