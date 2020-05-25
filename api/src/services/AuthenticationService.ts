@@ -90,6 +90,19 @@ class AuthenticationService {
       password: hashedPassword
     });
   }
+
+  public async changeInfo(payload: any) {
+    let user: any = await Users.findByPk(payload.id);
+    user.firstName = payload.firstName;
+    user.lastName = payload.lastName;
+    user.city = payload.city;
+    user.country = payload.country;
+    user.address = payload.address;
+    user.phoneNumber = payload.phoneNumber;
+    
+    await user.save();
+    return user;
+  }
 }
 
 export default new AuthenticationService();

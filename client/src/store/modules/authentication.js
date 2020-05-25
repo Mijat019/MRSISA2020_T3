@@ -12,6 +12,13 @@ const mutations = {
     Vue.$axios.defaults.headers["Authorization"] = data.token;
   },
 
+  async setInfo(state, info) {
+    state.user = {
+      ...state.user,
+      ...info
+    }
+  },
+
   logoutUser(state) {
     state.user = null;
     localStorage.removeItem("token");
@@ -61,6 +68,26 @@ const actions = {
       dispatch(
         "snackbar/showSuccess",
         "Password changed.",
+        {
+          root: true,
+        }
+      );
+    } catch (error) {
+      dispatch("snackbar/showError", error.response.data, {
+        root: true,
+      });
+    }
+  },
+
+  async changeInfoAction({ commit, dispatch }, payload) {
+    try {
+      // Grab new info
+      let { info } = await Vue.$axios.post("/auth/changeInfo", payload); 
+      commit("setInfo", info);
+
+      dispatch(
+        "snackbar/showSuccess",
+        "Personal info changed.",
         {
           root: true,
         }

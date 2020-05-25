@@ -53,8 +53,6 @@ export default {
     ...mapActions({ changeAction: "authentication/changePasswordAction" }),
 
     passMatch() {
-      console.log(this.pass);
-      console.log(this.confPass);
       return this.pass === this.confPass || "Passwords must match";
     },
 
