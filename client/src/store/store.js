@@ -28,6 +28,7 @@ import scheduleCustomAppointment from "./modules/customAppointment/scheduleCusto
 import scheduleCustomAppointmentDialog from "./modules/customAppointment/scheduleCustomAppointmentDialog";
 import prescriptions from "./modules/prescriptions";
 import appointmentReport from "./modules/appointmentReport";
+import time from "./modules/time"
 
 Vue.use(Vuex);
 
@@ -65,5 +66,6 @@ export default new Vuex.Store({
     scheduleCustomAppointmentDialog,
     prescriptions,
     appointmentReport,
+    time,
   },
 });

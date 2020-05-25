@@ -29,6 +29,7 @@
             <datetime
               type="datetime"
               placeholder="Select date"
+              :min-datetime="getCurrentTimeISO"
               v-model="appointment.start"
               :minute-step="15"
               auto
@@ -94,7 +95,8 @@ export default {
       clinics: "clinics/getClinics",
       priceLists: "priceLists/getPriceLists",
       doctors: "doctors/getDoctors",
-      getUser: "authentication/getUser"
+      getUser: "authentication/getUser",
+      getCurrentTimeISO: "time/getCurrentTimeISO"
     }),
 
     getPriceLists() {
@@ -104,6 +106,10 @@ export default {
           id: priceL.id
         };
       });
+    },
+
+    minDateISO() {
+      return new Date().toISOString();
     }
   },
 

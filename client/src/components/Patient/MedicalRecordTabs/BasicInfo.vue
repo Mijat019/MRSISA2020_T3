@@ -21,7 +21,7 @@
     </v-col>
 
     <v-col>
-      <v-card>
+      <v-card class="fill-height">
         <v-card-title>Medical information</v-card-title>
         <v-card-text>
           <hr />
