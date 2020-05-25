@@ -22,7 +22,7 @@ class PriceListsService {
         return priceLists;
     }
 
-    public async getAllForDoctor(userId: string) {
+    public async getAllForDoctor(clinicId: string, userId: string) {
         const priceLists = await DoctorSpec.findAll({
             where: { userId },
             attributes: [],
@@ -36,6 +36,7 @@ class PriceListsService {
                         {
                             model: PriceLists,
                             as: "priceList",
+                            where: { clinicId },
                             required: true,
                             attributes: ["id", "price"],
                         },

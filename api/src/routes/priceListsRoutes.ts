@@ -4,11 +4,12 @@ import AuthenticationMiddleware from "../middleware/AuthenticationMiddleware";
 import UserRole from "../models/UserRole";
 
 const router = express.Router();
+
 router.use(AuthenticationMiddleware.verifyToken);
 
 router.get("/:clinicId", PriceListsController.getAllForClinic);
 
-router.get("/forDoctor/:doctorId", PriceListsController.getAllForDoctor);
+router.get("/:clinicId/:doctorId", PriceListsController.getAllForDoctor);
 
 router.post(
     "/",

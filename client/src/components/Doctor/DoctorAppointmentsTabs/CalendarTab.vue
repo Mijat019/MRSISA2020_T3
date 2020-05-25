@@ -74,7 +74,7 @@
               <v-spacer></v-spacer>
             </v-toolbar>
             <v-card-text>
-              <NewAppointmentForm />
+              <NewAppointmentForm :start="selectedEvent.start" />
             </v-card-text>
             <v-card-actions>
               <v-btn @click="closeNewAppointment">Close</v-btn>
@@ -172,7 +172,7 @@ export default {
     },
 
     mousemove({ date, time }) {
-      if (this.newAppointment.dragable) {
+      if (this.newAppointment?.dragable) {
         const dateTime = `${date} ${time}`;
         const end = moment(dateTime);
         end.add(1, "hour");

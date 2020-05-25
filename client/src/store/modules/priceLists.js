@@ -70,10 +70,13 @@ const actions = {
         }
     },
 
-    async getPriceListsForDoctorAction({ commit, dispatch }, doctorId) {
+    async getPriceListsForDoctorAction(
+        { commit, dispatch },
+        { doctorId, clinicId }
+    ) {
         try {
             const { data } = await Vue.$axios.get(
-                `/priceLists/forDoctor/${doctorId}`
+                `/priceLists/${clinicId}/${doctorId}`
             );
             commit("setPriceListsForDoctor", data);
         } catch (error) {

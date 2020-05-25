@@ -13,8 +13,9 @@ class PriceListsController {
 
     public async getAllForDoctor(req: any, res: any) {
         try {
-            const { doctorId } = req.params;
+            const { clinicId, doctorId } = req.params;
             const priceLists = await PriceListsService.getAllForDoctor(
+                clinicId,
                 doctorId
             );
             res.send(priceLists);

@@ -11,9 +11,11 @@ router.get("/", confirmedAppointmentController.getAll);
 router.get("/:doctorId", confirmedAppointmentController.getAllForDoctor);
 
 router.get(
-  "/unfinishedForToday/:doctorId",
-  confirmedAppointmentController.getAllUnfinishedForDoctorForToday
+    "/unfinishedForToday/:doctorId",
+    confirmedAppointmentController.getAllUnfinishedForDoctorForToday
 );
+
+router.post("/", confirmedAppointmentController.add);
 
 router.patch("/", confirmedAppointmentController.update);
 

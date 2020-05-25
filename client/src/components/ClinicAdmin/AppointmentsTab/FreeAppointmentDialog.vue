@@ -64,7 +64,7 @@ export default {
   }),
   mounted() {
     this.getRoomsAction();
-    this.getDoctorsAction();
+    this.getDoctorsByClinicAction(this.getUser.clinicId);
     this.getPriceListsAction(this.getUser.clinicId);
   },
   methods: {
@@ -73,7 +73,7 @@ export default {
       updateAppointmentAction: "freeAppointments/updateFreeAppointmentAction",
       getRoomsAction: "rooms/getRoomsAction",
       getPriceListsAction: "priceLists/getPriceListsAction",
-      getDoctorsAction: "doctors/getDoctorsAction"
+      getDoctorsByClinicAction: "doctors/getDoctorsByClinicAction"
     }),
 
     ...mapMutations("freeAppointmentsDialog", {
