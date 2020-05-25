@@ -82,6 +82,8 @@ class AuthenticationService {
       status: AccountStatus.ACTIVATED,
     });
   }
+
+  
 }
 
 export default new AuthenticationService();
