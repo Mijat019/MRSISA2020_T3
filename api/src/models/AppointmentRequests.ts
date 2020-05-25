@@ -1,4 +1,4 @@
-import { Model, INTEGER, DOUBLE, STRING, DATE } from "sequelize";
+import { Model, INTEGER, DOUBLE, STRING, DATE, Op } from "sequelize";
 import db from "./database";
 import Users from "./Users";
 import DoctorAt from "./DoctorAt";
@@ -14,6 +14,7 @@ class AppointmentRequests extends Model {
   public patientMedicalRecordId!: number;
   public start!: number;
   public duration!: number;
+  public createdAt!: number;
 }
 
 AppointmentRequests.init(
@@ -58,6 +59,10 @@ AppointmentRequests.init(
       type: INTEGER,
       allowNull: false,
     },
+    createdAt: {
+      type: DATE,
+      allowNull: false,
+    }
   },
   {
     timestamps: false,

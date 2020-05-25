@@ -120,7 +120,7 @@ export default {
     ...mapGetters({
       getAppointmentTypes: "appointmentTypes/getAppointmentTypes",
       getFreeAppointments: "freeAppointments/getFreeAppointments",
-      getUser: "authentication/getUser"
+      getUser: "authentication/getUser",
     }),
 
     appointmentTime() {

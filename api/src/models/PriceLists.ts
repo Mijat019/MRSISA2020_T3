@@ -14,15 +14,11 @@ PriceLists.init(
   {
     clinicId: {
         type: INTEGER.UNSIGNED,
-        // primaryKey: true,
-        // unique: false,
         allowNull: false,
     },
     
     appointmentTypeId : {
         type: INTEGER.UNSIGNED,
-        // primaryKey: true,
-        // unique: false,
         allowNull: false,
     },
 
