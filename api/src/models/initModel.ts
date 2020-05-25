@@ -26,8 +26,8 @@ export default async () => {
 
   const { password } = await UsersService.createUser(
     {
-      firstName: "Mijat",
-      lastName: "Miletic",
+      firstName: "Admin",
+      lastName: "Klinickog Centra",
       email: "4",
       password: "1",
       jmbg: "1232132312121231231233312312",
@@ -65,8 +65,8 @@ export default async () => {
 
   const { userId: doctorId } = await DoctorsService.add(
     {
-      firstName: "Mijat",
-      lastName: "Miletic",
+      firstName: "Doktor",
+      lastName: "Doktoric",
       email: "1",
       jmbg: "1232312312",
       phoneNumber: "444",
@@ -85,8 +85,8 @@ export default async () => {
 
   const { id: userId }: any = await UsersService.createUser(
     {
-      firstName: "Mijat",
-      lastName: "Miletic",
+      firstName: "Pacijent",
+      lastName: "Pacijentic_1",
       email: "s",
       password: "1",
       jmbg: "123213231212123331231233312312",
@@ -129,8 +129,8 @@ export default async () => {
 
   const { userId: tutu } = await ClinicAdminService.add(
     {
-      firstName: "Mijat",
-      lastName: "Miletic",
+      firstName: "Admin",
+      lastName: "Klinike",
       email: "3",
       password,
       jmbg: "123213231133333322312312",

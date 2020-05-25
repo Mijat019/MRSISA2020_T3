@@ -4,9 +4,14 @@ const state = {
   showComponent: "nextAppointment",
   unfinishedConfirmedAppointments: [],
   nextAppointment: null,
+  patientReports: [],
 };
 
 const mutations = {
+  setPatientReports(state, reports) {
+    state.patientReports = reports;
+  },
+
   setUnfinishedConfirmedAppointments(state, appointments) {
     state.unfinishedConfirmedAppointments = appointments;
   },
@@ -36,6 +41,16 @@ const mutations = {
 };
 
 const actions = {
+  async getReportsForPatientAction({ commit, dispatch }, patientId) {
+    try{
+      const {data: reports } = await Vue.$axios.get(`/appointmentReport/${patientId}`);
+      commit('setPatientReports', reports)
+    }catch(error) {
+      dispatch("snackbar/showError", error.response.data, { root: true });
+    }
+
+  },
+
   async getUnfinishedConfirmedAppointmentsAction(
     { commit, dispatch },
     doctorId
@@ -98,6 +113,7 @@ const getters = {
 
   getNextAppointment: (state) => state.nextAppointment,
   getShowComponent: (state) => state.showComponent,
+  getPatientReports: (state) => state.patientReports,
 };
 
 export default {
