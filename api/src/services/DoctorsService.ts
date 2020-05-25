@@ -13,6 +13,11 @@ class DoctorsService {
       include: [
         { model: Users, attributes: usersSelect, as: "user" },
         { model: Clinics, attributes: ["name"], as: "clinic" },
+        { model: DoctorSpec, attributes: ["id"], as: "spec", 
+          include: [ 
+            { model: AppointmentTypes, attributes: ["id", "name"], as: "appoType" } 
+          ] 
+        }
       ],
     });
     return doctors;
