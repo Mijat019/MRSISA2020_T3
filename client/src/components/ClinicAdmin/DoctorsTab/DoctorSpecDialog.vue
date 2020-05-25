@@ -17,11 +17,11 @@
       <v-btn class="primary" @click="addSpec">Add</v-btn>
         <v-spacer/>
         <v-data-table
-          :items="mySpec"
+          :items="spec"
           :headers="headers"
         >
           <template v-slot:item.actions="{item}">
-            <v-btn class="error" @click="removeSpec(item)">Remove</v-btn>
+            <v-btn class="error" @click="removeSpec(item.appoType.id)">Remove</v-btn>
           </template>
         </v-data-table>
       </v-card-text>
@@ -33,14 +33,14 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "DoctorSpecDialog",
-  props: ["doctorId"],
+  props: ["doctorId", "spec"],
   data: () => ({
     dialog: false,
     appoTypeToAdd: null,
     headers: [
       {
         text: "Name",
-        value: "name"
+        value: "appoType.name"
       },
       {
         text: "Actions",
@@ -54,19 +54,21 @@ export default {
     ...mapActions("snackbar", {
       showError: "showError"
     }),
+
     ...mapActions("appointmentTypes", {
       getAppoTypesAction: "getAppointmentTypesAction"
     }),
-    ...mapActions("doctorSpec", {
-      getDoctorSpecAction: "getDoctorSpecAction",
+
+    ...mapActions("doctors", {
       addDoctorSpecAction: "addDoctorSpecAction",
       deleteDoctorSpecAction: "deleteDoctorSpecAction"
     }),
+
     addSpec: function() {
       if (this.appoTypeToAdd == null) return;
       let exists = false;
-      this.mySpec.every(e => {
-        if (this.appoTypeToAdd.id === e.id) {
+      this.spec.every(e => {
+        if (this.appoTypeToAdd.id === e.appoType.id) {
           exists = true;
         }
       });
@@ -80,25 +82,22 @@ export default {
         appoTypeId: this.appoTypeToAdd.id
       });
     },
-    removeSpec: function(appoType) {
+
+    removeSpec: function(appoTypeId) {
       this.deleteDoctorSpecAction({ 
         doctorId: this.doctorId, 
-        appoTypeId: appoType.id 
+        appoTypeId
       });
     }
   },
 
   mounted() {
     this.getAppoTypesAction();
-    this.getDoctorSpecAction(this.doctorId);
   },
 
   computed: {
     ...mapGetters("appointmentTypes", {
       allAppoTypes: "getAppointmentTypes"
-    }),
-    ...mapGetters("doctorSpec", {
-      mySpec: "getDoctorSpec"
     })
   }
 };

@@ -2,6 +2,7 @@ import db from "./database";
 import { Model, INTEGER } from "sequelize";
 import Users from "./Users";
 import Clinics from "./Clinics";
+import DoctorSpec from "./DoctorSpec";
 
 class DoctorAt extends Model {
   public userId!: number;
@@ -33,5 +34,7 @@ DoctorAt.belongsTo(Users, { as: "user", foreignKey: "userId" });
 
 // one clinic can have many rows in doctorAt table
 DoctorAt.belongsTo(Clinics, { as: "clinic", foreignKey: "clinicId" });
+
+DoctorAt.hasMany(DoctorSpec, { as: "spec", foreignKey: "userId" });
 
 export default DoctorAt;

@@ -17,9 +17,21 @@ const mutations = {
   },
 
   removeDoctor(state, id) {
-    const index = state.doctors.findIndex((doc) => doc.id === id);
+    const index = state.doctors.findIndex((doc) => doc.user.id === id);
     state.doctors.splice(index, 1);
   },
+
+  addSpecType(state, { doctorId, newSpecType }) {
+    const i = state.doctors.findIndex((doc) => doc.user.id === doctorId);
+    state.doctors[i].spec.push(newSpecType);
+  },
+
+  removeSpecType(state, { doctorId, appoTypeId }) {
+    const doc_i = state.doctors.findIndex((doc) => doc.user.id === doctorId);
+    const appo_i = state.doctors[doc_i].spec.findIndex((type) => type.appoType.id === appoTypeId);
+    
+    state.doctors[doc_i].spec.splice(appo_i, 1);
+  }
 };
 
 const actions = {
@@ -63,6 +75,33 @@ const actions = {
       dispatch("snackbar/showError", error.response.data, { root: true });
     }
   },
+
+  // SPECIALIZATIONS
+  async addDoctorSpecAction({ commit, dispatch }, { doctorId, appoTypeId }) {
+    try {
+      const { data } = await Vue.$axios.post(
+        "/doctorSpec",
+        { doctorId, appoTypeId }
+      );
+      console.log(data);
+      commit("addSpecType", { doctorId, newSpecType: data } );
+      dispatch("snackbar/showSuccess", "Doctor specialization added.", { root: true });
+    } catch (error) {
+      console.log(error);
+      dispatch("snackbar/showError", error.response.data, { root: true });
+    }
+  },
+
+  async deleteDoctorSpecAction({ commit, dispatch }, { doctorId, appoTypeId }) {
+    try {
+      await Vue.$axios.delete(`/doctorSpec/${doctorId}/${appoTypeId}`);
+      commit("removeSpecType", { doctorId, appoTypeId } );
+      dispatch("snackbar/showSuccess", "Doctor specialization removed.", { root: true });
+    } catch (error) {
+      console.log(error);
+      dispatch("snackbar/showError", error.response.data, { root: true });
+    }
+  }
 };
 
 const getters = {
