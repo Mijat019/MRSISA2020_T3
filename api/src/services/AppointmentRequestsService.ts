@@ -14,17 +14,6 @@ import config from "../config";
 import { request } from "http";
 import scheduler from 'node-schedule';
 
-// Every hour run a function to see
-// if there are requests system needs to answer to
-scheduler.scheduleJob({second: 0}, function(){
-  
-});
-
-// var schedule = require('node-schedule');
-// console.log('rantan')
-// schedule.scheduleJob({second: 0}, function(){
-//   console.log('Time for tea!');
-// });
 
 class AppointmentRequestsService {
   private include = [
