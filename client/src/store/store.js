@@ -12,6 +12,7 @@ import doctorSpec from "./modules/doctorSpec";
 import roomsDialog from "./modules/roomsDialog";
 import snackbar from "./modules/snackbar";
 import authentication from "./modules/authentication";
+import profile from "./modules/profile";
 import patients from "./modules/patients";
 import clinicAdmins from "./modules/clinicAdmins";
 import patientRequests from "./modules/patientRequests";
@@ -40,6 +41,7 @@ export default new Vuex.Store({
   plugins: [vuexPersist.plugin],
   modules: {
     authentication,
+    profile,
     patients,
     clinics,
     doctors,

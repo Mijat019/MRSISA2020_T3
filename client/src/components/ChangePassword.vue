@@ -50,7 +50,9 @@ export default {
   },
 
   methods: {
-    ...mapActions({ changeAction: "authentication/changePasswordAction" }),
+    ...mapActions({ 
+        changeAction: "profile/changePasswordAction"
+      }),
 
     passMatch() {
       return this.pass === this.confPass || "Passwords must match";

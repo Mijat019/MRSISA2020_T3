@@ -37,25 +37,6 @@ class AuthenticationController {
       res.status(400).send(error.message);
     }
   }
-
-  public async changePassword(req: any, res: any) {
-    try {
-      const { id, password } = req.body;
-      await AuthenticationService.changePassword(id, password);
-      res.send("Password changed.");
-    } catch (error) {
-      res.status(400).send(error.message);
-    }
-  }
-
-  public async changeInfo(req: any, res: any) {
-    try {
-      let userInfo = await AuthenticationService.changeInfo(req.body);
-      res.send(userInfo);
-    } catch (error) {
-      res.status(400).send(error.message);
-    }
-  }
 }
 
 export default new AuthenticationController();

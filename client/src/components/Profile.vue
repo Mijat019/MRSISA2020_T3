@@ -1,10 +1,10 @@
 <template>
   <v-row class="pa-2">
     <v-col>
-      <PersonalInfo :user="getUser" />
+      <PersonalInfo/>
     </v-col>
     <v-col>
-      <ChangePassword :user="getUser" />
+      <ChangePassword/>
     </v-col>
   </v-row>
 </template>

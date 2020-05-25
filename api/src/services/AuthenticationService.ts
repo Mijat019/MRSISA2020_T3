@@ -83,26 +83,7 @@ class AuthenticationService {
     });
   }
 
-  public async changePassword(id: string, password: string) {
-    let user: any = await Users.findByPk(id);
-    const hashedPassword = await bcrypt.hash(password, config.saltRounds);
-    await user.update({
-      password: hashedPassword
-    });
-  }
-
-  public async changeInfo(payload: any) {
-    let user: any = await Users.findByPk(payload.id);
-    user.firstName = payload.firstName;
-    user.lastName = payload.lastName;
-    user.city = payload.city;
-    user.country = payload.country;
-    user.address = payload.address;
-    user.phoneNumber = payload.phoneNumber;
-    
-    await user.save();
-    return user;
-  }
+  
 }
 
 export default new AuthenticationService();

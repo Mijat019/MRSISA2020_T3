@@ -5,13 +5,13 @@
       <hr />
       <v-list dense>
         <v-form v-model="formValid">
-          <v-list-item :key="information.title" v-for="information in personalInfo">
+          <v-list-item :key="information.title" v-for="information in formFields">
             <v-list-item-avatar>
               <v-icon>{{ information.icon }}</v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ information.title }}</v-list-item-title>
-              <v-text-field v-model="user[information.field]" :readonly="information.readonly" :rules="fieldRules"></v-text-field>
+              <v-text-field v-model="userInfo[information.field]" :readonly="information.readonly" :rules="fieldRules"></v-text-field>
             </v-list-item-content>
           </v-list-item>
         </v-form>
@@ -27,11 +27,9 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "PersonalInfo",
-  
-  props: ["user"],
   
   data() {
     return {
@@ -42,17 +40,24 @@ export default {
     }
   },
 
+  mounted() {
+    this.getInfoAction(this.authUser.id);
+    console.log(this.userInfo);
+  },
+
   methods: {
     ...mapActions({ 
-      changeAction: "authentication/changeInfoAction"
+      changeInfoAction: "profile/changeInfoAction",
+      getInfoAction: "profile/getInfoAction"
     }),
     changeInfo() {
-      this.changeAction(this.user);
+      this.changeInfoAction(this.userInfo);
     }
   },
 
   computed: {
-    personalInfo() {
+    ...mapGetters({ authUser: "authentication/getUser", userInfo: "profile/getUser"}),
+    formFields() {
       return [
         {
           icon: "mdi-account",
