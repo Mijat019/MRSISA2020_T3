@@ -82,6 +82,14 @@ class AuthenticationService {
       status: AccountStatus.ACTIVATED,
     });
   }
+
+  public async changePassword(id: string, password: string) {
+    let user: any = await Users.findByPk(id);
+    const hashedPassword = await bcrypt.hash(password, config.saltRounds);
+    await user.update({
+      password: hashedPassword
+    });
+  }
 }
 
 export default new AuthenticationService();

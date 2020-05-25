@@ -1,25 +1,21 @@
 <template>
-  <v-row class="pa-2">
-    <v-col>
-      <v-card>
-        <v-card-title>Personal information</v-card-title>
-        <v-card-text>
-          <hr />
-          <v-list dense>
-            <v-list-item :key="information.title" v-for="information in personalInformation">
-              <v-list-item-avatar>
-                <v-icon>{{ information.icon }}</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>{{ information.title }}</v-list-item-title>
-                <v-list-item-subtitle>{{ information.subtitle }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card-text>
-      </v-card>
-    </v-col>
-  </v-row>
+  <v-card>
+    <v-card-title>Personal information</v-card-title>
+    <v-card-text>
+      <hr />
+      <v-list dense>
+        <v-list-item :key="information.title" v-for="information in personalInformation">
+          <v-list-item-avatar>
+            <v-icon>{{ information.icon }}</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>{{ information.title }}</v-list-item-title>
+            <v-list-item-subtitle>{{ information.subtitle }}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

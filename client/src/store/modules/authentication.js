@@ -55,6 +55,23 @@ const actions = {
     }
   },
 
+  async changePasswordAction({ dispatch }, payload) {
+    try {
+      await Vue.$axios.post("/auth/changePassword", payload);
+      dispatch(
+        "snackbar/showSuccess",
+        "Password changed.",
+        {
+          root: true,
+        }
+      );
+    } catch (error) {
+      dispatch("snackbar/showError", error.response.data, {
+        root: true,
+      });
+    }
+  },
+
   async verifyTokenAction({ commit }) {
     try {
       Vue.$axios.defaults.headers["Authorization"] = localStorage.getItem(
