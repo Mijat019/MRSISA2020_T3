@@ -136,7 +136,6 @@ class AppointmentRequestsService {
     });
 
     for (const request of appointmentRequests) {
-      console.log('Request: ' + request.id);
       const doctor = await DoctorAt.findByPk(request.doctorId);
       if (doctor == null) return;
       const clinicId = doctor.clinicId;
@@ -156,13 +155,11 @@ class AppointmentRequestsService {
       //check for every room if it is available at that time
       for( const room of roomsForClinic){
         confirmedReq.roomId = room.id;
-        console.log('Room :' + room.id)
         try {
           await FreeAppointmentService.checkForConflicts(confirmedReq);
           // if chech for conflicts didn't cause an error approve request
           await ConfirmedAppointmentService.add(confirmedReq);
           await this.delete(request.id);
-          console.log(`Appointment request with id ${request.id} has been APPROVED!`);
           success = true;
           break;
         }catch {console.log('Room :' + room.id + ' is occupied')}
@@ -173,12 +170,9 @@ class AppointmentRequestsService {
         const payload = (request as any)
         payload.reason = 'asdfds';
         await this.reject(payload);
-        console.log(`Appointment request with id ${payload.id} has been rejected!`);
       }
 
     }
-
-    console.log('--------')
   }
 
   public async add(requestPayload: any): Promise<any> {
