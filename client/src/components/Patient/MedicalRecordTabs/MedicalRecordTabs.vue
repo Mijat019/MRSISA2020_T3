@@ -4,12 +4,12 @@
     <v-tabs v-model="tab" class="elevation-2">
       <v-tabs-slider></v-tabs-slider>
 
-      <v-tab :href="`#basicInfo`">basic info</v-tab>
+      <v-tab :href="`#medicalInfo`">medical info</v-tab>
       <v-tab :href="`#diagnosisHisotry`">diagnosis hisotry</v-tab>
       <v-tab :href="`#appointmentHisotry`">Appointment hisotry</v-tab>
 
-      <v-tab-item :value="'basicInfo'">
-        <BasicInfo :user="getUser" />
+      <v-tab-item :value="'medicalInfo'">
+        <MedicalInfo :user="getUser" />
       </v-tab-item>
       <v-tab-item :value="'diagnosisHisotry'">diagnosisHisotry</v-tab-item>
       <v-tab-item :value="'appointmentHisotry'">appointmentHisotry</v-tab-item>
@@ -18,13 +18,13 @@
 </template>
 
 <script>
-import BasicInfo from "./BasicInfo";
+import MedicalInfo from "./MedicalInfo";
 import { mapGetters } from "vuex";
 export default {
   name: "MedicalRecordTabs",
 
   components: {
-    BasicInfo
+    MedicalInfo
   },
 
   data: () => ({ tab: null }),

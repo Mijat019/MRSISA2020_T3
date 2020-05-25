@@ -1,11 +1,22 @@
 <template>
-  <div>Profile</div>
+  <PersonalInfo :user="getUser" />
 </template>
 
 <script>
+import PersonalInfo from "./PersonalInfo";
+import { mapGetters } from "vuex";
 export default {
   name: "Profile",
-  data: () => ({})
+  
+  components: {
+    PersonalInfo
+  },
+  
+  data: () => ({}),
+
+  computed: {
+    ...mapGetters({ getUser: "authentication/getUser" })
+  }
 };
 </script>
 
