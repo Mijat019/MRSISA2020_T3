@@ -5,7 +5,7 @@ const mutations = {};
 const actions = {};
 
 const getters = {
-    currentTimeISO: () => new Date().toISOString(),
+    getCurrentTimeISO: () => new Date().toISOString(),
 };
 
 export default {

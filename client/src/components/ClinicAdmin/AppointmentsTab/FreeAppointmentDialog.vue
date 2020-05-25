@@ -9,6 +9,7 @@
             <div class="example-inputs my-5">
               <datetime
                 type="datetime"
+                :min-datetime="getCurrentTimeISO"
                 placeholder="Select date"
                 v-model="appointment.start"
                 :minute-step="15"
@@ -107,7 +108,8 @@ export default {
       getRooms: "rooms/getRooms",
       getDoctors: "doctors/getDoctors",
       getPriceLists: "priceLists/getPriceLists",
-      getUser: "authentication/getUser"
+      getUser: "authentication/getUser",
+      getCurrentTimeISO: "time/getCurrentTimeISO"
     })
   }
 };
