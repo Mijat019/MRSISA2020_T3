@@ -50,16 +50,6 @@ class DoctorsController {
   }
 
   // SPECIALIZATIONS
-  public async getSpecializations(req: any, res: any) {
-    try {
-      const doctorSpec = await DoctorsService.getSpecializations(req.params["doctorId"]);
-      res.send(doctorSpec);
-    } catch (error) {
-      console.log(error);
-      res.status(400).send(error);
-    }
-  }
-
   public async addSpecialization(req: any, res: any) {
     try {
       const newSpec = await DoctorsService.addSpecialization(req.body.doctorId, req.body.appoTypeId);

@@ -18,20 +18,25 @@ class DoctorsService {
     return doctors;
   }
 
-  public async getByClinicId(_clinicId: number, _userId: number): Promise<any> {
+  public async getByClinicId(clinicId: number, userId: number): Promise<any> {
     // Does the user id match the admin of this clinic?
-    const adminAt = await AdminAt.findOne({ where: { userId: _userId, clinicId: _clinicId } });
+    const adminAt = await AdminAt.findOne({ where: { userId, clinicId } });
     // if (adminAt == null) {
     //   // Given user is NOT an admin of this clinic or either of them don't exist
     //   throw "Given user " + _userId + " is not an admin of clinic " + _clinicId;
     // }
 
     const doctors = await DoctorAt.findAll({
-      where: { clinicId: _clinicId },
+      where: { clinicId },
       include: [
         { model: Users, attributes: usersSelect, as: "user" },
         { model: Clinics, attributes: ["name"], as: "clinic" },
-      ],
+        { model: DoctorSpec, attributes: ["id"], as: "spec", 
+          include: [ 
+            { model: AppointmentTypes, attributes: ["id", "name"], as: "appoType" } 
+          ] 
+        }
+      ]
     });
     return doctors;
   }
@@ -54,38 +59,21 @@ class DoctorsService {
     return doctor;
   }
 
-  public async getSpecializations(userId: number) {
-    let wrappedTypes = await DoctorSpec.findAll({ 
-      where: { userId },
-      include: [
-        { model: AppointmentTypes, attributes: ["id", "name"], as: "appoType" }
-      ],
-      attributes: []
-    });
-
-    let types: any = [];
-    wrappedTypes.filter((e: any) => {
-      types.push(e.appoType);
-    });
-
-    return types;
-  }
-
   public async addSpecialization(userId: number, appointmentTypeId: number) {
     await DoctorSpec.create({
       userId,
       appointmentTypeId
     });
 
-    const wrapped: any = await DoctorSpec.findOne({ 
+    const spec: any = await DoctorSpec.findOne({ 
       where: { userId, appointmentTypeId },
       include: [
         { model: AppointmentTypes, attributes: ["id", "name"], as: "appoType" }
       ],
-      attributes: []
+      attributes: ["id"]
     });
 
-    return wrapped.appoType;
+    return spec;
   }
 
   public async deleteSpecialization(userId: number, appointmentTypeId: number) {
