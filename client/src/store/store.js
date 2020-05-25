@@ -28,42 +28,44 @@ import scheduleCustomAppointment from "./modules/customAppointment/scheduleCusto
 import scheduleCustomAppointmentDialog from "./modules/customAppointment/scheduleCustomAppointmentDialog";
 import prescriptions from "./modules/prescriptions";
 import appointmentReport from "./modules/appointmentReport";
+import calendar from "./modules/calendar";
 
 Vue.use(Vuex);
 
 const vuexPersist = new VuexPersist({
-  key: "my-app",
-  storage: window.localStorage,
+    key: "my-app",
+    storage: window.localStorage,
 });
 
 export default new Vuex.Store({
-  plugins: [vuexPersist.plugin],
-  modules: {
-    authentication,
-    patients,
-    clinics,
-    doctors,
-    doctorSpec,
-    clinicAdmins,
-    nurses,
-    rooms,
-    roomsDialog,
-    snackbar,
-    patientRequests,
-    freeAppointments,
-    freeAppointmentsDialog,
-    appointmentTypes,
-    appointmentTypesDialog,
-    drugs,
-    drugsDialog,
-    diagnosis,
-    diagnosisDialog,
-    clinicCenterAdmins,
-    priceLists,
-    confirmedAppointments,
-    scheduleCustomAppointment,
-    scheduleCustomAppointmentDialog,
-    prescriptions,
-    appointmentReport,
-  },
+    plugins: [vuexPersist.plugin],
+    modules: {
+        authentication,
+        patients,
+        clinics,
+        doctors,
+        doctorSpec,
+        clinicAdmins,
+        nurses,
+        rooms,
+        roomsDialog,
+        snackbar,
+        patientRequests,
+        freeAppointments,
+        freeAppointmentsDialog,
+        appointmentTypes,
+        appointmentTypesDialog,
+        drugs,
+        drugsDialog,
+        diagnosis,
+        diagnosisDialog,
+        clinicCenterAdmins,
+        priceLists,
+        confirmedAppointments,
+        scheduleCustomAppointment,
+        scheduleCustomAppointmentDialog,
+        prescriptions,
+        appointmentReport,
+        calendar,
+    },
 });

@@ -41,13 +41,17 @@
           ref="calendar"
           v-model="focus"
           color="primary"
-          :events="appointments"
+          :events="getAppointmentsForCalendar"
           :now="today"
           :type="type"
           :value="today"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
+          @click:time="createNewEvent"
+          @mousedown:event="mousedown"
+          @mousemove:time="mousemove"
+          @mouseup:event="mouseup"
           @change="updateRange"
           :event-color="getEventColor"
           first-interval="7"
@@ -56,12 +60,29 @@
         >
           <template v-slot:day-body></template>
         </v-calendar>
+
         <v-menu
-          v-model="selectedOpen"
-          :close-on-content-click="false"
-          :activator="selectedElement"
+          v-if="selectedEvent.newEvent"
           offset-x
+          :activator="selectedElement"
+          :close-on-content-click="false"
+          v-model="selectedOpen"
         >
+          <v-card color="grey lighten-4" min-width="350px" flat>
+            <v-toolbar :color="selectedEvent.color" dark>
+              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-card-text>
+              <NewAppointmentForm />
+            </v-card-text>
+            <v-card-actions>
+              <v-btn @click="closeNewAppointment">Close</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
+
+        <v-menu v-else v-model="selectedOpen" :close-on-content-click="false" absolute offset-y>
           <v-card color="grey lighten-4" min-width="350px" flat>
             <v-toolbar :color="selectedEvent.color" dark>
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
@@ -88,31 +109,87 @@
 </template>
 
 <script>
+import NewAppointmentForm from "./Appointments/NewAppointmentForm.vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import moment from "moment";
 export default {
-  data: () => ({
-    today: moment().format("YYYY-MM-DD HH:mm"),
-    type: "week",
-    start: null,
-    end: null,
-    selectedEvent: {},
-    selectedElement: null,
-    selectedOpen: false,
-    focus: "",
-    typeToLabel: {
-      month: "Month",
-      week: "Week",
-      day: "Day",
-      "4day": "4 Days"
-    }
-  }),
+  components: { NewAppointmentForm },
+
+  data() {
+    return {
+      today: moment().format("YYYY-MM-DD HH:mm"),
+      type: "week",
+      start: null,
+      end: null,
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false,
+      focus: "",
+      typeToLabel: {
+        month: "Month",
+        week: "Week",
+        day: "Day",
+        "4day": "4 Days"
+      },
+      newEvent: null,
+      newAppointment: null
+    };
+  },
 
   methods: {
+    closeNewAppointment() {
+      this.newAppointment = null;
+      this.getAppointmentsForCalendar.pop();
+      this.selectedOpen = false;
+    },
+
+    createNewEvent({ date, time }) {
+      if (this.newAppointment) {
+        this.closeNewAppointment();
+        return;
+      }
+
+      const start = `${date} ${time}`;
+      let end = moment(start);
+      end.add(1, "hour");
+      end = end.format("YYYY-MM-DD HH:mm");
+      this.newAppointment = {
+        start,
+        end,
+        name: "New appointment",
+        color: "blue",
+        dragable: false,
+        newEvent: true
+      };
+
+      this.getAppointmentsForCalendar.push(this.newAppointment);
+      this.selectedEvent = this.newAppointment;
+      this.selectedOpen = true;
+    },
+
+    mousedown({ event }) {
+      event.dragable = true;
+    },
+
+    mousemove({ date, time }) {
+      if (this.newAppointment.dragable) {
+        const dateTime = `${date} ${time}`;
+        const end = moment(dateTime);
+        end.add(1, "hour");
+        this.newAppointment.start = dateTime;
+        this.newAppointment.end = end.format("YYYY-MM-DD HH:mm");
+      }
+    },
+
+    mouseup() {
+      this.newAppointment.dragable = false;
+    },
     ...mapActions({
       getFreeAppointmentsAction: "freeAppointments/getFreeAppointmentsAction",
       getConfirmedAppointmentsAction:
-        "confirmedAppointments/getConfirmedAppointmentsAction"
+        "confirmedAppointments/getConfirmedAppointmentsAction",
+      getAppointmentsForTheCalendarAction:
+        "calendar/getAppointmentsForTheCalendarAction"
     }),
 
     ...mapMutations({
@@ -190,44 +267,9 @@ export default {
       getFreeAppointments: "freeAppointments/getFreeAppointments",
       getConfirmedAppointments:
         "confirmedAppointments/getConfirmedAppointments",
-      getUser: "authentication/getUser"
+      getUser: "authentication/getUser",
+      getAppointmentsForCalendar: "calendar/getAppointmentsForCalendar"
     }),
-
-    /**
-     * Convert free appointments and confirmed appointments to
-     * events for the calendar
-     */
-    appointments() {
-      const result = [
-        ...this.getFreeAppointments.map(item => {
-          const end = moment.unix(item.start);
-          end.add(item.duration * 60, "seconds");
-          return {
-            id: item.id,
-            color: "green",
-            appointmentType: item.priceList.appointmentType.name,
-            roomName: item.room.name,
-            name: `${item.priceList.appointmentType.name} ${item.room.name}`,
-            start: moment.unix(item.start).format("YYYY-MM-DD HH:mm"),
-            end: end.format("YYYY-MM-DD HH:mm")
-          };
-        }),
-        ...this.getConfirmedAppointments.map(item => {
-          const end = moment.unix(item.start);
-          end.add(item.duration * 60, "seconds");
-          return {
-            id: item.id,
-            color: item.finished ? "grey" : "red",
-            appointmentType: item.priceList.appointmentType.name,
-            roomName: item.room.name,
-            name: `${item.priceList.appointmentType.name} ${item.room.name}`,
-            start: moment.unix(item.start).format("YYYY-MM-DD HH:mm"),
-            end: end.format("YYYY-MM-DD HH:mm")
-          };
-        })
-      ];
-      return result;
-    },
 
     title() {
       const { start, end } = this;
@@ -267,8 +309,7 @@ export default {
   },
 
   async created() {
-    await this.getFreeAppointmentsAction(this.getUser.id);
-    await this.getConfirmedAppointmentsAction(this.getUser.id);
+    await this.getAppointmentsForTheCalendarAction(this.getUser.id);
   }
 };
 </script>
