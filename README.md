@@ -29,4 +29,4 @@
 ### Deployment
 
 This application is deployed to heroku [link](https://covid19-clinic.herokuapp.com/).
-Automatic deployment is setup so that each time someone pushes to the master branch, deployment is triggered. Heroku then builds the application and deploys it.
+Automatic deployment is setup so that each time someone pushes to the master branch, deployment is triggered. Heroku then builds the application and deploys it. For a database server, we used https://freemysqlhosting.net.
