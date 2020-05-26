@@ -5,7 +5,7 @@
     </template>
     <v-card>
       <v-card-title class="justify-center mb-6">
-        <p>{{ item.firstName }} {{ item.lastName }}</p>
+        <div class="headline">{{ item.firstName }} {{ item.lastName }}</div>
       </v-card-title>
       <v-card-text>
         <RatingComponent

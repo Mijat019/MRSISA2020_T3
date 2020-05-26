@@ -25,7 +25,7 @@
             item-value="userId"
             label="Doctor"
           />
-          <div class="example-inputs mb-2">
+          <div class="datetime-input mb-2">
             <datetime
               type="datetime"
               placeholder="Select date"
@@ -126,4 +126,6 @@ export default {
 </script>
 
 <style>
+
+
 </style>

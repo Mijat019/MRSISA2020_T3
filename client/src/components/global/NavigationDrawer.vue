@@ -1,14 +1,21 @@
 <template>
   <nav>
-    <v-navigation-drawer v-model="drawer" :mini-variant="mini" app dark>
+    <v-navigation-drawer
+      v-model="drawer"
+      :mini-variant="mini"
+      permanent
+      :disable-resize-watcher="true"
+      app
+      dark
+    >
       <v-list-item class="px-2">
         <v-list-item-avatar v-if="mini">
-          <v-icon @click.stop="mini=false">mdi-chevron-right</v-icon>
+          <v-icon @click.stop="mini = false">mdi-chevron-right</v-icon>
         </v-list-item-avatar>
 
-        <v-list-item-title>{{getFullName}}</v-list-item-title>
+        <v-list-item-title>{{ getFullName }}</v-list-item-title>
 
-        <v-btn icon @click.stop="mini=true">
+        <v-btn icon @click.stop="mini = true">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
       </v-list-item>
@@ -16,7 +23,13 @@
       <v-divider></v-divider>
 
       <v-list dense>
-        <v-list-item v-for="item in items" :key="item.title" link :to="item.link">
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          link
+          :to="item.link"
+          class="my-3"
+        >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -37,76 +50,90 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <template v-slot:append>
+        <div class="pa-2 ma-2 mb-6">
+          <v-btn @click="onLogout" block class="blue white--text" :hidden="mini">Logout</v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
   </nav>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
   data: () => ({
     drawer: true,
     mini: true,
     clinicCenterAdmin: [
       {
-        title: "Administration",
-        icon: "mdi-account-supervisor",
-        link: "/clinic/clinicCenterAdmin/administration"
+        title: 'Administration',
+        icon: 'mdi-account-supervisor',
+        link: '/clinic/clinicCenterAdmin/administration',
       },
       {
-        title: "Clinics",
-        icon: "mdi-home-city",
-        link: "/clinic/clinicCenterAdmin/clinics"
+        title: 'Clinics',
+        icon: 'mdi-home-city',
+        link: '/clinic/clinicCenterAdmin/clinics',
       },
       {
-        title: "Sifarnik",
-        icon: "mdi-clipboard",
-        link: "/clinic/clinicCenterAdmin/sifarnik"
-      }
+        title: 'Sifarnik',
+        icon: 'mdi-clipboard',
+        link: '/clinic/clinicCenterAdmin/sifarnik',
+      },
     ],
 
     clinicAdmin: [
       {
-        title: "Clinic profile",
-        icon: "mdi-account-group",
-        link: "/clinic/clinicAdmin/clinicProfile"
-      }
+        title: 'Clinic profile',
+        icon: 'mdi-account-group',
+        link: '/clinic/clinicAdmin/clinicProfile',
+      },
     ],
 
     nurse: [
       {
-        title: "Appoitnemts",
-        icon: "mdi-clipboard-list",
-        link: "/clinic/nurse/appointments"
-      }
+        title: 'Appoitnemts',
+        icon: 'mdi-clipboard-list',
+        link: '/clinic/nurse/appointments',
+      },
     ],
 
     doctor: [
       {
-        title: "Appoitnemts",
-        icon: "mdi-clipboard-list",
-        link: "/clinic/doctor/appointments"
-      }
+        title: 'Appoitnemts',
+        icon: 'mdi-clipboard-list',
+        link: '/clinic/doctor/appointments',
+      },
     ],
 
     patient: [
       {
-        title: "Medical record",
-        icon: "mdi-folder-heart",
-        link: "/clinic/patient/medicalRecord"
+        title: 'Medical record',
+        icon: 'mdi-folder-heart',
+        link: '/clinic/patient/medicalRecord',
       },
       {
-        title: "Clinic Center Panel",
-        icon: "mdi-calendar-heart",
-        link: "/clinic/patient/cCenterPanel"
-      }
-    ]
+        title: 'Clinic Center Panel',
+        icon: 'mdi-calendar-heart',
+        link: '/clinic/patient/cCenterPanel',
+      },
+    ],
   }),
 
+  methods: {
+    ...mapActions('authentication', { logout: 'logout' }),
+
+    onLogout() {
+      this.logout();
+      this.$router.push('/');
+    },
+  },
+
   computed: {
-    ...mapGetters("authentication", {
-      getRole: "getRole",
-      getFullName: "getFullName"
+    ...mapGetters('authentication', {
+      getRole: 'getRole',
+      getFullName: 'getFullName',
     }),
     items() {
       const role = this.getRole;
@@ -123,8 +150,8 @@ export default {
       }
 
       return [];
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -4,10 +4,11 @@
       <v-btn v-on="on" class="teal lighten-3" small>Rate Clinic</v-btn>
     </template>
     <v-card>
-      <v-card-title class="justify-center mb-6">
-        <p>{{item.name}}</p>
+      <v-card-title class="justify-center">
+        <div class="headline">{{item.name}}</div> <br>
       </v-card-title>
       <v-card-text>
+        <div class="text-center mb-6 subtitle-1">{{item.address}}, {{item.city}}</div>
         <RatingComponent
           class="ma-3"
           :rating="ratingService"
@@ -62,7 +63,7 @@ export default {
     dialog: '',
     ratingService: 0,
     ratingCleanliness: 0,
-    ratingExpertise: 0,
+    ratingTime: 0,
   }),
   methods: {
     rate(item) {
