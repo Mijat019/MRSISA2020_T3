@@ -128,11 +128,7 @@ export default {
           return sp.appoType.id === appoTypeId;
         });
       });
-    }
-  },
-      getUser: "authentication/getUser",
-      getCurrentTimeISO: "time/getCurrentTimeISO"
-    })
+    },
   }
 };
 </script>
