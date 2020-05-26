@@ -25,7 +25,7 @@
             item-value="userId"
             label="Doctor"
           />
-          <div class="example-inputs mb-4">
+          <div class="example-inputs mb-2">
             <datetime
               type="datetime"
               placeholder="Select date"
@@ -35,6 +35,7 @@
               auto
             />
           </div>
+          <hr class="mb-4">
           <v-text-field type="number" label="Duration(in minutes)" v-model="appointment.duration" />
         </v-form>
       </v-card-text>

@@ -8,6 +8,7 @@ import PriceLists from '../models/PriceLists';
 import AppointmentTypes from '../models/AppointmentTypes';
 import DoctorAt from '../models/DoctorAt';
 import Users, { usersSelect } from '../models/Users';
+import Clinics, { clinicsSelect } from '../models/Clinics';
 import confirmedAppointmentService from './ConfirmedAppointmentService';
 
 const include: IncludeOptions[] = [
@@ -23,6 +24,7 @@ const include: IncludeOptions[] = [
         required: true,
         include: [
           { model: Users, as: 'user', attributes: usersSelect, required: true },
+          { model: Clinics, as: 'clinic', attributes: clinicsSelect, required: true}
         ],
       },
       {

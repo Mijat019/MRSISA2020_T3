@@ -26,7 +26,8 @@
         </template>
 
         <template v-slot:item.actions="{ item }">
-          <slot name="actions" :item="item"></slot>
+          <RateDoctors :item="item.confirmedAppointment.doctor.user" />
+          <RateClinics :item="item.confirmedAppointment.doctor.clinic" />
         </template>
       </v-data-table>
     </v-card-text>
@@ -35,12 +36,22 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import RateDoctors from './RateDoctors';
+import RateClinics from './RateClinics';
 
 export default {
+  components: {
+    RateDoctors,
+    RateClinics,
+  },
   data() {
     return {
       search: '',
       headers: [
+        {
+          text: 'Clinic',
+          value: 'confirmedAppointment.doctor.clinic.name',
+        },
         {
           text: 'Doctor',
           value: 'doctorFullName',
@@ -61,6 +72,12 @@ export default {
           text: 'Date',
           value: 'confirmedAppointment.start',
         },
+        {
+          text: 'Actions',
+          value: 'actions',
+          align: 'center',
+          sortable: false,
+        },
       ],
     };
   },
@@ -69,6 +86,14 @@ export default {
     ...mapActions('appointmentReport', {
       getReportsForPatientAction: 'getReportsForPatientAction',
     }),
+
+    rateDoctor(item) {
+      console.log(item);
+    },
+
+    rateClinic(item) {
+      console.log(item);
+    },
   },
 
   async mounted() {
