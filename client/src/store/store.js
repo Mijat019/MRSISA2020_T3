@@ -71,7 +71,7 @@ export default new Vuex.Store({
     prescriptions,
     appointmentReport,
     time,
-    leaveRequests
+    leaveRequests,
     ratings
   },
 });

@@ -1,7 +1,7 @@
 <template>
   <div>
       <v-row>
-          <v-col cols="3">
+          <v-col>
               <v-card>
                 <v-card-title>Request leave</v-card-title>
                 
