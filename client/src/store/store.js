@@ -30,6 +30,7 @@ import scheduleCustomAppointmentDialog from "./modules/customAppointment/schedul
 import prescriptions from "./modules/prescriptions";
 import appointmentReport from "./modules/appointmentReport";
 import time from "./modules/time"
+import leaveRequests from "./modules/leaveRequests";
 
 Vue.use(Vuex);
 
@@ -69,5 +70,6 @@ export default new Vuex.Store({
     prescriptions,
     appointmentReport,
     time,
+    leaveRequests
   },
 });

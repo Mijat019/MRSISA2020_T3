@@ -75,17 +75,27 @@ export default {
 
     nurse: [
       {
-        title: "Appoitnemts",
+        title: "Appointments",
         icon: "mdi-clipboard-list",
         link: "/clinic/nurse/appointments"
+      },
+      {
+        title: "Leave requests",
+        icon: "mdi-history",
+        link: "/clinic/nurse/leaveRequests"
       }
     ],
 
     doctor: [
       {
-        title: "Appoitnemts",
+        title: "Appointments",
         icon: "mdi-clipboard-list",
         link: "/clinic/doctor/appointments"
+      },
+      {
+        title: "Leave requests",
+        icon: "mdi-history",
+        link: "/clinic/doctor/leaveRequests"
       }
     ],
 

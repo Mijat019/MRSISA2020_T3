@@ -4,6 +4,7 @@ const DoctorAppointmentsTabs = () =>
     import(
         /* webpackChunkName: "doctorRoutes" */ "../components/Doctor/DoctorAppointmentsTabs/DoctorAppointmentsTabs.vue"
     );
+const DoctorLeaveReqs = () => import("../components/Doctor/LeaveRequests.vue");
 
 export default {
     path: "doctor",
@@ -21,5 +22,13 @@ export default {
                 doctor: true,
             },
         },
+        {
+            path: "leaveRequests",
+            name: "LeaveRequests",
+            component: DoctorLeaveReqs,
+            meta: {
+                doctor: true,
+            },
+        }
     ],
 };
