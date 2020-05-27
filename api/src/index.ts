@@ -30,6 +30,7 @@ import patientMedicalRecordRoutes from "./routes/patientMedicalRecordRoutes";
 import ratingsRoutes from './routes/ratingsRoutes'
 import DoctorsController from "./controllers/DoctorsController";
 import DoctorsService from "./services/DoctorsService";
+import leaveRequestsRoutes from "./routes/leaveRequestsRoutes";
 
 // connect to the database
 (async () => {
@@ -56,7 +57,7 @@ const app: Application = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(morgan("dev"));
+app.use(morgan("dev")); 
 
 // routes
 app.use("/clinics", clinicsRoutes);
@@ -78,6 +79,7 @@ app.use("/clinicCenterAdmins", clinicCenterAdminRoutes);
 app.use("/appointmentRequests", appointmentRequestsRoutes);
 app.use("/appointmentReport", appointmentReportRoutes);
 app.use("/patientMedicalRecord", patientMedicalRecordRoutes);
+app.use("/leaveRequests", leaveRequestsRoutes);
 app.use("/ratings", ratingsRoutes);
 
 app.use(express.static(__dirname + "/public/"));
