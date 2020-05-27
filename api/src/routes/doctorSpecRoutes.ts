@@ -7,11 +7,6 @@ const router = express.Router();
 
 router.use(AuthenticationMiddleware.verifyToken);
 
-router.get(
-  "/:doctorId",
-  DoctorsController.getSpecializations
-);
-
 router.post(
   "/",
   AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),

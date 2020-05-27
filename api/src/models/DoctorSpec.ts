@@ -2,6 +2,7 @@ import db from "./database";
 import { Model, INTEGER } from "sequelize";
 import Users from "./Users";
 import AppointmentTypes from "./AppointmentTypes";
+import DoctorAt from "./DoctorAt";
 
 class DoctorSpec extends Model {
   public id!: number;
@@ -32,9 +33,6 @@ DoctorSpec.init(
     indexes: [{unique: true, fields: ["userId", "appointmentTypeId"]}]
   }
 );
-
-// one user can have one row in DoctorSpec table
-DoctorSpec.belongsTo(Users, { as: "doctor", foreignKey: "userId" });
 
 // one appointment type can have many rows in DoctorSpec table
 DoctorSpec.belongsTo(AppointmentTypes, { as: "appoType", foreignKey: "appointmentTypeId" });

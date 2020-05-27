@@ -31,18 +31,18 @@
             label="Room"
           />
           <v-select
-            :items="getDoctors"
+            :items="getPriceLists"
+            v-model="appointment.priceList"
+            item-text="appointmentType.name"
+            :return-object="true"
+            label="Price list entry"
+          />
+          <v-select v-if="appointment.priceList"
+            :items="filteredDoctors"
             v-model="appointment.doctorId"
             item-text="fullName"
             item-value="userId"
             label="Doctor"
-          />
-          <v-select
-            :items="getPriceLists"
-            v-model="appointment.priceListId"
-            item-text="appointmentType.name"
-            item-value="id"
-            label="Price list entry"
           />
         </v-form>
       </v-card-text>
@@ -95,6 +95,11 @@ export default {
 
       //convert datetime to unix seconds
       this.appointment.start = moment(this.appointment.start).unix();
+
+      // Prepare fields for backend
+      this.appointment.priceListId = this.appointment.priceList.id;
+      delete this.appointment.priceList;
+
       await this.addAppointmentAction(this.appointment);
       this.close();
     },
@@ -103,22 +108,37 @@ export default {
       if (!this.$refs.form.validate() || !this.appointment.start) {
         return;
       }
+      // Prepare fields for backend
+      this.appointment.priceListId = this.appointment.priceList.id;
+      delete this.appointment.priceList;
+
       await this.updateAppointmentAction(this.appointment);
       this.close();
     },
   },
   computed: {
     ...mapGetters({
-      dialog: 'freeAppointmentsDialog/getShowDialog',
-      appointment: 'freeAppointmentsDialog/getDialogAppointment',
-      type: 'freeAppointmentsDialog/getDialogType',
-      getRooms: 'rooms/getRooms',
-      getDoctors: 'doctors/getDoctors',
-      getPriceLists: 'priceLists/getPriceLists',
-      getUser: 'authentication/getUser',
-      getCurrentTimeISO: 'time/getCurrentTimeISO',
+      dialog: "freeAppointmentsDialog/getShowDialog",
+      appointment: "freeAppointmentsDialog/getDialogAppointment",
+      type: "freeAppointmentsDialog/getDialogType",
+      getRooms: "rooms/getRooms",
+      getDoctors: "doctors/getDoctors",
+      getPriceLists: "priceLists/getPriceLists",
+      getUser: "authentication/getUser",
+      getCurrentTimeISO: "time/getCurrentTimeISO"
     }),
-  },
+    
+    filteredDoctors() {
+      const appoTypeId = this.appointment.priceList.appointmentTypeId;
+      // Return all doctors that specialize in this appointment type
+      return this.getDoctors.filter(doc => {
+        return doc.spec.some(sp => {
+          return sp.appoType.id === appoTypeId;
+        });
+      });
+    },
+  }
+
 };
 </script>
 
