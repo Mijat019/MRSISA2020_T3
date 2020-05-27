@@ -27,6 +27,7 @@ import priceListsRoutes from "./routes/priceListsRoutes";
 import appointmentRequestsRoutes from "./routes/appointmentRequestsRoutes";
 import appointmentReportRoutes from "./routes/appointmentReportRoutes";
 import patientMedicalRecordRoutes from "./routes/patientMedicalRecordRoutes";
+import ratingsRoutes from './routes/ratingsRoutes'
 
 import AppointmentReportService from "./services/AppointmentReportService"
 
@@ -42,16 +43,6 @@ import AppointmentReportService from "./services/AppointmentReportService"
         // await db.sync({ force: true });
         // await initModel();
         // await initModelStega();
-
-        // const obj = {
-        //     patientMedicalRecordId : 3,
-        //     confirmedAppointmentId: 1,
-        //     diagnosisId: 1,
-        //     cratedAt: Date.now(),
-        //     notes: 'Very crazy'
-        // }
-
-        // await AppointmentReportService.getAllForPatient("3");
 
     } catch (error) {
         console.log(error);
@@ -89,6 +80,7 @@ app.use("/clinicCenterAdmins", clinicCenterAdminRoutes);
 app.use("/appointmentRequests", appointmentRequestsRoutes);
 app.use("/appointmentReport", appointmentReportRoutes);
 app.use("/patientMedicalRecord", patientMedicalRecordRoutes);
+app.use("/ratings", ratingsRoutes);
 
 app.use(express.static(__dirname + "/public/"));
 

@@ -11,7 +11,7 @@
     
     <v-col cols="5" align="end" >
       <v-rating
-        v-model="rating"
+        v-model="ratingProp"
         color="yellow darken-3"
         background-color="grey darken-1"
         empty-icon="$ratingFull"
@@ -24,8 +24,20 @@
 
 <script>
 export default {
-  props: ["icon", "title", "description", "rating"]
+  props: ["icon", "title", "description", "rating"],
+
+  computed: {
+    ratingProp: {
+      get() {
+        return this.rating;
+      },
+      set(val){
+        this.$emit('ratingChanged', val);
+      }
+    }
+  },
 };
+
 </script>
 
 <style scoped>

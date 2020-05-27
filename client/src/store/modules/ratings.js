@@ -7,7 +7,7 @@ const mutations = {};
 const actions = {
   async submitDoctorRatingAction({ dispatch }, payload) {
     try {
-      await Vue.$axios.post('/rating/doctor', payload);
+      await Vue.$axios.post('/ratings/doctor', payload);
       dispatch('snackbar/showSuccess', 'Doctor rating sucessfully submited!', {
         root: true,
       });
@@ -20,7 +20,7 @@ const actions = {
 
   async submitClinicRatingAction({ dispatch }, payload) {
     try {
-      await Vue.$axios.post('/rating/clinic', payload);
+      await Vue.$axios.post('/ratings/clinic', payload);
       dispatch('snackbar/showSuccess', 'Clinic rating sucessfully submited!', {
         root: true,
       });

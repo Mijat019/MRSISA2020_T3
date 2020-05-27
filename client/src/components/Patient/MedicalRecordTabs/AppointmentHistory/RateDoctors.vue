@@ -10,27 +10,31 @@
       <v-card-text>
         <RatingComponent
           class="ma-3"
-          :rating="ratingCommunication"
+          :rating="communicationRating"
+          @ratingChanged="communicationRating = $event"
           title="Communication"
           description="How well did he explain your condition?"
           icon="clarity:talk-bubbles-outline-badged"
         />
         <RatingComponent
           class="ma-3"
-          :rating="ratingExpertise"
+          :rating="expertiseRating"
+          @ratingChanged="expertiseRating = $event"
           title="Expertise"
           description="How do you feel about the doctor's expertise?"
           icon="medical-icon:i-surgery"
         />
         <RatingComponent
           class="ma-3"
-          :rating="ratingTime"
+          :rating="timeRating"
+          @ratingChanged="timeRating = $event"
           title="Time well spent"
           description="How productive was your session?"
           icon="ant-design:field-time-outlined"
         />
         <v-row class="mt-6 mx-6">
           <v-textarea
+            v-model="comment"
             rows="3"
             filled
             placeholder="Share details of your experience with this doctor"
@@ -41,9 +45,7 @@
         <v-row class="mx-3 mb-3">
           <v-spacer></v-spacer>
           <v-btn @click="close" class="white blue--text">Cancel</v-btn>
-          <v-btn @click="rate(item)" class="mx-6 blue white--text"
-            >Rate Doctor</v-btn
-          >
+          <v-btn @click="rate" class="mx-6 blue white--text">Rate Doctor</v-btn>
         </v-row>
       </v-card-actions>
     </v-card>
@@ -51,29 +53,60 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import RatingComponent from './RatingComponent';
 
 export default {
+  props: ['item'],
   components: {
     RatingComponent,
   },
   data: () => ({
-    reason: '',
     dialog: '',
-    ratingCommunication: 0,
-    ratingTime: 0,
-    ratingExpertise: 0,
+    communicationRating: 0,
+    timeRating: 0,
+    expertiseRating: 0,
+    comment: '',
   }),
-  props: ['item'],
+
   methods: {
-    rate(item) {
-      console.log(item);
-      alert('Not implemented');
+    ...mapActions('ratings', {
+      submitDoctorRatingAction: 'submitDoctorRatingAction',
+    }),
+
+    async rate() {
+      const avg =
+        (this.communicationRating + this.timeRating + this.expertiseRating) / 3;
+
+      const payload = {
+        patientId: this.user.id,
+        doctorId: this.item.id,
+        communicationRating: this.communicationRating,
+        expertiseRating: this.expertiseRating,
+        timeRating: this.timeRating,
+        averageRating: avg,
+        comment: this.comment,
+      };
+
+      await this.submitDoctorRatingAction(payload);
+      this.reset();
+      this.close();
+    },
+
+    reset() {
+      this.communicationRating = 0;
+      this.timeRating = 0;
+      this.expertiseRating = 0;
+      this.comment = '';
     },
 
     close() {
-      this.dialog = '';
+      this.dialog = false;
     },
+  },
+
+  computed: {
+    ...mapGetters({ user: 'authentication/getUser' }),
   },
 };
 </script>

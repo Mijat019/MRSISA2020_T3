@@ -15,14 +15,22 @@ import PatientsService from "../services/PatientsService";
 import PatientMedicalRecord from "./PatientMedicalRecord";
 import AccountStatus from "./AccountStatus";
 import FreeAppointments from "./FreeAppointments";
+import DoctorRating from './DoctorRating'
+import ClinicRating from "./ClinicRating";
 
 export default async () => {
+
+  await DoctorRating.findAll({});
+  await ClinicRating.findAll({});
+
   await Diagnosis.create({ name: "Insane in the membrane" });
   await Diagnosis.create({ name: "Vucic" });
 
   await Drugs.create({ name: "Percocet" });
   await Drugs.create({ name: "Molly" });
   await Drugs.create({ name: "Percocets" });
+
+
 
   const { password } = await UsersService.createUser(
     {
