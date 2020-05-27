@@ -12,19 +12,24 @@
         <MedicalInfo :user="getUser" />
       </v-tab-item>
       <v-tab-item :value="'diagnosisHisotry'">diagnosisHisotry</v-tab-item>
-      <v-tab-item :value="'appointmentHisotry'">appointmentHisotry</v-tab-item>
+      <v-tab-item :value="'appointmentHisotry'">
+        <AppointmentHistory/>
+      </v-tab-item>
     </v-tabs>
   </div>
 </template>
 
 <script>
 import MedicalInfo from "./MedicalInfo";
+import AppointmentHistory from "./AppointmentHistory/AppointmentHistory"
+
 import { mapGetters } from "vuex";
 export default {
   name: "MedicalRecordTabs",
 
   components: {
-    MedicalInfo
+    MedicalInfo,
+    AppointmentHistory
   },
 
   data: () => ({ tab: null }),

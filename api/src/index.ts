@@ -27,6 +27,7 @@ import priceListsRoutes from "./routes/priceListsRoutes";
 import appointmentRequestsRoutes from "./routes/appointmentRequestsRoutes";
 import appointmentReportRoutes from "./routes/appointmentReportRoutes";
 import patientMedicalRecordRoutes from "./routes/patientMedicalRecordRoutes";
+import ratingsRoutes from './routes/ratingsRoutes'
 import DoctorsController from "./controllers/DoctorsController";
 import DoctorsService from "./services/DoctorsService";
 
@@ -38,9 +39,9 @@ import DoctorsService from "./services/DoctorsService";
         // creates tables from model
         // drops tables if they already exist
         // uncomment next line if you want to apply changes to the schema
-        //await db.sync({ force: true });
-        //await initModel();
-        //await initModelStega();
+        // await db.sync({ force: true });
+        // await initModel();
+        // await initModelStega();
     } catch (error) {
         console.log(error);
         console.log(
@@ -77,6 +78,7 @@ app.use("/clinicCenterAdmins", clinicCenterAdminRoutes);
 app.use("/appointmentRequests", appointmentRequestsRoutes);
 app.use("/appointmentReport", appointmentReportRoutes);
 app.use("/patientMedicalRecord", patientMedicalRecordRoutes);
+app.use("/ratings", ratingsRoutes);
 
 app.use(express.static(__dirname + "/public/"));
 
