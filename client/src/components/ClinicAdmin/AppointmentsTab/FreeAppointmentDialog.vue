@@ -6,7 +6,7 @@
       <v-card-text>
         <v-form ref="form" lazy-validation>
           <div>
-            <div class="example-inputs my-5">
+            <div class="datetime-input mb-2 mt-5">
               <datetime
                 type="datetime"
                 :min-datetime="getCurrentTimeISO"
@@ -16,8 +16,13 @@
                 auto
               />
             </div>
+            <hr class="mb-6" />
           </div>
-          <v-text-field type="number" label="Duration(in minutes)" v-model="appointment.duration" />
+          <v-text-field
+            type="number"
+            label="Duration(in minutes)"
+            v-model="appointment.duration"
+          />
           <v-select
             :items="getRooms"
             v-model="appointment.roomId"
@@ -44,7 +49,9 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn @click="close">Cancel</v-btn>
-        <v-btn v-if="type === 'add'" color="primary" @click="addAppointment">Add</v-btn>
+        <v-btn v-if="type === 'add'" color="primary" @click="addAppointment"
+          >Add</v-btn
+        >
         <v-btn v-else color="primary" @click="updateAppointment">Save</v-btn>
       </v-card-actions>
     </v-card>
@@ -52,16 +59,16 @@
 </template>
 
 <script>
-import moment from "moment";
-import { mapGetters, mapActions, mapMutations } from "vuex";
-import { Datetime } from "vue-datetime";
+import moment from 'moment';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { Datetime } from 'vue-datetime';
 export default {
-  name: "AppointmentDialog",
+  name: 'AppointmentDialog',
   components: {
-    datetime: Datetime
+    datetime: Datetime,
   },
   data: () => ({
-    rules: [v => !!v || "This field is required"]
+    rules: [v => !!v || 'This field is required'],
   }),
   mounted() {
     this.getRoomsAction();
@@ -70,15 +77,15 @@ export default {
   },
   methods: {
     ...mapActions({
-      addAppointmentAction: "freeAppointments/addFreeAppointmentAction",
-      updateAppointmentAction: "freeAppointments/updateFreeAppointmentAction",
-      getRoomsAction: "rooms/getRoomsAction",
-      getPriceListsAction: "priceLists/getPriceListsAction",
-      getDoctorsAction: "doctors/getDoctorsAction"
+      addAppointmentAction: 'freeAppointments/addFreeAppointmentAction',
+      updateAppointmentAction: 'freeAppointments/updateFreeAppointmentAction',
+      getRoomsAction: 'rooms/getRoomsAction',
+      getPriceListsAction: 'priceLists/getPriceListsAction',
+      getDoctorsAction: 'doctors/getDoctorsAction',
     }),
 
-    ...mapMutations("freeAppointmentsDialog", {
-      close: "closeDialog"
+    ...mapMutations('freeAppointmentsDialog', {
+      close: 'closeDialog',
     }),
 
     async addAppointment() {
@@ -107,7 +114,7 @@ export default {
 
       await this.updateAppointmentAction(this.appointment);
       this.close();
-    }
+    },
   },
   computed: {
     ...mapGetters({
@@ -120,6 +127,7 @@ export default {
       getUser: "authentication/getUser",
       getCurrentTimeISO: "time/getCurrentTimeISO"
     }),
+    
     filteredDoctors() {
       const appoTypeId = this.appointment.priceList.appointmentTypeId;
       // Return all doctors that specialize in this appointment type
@@ -130,15 +138,10 @@ export default {
       });
     },
   }
+
 };
 </script>
 
 <style>
-.example-inputs input {
-  padding: 8px 10px;
-  font-size: 16px;
-  border: solid 1px #ddd;
-  color: #444;
-  width: 100%;
-}
+
 </style>

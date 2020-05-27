@@ -15,8 +15,14 @@ import PatientsService from "../services/PatientsService";
 import PatientMedicalRecord from "./PatientMedicalRecord";
 import AccountStatus from "./AccountStatus";
 import FreeAppointments from "./FreeAppointments";
+import DoctorRating from './DoctorRating'
+import ClinicRating from "./ClinicRating";
 
 export default async () => {
+
+  await DoctorRating.findAll({});
+  await ClinicRating.findAll({});
+
   await Diagnosis.create({ name: "Insane in the membrane" });
   await Diagnosis.create({ name: "Vucic" });
 
@@ -24,10 +30,12 @@ export default async () => {
   await Drugs.create({ name: "Molly" });
   await Drugs.create({ name: "Percocets" });
 
+
+
   const { password } = await UsersService.createUser(
     {
-      firstName: "Mijat",
-      lastName: "Miletic",
+      firstName: "Admin",
+      lastName: "Klinickog Centra",
       email: "4",
       password: "1",
       jmbg: "1232132312121231231233312312",
@@ -65,8 +73,8 @@ export default async () => {
 
   const { userId: doctorId } = await DoctorsService.add(
     {
-      firstName: "Mijat",
-      lastName: "Miletic",
+      firstName: "Doktor",
+      lastName: "Doktoric",
       email: "1",
       jmbg: "1232312312",
       phoneNumber: "444",
@@ -85,8 +93,8 @@ export default async () => {
 
   const { id: userId }: any = await UsersService.createUser(
     {
-      firstName: "Mijat",
-      lastName: "Miletic",
+      firstName: "Pacijent",
+      lastName: "Pacijentic_1",
       email: "s",
       password: "1",
       jmbg: "123213231212123331231233312312",
@@ -129,8 +137,8 @@ export default async () => {
 
   const { userId: tutu } = await ClinicAdminService.add(
     {
-      firstName: "Mijat",
-      lastName: "Miletic",
+      firstName: "Admin",
+      lastName: "Klinike",
       email: "3",
       password,
       jmbg: "123213231133333322312312",

@@ -28,3 +28,10 @@ export default {
   },
 };
 </script>
+
+<style>
+  .datetime-input input {
+    font-size: 16px;
+    width: 100%;
+  }
+</style>

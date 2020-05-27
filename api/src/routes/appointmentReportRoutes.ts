@@ -3,6 +3,8 @@ import appointmentReportController from "../controllers/AppointmentReportControl
 
 const router = Router();
 
+router.get("/:patientId", appointmentReportController.getAllForPatient);
+
 router.post("/", appointmentReportController.add);
 
 export default router;

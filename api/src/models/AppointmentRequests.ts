@@ -71,7 +71,6 @@ AppointmentRequests.init(
   }
 );
 
-// AppointmentRequests.belongsTo(Users, { as: "patient", foreignKey: "userId" });
 AppointmentRequests.belongsTo(PatientMedicalRecord, {
   as: "patientMedicalRecord",
   foreignKey: "patientMedicalRecordId",
