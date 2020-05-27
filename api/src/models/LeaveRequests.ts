@@ -10,6 +10,7 @@ class LeaveRequests extends Model {
     public from!: Date;
     public to!: Date;
     public status!: string;
+    public reason!: string;
 }
 
 LeaveRequests.init(
@@ -38,6 +39,10 @@ LeaveRequests.init(
         status: {
             type: STRING,
             allowNull: false
+        },
+        reason: {
+            type: STRING,
+            allowNull: true
         }
       },
       {

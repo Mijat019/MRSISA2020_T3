@@ -40,7 +40,7 @@ class LeaveRequestsController {
 
   public async deny(req: Request, res: Response) {
     try {
-      await LeaveRequestsService.deny(parseInt(req.params["id"], 10));
+      await LeaveRequestsService.deny(parseInt(req.params["id"], 10), req.body.message);
       res.send();
     } catch (error) {
       res.status(400).send(error);

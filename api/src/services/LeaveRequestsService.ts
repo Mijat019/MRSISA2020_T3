@@ -2,6 +2,7 @@ import config from "../config";
 import bcrypt from "bcrypt";
 import LeaveRequests from '../models/LeaveRequests';
 import DoctorAt from "../models/DoctorAt";
+import Users from "../models/Users";
 
 class LeaveRequestsService {
   public async add(userId: number, dates: any): Promise<any> {
@@ -21,11 +22,18 @@ class LeaveRequestsService {
   }
 
   public async getForUser(userId: number): Promise<any> {
-    return await LeaveRequests.findAll({ where: { userId } });
+    return await LeaveRequests.findAll({ 
+      where: { userId }
+    });
   }
 
   public async getForClinic(clinicId: number): Promise<any> {
-    return await LeaveRequests.findAll({ where: { clinicId } });
+    return await LeaveRequests.findAll({
+      where: { clinicId },
+      include: [
+        { model: Users, attributes: ["id", "firstName", "lastName"], as: "employee" }
+      ]
+    });
   }
 
   public async approve(id: number): Promise<any> {
@@ -34,9 +42,10 @@ class LeaveRequestsService {
     leaveReq?.save();
   }
 
-  public async deny(id: number): Promise<any> {
+  public async deny(id: number, reason: string): Promise<any> {
     let leaveReq = await LeaveRequests.findByPk(id);
     leaveReq!.status = "Denied";
+    leaveReq!.reason = reason;
     leaveReq?.save();
   }
 }
