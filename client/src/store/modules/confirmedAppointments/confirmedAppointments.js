@@ -1,4 +1,6 @@
 import Vue from "vue";
+import calendar from "./calendar";
+import appointmentReport from "./appointmentReport";
 
 const state = {
     confirmedAppointments: [],
@@ -23,11 +25,6 @@ const mutations = {
 
 const actions = {
     async getConfirmedAppointmentsAction({ commit, dispatch }, doctorId) {
-        if (!doctorId) {
-            commit("setConfirmedAppointments", []);
-            return;
-        }
-
         try {
             const { data: appointments } = await Vue.$axios.get(
                 `/confirmedAppointments/${doctorId}`
@@ -44,9 +41,6 @@ const actions = {
                 `/confirmedAppointments`,
                 appointment
             );
-            commit("calendar/addConfirmedAppointment", data, {
-                root: true,
-            });
             commit("addConfirmedAppointment", data);
         } catch (error) {
             dispatch("snackbar/showError", error.response.data, { root: true });
@@ -56,10 +50,13 @@ const actions = {
 
 const getters = {
     getConfirmedAppointments: (state) => state.confirmedAppointments,
-    getUnfinishedAppointment: (state) =>
-        state.confirmedAppointments.filter(
-            (appointment) => !appointment.finished
-        ),
 };
 
-export default { namespaced: true, state, mutations, actions, getters };
+export default {
+    modules: { calendar, appointmentReport },
+    namespaced: true,
+    state,
+    mutations,
+    actions,
+    getters,
+};

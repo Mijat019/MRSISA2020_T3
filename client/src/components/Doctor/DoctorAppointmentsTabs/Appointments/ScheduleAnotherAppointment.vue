@@ -6,14 +6,14 @@
 
     <v-card>
       <v-card-title>
-        fsdafd
+        Schedule an appointment
         <v-spacer></v-spacer>
         <v-btn @click="dialog = false" icon>
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
-        <CalendarTab />
+        <CalendarTab v-on:close="dialog = false" />
       </v-card-text>
     </v-card>
   </v-dialog>

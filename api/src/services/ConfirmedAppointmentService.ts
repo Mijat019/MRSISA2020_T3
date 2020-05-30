@@ -68,9 +68,11 @@ class ConfirmedAppointmentService {
 
     public async add(appointmentPayload: any): Promise<any> {
         freeAppointmentService.checkForConflicts(appointmentPayload);
-        const appointment = await ConfirmedAppointments.create(
-            appointmentPayload
-        );
+        const { id } = await ConfirmedAppointments.create(appointmentPayload);
+        const appointment = await ConfirmedAppointments.findByPk(id, {
+            include,
+            attributes,
+        });
         return appointment;
     }
 

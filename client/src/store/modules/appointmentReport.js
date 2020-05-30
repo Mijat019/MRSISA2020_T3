@@ -1,109 +1,110 @@
 import Vue from "vue";
 
 const state = {
-  showComponent: "nextAppointment",
-  unfinishedConfirmedAppointments: [],
-  nextAppointment: null,
+    showComponent: "nextAppointment",
+    unfinishedConfirmedAppointments: [],
+    nextAppointment: null,
 };
 
 const mutations = {
-  setUnfinishedConfirmedAppointments(state, appointments) {
-    state.unfinishedConfirmedAppointments = appointments;
-  },
+    setUnfinishedConfirmedAppointments(state, appointments) {
+        state.unfinishedConfirmedAppointments = appointments;
+    },
 
-  removeFirstAppointment(state, confirmedAppointmentId) {
-    const index = state.unfinishedConfirmedAppointments.findIndex(
-      (appointment) => appointment.id === confirmedAppointmentId
-    );
-    state.unfinishedConfirmedAppointments.splice(index, 1);
-  },
+    removeFirstAppointment(state, confirmedAppointmentId) {
+        const index = state.unfinishedConfirmedAppointments.findIndex(
+            (appointment) => appointment.id === confirmedAppointmentId
+        );
+        state.unfinishedConfirmedAppointments.splice(index, 1);
+    },
 
-  setShowComponent(state, component) {
-    state.showComponent = component;
-  },
+    setShowComponent(state, component) {
+        state.showComponent = component;
+    },
 
-  setNextAppointment(state, reportId) {
-    if (reportId !== null) {
-      const index = state.unfinishedConfirmedAppointments.findIndex(
-        (report) => reportId === report.id
-      );
-      state.nextAppointment = state.unfinishedConfirmedAppointments[index];
-      return;
-    }
+    setNextAppointment(state, reportId) {
+        if (reportId !== null) {
+            const index = state.unfinishedConfirmedAppointments.findIndex(
+                (report) => reportId === report.id
+            );
+            state.nextAppointment =
+                state.unfinishedConfirmedAppointments[index];
+            return;
+        }
 
-    state.nextAppointment = state.unfinishedConfirmedAppointments[0];
-  },
+        state.nextAppointment = state.unfinishedConfirmedAppointments[0];
+    },
 };
 
 const actions = {
-  async getUnfinishedConfirmedAppointmentsAction(
-    { commit, dispatch },
-    doctorId
-  ) {
-    try {
-      const { data: appointments } = await Vue.$axios.get(
-        `/confirmedAppointments/unfinishedForToday/${doctorId}`
-      );
-      commit("setUnfinishedConfirmedAppointments", appointments);
-      commit("setShowComponent", "nextAppointment");
-      commit("setNextAppointment", null);
-    } catch (error) {
-      dispatch("snackbar/showError", error.response.data, { root: true });
-    }
-  },
-
-  async submitAppointmentReportAction({ commit, dispatch }, report) {
-    try {
-      await Vue.$axios.post("/appointmentReport", report);
-      commit("removeFirstAppointment", report.confirmedAppointmentId);
-      commit(
-        "confirmedAppointments/finishAppointment",
-        report.confirmedAppointmentId,
-        {
-          root: true,
+    async getUnfinishedConfirmedAppointmentsAction(
+        { commit, dispatch },
+        doctorId
+    ) {
+        try {
+            const { data: appointments } = await Vue.$axios.get(
+                `/confirmedAppointments/unfinishedForToday/${doctorId}`
+            );
+            commit("setUnfinishedConfirmedAppointments", appointments);
+            commit("setShowComponent", "nextAppointment");
+            commit("setNextAppointment", null);
+        } catch (error) {
+            dispatch("snackbar/showError", error.response.data, { root: true });
         }
-      );
-      commit("setShowComponent", "nextAppointment");
-      commit("setNextAppointment", null);
-      dispatch("snackbar/showSuccess", "Appointment report created", {
-        root: true,
-      });
-    } catch (error) {
-      dispatch("snackbar/showError", error.response.data, { root: true });
-    }
-  },
+    },
 
-  async updatePatientMedicalRecordAction(
-    { dispatch },
-    patientMedicalRecordUpdate
-  ) {
-    try {
-      await Vue.$axios.patch(
-        `/patientMedicalRecord/${patientMedicalRecordUpdate.userId}`,
+    async submitAppointmentReportAction({ commit, dispatch }, report) {
+        try {
+            await Vue.$axios.post("/appointmentReport", report);
+            commit("removeFirstAppointment", report.confirmedAppointmentId);
+            commit(
+                "confirmedAppointments/finishAppointment",
+                report.confirmedAppointmentId,
+                {
+                    root: true,
+                }
+            );
+            commit("setShowComponent", "nextAppointment");
+            commit("setNextAppointment", null);
+            dispatch("snackbar/showSuccess", "Appointment report created", {
+                root: true,
+            });
+        } catch (error) {
+            dispatch("snackbar/showError", error.response.data, { root: true });
+        }
+    },
+
+    async updatePatientMedicalRecordAction(
+        { dispatch },
         patientMedicalRecordUpdate
-      );
+    ) {
+        try {
+            await Vue.$axios.patch(
+                `/patientMedicalRecord/${patientMedicalRecordUpdate.userId}`,
+                patientMedicalRecordUpdate
+            );
 
-      dispatch("snackbar/showSuccess", "Medical record updated.", {
-        root: true,
-      });
-    } catch (error) {
-      dispatch("snackbar/showError", error.response.data, { root: true });
-    }
-  },
+            dispatch("snackbar/showSuccess", "Medical record updated.", {
+                root: true,
+            });
+        } catch (error) {
+            dispatch("snackbar/showError", error.response.data, { root: true });
+        }
+    },
 };
 
 const getters = {
-  getUnfinishedConfirmedAppointments: (state) =>
-    state.unfinishedConfirmedAppointments,
+    getUnfinishedConfirmedAppointments: (state) =>
+        state.unfinishedConfirmedAppointments,
 
-  getNextAppointment: (state) => state.nextAppointment,
-  getShowComponent: (state) => state.showComponent,
+    getNextAppointment: (state) => state.nextAppointment,
+    getShowComponent: (state) => state.showComponent,
 };
 
 export default {
-  namespaced: true,
-  state,
-  mutations,
-  actions,
-  getters,
+    namespaced: true,
+    state,
+    mutations,
+    actions,
+    getters,
 };

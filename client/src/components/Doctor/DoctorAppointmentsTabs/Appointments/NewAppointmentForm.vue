@@ -56,6 +56,7 @@ export default {
           duration: 60,
           start: moment(this.start).unix()
         });
+        this.$emit("appointmentAdded");
       }
     }
   },

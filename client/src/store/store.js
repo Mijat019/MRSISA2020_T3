@@ -23,7 +23,7 @@ import diagnosis from "./modules/diagnosis";
 import diagnosisDialog from "./modules/diagnosisDialog";
 import clinicCenterAdmins from "./modules/clinicCenterAdmins";
 import priceLists from "./modules/priceLists";
-import confirmedAppointments from "./modules/confirmedAppointments";
+import confirmedAppointments from "./modules/confirmedAppointments/confirmedAppointments";
 import scheduleCustomAppointment from "./modules/customAppointment/scheduleCustomAppointment";
 import scheduleCustomAppointmentDialog from "./modules/customAppointment/scheduleCustomAppointmentDialog";
 import prescriptions from "./modules/prescriptions";

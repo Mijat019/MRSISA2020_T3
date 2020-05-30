@@ -59,6 +59,7 @@ export default {
   components: {
     datetime: Datetime
   },
+
   data: () => ({
     rules: [v => !!v || "This field is required"]
   }),

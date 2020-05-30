@@ -41,7 +41,7 @@
           ref="calendar"
           v-model="focus"
           color="primary"
-          :events="getAppointmentsForCalendar"
+          :events="getAppointments"
           :now="today"
           :type="type"
           :value="today"
@@ -54,9 +54,6 @@
           @mouseup:event="mouseup"
           @change="updateRange"
           :event-color="getEventColor"
-          first-interval="7"
-          interval-minutes="60"
-          interval-count="12"
         >
           <template v-slot:day-body></template>
         </v-calendar>
@@ -74,7 +71,10 @@
               <v-spacer></v-spacer>
             </v-toolbar>
             <v-card-text>
-              <NewAppointmentForm :start="selectedEvent.start" />
+              <NewAppointmentForm
+                :start="selectedEvent.start"
+                v-on:appointmentAdded="appointmentAdded"
+              />
             </v-card-text>
             <v-card-actions>
               <v-btn @click="closeNewAppointment">Close</v-btn>
@@ -82,7 +82,13 @@
           </v-card>
         </v-menu>
 
-        <v-menu v-else v-model="selectedOpen" :close-on-content-click="false" absolute offset-y>
+        <v-menu
+          v-else
+          v-model="selectedOpen"
+          :activator="selectedElement"
+          :close-on-content-click="false"
+          offset-x
+        >
           <v-card color="grey lighten-4" min-width="350px" flat>
             <v-toolbar :color="selectedEvent.color" dark>
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
@@ -131,12 +137,17 @@ export default {
         day: "Day",
         "4day": "4 Days"
       },
-      newEvent: null,
       newAppointment: null
     };
   },
 
   methods: {
+    appointmentAdded() {
+      this.newAppointment.dragable = false;
+      this.closeNewAppointment();
+      this.$emit("close");
+    },
+
     closeNewAppointment() {
       this.newAppointment = null;
       this.getAppointmentsForCalendar.pop();
@@ -182,7 +193,9 @@ export default {
     },
 
     mouseup() {
-      this.newAppointment.dragable = false;
+      if (this.newAppointment) {
+        this.newAppointment.dragable = false;
+      }
     },
     ...mapActions({
       getFreeAppointmentsAction: "freeAppointments/getFreeAppointmentsAction",
@@ -268,7 +281,7 @@ export default {
       getConfirmedAppointments:
         "confirmedAppointments/getConfirmedAppointments",
       getUser: "authentication/getUser",
-      getAppointmentsForCalendar: "calendar/getAppointmentsForCalendar"
+      getAppointments: "confirmedAppointments/calendar/getAppointments"
     }),
 
     title() {

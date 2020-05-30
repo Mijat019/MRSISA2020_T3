@@ -46,6 +46,21 @@ const mutations = {
             });
         });
     },
+
+    addConfirmedAppointment(state, appointment) {
+        const end = moment.unix(appointment.start);
+        end.add(appointment.duration * 60, "seconds");
+        console.log(appointment);
+        state.appointments.push({
+            id: appointment.id,
+            color: "red",
+            roomName: appointment.room.name,
+            appointmentType: appointment.priceList.appointmentType.name,
+            name: `${appointment.priceList.appointmentType.name} ${appointment.room.name}`,
+            start: moment.unix(appointment.start).format("YYYY-MM-DD HH:mm"),
+            end: end.format("YYYY-MM-DD HH:mm"),
+        });
+    },
 };
 
 const actions = {
