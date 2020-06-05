@@ -48,39 +48,11 @@
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @click:time="createNewEvent"
-          @mousedown:event="mousedown"
-          @mousemove:time="mousemove"
-          @mouseup:event="mouseup"
           @change="updateRange"
           :event-color="getEventColor"
         >
           <template v-slot:day-body></template>
         </v-calendar>
-
-        <!-- <v-menu
-          v-if="selectedEvent.newEvent"
-          offset-x
-          :activator="selectedElement"
-          :close-on-content-click="false"
-          v-model="selectedOpen"
-        >
-          <v-card color="grey lighten-4" min-width="350px" flat>
-            <v-toolbar :color="selectedEvent.color" dark>
-              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <v-spacer></v-spacer>
-            </v-toolbar>
-            <v-card-text>
-              <NewAppointmentForm
-                :start="selectedEvent.start"
-                v-on:appointmentAdded="appointmentAdded"
-              />
-            </v-card-text>
-            <v-card-actions>
-              <v-btn @click="closeNewAppointment">Close</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>-->
 
         <v-menu
           v-model="selectedOpen"

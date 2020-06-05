@@ -96,14 +96,6 @@ export default {
             this.selectedOpen = false;
             this.$emit("changeTab", "appointments");
         },
-
-        mousedown() {},
-
-        mousemove() {},
-
-        mouseup() {},
-
-        createNewEvent() {},
     },
 
     computed: {

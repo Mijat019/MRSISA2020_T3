@@ -18,15 +18,11 @@ const mutations = {
 const actions = {
     setNextAppointmentAction({ rootState, commit }, reportId) {
         let index = 0;
-        if (reportId !== null) {
+        if (reportId) {
             index = rootState.confirmedAppointments.confirmedAppointments.findIndex(
                 (report) => reportId === report.id
             );
         }
-
-        console.log(
-            rootState.confirmedAppointments.confirmedAppointments[index]
-        );
         commit(
             "setNextAppointment",
             rootState.confirmedAppointments.confirmedAppointments[index]
@@ -78,7 +74,6 @@ const getters = {
         const unfinishedAppointments = rootState.confirmedAppointments.confirmedAppointments.filter(
             (appointment) => !appointment.finished
         );
-        console.log(unfinishedAppointments);
         return unfinishedAppointments;
     },
 

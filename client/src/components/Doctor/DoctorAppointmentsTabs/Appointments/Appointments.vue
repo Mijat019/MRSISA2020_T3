@@ -32,17 +32,17 @@ export default {
   },
 
   methods: {
-    ...mapActions("confirmedAppointments/appointmentReport", {
-      getUnfinishedConfirmedAppointmentsAction:
-        "getUnfinishedConfirmedAppointmentsAction",
+    ...mapActions({
       getConfirmedAppointmentsAction:
-        "confirmedAppointments/getConfirmedAppointmentsAction"
+        "confirmedAppointments/getConfirmedAppointmentsAction",
+      setNextAppointmentAction:
+        "confirmedAppointments/appointmentReport/setNextAppointmentAction"
     })
   },
 
   async created() {
-    console.log(this.getNextAppointment);
-    await this.getConfirmedAppointmentsAction();
+    await this.getConfirmedAppointmentsAction(this.getUser.id);
+    this.setNextAppointmentAction();
   }
 };
 </script>

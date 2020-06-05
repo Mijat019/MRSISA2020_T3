@@ -1,12 +1,16 @@
 import moment from "moment";
 
-const state = {};
+const state = {
+    events: [],
+};
 
 const mutations = {};
 
 const actions = {};
 
 const getters = {
+    getEvents: (state) => state.events,
+
     /*eslint no-unused-vars: ["error", { "args": "none" }]*/
     getAppointments: (state, getters, rootState) => {
         let appointments = [];
@@ -18,6 +22,10 @@ const getters = {
                 rootState.confirmedAppointments.confirmedAppointments
             )
         );
+
+        /* Ovo moram da uradim da bi se prikazivali 
+        eventovi u ScheduleAnotherAppointment kad kreira nov*/
+        state.events = appointments;
         return appointments;
     },
 };
