@@ -17,7 +17,13 @@
           <v-col>
             <v-sheet height="64">
               <v-toolbar flat color="white">
-                <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">Today</v-btn>
+                <v-btn
+                  outlined
+                  class="mr-4"
+                  color="grey darken-2"
+                  @click="setToday"
+                  >Today</v-btn
+                >
                 <v-btn fab text small color="grey darken-2" @click="prev">
                   <v-icon small>mdi-chevron-left</v-icon>
                 </v-btn>
@@ -75,13 +81,14 @@
               <v-menu
                 v-if="selectedEvent.newEvent"
                 offset-x
-                :activator="selectedElement"
                 :close-on-content-click="false"
                 v-model="selectedOpen"
               >
                 <v-card color="grey lighten-4" min-width="350px" flat>
                   <v-toolbar :color="selectedEvent.color" dark>
-                    <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                    <v-toolbar-title
+                      v-html="selectedEvent.name"
+                    ></v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn @click="closeNewAppointment" icon>
                       <v-icon>mdi-close</v-icon>
@@ -104,30 +111,30 @@
 </template>
 
 <script>
-import moment from "moment";
-import { mapGetters } from "vuex";
-import calendarMixin from "../../../../mixins/calendarMixin";
+import moment from 'moment';
+import { mapGetters } from 'vuex';
+import calendarMixin from '../../../../mixins/calendarMixin';
 
-import NewAppointmentForm from "./NewAppointmentForm";
+import NewAppointmentForm from './NewAppointmentForm';
 
 export default {
-  name: "ScheduleAnotherAppointment",
+  name: 'ScheduleAnotherAppointment',
 
   components: {
-    NewAppointmentForm
+    NewAppointmentForm,
   },
 
   mixins: [calendarMixin],
 
   data: () => ({
     newAppointment: null,
-    dialog: false
+    dialog: false,
   }),
 
   computed: {
     ...mapGetters({
-      getEvents: "confirmedAppointments/calendar/getEvents"
-    })
+      getEvents: 'confirmedAppointments/calendar/getEvents',
+    }),
   },
 
   methods: {
@@ -161,10 +168,10 @@ export default {
       this.newAppointment = {
         start,
         end,
-        name: "New appointment",
-        color: "blue",
+        name: 'New appointment',
+        color: 'blue',
         draggable: false,
-        newEvent: true
+        newEvent: true,
       };
 
       this.getEvents.push(this.newAppointment);
@@ -191,34 +198,33 @@ export default {
 
     getClosestMinute(dateTime) {
       const date = moment(dateTime);
-      const minutes = date.get("minute");
+      const minutes = date.get('minute');
       if (minutes >= 0 && minutes < 15) {
-        date.set("minute", 0);
+        date.set('minute', 0);
       } else if (minutes >= 15 && minutes < 30) {
-        date.set("minute", 15);
+        date.set('minute', 15);
       } else if (minutes >= 30 && minutes < 45) {
-        date.set("minute", 30);
+        date.set('minute', 30);
       } else if (minutes >= 45 && minutes < 60) {
-        date.set("minute", 45);
+        date.set('minute', 45);
       }
 
-      return date.format("YYYY-MM-DD HH:mm");
+      return date.format('YYYY-MM-DD HH:mm');
     },
 
     getEndOfEvent(start) {
       const end = moment(start);
-      end.add(1, "hour");
-      return end.format("YYYY-MM-DD HH:mm");
+      end.add(1, 'hour');
+      return end.format('YYYY-MM-DD HH:mm');
     },
 
     dropEvent() {
       if (this.newAppointment) {
         this.newAppointment.draggable = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>
