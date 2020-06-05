@@ -66,7 +66,8 @@ export default {
       getPriceListsForDoctor: "priceLists/getPriceListsForDoctor",
       getRooms: "rooms/getRooms",
       getUser: "authentication/getUser",
-      getNextAppointment: "appointmentReport/getNextAppointment"
+      getNextAppointment:
+        "confirmedAppointments/appointmentReport/getNextAppointment"
     })
   },
 

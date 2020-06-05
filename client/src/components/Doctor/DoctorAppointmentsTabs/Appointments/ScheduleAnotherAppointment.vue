@@ -179,18 +179,14 @@ export default {
       }
 
       this.createNewEvent(date, time);
-
-      console.log(this.getEvents);
-
       this.selectedEvent = this.newAppointment;
       this.selectedOpen = true;
     },
 
     createNewEvent(date, time) {
-      const start = `${date} ${time}`;
-      let end = moment(start);
-      end.add(1, "hour");
-      end = end.format("YYYY-MM-DD HH:mm");
+      let start = `${date} ${time}`;
+      start = this.getClosestMinute(start);
+      const end = this.getEndOfEvent(start);
       this.newAppointment = {
         start,
         end,
@@ -210,11 +206,38 @@ export default {
     dragEvent({ date, time }) {
       if (this.newAppointment?.draggable) {
         const dateTime = `${date} ${time}`;
-        const end = moment(dateTime);
-        end.add(1, "hour");
-        this.newAppointment.start = dateTime;
-        this.newAppointment.end = end.format("YYYY-MM-DD HH:mm");
+        const start = this.getClosestMinute(dateTime);
+        // no need to rerender if the time hasn't changed enough
+        if (start === dateTime) {
+          return;
+        }
+
+        const end = this.getEndOfEvent(start);
+        this.newAppointment.start = start;
+        this.newAppointment.end = end;
       }
+    },
+
+    getClosestMinute(dateTime) {
+      const date = moment(dateTime);
+      const minutes = date.get("minute");
+      if (minutes >= 0 && minutes < 15) {
+        date.set("minute", 0);
+      } else if (minutes >= 15 && minutes < 30) {
+        date.set("minute", 15);
+      } else if (minutes >= 30 && minutes < 45) {
+        date.set("minute", 30);
+      } else if (minutes >= 45 && minutes < 60) {
+        date.set("minute", 45);
+      }
+
+      return date.format("YYYY-MM-DD HH:mm");
+    },
+
+    getEndOfEvent(start) {
+      const end = moment(start);
+      end.add(1, "hour");
+      return end.format("YYYY-MM-DD HH:mm");
     },
 
     dropEvent() {
