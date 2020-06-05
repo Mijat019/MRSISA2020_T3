@@ -73,7 +73,8 @@ export default {
     ...mapGetters({
       getDiagnosis: "diagnosis/getDiagnosis",
       getPrescriptions: "prescriptions/getPrescriptions",
-      getNextAppointment: "appointmentReport/getNextAppointment"
+      getNextAppointment:
+        "confirmedAppointments/appointmentReport/getNextAppointment"
     })
   },
 
@@ -81,12 +82,13 @@ export default {
     ...mapActions({
       getDiagnosisAction: "diagnosis/getDiagnosisAction",
       submitAppointmentReportAction:
-        "appointmentReport/submitAppointmentReportAction"
+        "confirmedAppointments/appointmentReport/submitAppointmentReportAction"
     }),
 
     ...mapMutations({
       setPrescriptions: "prescriptions/setPrescriptions",
-      setShowComponent: "appointmentReport/setShowComponent"
+      setShowComponent:
+        "confirmedAppointments/appointmentReport/setShowComponent"
     }),
 
     async submitReport() {

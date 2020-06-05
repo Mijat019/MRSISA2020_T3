@@ -62,7 +62,10 @@ export default {
   data: () => ({}),
 
   methods: {
-    ...mapMutations({ setShowComponent: "appointmentReport/setShowComponent" }),
+    ...mapMutations({
+      setShowComponent:
+        "confirmedAppointments/appointmentReport/setShowComponent"
+    }),
 
     skip() {
       alert(`Not implemented`);
@@ -71,7 +74,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      getNextAppointment: "appointmentReport/getNextAppointment"
+      getNextAppointment:
+        "confirmedAppointments/appointmentReport/getNextAppointment"
     }),
 
     patientInformation() {

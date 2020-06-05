@@ -58,7 +58,7 @@
           <template v-slot:day-body></template>
         </v-calendar>
 
-        <v-menu
+        <!-- <v-menu
           v-if="selectedEvent.newEvent"
           offset-x
           :activator="selectedElement"
@@ -80,10 +80,9 @@
               <v-btn @click="closeNewAppointment">Close</v-btn>
             </v-card-actions>
           </v-card>
-        </v-menu>
+        </v-menu>-->
 
         <v-menu
-          v-else
           v-model="selectedOpen"
           :activator="selectedElement"
           :close-on-content-click="false"
@@ -115,215 +114,10 @@
 </template>
 
 <script>
-import NewAppointmentForm from "./Appointments/NewAppointmentForm.vue";
-import { mapActions, mapGetters, mapMutations } from "vuex";
-import moment from "moment";
+import calendarMixin from "../../../mixins/calendarMixin";
+
 export default {
-  components: { NewAppointmentForm },
-
-  data() {
-    return {
-      today: moment().format("YYYY-MM-DD HH:mm"),
-      type: "week",
-      start: null,
-      end: null,
-      selectedEvent: {},
-      selectedElement: null,
-      selectedOpen: false,
-      focus: "",
-      typeToLabel: {
-        month: "Month",
-        week: "Week",
-        day: "Day",
-        "4day": "4 Days"
-      },
-      newAppointment: null
-    };
-  },
-
-  methods: {
-    appointmentAdded() {
-      this.newAppointment.dragable = false;
-      this.closeNewAppointment();
-      this.$emit("close");
-    },
-
-    closeNewAppointment() {
-      this.newAppointment = null;
-      this.getAppointmentsForCalendar.pop();
-      this.selectedOpen = false;
-    },
-
-    createNewEvent({ date, time }) {
-      if (this.newAppointment) {
-        this.closeNewAppointment();
-        return;
-      }
-
-      const start = `${date} ${time}`;
-      let end = moment(start);
-      end.add(1, "hour");
-      end = end.format("YYYY-MM-DD HH:mm");
-      this.newAppointment = {
-        start,
-        end,
-        name: "New appointment",
-        color: "blue",
-        dragable: false,
-        newEvent: true
-      };
-
-      this.getAppointmentsForCalendar.push(this.newAppointment);
-      this.selectedEvent = this.newAppointment;
-      this.selectedOpen = true;
-    },
-
-    mousedown({ event }) {
-      event.dragable = true;
-    },
-
-    mousemove({ date, time }) {
-      if (this.newAppointment?.dragable) {
-        const dateTime = `${date} ${time}`;
-        const end = moment(dateTime);
-        end.add(1, "hour");
-        this.newAppointment.start = dateTime;
-        this.newAppointment.end = end.format("YYYY-MM-DD HH:mm");
-      }
-    },
-
-    mouseup() {
-      if (this.newAppointment) {
-        this.newAppointment.dragable = false;
-      }
-    },
-    ...mapActions({
-      getFreeAppointmentsAction: "freeAppointments/getFreeAppointmentsAction",
-      getConfirmedAppointmentsAction:
-        "confirmedAppointments/getConfirmedAppointmentsAction",
-      getAppointmentsForTheCalendarAction:
-        "calendar/getAppointmentsForTheCalendarAction"
-    }),
-
-    ...mapMutations({
-      setNextAppointment: "appointmentReport/setNextAppointment"
-    }),
-
-    openReport(reportId) {
-      this.setNextAppointment(reportId);
-      this.selectedOpen = false;
-      this.$emit("changeTab", "appointments");
-    },
-
-    updateRange({ start, end }) {
-      this.start = start;
-      this.end = end;
-    },
-
-    viewDay({ date }) {
-      this.focus = date;
-      this.type = "day";
-    },
-
-    getEventColor(event) {
-      return event.color;
-    },
-
-    setToday() {
-      this.focus = this.today;
-    },
-
-    prev() {
-      this.$refs.calendar.prev();
-    },
-
-    next() {
-      this.$refs.calendar.next();
-    },
-
-    showEvent({ nativeEvent, event }) {
-      const open = () => {
-        this.selectedEvent = event;
-        this.selectedElement = nativeEvent.target;
-        setTimeout(() => (this.selectedOpen = true), 10);
-      };
-
-      if (this.selectedOpen) {
-        this.selectedOpen = false;
-        setTimeout(open, 10);
-      } else {
-        open();
-      }
-
-      nativeEvent.stopPropagation();
-    },
-
-    nth(d) {
-      return d > 3 && d < 21
-        ? "th"
-        : ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][d % 10];
-    },
-
-    rnd(a, b) {
-      return Math.floor((b - a + 1) * Math.random()) + a;
-    },
-
-    formatDate(a, withTime) {
-      return withTime
-        ? `${a.getFullYear()}-${a.getMonth() +
-            1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`
-        : `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()}`;
-    }
-  },
-  computed: {
-    ...mapGetters({
-      getFreeAppointments: "freeAppointments/getFreeAppointments",
-      getConfirmedAppointments:
-        "confirmedAppointments/getConfirmedAppointments",
-      getUser: "authentication/getUser",
-      getAppointments: "confirmedAppointments/calendar/getAppointments"
-    }),
-
-    title() {
-      const { start, end } = this;
-      if (!start || !end) {
-        return "";
-      }
-
-      const startMonth = this.monthFormatter(start);
-      const endMonth = this.monthFormatter(end);
-      const suffixMonth = startMonth === endMonth ? "" : endMonth;
-
-      const startYear = start.year;
-      const endYear = end.year;
-      const suffixYear = startYear === endYear ? "" : endYear;
-
-      const startDay = start.day + this.nth(start.day);
-      const endDay = end.day + this.nth(end.day);
-
-      switch (this.type) {
-        case "month":
-          return `${startMonth} ${startYear}`;
-        case "week":
-        case "4day":
-          return `${startMonth} ${startDay} ${startYear} - ${suffixMonth} ${endDay} ${suffixYear}`;
-        case "day":
-          return `${startMonth} ${startDay} ${startYear}`;
-      }
-      return "";
-    },
-
-    monthFormatter() {
-      return this.$refs.calendar.getFormatter({
-        timeZone: "UTC",
-        month: "long"
-      });
-    }
-  },
-
-  async created() {
-    await this.getAppointmentsForTheCalendarAction(this.getUser.id);
-  }
+  mixins: [calendarMixin]
 };
 </script>
 

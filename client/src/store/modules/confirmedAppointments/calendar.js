@@ -10,7 +10,6 @@ const getters = {
     /*eslint no-unused-vars: ["error", { "args": "none" }]*/
     getAppointments: (state, getters, rootState) => {
         let appointments = [];
-        console.log(rootState);
         appointments.push(
             ...appointmentsToEvents(rootState.freeAppointments.appointments)
         );
@@ -38,22 +37,6 @@ function appointmentsToEvents(appointments) {
         };
     });
 }
-
-// function confirmedAppointmentsToEvents(appointments) {
-//     return appointments.forEach((item) => {
-//         const end = moment.unix(item.start);
-//         end.add(item.duration * 60, "seconds");
-//         return {
-//             id: item.id,
-//             color: item.finished ? "grey" : "red",
-//             appointmentType: item.priceList.appointmentType.name,
-//             roomName: item.room.name,
-//             name: `${item.priceList.appointmentType.name} ${item.room.name}`,
-//             start: moment.unix(item.start).format("YYYY-MM-DD HH:mm"),
-//             end: end.format("YYYY-MM-DD HH:mm"),
-//         };
-//     });
-// }
 
 export default {
     namespaced: true,

@@ -32,7 +32,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters("appointmentReport", {
+    ...mapGetters("confirmedAppointments/appointmentReport", {
       getNextAppointment: "getNextAppointment"
     })
   },
@@ -40,7 +40,7 @@ export default {
   methods: {
     ...mapActions({
       updatePatientMedicalRecordAction:
-        "appointmentReport/updatePatientMedicalRecordAction"
+        "confirmedAppointments/appointmentReport/updatePatientMedicalRecordAction"
     }),
 
     updateMedicalRecord() {

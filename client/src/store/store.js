@@ -27,8 +27,6 @@ import confirmedAppointments from "./modules/confirmedAppointments/confirmedAppo
 import scheduleCustomAppointment from "./modules/customAppointment/scheduleCustomAppointment";
 import scheduleCustomAppointmentDialog from "./modules/customAppointment/scheduleCustomAppointmentDialog";
 import prescriptions from "./modules/prescriptions";
-import appointmentReport from "./modules/appointmentReport";
-import calendar from "./modules/calendar";
 
 Vue.use(Vuex);
 
@@ -65,7 +63,5 @@ export default new Vuex.Store({
         scheduleCustomAppointment,
         scheduleCustomAppointmentDialog,
         prescriptions,
-        appointmentReport,
-        calendar,
     },
 });
