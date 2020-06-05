@@ -37,7 +37,8 @@
             :return-object="true"
             label="Price list entry"
           />
-          <v-select v-if="appointment.priceList"
+          <v-select
+            v-if="appointment.priceList"
             :items="filteredDoctors"
             v-model="appointment.doctorId"
             item-text="fullName"
@@ -67,12 +68,13 @@ export default {
   components: {
     datetime: Datetime,
   },
+
   data: () => ({
     rules: [v => !!v || 'This field is required'],
   }),
   mounted() {
     this.getRoomsAction();
-    this.getDoctorsAction();
+    this.getDoctorsByClinicAction(this.getUser.clinicId);
     this.getPriceListsAction(this.getUser.clinicId);
   },
   methods: {
@@ -81,7 +83,7 @@ export default {
       updateAppointmentAction: 'freeAppointments/updateFreeAppointmentAction',
       getRoomsAction: 'rooms/getRoomsAction',
       getPriceListsAction: 'priceLists/getPriceListsAction',
-      getDoctorsAction: 'doctors/getDoctorsAction',
+      getDoctorsByClinicAction: 'doctors/getDoctorsByClinicAction',
     }),
 
     ...mapMutations('freeAppointmentsDialog', {
@@ -118,16 +120,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      dialog: "freeAppointmentsDialog/getShowDialog",
-      appointment: "freeAppointmentsDialog/getDialogAppointment",
-      type: "freeAppointmentsDialog/getDialogType",
-      getRooms: "rooms/getRooms",
-      getDoctors: "doctors/getDoctors",
-      getPriceLists: "priceLists/getPriceLists",
-      getUser: "authentication/getUser",
-      getCurrentTimeISO: "time/getCurrentTimeISO"
+      dialog: 'freeAppointmentsDialog/getShowDialog',
+      appointment: 'freeAppointmentsDialog/getDialogAppointment',
+      type: 'freeAppointmentsDialog/getDialogType',
+      getRooms: 'rooms/getRooms',
+      getDoctors: 'doctors/getDoctors',
+      getPriceLists: 'priceLists/getPriceLists',
+      getUser: 'authentication/getUser',
+      getCurrentTimeISO: 'time/getCurrentTimeISO',
     }),
-    
+
     filteredDoctors() {
       const appoTypeId = this.appointment.priceList.appointmentTypeId;
       // Return all doctors that specialize in this appointment type
@@ -137,11 +139,8 @@ export default {
         });
       });
     },
-  }
-
+  },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

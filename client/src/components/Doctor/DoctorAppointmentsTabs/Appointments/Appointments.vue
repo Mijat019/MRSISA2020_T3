@@ -23,23 +23,26 @@ export default {
 
   computed: {
     ...mapGetters({
-      getUnfinishedConfirmedAppointments:
-        "appointmentReport/getUnfinishedConfirmedAppointments",
       getUser: "authentication/getUser",
-      getShowComponent: "appointmentReport/getShowComponent",
-      getNextAppointment: "appointmentReport/getNextAppointment"
+      getShowComponent:
+        "confirmedAppointments/appointmentReport/getShowComponent",
+      getNextAppointment:
+        "confirmedAppointments/appointmentReport/getNextAppointment"
     })
   },
 
   methods: {
-    ...mapActions("appointmentReport", {
-      getUnfinishedConfirmedAppointmentsAction:
-        "getUnfinishedConfirmedAppointmentsAction"
+    ...mapActions({
+      getConfirmedAppointmentsAction:
+        "confirmedAppointments/getConfirmedAppointmentsAction",
+      setNextAppointmentAction:
+        "confirmedAppointments/appointmentReport/setNextAppointmentAction"
     })
   },
 
   async created() {
-    await this.getUnfinishedConfirmedAppointmentsAction(this.getUser.id);
+    await this.getConfirmedAppointmentsAction(this.getUser.id);
+    this.setNextAppointmentAction();
   }
 };
 </script>

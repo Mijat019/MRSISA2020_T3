@@ -41,7 +41,7 @@
           ref="calendar"
           v-model="focus"
           color="primary"
-          :events="appointments"
+          :events="getAppointments"
           :now="today"
           :type="type"
           :value="today"
@@ -50,22 +50,23 @@
           @click:date="viewDay"
           @change="updateRange"
           :event-color="getEventColor"
-          first-interval="7"
-          interval-minutes="60"
-          interval-count="12"
         >
           <template v-slot:day-body></template>
         </v-calendar>
+
         <v-menu
           v-model="selectedOpen"
-          :close-on-content-click="false"
           :activator="selectedElement"
+          :close-on-content-click="false"
           offset-x
         >
           <v-card color="grey lighten-4" min-width="350px" flat>
             <v-toolbar :color="selectedEvent.color" dark>
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
+              <v-btn icon @click="selectedOpen = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
             </v-toolbar>
             <v-card-text>
               Appointment type: {{ selectedEvent.appointmentType }}
@@ -73,7 +74,6 @@
               Room: {{ selectedEvent.roomName }}
             </v-card-text>
             <v-card-actions>
-              <v-btn @click="selectedOpen = false">Close</v-btn>
               <v-btn
                 v-if="selectedEvent.color === `red`"
                 color="primary"
@@ -88,188 +88,10 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
-import moment from "moment";
+import calendarMixin from "../../../mixins/calendarMixin";
+
 export default {
-  data: () => ({
-    today: moment().format("YYYY-MM-DD HH:mm"),
-    type: "week",
-    start: null,
-    end: null,
-    selectedEvent: {},
-    selectedElement: null,
-    selectedOpen: false,
-    focus: "",
-    typeToLabel: {
-      month: "Month",
-      week: "Week",
-      day: "Day",
-      "4day": "4 Days"
-    }
-  }),
-
-  methods: {
-    ...mapActions({
-      getFreeAppointmentsAction: "freeAppointments/getFreeAppointmentsAction",
-      getConfirmedAppointmentsAction:
-        "confirmedAppointments/getConfirmedAppointmentsAction"
-    }),
-
-    ...mapMutations({
-      setNextAppointment: "appointmentReport/setNextAppointment"
-    }),
-
-    openReport(reportId) {
-      this.setNextAppointment(reportId);
-      this.selectedOpen = false;
-      this.$emit("changeTab", "appointments");
-    },
-
-    updateRange({ start, end }) {
-      this.start = start;
-      this.end = end;
-    },
-
-    viewDay({ date }) {
-      this.focus = date;
-      this.type = "day";
-    },
-
-    getEventColor(event) {
-      return event.color;
-    },
-
-    setToday() {
-      this.focus = this.today;
-    },
-
-    prev() {
-      this.$refs.calendar.prev();
-    },
-
-    next() {
-      this.$refs.calendar.next();
-    },
-
-    showEvent({ nativeEvent, event }) {
-      const open = () => {
-        this.selectedEvent = event;
-        this.selectedElement = nativeEvent.target;
-        setTimeout(() => (this.selectedOpen = true), 10);
-      };
-
-      if (this.selectedOpen) {
-        this.selectedOpen = false;
-        setTimeout(open, 10);
-      } else {
-        open();
-      }
-
-      nativeEvent.stopPropagation();
-    },
-
-    nth(d) {
-      return d > 3 && d < 21
-        ? "th"
-        : ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][d % 10];
-    },
-
-    rnd(a, b) {
-      return Math.floor((b - a + 1) * Math.random()) + a;
-    },
-
-    formatDate(a, withTime) {
-      return withTime
-        ? `${a.getFullYear()}-${a.getMonth() +
-            1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`
-        : `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()}`;
-    }
-  },
-  computed: {
-    ...mapGetters({
-      getFreeAppointments: "freeAppointments/getFreeAppointments",
-      getConfirmedAppointments:
-        "confirmedAppointments/getConfirmedAppointments",
-      getUser: "authentication/getUser"
-    }),
-
-    /**
-     * Convert free appointments and confirmed appointments to
-     * events for the calendar
-     */
-    appointments() {
-      const result = [
-        ...this.getFreeAppointments.map(item => {
-          const end = moment.unix(item.start);
-          end.add(item.duration * 60, "seconds");
-          return {
-            id: item.id,
-            color: "green",
-            appointmentType: item.priceList.appointmentType.name,
-            roomName: item.room.name,
-            name: `${item.priceList.appointmentType.name} ${item.room.name}`,
-            start: moment.unix(item.start).format("YYYY-MM-DD HH:mm"),
-            end: end.format("YYYY-MM-DD HH:mm")
-          };
-        }),
-        ...this.getConfirmedAppointments.map(item => {
-          const end = moment.unix(item.start);
-          end.add(item.duration * 60, "seconds");
-          return {
-            id: item.id,
-            color: item.finished ? "grey" : "red",
-            appointmentType: item.priceList.appointmentType.name,
-            roomName: item.room.name,
-            name: `${item.priceList.appointmentType.name} ${item.room.name}`,
-            start: moment.unix(item.start).format("YYYY-MM-DD HH:mm"),
-            end: end.format("YYYY-MM-DD HH:mm")
-          };
-        })
-      ];
-      return result;
-    },
-
-    title() {
-      const { start, end } = this;
-      if (!start || !end) {
-        return "";
-      }
-
-      const startMonth = this.monthFormatter(start);
-      const endMonth = this.monthFormatter(end);
-      const suffixMonth = startMonth === endMonth ? "" : endMonth;
-
-      const startYear = start.year;
-      const endYear = end.year;
-      const suffixYear = startYear === endYear ? "" : endYear;
-
-      const startDay = start.day + this.nth(start.day);
-      const endDay = end.day + this.nth(end.day);
-
-      switch (this.type) {
-        case "month":
-          return `${startMonth} ${startYear}`;
-        case "week":
-        case "4day":
-          return `${startMonth} ${startDay} ${startYear} - ${suffixMonth} ${endDay} ${suffixYear}`;
-        case "day":
-          return `${startMonth} ${startDay} ${startYear}`;
-      }
-      return "";
-    },
-
-    monthFormatter() {
-      return this.$refs.calendar.getFormatter({
-        timeZone: "UTC",
-        month: "long"
-      });
-    }
-  },
-
-  async created() {
-    await this.getFreeAppointmentsAction(this.getUser.id);
-    await this.getConfirmedAppointmentsAction(this.getUser.id);
-  }
+  mixins: [calendarMixin]
 };
 </script>
 

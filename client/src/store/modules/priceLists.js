@@ -2,6 +2,7 @@ import Vue from "vue";
 
 const state = {
     priceLists: [],
+    priceListsForDoctor: [],
     dialogPriceList: {
         clinicId: "",
         appointmentTypeId: "",
@@ -16,13 +17,20 @@ const mutations = {
     setPriceLists(state, prices) {
         state.priceLists = prices;
     },
+
+    setPriceListsForDoctor(state, prices) {
+        state.priceListsForDoctor = prices;
+    },
+
     addPriceList(state, price) {
         state.priceLists.push(price);
     },
+
     removePriceList(state, id) {
         const index = state.priceLists.findIndex((type) => type.id === id);
         state.priceLists.splice(index, 1);
     },
+
     updatePriceList(state, price) {
         const index = state.priceLists.findIndex(
             (type) => type.id === price.id
@@ -57,6 +65,20 @@ const actions = {
                 `/priceLists/${clinicId}`
             );
             commit("setPriceLists", types);
+        } catch (error) {
+            dispatch("snackbar/showError", error.response.data, { root: true });
+        }
+    },
+
+    async getPriceListsForDoctorAction(
+        { commit, dispatch },
+        { doctorId, clinicId }
+    ) {
+        try {
+            const { data } = await Vue.$axios.get(
+                `/priceLists/${clinicId}/${doctorId}`
+            );
+            commit("setPriceListsForDoctor", data);
         } catch (error) {
             dispatch("snackbar/showError", error.response.data, { root: true });
         }
@@ -114,6 +136,7 @@ const actions = {
 };
 
 const getters = {
+    getPriceListsForDoctor: (state) => state.priceListsForDoctor,
     getPriceLists: (state) => state.priceLists,
     getShowDialog: (state) => state.showDialog,
     getDialogpriceList: (state) => state.dialogPriceList,

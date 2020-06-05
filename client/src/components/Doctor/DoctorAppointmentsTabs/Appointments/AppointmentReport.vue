@@ -6,7 +6,8 @@
         <v-spacer></v-spacer>
         <v-card-actions>
           <v-btn @click="setShowComponent(`nextAppointment`)">Cancel</v-btn>
-          <v-btn @click="submitReport" color="primary">Submit report</v-btn>
+          <ScheduleAnotherAppointment />
+          <v-btn @click="submitReport" color="success">Submit report</v-btn>
         </v-card-actions>
       </v-card-title>
       <v-card-text>
@@ -46,6 +47,7 @@
 </template>
 
 <script>
+import ScheduleAnotherAppointment from "./ScheduleAnotherAppointment.vue";
 import Prescriptions from "./Prescriptions";
 import UpdateMedicalRecord from "./UpdateMedicalRecord";
 import { mapGetters, mapActions, mapMutations } from "vuex";
@@ -54,7 +56,8 @@ export default {
 
   components: {
     Prescriptions,
-    UpdateMedicalRecord
+    UpdateMedicalRecord,
+    ScheduleAnotherAppointment
   },
 
   data: () => ({
@@ -70,7 +73,8 @@ export default {
     ...mapGetters({
       getDiagnosis: "diagnosis/getDiagnosis",
       getPrescriptions: "prescriptions/getPrescriptions",
-      getNextAppointment: "appointmentReport/getNextAppointment"
+      getNextAppointment:
+        "confirmedAppointments/appointmentReport/getNextAppointment"
     })
   },
 
@@ -78,12 +82,13 @@ export default {
     ...mapActions({
       getDiagnosisAction: "diagnosis/getDiagnosisAction",
       submitAppointmentReportAction:
-        "appointmentReport/submitAppointmentReportAction"
+        "confirmedAppointments/appointmentReport/submitAppointmentReportAction"
     }),
 
     ...mapMutations({
       setPrescriptions: "prescriptions/setPrescriptions",
-      setShowComponent: "appointmentReport/setShowComponent"
+      setShowComponent:
+        "confirmedAppointments/appointmentReport/setShowComponent"
     }),
 
     async submitReport() {

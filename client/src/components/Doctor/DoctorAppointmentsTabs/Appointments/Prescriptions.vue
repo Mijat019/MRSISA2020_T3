@@ -1,31 +1,30 @@
 <template>
   <v-card class="fill-height">
     <v-card-title>
-      <h5>DRUGS :D</h5>
-    </v-card-title>
-    <v-card-text>
-      <v-data-table dense :items="getPrescriptions" :headers="headers" key="index">
-        <template v-slot:top>
-          <v-dialog max-width="50%" v-model="dialog">
-            <template v-slot:activator="{ on }">
-              <v-btn small dark v-on="on">Add prescription</v-btn>
-            </template>
-
-            <v-card>
-              <v-card-title>Select a drug</v-card-title>
-              <v-card-text>
-                <v-form>
-                  <v-select v-model="selectedDrug" :items="getDrugs" item-text="name" return-object></v-select>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer />
-                <v-btn @click="add" color="primary">Add</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+      <h5>Prescriptions</h5>
+      <v-spacer></v-spacer>
+      <v-dialog max-width="50%" v-model="dialog">
+        <template v-slot:activator="{ on }">
+          <v-btn small dark v-on="on">Add prescription</v-btn>
         </template>
 
+        <v-card>
+          <v-card-title>Select a drug</v-card-title>
+          <v-card-text>
+            <v-form>
+              <v-select v-model="selectedDrug" :items="getDrugs" item-text="name" return-object></v-select>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn @click="add" color="primary">Add</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-card-title>
+
+    <v-card-text>
+      <v-data-table dense :items="getPrescriptions" :headers="headers" key="index">
         <template v-slot:item.actions="{item}">
           <v-icon small @click="removePrescription(item)">mdi-close</v-icon>
         </template>
