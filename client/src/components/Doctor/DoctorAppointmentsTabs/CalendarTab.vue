@@ -64,6 +64,9 @@
             <v-toolbar :color="selectedEvent.color" dark>
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
+              <v-btn icon @click="selectedOpen = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
             </v-toolbar>
             <v-card-text>
               Appointment type: {{ selectedEvent.appointmentType }}
@@ -71,7 +74,6 @@
               Room: {{ selectedEvent.roomName }}
             </v-card-text>
             <v-card-actions>
-              <v-btn @click="selectedOpen = false">Close</v-btn>
               <v-btn
                 v-if="selectedEvent.color === `red`"
                 color="primary"

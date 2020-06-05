@@ -17,16 +17,25 @@ const mutations = {
 
 const actions = {
     setNextAppointmentAction({ rootState, commit }, reportId) {
-        let index = 0;
+        let index;
         if (reportId) {
             index = rootState.confirmedAppointments.confirmedAppointments.findIndex(
                 (report) => reportId === report.id
             );
+        } else {
+            index = rootState.confirmedAppointments.confirmedAppointments.findIndex(
+                (report) => !report.finished
+            );
         }
-        commit(
-            "setNextAppointment",
-            rootState.confirmedAppointments.confirmedAppointments[index]
-        );
+
+        if (index !== undefined) {
+            const appointment =
+                rootState.confirmedAppointments.confirmedAppointments[index];
+            commit("setNextAppointment", appointment);
+            return;
+        }
+
+        commit("setNextAppointment", null);
     },
 
     async submitAppointmentReportAction({ commit, dispatch }, report) {
@@ -40,7 +49,7 @@ const actions = {
                 }
             );
             commit("setShowComponent", "nextAppointment");
-            commit("setNextAppointment", null);
+            dispatch("setNextAppointmentAction");
             dispatch("snackbar/showSuccess", "Appointment report created", {
                 root: true,
             });

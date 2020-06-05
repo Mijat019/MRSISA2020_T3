@@ -83,6 +83,9 @@
                   <v-toolbar :color="selectedEvent.color" dark>
                     <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
                     <v-spacer></v-spacer>
+                    <v-btn @click="closeNewAppointment" icon>
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
                   </v-toolbar>
                   <v-card-text>
                     <NewAppointmentForm
@@ -90,37 +93,6 @@
                       v-on:appointmentAdded="appointmentAdded"
                     />
                   </v-card-text>
-                  <v-card-actions>
-                    <v-btn @click="closeNewAppointment">Close</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-menu>
-
-              <v-menu
-                v-else
-                v-model="selectedOpen"
-                :activator="selectedElement"
-                :close-on-content-click="false"
-                offset-x
-              >
-                <v-card color="grey lighten-4" min-width="350px" flat>
-                  <v-toolbar :color="selectedEvent.color" dark>
-                    <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-                    <v-spacer></v-spacer>
-                  </v-toolbar>
-                  <v-card-text>
-                    Appointment type: {{ selectedEvent.appointmentType }}
-                    <br />
-                    Room: {{ selectedEvent.roomName }}
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-btn @click="selectedOpen = false">Close</v-btn>
-                    <v-btn
-                      v-if="selectedEvent.color === `red`"
-                      color="primary"
-                      @click="openReport(selectedEvent.id)"
-                    >See appointment</v-btn>
-                  </v-card-actions>
                 </v-card>
               </v-menu>
             </v-sheet>
@@ -168,7 +140,6 @@ export default {
     closeNewAppointment() {
       this.newAppointment = null;
       this.getEvents.pop();
-      console.log(this.getEvents);
       this.selectedOpen = false;
     },
 

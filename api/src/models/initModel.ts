@@ -109,7 +109,7 @@ export default async () => {
         doctorId,
         patientId,
         roomId,
-        start: moment().unix(),
+        start: moment("2020-06-05 14:00").unix(),
         duration: 60,
     });
 
@@ -118,7 +118,7 @@ export default async () => {
         doctorId,
         patientId,
         roomId,
-        start: moment().add(1, "hour").unix(),
+        start: moment("2020-06-05 14:00").add(1, "hour").unix(),
         duration: 60,
     });
 

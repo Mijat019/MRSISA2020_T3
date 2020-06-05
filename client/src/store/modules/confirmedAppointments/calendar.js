@@ -36,7 +36,7 @@ function appointmentsToEvents(appointments) {
         end.add(item.duration * 60, "seconds");
         return {
             id: item.id,
-            color: item.patient ? (item.finished ? "green" : "red") : "green",
+            color: item.patient ? (item.finished ? "grey" : "red") : "green",
             appointmentType: item.priceList.appointmentType.name,
             roomName: item.room.name,
             name: `${item.priceList.appointmentType.name} ${item.room.name}`,
