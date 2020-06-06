@@ -20,22 +20,22 @@
 </template>
 
 <script>
-import FreeAppointmentsTable from "./FreeAppointmentsTable";
-import FreeAppointmentsDialog from "./FreeAppointmentDialog";
-import { mapActions, mapMutations } from "vuex";
+import FreeAppointmentsTable from './FreeAppointmentsTable';
+import FreeAppointmentsDialog from './FreeAppointmentDialog';
+import { mapActions, mapMutations } from 'vuex';
 export default {
-  name: "ManageFreeAppointments",
+  name: 'ManageFreeAppointments',
   components: {
     FreeAppointmentsTable,
     FreeAppointmentsDialog,
   },
   methods: {
-    ...mapActions("freeAppointments", {
-      deleteAppointmentAction: "deleteFreeAppointmentAction",
+    ...mapActions('freeAppointments', {
+      deleteAppointmentAction: 'deleteFreeAppointmentAction',
     }),
-    ...mapMutations("freeAppointmentsDialog", {
-      showAddDialog: "openAddDialog",
-      showEditDialog: "openEditDialog",
+    ...mapMutations('freeAppointmentsDialog', {
+      showAddDialog: 'openAddDialog',
+      showEditDialog: 'openEditDialog',
     }),
 
     editItem({ appointment }) {
@@ -43,14 +43,15 @@ export default {
         id: appointment.id,
         start: appointment.start,
         duration: appointment.duration,
-        roomId: appointment.room.id,
-        appointmentTypeId: appointment.appointmentType.id,
+        roomId: appointment.roomId,
+        appointmentTypeId: appointment.priceList.appointmentTypeId,
         doctorId: appointment.doctor.userId,
+        version: appointment.version,
       });
     },
 
     async deleteItem({ appointment }) {
-      if (confirm("Are you sure you want to delete this item?")) {
+      if (confirm('Are you sure you want to delete this item?')) {
         await this.deleteAppointmentAction(appointment.id);
       }
     },
