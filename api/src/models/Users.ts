@@ -79,6 +79,7 @@ Users.init(
     timestamps: false,
     sequelize: db,
     tableName: "users",
+    version: true,
   }
 );
 

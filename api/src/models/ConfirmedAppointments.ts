@@ -68,8 +68,9 @@ ConfirmedAppointments.init(
   },
   {
     timestamps: false,
-    tableName: "ConfirmedAppointments",
+    tableName: "confirmed_appointments",
     sequelize: db,
+    version: true,
     indexes: [{ unique: false, fields: ["finished"] }],
   }
 );

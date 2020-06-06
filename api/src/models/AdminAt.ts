@@ -24,7 +24,8 @@ AdminAt.init(
   {
     timestamps: false,
     sequelize: db,
-    tableName: "AdminAt",
+    tableName: "admin_at",
+    version: true,
   }
 );
 

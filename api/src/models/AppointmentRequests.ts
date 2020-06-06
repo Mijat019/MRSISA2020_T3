@@ -68,6 +68,7 @@ AppointmentRequests.init(
     timestamps: false,
     tableName: "appointment_requests",
     sequelize: db,
+    version: true,
   }
 );
 

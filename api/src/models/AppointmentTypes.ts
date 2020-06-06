@@ -23,8 +23,9 @@ AppointmentTypes.init(
     },
     {
         timestamps: false,
-        tableName: "appointmentTypes",
+        tableName: "appointment_types",
         sequelize: db,
+        version: true,
     }
 );
 

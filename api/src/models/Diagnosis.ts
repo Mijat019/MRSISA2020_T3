@@ -1,5 +1,5 @@
-import { Model, INTEGER, STRING } from "sequelize";
-import db from "./database";
+import { Model, INTEGER, STRING } from 'sequelize';
+import db from './database';
 
 class Diagnosis extends Model {
   public id!: number;
@@ -20,7 +20,7 @@ Diagnosis.init(
       unique: true,
     },
   },
-  { tableName: "diagnosis", sequelize: db, timestamps: false }
+  { tableName: 'diagnosis', sequelize: db, timestamps: false, version: true }
 );
 
 export default Diagnosis;

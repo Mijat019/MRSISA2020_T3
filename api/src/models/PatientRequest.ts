@@ -76,6 +76,7 @@ PatientRequest.init(
     timestamps: false,
     sequelize: db,
     tableName: "patient_requests",
+    version: true,
   }
 );
 

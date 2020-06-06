@@ -48,6 +48,7 @@ LeaveRequests.init(
       {
         timestamps: false,
         sequelize: db,
+        version: true,
         tableName: "leave_requests",
       }
 );
