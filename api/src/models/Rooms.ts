@@ -28,6 +28,7 @@ Rooms.init(
     timestamps: false,
     sequelize: db,
     tableName: "rooms",
+    version: true,
   }
 );
 

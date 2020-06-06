@@ -29,7 +29,8 @@ DoctorSpec.init(
   {
     timestamps: false,
     sequelize: db,
-    tableName: "DoctorSpec",
+    tableName: "doctor_spec",
+    version: true,
     indexes: [{unique: true, fields: ["userId", "appointmentTypeId"]}]
   }
 );

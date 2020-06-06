@@ -36,7 +36,8 @@ PriceLists.init(
   },
   {
     timestamps: false,
-    tableName: 'priceLists',
+    tableName: 'price_lists',
+    version: true,
     indexes: [{ unique: true, fields: ['clinicId', 'appointmentTypeId'] }],
     sequelize: db,
   }

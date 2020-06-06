@@ -55,6 +55,7 @@ DoctorRating.init(
     timestamps: false,
     sequelize: db,
     tableName: 'doctor_rating',
+    version: true,
     indexes: [{ unique: true, fields: ['patientId', 'doctorId'] }],
   }
 );
