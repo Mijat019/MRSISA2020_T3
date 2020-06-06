@@ -67,6 +67,7 @@ AppointmentReports.belongsTo(ConfirmedAppointments, {
 AppointmentReports.belongsTo(Diagnosis, {
   as: 'diagnosis',
   foreignKey: 'diagnosisId',
+  onDelete: '',
 });
 
 export default AppointmentReports;

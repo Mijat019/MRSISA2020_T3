@@ -2,7 +2,10 @@
   <div>
     <v-card>
       <v-card-title>
-        Appointment report for patient: {{ `${getNextAppointment.patient.user.firstName} ${getNextAppointment.patient.user.lastName}`}}
+        Appointment report for patient:
+        {{
+          `${getNextAppointment.patient.user.firstName} ${getNextAppointment.patient.user.lastName}`
+        }}
         <v-spacer></v-spacer>
         <v-card-actions>
           <v-btn @click="setShowComponent(`nextAppointment`)">Cancel</v-btn>
@@ -17,7 +20,10 @@
               <v-card-title>Notes</v-card-title>
               <v-card-text>
                 <v-form>
-                  <v-textarea label="Notes about the patient" v-model="report.notes"></v-textarea>
+                  <v-textarea
+                    label="Notes about the patient"
+                    v-model="report.notes"
+                  ></v-textarea>
                 </v-form>
               </v-card-text>
               <v-card-title>Diagnosis</v-card-title>
@@ -47,65 +53,65 @@
 </template>
 
 <script>
-import ScheduleAnotherAppointment from "./ScheduleAnotherAppointment.vue";
-import Prescriptions from "./Prescriptions";
-import UpdateMedicalRecord from "./UpdateMedicalRecord";
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import ScheduleAnotherAppointment from './ScheduleAnotherAppointment.vue';
+import Prescriptions from './Prescriptions';
+import UpdateMedicalRecord from './UpdateMedicalRecord';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
-  name: "AppointmentReport",
+  name: 'AppointmentReport',
 
   components: {
     Prescriptions,
     UpdateMedicalRecord,
-    ScheduleAnotherAppointment
+    ScheduleAnotherAppointment,
   },
 
   data: () => ({
     report: {
-      notes: "",
+      notes: '',
       diagnosisId: null,
       confirmedAppointmentId: null,
-      patientMedicalRecordId: null
-    }
+      patientMedicalRecordId: null,
+    },
   }),
 
   computed: {
     ...mapGetters({
-      getDiagnosis: "diagnosis/getDiagnosis",
-      getPrescriptions: "prescriptions/getPrescriptions",
+      getDiagnosis: 'diagnosis/getDiagnosis',
+      getPrescriptions: 'prescriptions/getPrescriptions',
       getNextAppointment:
-        "confirmedAppointments/appointmentReport/getNextAppointment"
-    })
+        'confirmedAppointments/appointmentReport/getNextAppointment',
+    }),
   },
 
   methods: {
     ...mapActions({
-      getDiagnosisAction: "diagnosis/getDiagnosisAction",
+      getDiagnosisAction: 'diagnosis/getDiagnosisAction',
       submitAppointmentReportAction:
-        "confirmedAppointments/appointmentReport/submitAppointmentReportAction"
+        'confirmedAppointments/appointmentReport/submitAppointmentReportAction',
     }),
 
     ...mapMutations({
-      setPrescriptions: "prescriptions/setPrescriptions",
+      setPrescriptions: 'prescriptions/setPrescriptions',
       setShowComponent:
-        "confirmedAppointments/appointmentReport/setShowComponent"
+        'confirmedAppointments/appointmentReport/setShowComponent',
     }),
 
     async submitReport() {
       this.report.confirmedAppointmentId = this.getNextAppointment.id;
       this.report.prescriptions = this.getPrescriptions;
       this.report.patientMedicalRecordId = this.getNextAppointment.patient.user.id;
+      console.log(this.report);
       await this.submitAppointmentReportAction(this.report);
       this.setPrescriptions([]);
-    }
+    },
   },
 
   created() {
     this.getDiagnosisAction();
     this.setPrescriptions([]);
-  }
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

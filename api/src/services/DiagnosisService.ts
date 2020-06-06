@@ -1,4 +1,5 @@
-import Diagnosis from "../models/Diagnosis";
+import Diagnosis from '../models/Diagnosis';
+import AppointmentReports from '../models/AppointmentReports';
 
 class DiagnosisService {
   public async getAll() {
@@ -18,6 +19,11 @@ class DiagnosisService {
   }
 
   public async delete(id: string) {
+    const count = await AppointmentReports.count();
+    if (count > 0) {
+      throw Error('Cannot delete diagnosis');
+    }
+
     await Diagnosis.destroy({ where: { id } });
   }
 }
