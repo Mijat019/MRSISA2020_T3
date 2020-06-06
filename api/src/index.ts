@@ -28,10 +28,7 @@ import appointmentRequestsRoutes from './routes/appointmentRequestsRoutes';
 import appointmentReportRoutes from './routes/appointmentReportRoutes';
 import patientMedicalRecordRoutes from './routes/patientMedicalRecordRoutes';
 import ratingsRoutes from './routes/ratingsRoutes';
-import DoctorsController from './controllers/DoctorsController';
-import DoctorsService from './services/DoctorsService';
 import leaveRequestsRoutes from './routes/leaveRequestsRoutes';
-import Users from './models/Users';
 
 // connect to the database
 (async () => {
