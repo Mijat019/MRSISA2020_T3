@@ -35,6 +35,7 @@ import leaveRequests from './modules/leaveRequests';
 Vue.use(Vuex);
 
 const vuexPersist = new VuexPersist({
+<<<<<<< HEAD
   key: 'my-app',
   storage: window.localStorage,
 });
@@ -72,4 +73,40 @@ export default new Vuex.Store({
     leaveRequests,
     ratings,
   },
+=======
+    key: "my-app",
+    storage: window.localStorage,
+});
+
+export default new Vuex.Store({
+    plugins: [vuexPersist.plugin],
+    modules: {
+        authentication,
+        patients,
+        clinics,
+        doctors,
+        doctorSpec,
+        clinicAdmins,
+        nurses,
+        rooms,
+        roomsDialog,
+        snackbar,
+        patientRequests,
+        freeAppointments,
+        freeAppointmentsDialog,
+        appointmentTypes,
+        appointmentTypesDialog,
+        drugs,
+        drugsDialog,
+        diagnosis,
+        diagnosisDialog,
+        clinicCenterAdmins,
+        priceLists,
+        confirmedAppointments,
+        scheduleCustomAppointment,
+        scheduleCustomAppointmentDialog,
+        prescriptions,
+        appointmentReport,
+    },
+>>>>>>> bb4d0a674c9f10e6ea7de3da53629dba81c67e59
 });

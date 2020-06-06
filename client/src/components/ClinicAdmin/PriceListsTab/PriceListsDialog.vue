@@ -53,7 +53,6 @@ export default {
       }
 
       this.priceList.clinicId = this.getUser.clinicId;
-      console.log(this.priceList); 
       await this.addPriceListAction(this.priceList);
       this.close();
     },
@@ -74,8 +73,8 @@ export default {
       dialog: "priceLists/getShowDialog",
       priceList: "priceLists/getDialogpriceList",
       type: "priceLists/getDialogType",
-      getAppointmentTypes : "appointmentTypes/getAppointmentTypes",
-      getUser: "authentication/getUser",
+      getAppointmentTypes: "appointmentTypes/getAppointmentTypes",
+      getUser: "authentication/getUser"
     })
   }
 };
