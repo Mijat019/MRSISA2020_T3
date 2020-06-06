@@ -24,6 +24,7 @@ Drugs.init(
   {
     timestamps: false,
     tableName: "drugs",
+    version: true,
     sequelize: db,
   }
 );

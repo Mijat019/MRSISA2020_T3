@@ -1,9 +1,9 @@
-import { Model, INTEGER, DATE, STRING } from "sequelize";
-import sequelize from "./database";
-import moment from "moment";
-import PatientMedicalRecord from "./PatientMedicalRecord";
-import ConfirmedAppointments from "./ConfirmedAppointments";
-import Diagnosis from "./Diagnosis";
+import { Model, INTEGER, DATE, STRING } from 'sequelize';
+import sequelize from './database';
+import moment from 'moment';
+import PatientMedicalRecord from './PatientMedicalRecord';
+import ConfirmedAppointments from './ConfirmedAppointments';
+import Diagnosis from './Diagnosis';
 
 class AppointmentReports extends Model {
   public id!: number;
@@ -48,20 +48,25 @@ AppointmentReports.init(
       allowNull: true,
     },
   },
-  { sequelize, tableName: "appointmentReport", timestamps: false }
+  {
+    sequelize,
+    tableName: 'appointment_report',
+    timestamps: false,
+    version: true,
+  }
 );
 
 AppointmentReports.belongsTo(PatientMedicalRecord, {
-  as: "patientMedicalRecord",
-  foreignKey: "patientMedicalRecordId",
+  as: 'patientMedicalRecord',
+  foreignKey: 'patientMedicalRecordId',
 });
 AppointmentReports.belongsTo(ConfirmedAppointments, {
-  as: "confirmedAppointment",
-  foreignKey: "confirmedAppointmentId",
+  as: 'confirmedAppointment',
+  foreignKey: 'confirmedAppointmentId',
 });
 AppointmentReports.belongsTo(Diagnosis, {
-  as: "diagnosis",
-  foreignKey: "diagnosisId",
+  as: 'diagnosis',
+  foreignKey: 'diagnosisId',
 });
 
 export default AppointmentReports;

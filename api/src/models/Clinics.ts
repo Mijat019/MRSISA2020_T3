@@ -40,6 +40,7 @@ Clinics.init(
     timestamps: false,
     sequelize: db,
     tableName: "clinics",
+    version: true,
   }
 );
 

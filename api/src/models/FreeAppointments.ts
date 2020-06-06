@@ -53,7 +53,8 @@ FreeAppointments.init(
   },
   {
     timestamps: false,
-    tableName: "FreeAppointments",
+    tableName: "free_appointments",
+    version: true,
     sequelize: db,
   }
 );

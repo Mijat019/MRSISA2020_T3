@@ -56,6 +56,7 @@ ClinicRating.init(
     timestamps: false,
     sequelize: db,
     tableName: 'clinic_rating',
+    version: true,
     indexes: [{ unique: true, fields: ['patientId', 'clinicId'] }],
   }
 );

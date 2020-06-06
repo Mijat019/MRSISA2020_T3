@@ -41,7 +41,7 @@ Prescription.init(
       defaultValue: false,
     },
   },
-  { sequelize, tableName: "prescription", timestamps: false }
+  { sequelize, tableName: "prescriptions", timestamps: false, version: true, }
 );
 
 Prescription.belongsTo(AppointmentReport, {

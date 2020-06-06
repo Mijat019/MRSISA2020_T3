@@ -32,7 +32,7 @@ PatientMedicalRecord.init(
       allowNull: true,
     },
   },
-  { sequelize, tableName: "patientMedicalRecord", timestamps: false }
+  { sequelize, tableName: "patient_medical_record", timestamps: false, version: true, }
 );
 
 PatientMedicalRecord.belongsTo(Users, { as: "user", foreignKey: "userId" });
