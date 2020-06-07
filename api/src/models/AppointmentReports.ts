@@ -1,9 +1,12 @@
-import { Model, INTEGER, DATE, STRING } from 'sequelize';
+import { Model, INTEGER, STRING, BOOLEAN } from 'sequelize';
 import sequelize from './database';
 import moment from 'moment';
 import PatientMedicalRecord from './PatientMedicalRecord';
 import ConfirmedAppointments from './ConfirmedAppointments';
 import Diagnosis from './Diagnosis';
+import Clinics from './Clinics';
+import Prescription from './Prescriptions';
+import Drugs from './Drugs';
 
 class AppointmentReports extends Model {
   public id!: number;
@@ -12,6 +15,8 @@ class AppointmentReports extends Model {
   public diagnosisId!: number;
   public createdAt!: number;
   public notes!: string;
+  public prescriptionsApproved!: boolean;
+  public clinicId!: number;
 }
 
 AppointmentReports.init(
@@ -43,6 +48,17 @@ AppointmentReports.init(
       defaultValue: () => moment().unix(),
     },
 
+    prescriptionsApproved: {
+      type: BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    },
+
+    clinicId: {
+      type: INTEGER.UNSIGNED,
+      allowNull: false,
+    },
+
     notes: {
       type: STRING,
       allowNull: true,
@@ -53,6 +69,7 @@ AppointmentReports.init(
     tableName: 'appointment_report',
     timestamps: false,
     version: true,
+    indexes: [{ fields: ['prescriptionsApproved'], unique: false }],
   }
 );
 
@@ -68,6 +85,15 @@ AppointmentReports.belongsTo(Diagnosis, {
   as: 'diagnosis',
   foreignKey: 'diagnosisId',
   onDelete: '',
+});
+AppointmentReports.belongsTo(Clinics, { as: 'clinic', foreignKey: 'clinicId' });
+AppointmentReports.hasMany(Prescription, {
+  as: 'prescriptions',
+  foreignKey: 'appointmentReportId',
+});
+Prescription.belongsTo(AppointmentReports, {
+  as: 'appointmentReport',
+  foreignKey: 'appointmentReportId',
 });
 
 export default AppointmentReports;

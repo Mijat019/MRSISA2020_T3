@@ -17,6 +17,7 @@ import AccountStatus from './AccountStatus';
 import FreeAppointments from './FreeAppointments';
 import DoctorRating from './DoctorRating';
 import ClinicRating from './ClinicRating';
+import NursesService from '../services/NursesService';
 
 export default async () => {
   await DoctorRating.findAll({});
@@ -82,6 +83,7 @@ export default async () => {
     price: 420,
   });
 
+
   const { id: priceListId2 } = await PriceLists.create({
     clinicId: id,
     appointmentTypeId: appointmentTypeId2,
@@ -93,6 +95,27 @@ export default async () => {
     appointmentTypeId: appointmentTypeId3,
     price: 1000,
   });
+
+  const { userId: nurseId } = await NursesService.add(
+    {
+      firstName: 'Sestra',
+      lastName: 'Sestric',
+      email: '2',
+      jmbg: '666',
+      phoneNumber: '666',
+      country: 'Serbia',
+      city: 'Zajecar',
+      address: 'Vojvode stepe 20',
+      accountStatus: 1,
+    },
+    id
+  );
+
+  await Users.update(
+    { password, accountStatus: AccountStatus.ACTIVATED },
+    { where: { id: nurseId } }
+  );
+
 
   const { userId: doctorId } = await DoctorsService.add(
     {

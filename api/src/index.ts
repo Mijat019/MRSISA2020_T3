@@ -28,10 +28,7 @@ import appointmentRequestsRoutes from './routes/appointmentRequestsRoutes';
 import appointmentReportRoutes from './routes/appointmentReportRoutes';
 import patientMedicalRecordRoutes from './routes/patientMedicalRecordRoutes';
 import ratingsRoutes from './routes/ratingsRoutes';
-import DoctorsController from './controllers/DoctorsController';
-import DoctorsService from './services/DoctorsService';
 import leaveRequestsRoutes from './routes/leaveRequestsRoutes';
-import Users from './models/Users';
 
 // connect to the database
 (async () => {
@@ -41,8 +38,8 @@ import Users from './models/Users';
     // creates tables from model
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
-    // await db.sync({ force: true });
-    // await initModel();
+    await db.sync({ force: true });
+    await initModel();
     // await initModelStega();
   } catch (error) {
     console.log(error);
