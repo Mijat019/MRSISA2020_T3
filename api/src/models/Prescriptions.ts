@@ -1,8 +1,8 @@
-import { Model, INTEGER, BOOLEAN } from "sequelize";
-import sequelize from "./database";
-import AppointmentReport from "./AppointmentReports";
-import NurseAt from "./NurseAt";
-import Drugs from "./Drugs";
+import { Model, INTEGER, BOOLEAN } from 'sequelize';
+import sequelize from './database';
+import AppointmentReport from './AppointmentReports';
+import NurseAt from './NurseAt';
+import Drugs from './Drugs';
 
 class Prescription extends Model {
   public id!: number;
@@ -41,14 +41,16 @@ Prescription.init(
       defaultValue: false,
     },
   },
-  { sequelize, tableName: "prescriptions", timestamps: false, version: true, }
+  {
+    sequelize,
+    tableName: 'prescriptions',
+    timestamps: false,
+    version: true,
+    indexes: [{ fields: ['approved'], unique: false }],
+  }
 );
 
-Prescription.belongsTo(AppointmentReport, {
-  as: "appointmentReport",
-  foreignKey: "appointmentReportId",
-});
-Prescription.belongsTo(NurseAt, { as: "nurse", foreignKey: "nurseId" });
-Prescription.belongsTo(Drugs, { as: "drug", foreignKey: "drugId" });
+Prescription.belongsTo(NurseAt, { as: 'nurse', foreignKey: 'nurseId' });
+Prescription.belongsTo(Drugs, { as: 'drug', foreignKey: 'drugId' });
 
 export default Prescription;

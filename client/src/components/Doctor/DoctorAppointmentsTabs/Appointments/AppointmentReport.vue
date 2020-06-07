@@ -77,6 +77,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      getUser: 'authentication/getUser',
       getDiagnosis: 'diagnosis/getDiagnosis',
       getPrescriptions: 'prescriptions/getPrescriptions',
       getNextAppointment:
@@ -101,7 +102,7 @@ export default {
       this.report.confirmedAppointmentId = this.getNextAppointment.id;
       this.report.prescriptions = this.getPrescriptions;
       this.report.patientMedicalRecordId = this.getNextAppointment.patient.user.id;
-      console.log(this.report);
+      this.report.clinicId = this.getUser.clinicId;
       await this.submitAppointmentReportAction(this.report);
       this.setPrescriptions([]);
     },
