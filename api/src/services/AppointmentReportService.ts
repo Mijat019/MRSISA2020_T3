@@ -82,6 +82,7 @@ class AppointmentReportService {
           as: 'prescriptions',
           attributes: ['id'],
           include: [{ model: Drugs, as: 'drug', attributes: ['name'] }],
+          order: [['createdAt', 'ASC']],
         },
       ],
     });
