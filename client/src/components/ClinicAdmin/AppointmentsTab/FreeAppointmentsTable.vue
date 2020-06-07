@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "FreeAppointmentsTable",
   data: () => ({
@@ -58,9 +58,14 @@ export default {
       getDoctorsAction: "doctors/getDoctorsAction",
       getFreeAppointmentsAction: "freeAppointments/getFreeAppointmentsAction",
     }),
+
+    ...mapMutations('freeAppointments', {
+      setAppointments: 'setAppointments',
+    }),
   },
 
   async mounted() {
+    this.setAppointments([]);
     await this.getDoctorsAction();
   },
 

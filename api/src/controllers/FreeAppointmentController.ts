@@ -30,7 +30,6 @@ class FreeAppointmentController {
       const confAppo = await FreeAppointmentService.schedule(appoId, patientId);
       res.send(confAppo);
     } catch (error) {
-      console.log(error);
       res.status(400).send(error.message);
     }
   }
@@ -40,7 +39,6 @@ class FreeAppointmentController {
       const newFreeAppointment = await FreeAppointmentService.add(req.body);
       res.send(newFreeAppointment);
     } catch (error) {
-      console.log(error);
       res.status(400).send(error.message);
     }
   }
@@ -54,7 +52,6 @@ class FreeAppointmentController {
       );
       res.send(updatedFreeAppointment);
     } catch (error) {
-      console.log(error);
       res.status(400).send(error.message);
     }
   }

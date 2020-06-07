@@ -7,7 +7,7 @@ class RoomsController {
       const rooms = await RoomsService.getAllForClinic(clinicId);
       res.send(rooms);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(400).send(error.message);
     }
   }
 
@@ -16,7 +16,7 @@ class RoomsController {
       const newRoom = await RoomsService.add(req.body, req.user.clinicId);
       res.send(newRoom);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(400).send(error.message);
     }
   }
 
@@ -25,7 +25,7 @@ class RoomsController {
       const newRoom = await RoomsService.update(req.params.id, req.body);
       res.send(newRoom);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(400).send(error.message);
     }
   }
 
@@ -35,7 +35,7 @@ class RoomsController {
       await RoomsService.delete(id);
       res.send("Room deleted.");
     } catch (error) {
-      res.status(400).send(error);
+      res.status(400).send(error.message);
     }
   }
 }

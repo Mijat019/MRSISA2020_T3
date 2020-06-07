@@ -31,6 +31,7 @@ const actions = {
       commit("removePatientRequest", email);
       dispatch("snackbar/showSuccess", "Approved", { root: true });
     } catch (error) {
+      dispatch("getPatientRequestsAction");
       dispatch("snackbar/showError", error.response.data, { root: true });
     }
   },
@@ -41,6 +42,7 @@ const actions = {
       commit("removePatientRequest", email);
       dispatch("snackbar/showSuccess", "Rejected", { root: true });
     } catch (error) {
+      dispatch("getPatientRequestsAction");
       dispatch("snackbar/showError", error.response.data, { root: true });
     }
   },

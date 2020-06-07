@@ -1,51 +1,51 @@
-import AppointmentRequests from "../models/AppointmentRequests";
-import { Op } from "sequelize";
-import DoctorAt from "../models/DoctorAt";
-import Users, { usersSelect } from "../models/Users";
-import AppointmentTypes from "../models/AppointmentTypes";
-import PriceLists from "../models/PriceLists";
-import PatientMedicalRecord from "../models/PatientMedicalRecord";
-
-import EmailService from "./EmailService";
-import RoomsService from "./RoomsService"
-import FreeAppointmentService from "./FreeAppointmentService";
-import ConfirmedAppointmentService from "./ConfirmedAppointmentService";
-import config from "../config";
-import { request } from "http";
+import AppointmentRequests from '../models/AppointmentRequests';
+import { Op } from 'sequelize';
+import DoctorAt from '../models/DoctorAt';
+import Users, { usersSelect } from '../models/Users';
+import AppointmentTypes from '../models/AppointmentTypes';
+import PriceLists from '../models/PriceLists';
+import PatientMedicalRecord from '../models/PatientMedicalRecord';
+import ConfirmedAppointments from '../models/ConfirmedAppointments';
+import EmailService from './EmailService';
+import RoomsService from './RoomsService';
+import FreeAppointmentService from './FreeAppointmentService';
+import ConfirmedAppointmentService from './ConfirmedAppointmentService';
+import config from '../config';
+import { request } from 'http';
 import scheduler from 'node-schedule';
-
+import sequelize from './../models/database';
 
 class AppointmentRequestsService {
   private include = [
     {
       model: DoctorAt,
-      as: "doctor",
+      as: 'doctor',
       required: true,
       include: [
-        { model: Users, as: "user", attributes: usersSelect, required: true },
+        { model: Users, as: 'user', attributes: usersSelect, required: true },
       ],
     },
     {
       model: PriceLists,
-      as: "priceList",
+      as: 'priceList',
       required: true,
       include: [
-        { model: AppointmentTypes, as: "appointmentType", required: true },
+        { model: AppointmentTypes, as: 'appointmentType', required: true },
       ],
     },
     {
       model: PatientMedicalRecord,
-      as: "patientMedicalRecord",
+      as: 'patientMedicalRecord',
       required: true,
       include: [
-        { model: Users, as: "user", attributes: usersSelect, required: true },
+        { model: Users, as: 'user', attributes: usersSelect, required: true },
       ],
     },
   ];
 
-  private automaticScheduler = scheduler.scheduleJob({ second: 0 }, () => {
-    this.automaticResponse();
-  });
+  // private automaticScheduler = scheduler.scheduleJob({ second: 0 }, () => {
+  //   this.automaticResponse();
+  // });
 
   public async getAll(): Promise<any> {
     const appointmentRequest = await AppointmentRequests.findAll({});
@@ -62,48 +62,73 @@ class AppointmentRequestsService {
 
   public async confirm(requestPayload: any): Promise<any> {
     requestPayload.patientId = requestPayload.patientMedicalRecord.userId;
+    const { id } = requestPayload;
+    delete requestPayload.id;
 
     // check if there are conflicts
     // with existing appos
     await FreeAppointmentService.checkForConflicts(requestPayload);
 
-    // add requested appo to confirmed
-    const { id } = requestPayload;
-    delete requestPayload.id;
-    await ConfirmedAppointmentService.add(requestPayload);
+    return sequelize
+      .transaction((t) => {
+        // add requested appo to confirmed
+        return ConfirmedAppointments.create(requestPayload, {
+          transaction: t,
+        }).then((appo) => {
+          return AppointmentRequests.destroy({
+            where: { id: id },
+            transaction: t,
+          });
+        });
+      })
+      .then((result) => {
+        // Transaction has been committed
+        // result is whatever the result of the promise chain returned to the transaction callback
 
-    // now you can delete it from requests
-    await this.delete(id);
+        // if deleted 0 rows it means that 
+        // request has already been approved or denied
+        if (result == 0)
+          throw new Error(); 
 
-    // now send mail to notify
-    const patient = requestPayload.patientMedicalRecord.user;
-    const emailText = `Dear ${patient.firstName + " " + patient.lastName},
+        // now send mail to notify
+        const patient = requestPayload.patientMedicalRecord.user;
+        const emailText = `Dear ${patient.firstName + ' ' + patient.lastName},
         \n\nYour Covid clinic appointment request has been approved!\n`;
-    console.log(emailText);
-    EmailService.send({
-      from: config.mail,
-      to: patient.email,
-      subject: "Covid Clinic Appointment request",
-      text: emailText,
-    });
+        console.log(emailText);
+        EmailService.send({
+          from: config.mail,
+          to: patient.email,
+          subject: 'Covid Clinic Appointment request',
+          text: emailText,
+        });
+      })
+      .catch((err) => {
+        // Transaction has been rolled back
+        // err is whatever rejected the promise chain returned to the transaction callback
+        throw new Error("Requested already approved or rejected by another admin!")
+      });
   }
 
   public async reject(requestPayload: any): Promise<any> {
     // delete from requests since it's rejected
-    await this.delete(requestPayload.id);
+    const result = await this.delete(requestPayload.id);
+    if(result == 0)
+      throw new Error("Requested already approved or rejected by another admin!")
+
+    console.log(requestPayload.start);
 
     // now send mail to notify
     const patient = requestPayload.patientMedicalRecord.user;
-    let emailText = `Dear ${patient.firstName + " " + patient.lastName},
+    let emailText = `Dear ${patient.firstName + ' ' + patient.lastName},
         \n\nYour Covid clinic appointment request has been rejected because ${
           requestPayload.reason
         }!\n`;
-        
+
     console.log(emailText);
     EmailService.send({
       from: config.mail,
       to: patient.email,
-      subject: "Covid Clinic Appointment request",
+      subject: 'Covid Clinic Appointment request',
       text: emailText,
     });
   }
@@ -112,14 +137,14 @@ class AppointmentRequestsService {
   public async automaticResponse(): Promise<any> {
     // return;
     const now = Date.now();
-    const day_length = 24 * 60 * 60 * 1000;   // 24 hours in miliseconds 
+    const day_length = 24 * 60 * 60 * 1000; // 24 hours in miliseconds
 
     // get all requests made 24hr ago
     const appointmentRequests = await AppointmentRequests.findAll({
       where: {
         createdAt: {
-          [Op.lte]: now - day_length
-        }
+          [Op.lte]: now - day_length,
+        },
       },
       include: this.include,
     });
@@ -131,18 +156,18 @@ class AppointmentRequestsService {
       const roomsForClinic = await RoomsService.getAllForClinic(clinicId);
 
       const confirmedReq = {
-        priceListId : request.priceListId,
-        doctorId : request.doctorId,
-        patientId : request.patientMedicalRecordId,
-        start : request.start,
+        priceListId: request.priceListId,
+        doctorId: request.doctorId,
+        patientId: request.patientMedicalRecordId,
+        start: request.start,
         duration: request.duration,
-        roomId: '',        
-      }
-      
+        roomId: '',
+      };
+
       let success = false;
 
       //check for every room if it is available at that time
-      for( const room of roomsForClinic){
+      for (const room of roomsForClinic) {
         confirmedReq.roomId = room.id;
         try {
           await FreeAppointmentService.checkForConflicts(confirmedReq);
@@ -151,16 +176,17 @@ class AppointmentRequestsService {
           await this.delete(request.id);
           success = true;
           break;
-        }catch {console.log('Room :' + room.id + ' is occupied')}
+        } catch {
+          console.log('Room :' + room.id + ' is occupied');
+        }
       }
-      
-      if (!success){
+
+      if (!success) {
         // if got here it means no room is available at the time so reject request
-        const payload = (request as any)
+        const payload = request as any;
         payload.reason = 'asdfds';
         await this.reject(payload);
       }
-
     }
   }
 
@@ -180,7 +206,7 @@ class AppointmentRequestsService {
   }
 
   public async delete(id: any) {
-    await AppointmentRequests.destroy({ where: { id: id } });
+    return await AppointmentRequests.destroy({ where: { id: id } });
   }
 }
 

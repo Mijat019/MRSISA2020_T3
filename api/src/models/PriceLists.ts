@@ -8,6 +8,7 @@ class PriceLists extends Model {
   public price!: number;
   public clinicId!: number;
   public appointmentTypeId!: number;
+  public version!: number;
 }
 
 PriceLists.init(

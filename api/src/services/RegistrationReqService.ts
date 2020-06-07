@@ -43,7 +43,7 @@ class RegistrationReqService {
   public async approveRegistration(email: string): Promise<any> {
     let req = await this.getRequest(email);
 
-    if (!req) throw new Error("Email does not exist");
+    if (!req) throw new Error("Request does not exist");
 
     if (req.requestStatus == RequestStatus.APPROVED)
       throw new Error("Request already approved!");

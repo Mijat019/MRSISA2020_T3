@@ -56,6 +56,7 @@ const actions = {
             commit("removeAppointmentRequest", reqPayload.id);
             dispatch("snackbar/showSuccess", "Approved", { root: true });
         } catch (error) {
+            dispatch("getAllForClinicAction", reqPayload.clinicId);
             dispatch("snackbar/showError", error.response.data, { root: true });
         }
     },
@@ -66,6 +67,7 @@ const actions = {
             commit("removeAppointmentRequest", reqPayload.id);
             dispatch("snackbar/showSuccess", "Rejected", { root: true });
         } catch (error) {
+            dispatch("getAllForClinicAction", reqPayload.clinicId);
             dispatch("snackbar/showError", error.response.data, { root: true });
         }
     },

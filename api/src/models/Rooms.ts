@@ -6,6 +6,7 @@ class Rooms extends Model {
   public id!: number;
   public name!: string;
   public clinicId!: number;
+  public version!: number;
 }
 
 Rooms.init(
@@ -17,7 +18,7 @@ Rooms.init(
     },
     name: {
       type: STRING,
-      primaryKey: true,
+      unique: true,
     },
     clinicId: {
       type: INTEGER.UNSIGNED,

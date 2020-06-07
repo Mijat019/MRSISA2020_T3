@@ -60,6 +60,7 @@ const actions = {
       commit("updateRoom", newRoom);
       dispatch("snackbar/showSuccess", "Room updated.", { root: true });
     } catch (error) {
+      dispatch("getRoomsAction", roomUpdate.clinicId);
       dispatch("snackbar/showError", error.response.data, { root: true });
     }
   },

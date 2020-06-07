@@ -63,15 +63,13 @@ class FreeAppointmentService {
   }
 
   public async update(id: number, appointmentPayload: any) {
-    // Allocate appropriate appo type
-    const priceList = await PriceLists.findOne({
-      where: {
-        id: appointmentPayload.priceListId,
-      },
-    });
-    appointmentPayload.appointmentTypeId = priceList?.appointmentTypeId;
 
-    await FreeAppointments.update(appointmentPayload, { where: { id } });
+    const { version } = await FreeAppointments.findByPk(id) as any;
+    if(version > appointmentPayload.version)
+      throw new Error("Optimistic Lock error");
+    
+    appointmentPayload.version += 1;    
+    await FreeAppointments.upsert(appointmentPayload);
     const updatedAppointment = await FreeAppointments.findByPk(id, {
       include,
     });
@@ -127,7 +125,7 @@ class FreeAppointmentService {
       })) ||
       (await FreeAppointments.findOne({ where: { start: time, roomId: room } }))
     ) {
-      throw new Error("Room is occupied at that time");
+      return Promise.reject(new Error("Room is occupied at that time"));
     }
 
     // now check if doctor is occupied
@@ -141,7 +139,7 @@ class FreeAppointmentService {
         where: { start: time, doctorId: doctor },
       }))
     ) {
-      throw new Error("Doctor is occupied at that time");
+      return Promise.reject(new Error("Doctor is occupied at that time."))
     }
   }
 }

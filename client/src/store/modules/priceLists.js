@@ -117,6 +117,7 @@ const actions = {
 
     async updatePriceListAction({ commit, dispatch }, typePayload) {
         try {
+            console.log(typePayload);
             const { data: newType } = await Vue.$axios.patch(
                 `/priceLists/${typePayload.id}`,
                 typePayload
@@ -130,6 +131,7 @@ const actions = {
                 }
             );
         } catch (error) {
+            dispatch("getPriceListsAction", typePayload.clinicId);
             dispatch("snackbar/showError", error.response.data, { root: true });
         }
     },

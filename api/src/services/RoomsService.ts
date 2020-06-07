@@ -1,4 +1,5 @@
 import Rooms from "../models/Rooms";
+import sequelize from './../models/database';
 
 class RoomsService {
   public async getAllForClinic(clinicId: number): Promise<any> {
@@ -13,9 +14,14 @@ class RoomsService {
   }
 
   public async update(roomId: number, roomPayload: any): Promise<any> {
-    await Rooms.update(roomPayload, { where: { id: roomId } });
-    const updatedRoom = await Rooms.findOne({ where: { id: roomPayload.id } });
-    return updatedRoom;
+    
+    const {version} = await Rooms.findByPk(roomId) as any;
+    if(version > roomPayload.version)
+      throw new Error("Optimistic Lock error");
+  
+    roomPayload.version += 1;
+    await Rooms.upsert(roomPayload);
+    return await Rooms.findByPk(roomId);
   }
 
   public async delete(id: number) {
