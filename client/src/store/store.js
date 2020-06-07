@@ -73,7 +73,7 @@ export default new Vuex.Store({
     time,
     leaveRequests,
     ratings,
-    appointmentReport
+    appointmentReport,
     prescriptionApproving,
     develop
   },
