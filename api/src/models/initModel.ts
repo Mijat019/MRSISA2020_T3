@@ -19,6 +19,8 @@ import DoctorRating from './DoctorRating';
 import ClinicRating from './ClinicRating';
 import NursesService from '../services/NursesService';
 import OperationRequests from './OperationRequests';
+import Operations from './Operations';
+import OperationAttendances from './OperationAttendances';
 
 export default async () => {
   await DoctorRating.findAll({});
@@ -268,7 +270,21 @@ export default async () => {
     clinicId: id,
     doctorId,
     patientMedicalRecordId,
-    start: moment().unix(),
+    start: moment().add(3, 'hour').unix(),
     duration: 3600,
+  });
+
+  const { id: operationId } = await Operations.create({
+    clinicId: id,
+    doctorId,
+    roomId,
+    patientMedicalRecordId,
+    start: moment().add(3, 'hour').unix(),
+    duration: 3600,
+  });
+
+  const { id: operationAttendanceId } = await OperationAttendances.create({
+    doctorId: doctorId2,
+    operationId,
   });
 };

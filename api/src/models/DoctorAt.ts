@@ -1,8 +1,10 @@
-import db from "./database";
-import { Model, INTEGER } from "sequelize";
-import Users from "./Users";
-import Clinics from "./Clinics";
-import DoctorSpec from "./DoctorSpec";
+import db from './database';
+import { Model, INTEGER } from 'sequelize';
+import Users from './Users';
+import Clinics from './Clinics';
+import DoctorSpec from './DoctorSpec';
+import OperationRequests from './OperationRequests';
+import Operations from './Operations';
 
 class DoctorAt extends Model {
   public userId!: number;
@@ -26,16 +28,16 @@ DoctorAt.init(
     timestamps: false,
     sequelize: db,
     version: true,
-    tableName: "doctor_at",
+    tableName: 'doctor_at',
   }
 );
 
 // one user can have one row in doctorAt table
-DoctorAt.belongsTo(Users, { as: "user", foreignKey: "userId" });
+DoctorAt.belongsTo(Users, { as: 'user', foreignKey: 'userId' });
 
 // one clinic can have many rows in doctorAt table
-DoctorAt.belongsTo(Clinics, { as: "clinic", foreignKey: "clinicId" });
+DoctorAt.belongsTo(Clinics, { as: 'clinic', foreignKey: 'clinicId' });
 
-DoctorAt.hasMany(DoctorSpec, { as: "spec", foreignKey: "userId" });
+DoctorAt.hasMany(DoctorSpec, { as: 'spec', foreignKey: 'userId' });
 
 export default DoctorAt;

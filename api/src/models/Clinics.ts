@@ -1,5 +1,7 @@
-import db from "./database";
-import { Model, STRING, INTEGER } from "sequelize";
+import db from './database';
+import { Model, STRING, INTEGER } from 'sequelize';
+import OperationRequests from './OperationRequests';
+import Operations from './Operations';
 
 class Clinics extends Model {
   public id!: number;
@@ -39,19 +41,19 @@ Clinics.init(
   {
     timestamps: false,
     sequelize: db,
-    tableName: "clinics",
+    tableName: 'clinics',
     version: true,
   }
 );
 
 export default Clinics;
 
-export const clinicsSelectForAdmins = ["name"];
+export const clinicsSelectForAdmins = ['name'];
 export const clinicsSelect = [
-  "id",
-  "name",
-  "country",
-  "city",
-  "address",
-  "description",
+  'id',
+  'name',
+  'country',
+  'city',
+  'address',
+  'description',
 ];

@@ -25,7 +25,7 @@ import diagnosisDialog from './modules/diagnosisDialog';
 import clinicCenterAdmins from './modules/clinicCenterAdmins';
 import priceLists from './modules/priceLists';
 import confirmedAppointments from './modules/confirmedAppointments/confirmedAppointments';
-import appointmentReport from './modules/confirmedAppointments/appointmentReport'
+import appointmentReport from './modules/confirmedAppointments/appointmentReport';
 import scheduleCustomAppointment from './modules/customAppointment/scheduleCustomAppointment';
 import scheduleCustomAppointmentDialog from './modules/customAppointment/scheduleCustomAppointmentDialog';
 import prescriptions from './modules/prescriptions';
@@ -75,6 +75,5 @@ export default new Vuex.Store({
     ratings,
     appointmentReport,
     prescriptionApproving,
-    develop
   },
 });

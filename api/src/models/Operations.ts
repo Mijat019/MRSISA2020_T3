@@ -2,21 +2,22 @@ import { Model, INTEGER } from 'sequelize';
 import sequelize from './database';
 import moment from 'moment';
 import Clinics from './Clinics';
-import DoctorAt from './DoctorAt';
 import Rooms from './Rooms';
+import DoctorAt from './DoctorAt';
 import PatientMedicalRecord from './PatientMedicalRecord';
 
-class OperationRequests extends Model {
+class Operations extends Model {
   public id!: number;
   public doctorId!: number;
   public clinicId!: number;
   public patientMedicalRecordId!: number;
+  public roomId!: number;
   public start!: number;
   public duration!: number;
   public createdAt!: number;
 }
 
-OperationRequests.init(
+Operations.init(
   {
     id: {
       type: INTEGER.UNSIGNED,
@@ -43,6 +44,12 @@ OperationRequests.init(
       allowNull: false,
     },
 
+    roomId: {
+      type: INTEGER.UNSIGNED,
+      unique: false,
+      allowNull: false,
+    },
+
     start: {
       type: INTEGER,
       allowNull: false,
@@ -59,28 +66,37 @@ OperationRequests.init(
       defaultValue: () => moment().unix(),
     },
   },
-  { sequelize, tableName: 'operation_requests', timestamps: false }
+  { sequelize, tableName: 'operations', timestamps: false }
 );
 
-Clinics.hasMany(OperationRequests, {
-  as: 'operationRequests',
-  foreignKey: 'clinicId',
+Rooms.hasMany(Operations, {
+  as: 'operations',
+  foreignKey: 'roomId',
 });
-OperationRequests.belongsTo(Clinics, { as: 'clinic', foreignKey: 'clinicId' });
+Operations.belongsTo(Rooms, {
+  as: 'room',
+  foreignKey: 'roomId',
+});
 
-DoctorAt.hasMany(OperationRequests, {
-  as: 'operationRequests',
+DoctorAt.hasMany(Operations, {
+  as: 'operations',
   foreignKey: 'doctorId',
 });
-OperationRequests.belongsTo(DoctorAt, { as: 'doctor', foreignKey: 'doctorId' });
+Operations.belongsTo(DoctorAt, { as: 'doctor', foreignKey: 'doctorId' });
 
-PatientMedicalRecord.hasMany(OperationRequests, {
-  as: 'operationRequests',
+Clinics.hasMany(Operations, {
+  as: 'operations',
+  foreignKey: 'clinicId',
+});
+Operations.belongsTo(Clinics, { as: 'clinic', foreignKey: 'clinicId' });
+
+PatientMedicalRecord.hasMany(Operations, {
+  as: 'operations',
   foreignKey: 'patientMedicalRecordId',
 });
-OperationRequests.belongsTo(PatientMedicalRecord, {
+Operations.belongsTo(PatientMedicalRecord, {
   as: 'patientMedicalRecord',
   foreignKey: 'patientMedicalRecordId',
 });
 
-export default OperationRequests;
+export default Operations;
