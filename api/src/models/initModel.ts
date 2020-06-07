@@ -18,6 +18,7 @@ import FreeAppointments from './FreeAppointments';
 import DoctorRating from './DoctorRating';
 import ClinicRating from './ClinicRating';
 import NursesService from '../services/NursesService';
+import OperationRequests from './OperationRequests';
 
 export default async () => {
   await DoctorRating.findAll({});
@@ -83,7 +84,6 @@ export default async () => {
     price: 420,
   });
 
-
   const { id: priceListId2 } = await PriceLists.create({
     clinicId: id,
     appointmentTypeId: appointmentTypeId2,
@@ -115,7 +115,6 @@ export default async () => {
     { password, accountStatus: AccountStatus.ACTIVATED },
     { where: { id: nurseId } }
   );
-
 
   const { userId: doctorId } = await DoctorsService.add(
     {
@@ -177,7 +176,6 @@ export default async () => {
 
   const { userId: patientId } = await PatientMedicalRecord.create({ userId });
 
-
   const { id: userId2 }: any = await UsersService.createUser(
     {
       firstName: 'Pacijent',
@@ -194,8 +192,9 @@ export default async () => {
     UserRole.PATIENT
   );
 
-  await PatientMedicalRecord.create({ userId: userId2 });
-
+  const { userId: patientMedicalRecordId } = await PatientMedicalRecord.create({
+    userId: userId2,
+  });
 
   await ConfirmedAppointments.create({
     priceListId,
@@ -244,7 +243,6 @@ export default async () => {
     { where: { id: tutu } }
   );
 
-
   const { userId: id2 } = await ClinicAdminService.add(
     {
       firstName: 'Drugi',
@@ -265,4 +263,12 @@ export default async () => {
     { password, accountStatus: AccountStatus.ACTIVATED },
     { where: { id: id2 } }
   );
+
+  const { id: operationRequests } = await OperationRequests.create({
+    clinicId: id,
+    doctorId,
+    patientMedicalRecordId,
+    start: moment().unix(),
+    duration: 3600,
+  });
 };
