@@ -33,7 +33,7 @@ export default async () => {
     {
       firstName: 'Admin',
       lastName: 'Klinickog Centra',
-      email: '4',
+      email: 'akc1',
       password: '1',
       jmbg: '1232132312121231231233312312',
       phoneNumber: '4',
@@ -55,11 +55,25 @@ export default async () => {
 
   const { id: roomId } = await Rooms.create({
     clinicId: id,
-    name: 'soba neka tamo',
+    name: 'Soba 1',
+  });
+  const { id: roomId2 } = await Rooms.create({
+    clinicId: id,
+    name: 'Soba 2',
+  });
+  const { id: roomId3 } = await Rooms.create({
+    clinicId: id,
+    name: 'Soba 3',
   });
 
   const { id: appointmentTypeId } = await AppointmentTypes.create({
     name: 'Ocni pregled',
+  });
+  const { id: appointmentTypeId2 } = await AppointmentTypes.create({
+    name: 'Nozni pregled',
+  });
+  const { id: appointmentTypeId3 } = await AppointmentTypes.create({
+    name: 'Rucni pregled',
   });
 
   const { id: priceListId } = await PriceLists.create({
@@ -68,11 +82,23 @@ export default async () => {
     price: 420,
   });
 
+  const { id: priceListId2 } = await PriceLists.create({
+    clinicId: id,
+    appointmentTypeId: appointmentTypeId2,
+    price: 300,
+  });
+
+  const { id: priceListId3 } = await PriceLists.create({
+    clinicId: id,
+    appointmentTypeId: appointmentTypeId3,
+    price: 1000,
+  });
+
   const { userId: doctorId } = await DoctorsService.add(
     {
       firstName: 'Doktor',
       lastName: 'Doktoric',
-      email: '1',
+      email: 'd1',
       jmbg: '1232312312',
       phoneNumber: '444',
       country: 'Serbia',
@@ -88,11 +114,33 @@ export default async () => {
     { where: { id: doctorId } }
   );
 
+  await DoctorsService.addSpecialization(doctorId, appointmentTypeId);
+
+  const { userId: doctorId2 } = await DoctorsService.add(
+    {
+      firstName: 'Doktor2',
+      lastName: 'Doktoric2',
+      email: 'd2',
+      jmbg: '66343534',
+      phoneNumber: '444',
+      country: 'Serbia',
+      city: 'Zajecar',
+      address: 'Vojvode stepe 20',
+      accountStatus: 1,
+    },
+    id
+  );
+
+  await Users.update(
+    { password, accountStatus: AccountStatus.ACTIVATED },
+    { where: { id: doctorId2 } }
+  );
+
   const { id: userId }: any = await UsersService.createUser(
     {
       firstName: 'Pacijent',
       lastName: 'Pacijentic_1',
-      email: 's',
+      email: 'p1',
       password: '1',
       jmbg: '123213231212123331231233312312',
       phoneNumber: '41',
@@ -105,6 +153,26 @@ export default async () => {
   );
 
   const { userId: patientId } = await PatientMedicalRecord.create({ userId });
+
+
+  const { id: userId2 }: any = await UsersService.createUser(
+    {
+      firstName: 'Pacijent',
+      lastName: 'Pacijentic_2',
+      email: 'p2',
+      password: '1',
+      jmbg: '1222',
+      phoneNumber: '41',
+      country: 'Serbia',
+      city: 'Zajecar',
+      address: 'Vojvode stepe 20',
+      accountStatus: 1,
+    },
+    UserRole.PATIENT
+  );
+
+  await PatientMedicalRecord.create({ userId: userId2 });
+
 
   await ConfirmedAppointments.create({
     priceListId,
@@ -136,7 +204,7 @@ export default async () => {
     {
       firstName: 'Admin',
       lastName: 'Klinike',
-      email: '3',
+      email: 'ak1',
       password,
       jmbg: '123213231133333322312312',
       phoneNumber: '4311',
@@ -151,5 +219,27 @@ export default async () => {
   await Users.update(
     { password, accountStatus: AccountStatus.ACTIVATED },
     { where: { id: tutu } }
+  );
+
+
+  const { userId: id2 } = await ClinicAdminService.add(
+    {
+      firstName: 'Drugi',
+      lastName: 'Admin Klinike',
+      email: 'ak2',
+      password,
+      jmbg: '123312',
+      phoneNumber: '4311',
+      country: 'Serbia',
+      city: 'Zajecar',
+      address: 'Vojvode stepe 20',
+      accountStatus: 1,
+    },
+    id
+  );
+
+  await Users.update(
+    { password, accountStatus: AccountStatus.ACTIVATED },
+    { where: { id: id2 } }
   );
 };

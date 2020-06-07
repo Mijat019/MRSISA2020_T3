@@ -76,6 +76,7 @@ const actions = {
 
     async updateFreeAppointmentAction({ commit, dispatch }, appointmentUpdate) {
         try {
+            console.log(appointmentUpdate);
             const { data: newAppointment } = await Vue.$axios.patch(
                 `/freeAppointments/${appointmentUpdate.id}`,
                 appointmentUpdate
@@ -89,6 +90,7 @@ const actions = {
                 }
             );
         } catch (error) {
+            dispatch("getFreeAppointmentsAction", appointmentUpdate.doctorId);
             dispatch("snackbar/showError", error.response.data, { root: true });
         }
     },

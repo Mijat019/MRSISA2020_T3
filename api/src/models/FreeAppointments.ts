@@ -12,6 +12,7 @@ class FreeAppointments extends Model {
   public roomId!: number;
   public start!: number;
   public duration!: number;
+  public version!: number;
 }
 
 FreeAppointments.init(

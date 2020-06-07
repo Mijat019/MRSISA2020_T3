@@ -12,9 +12,12 @@ class DrugsService {
   }
 
   public async update(id: string, drugUpdate: any) {
-    await Drugs.update(drugUpdate, { where: { id } });
-    const updatedDrug = await Drugs.findByPk(id);
-    return updatedDrug;
+    const { version } = (await Drugs.findByPk(id)) as any;
+    if (version > drugUpdate.version) throw new Error('Optimistic Lock error');
+
+    drugUpdate.version += 1;
+    await Drugs.upsert(drugUpdate);
+    return await Drugs.findByPk(id);
   }
 
   public async delete(id: string) {
