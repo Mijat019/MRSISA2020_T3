@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import PatientsService from "../services/PatientsService";
+import UserRole from "../models/UserRole";
+import DoctorAt from "../models/DoctorAt";
+import NurseAt from "../models/NurseAt";
 
 class PatientsController {
   public async add(req: Request, res: Response) {

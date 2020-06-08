@@ -11,9 +11,10 @@ const mutations = {
 };
 
 const actions = {
-  async addPatientAction({ dispatch }, patientPayload) {
+  async addPatientAction({ commit, dispatch }, patientPayload) {
     try {
       const { data } = await Vue.$axios.post("/patients", patientPayload);
+      commit("addUser", data);
       dispatch("snackbar/showSuccess", data, {
         root: true,
       });
