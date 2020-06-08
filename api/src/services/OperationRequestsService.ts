@@ -14,6 +14,10 @@ class OperationRequestsService {
     );
     return operationRequest;
   }
+
+  public async remove(id: string) {
+    await OperationRequests.destroy({ where: { id } });
+  }
 }
 
 export default new OperationRequestsService();

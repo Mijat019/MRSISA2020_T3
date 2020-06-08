@@ -29,6 +29,7 @@ import appointmentReportRoutes from './routes/appointmentReportRoutes';
 import patientMedicalRecordRoutes from './routes/patientMedicalRecordRoutes';
 import ratingsRoutes from './routes/ratingsRoutes';
 import leaveRequestsRoutes from './routes/leaveRequestsRoutes';
+import operationRequestsRoutes from './routes/operationRequestsRoutes';
 
 // connect to the database
 (async () => {
@@ -77,6 +78,7 @@ app.use('/appointmentReport', appointmentReportRoutes);
 app.use('/patientMedicalRecord', patientMedicalRecordRoutes);
 app.use('/leaveRequests', leaveRequestsRoutes);
 app.use('/ratings', ratingsRoutes);
+app.use('/operationRequests', operationRequestsRoutes);
 
 app.use(express.static(__dirname + '/public/'));
 

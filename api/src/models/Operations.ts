@@ -66,7 +66,12 @@ Operations.init(
       defaultValue: () => moment().unix(),
     },
   },
-  { sequelize, tableName: 'operations', timestamps: false }
+  {
+    sequelize,
+    tableName: 'operations',
+    timestamps: false,
+    indexes: [{ fields: ['doctorId'], unique: false }],
+  }
 );
 
 Rooms.hasMany(Operations, {
