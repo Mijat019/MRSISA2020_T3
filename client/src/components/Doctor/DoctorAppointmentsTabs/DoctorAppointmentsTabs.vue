@@ -23,7 +23,7 @@
 <script>
 import CalendarTab from "./CalendarTab";
 import Appointments from "./Appointments/Appointments";
-import ViewPatientsTab from "./ViewPatientsTab";
+import ViewPatientsTab from "../../MedicalStaff/ViewPatientsTab";
 export default {
   name: "DoctorAppointmentsTabs",
 
