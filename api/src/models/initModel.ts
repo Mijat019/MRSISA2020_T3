@@ -20,9 +20,6 @@ import ClinicRating from './ClinicRating';
 import NursesService from '../services/NursesService';
 
 export default async () => {
-  await DoctorRating.findAll({});
-  await ClinicRating.findAll({});
-
   await Diagnosis.create({ name: 'Insane in the membrane' });
   await Diagnosis.create({ name: 'Vucic' });
 
@@ -83,7 +80,6 @@ export default async () => {
     price: 420,
   });
 
-
   const { id: priceListId2 } = await PriceLists.create({
     clinicId: id,
     appointmentTypeId: appointmentTypeId2,
@@ -115,7 +111,6 @@ export default async () => {
     { password, accountStatus: AccountStatus.ACTIVATED },
     { where: { id: nurseId } }
   );
-
 
   const { userId: doctorId } = await DoctorsService.add(
     {
@@ -177,7 +172,6 @@ export default async () => {
 
   const { userId: patientId } = await PatientMedicalRecord.create({ userId });
 
-
   const { id: userId2 }: any = await UsersService.createUser(
     {
       firstName: 'Pacijent',
@@ -195,7 +189,6 @@ export default async () => {
   );
 
   await PatientMedicalRecord.create({ userId: userId2 });
-
 
   await ConfirmedAppointments.create({
     priceListId,
@@ -244,7 +237,6 @@ export default async () => {
     { where: { id: tutu } }
   );
 
-
   const { userId: id2 } = await ClinicAdminService.add(
     {
       firstName: 'Drugi',
@@ -265,4 +257,44 @@ export default async () => {
     { password, accountStatus: AccountStatus.ACTIVATED },
     { where: { id: id2 } }
   );
+
+  await ClinicRating.create({
+    patientId: userId,
+    clinicId: id,
+    serviceRating: 4,
+    cleanlinessRating: 3,
+    timeRating: 2,
+    averageRating: 3,
+    comment: 'OKAY',
+  });
+
+  await ClinicRating.create({
+    patientId: userId2,
+    clinicId: id,
+    serviceRating: 5,
+    cleanlinessRating: 4,
+    timeRating: 3,
+    averageRating: 4,
+    comment: 'GOOD',
+  });
+
+  await DoctorRating.create({
+    patientId: doctorId,
+    doctorId: id,
+    communicationRating: 5,
+    expertiseRating: 5,
+    timeRating: 5,
+    averageRating: 5,
+    comment: 'GREAT',
+  });
+
+  await DoctorRating.create({
+    patientId: doctorId2,
+    doctorId: id,
+    communicationRating: 1,
+    expertiseRating: 2,
+    timeRating: 2,
+    averageRating: 1.67,
+    comment: 'SUX',
+  });
 };

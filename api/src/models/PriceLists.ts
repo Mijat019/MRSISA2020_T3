@@ -45,10 +45,17 @@ PriceLists.init(
 );
 
 PriceLists.belongsTo(Clinics, { as: 'clinic', foreignKey: 'clinicId' });
+
 PriceLists.belongsTo(AppointmentTypes, {
   as: 'appointmentType',
   foreignKey: 'appointmentTypeId',
 });
+
+Clinics.hasMany(PriceLists, {
+  as: 'priceLists',
+  foreignKey: 'clinicId',
+});
+
 AppointmentTypes.hasMany(PriceLists, {
   as: 'priceList',
   foreignKey: 'appointmentTypeId',

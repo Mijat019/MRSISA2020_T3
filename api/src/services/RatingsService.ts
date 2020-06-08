@@ -8,7 +8,7 @@ class RoomsService {
     const size = allRatings.length;
 
     // sum up all avg ratings
-    const total = allRatings.reduce((a, b) => +a + + b.averageRating, 0);
+    const total = allRatings.reduce((a, b) => + a + + b.averageRating, 0);
     return total / size;
   }
 
@@ -17,7 +17,7 @@ class RoomsService {
     const size = allRatings.length;
 
     // sum up all avg ratings
-    const total = allRatings.reduce((a, b) => +a + + b.averageRating, 0);
+    const total = allRatings.reduce((a, b) => + a + + b.averageRating, 0);
     return total / size;
   }
 

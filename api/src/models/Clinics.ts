@@ -1,5 +1,6 @@
 import db from "./database";
 import { Model, STRING, INTEGER } from "sequelize";
+import PriceLists from "./PriceLists";
 
 class Clinics extends Model {
   public id!: number;

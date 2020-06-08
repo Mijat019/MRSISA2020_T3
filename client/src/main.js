@@ -12,6 +12,8 @@ Vue.config.productionTip = false;
 Vue.$axios = Axios;
 Vue.$axios.defaults.headers["Authorization"] = localStorage.getItem("token");
 
+export const bus = new Vue();
+
 new Vue({
     router,
     store,

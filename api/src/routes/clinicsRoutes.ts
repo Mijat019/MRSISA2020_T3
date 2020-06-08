@@ -5,6 +5,7 @@ const router = express.Router();
 
 // TODO: dodati proveru tokena i uloge
 router.get("/", ClinicsController.getAll);
+router.get("/:appoTypeId", ClinicsController.getAllForAppoType)
 router.post("/", ClinicsController.add);
 router.delete("/:clinicId", ClinicsController.delete);
 
