@@ -6,6 +6,11 @@ class OperationsServices {
     return operations;
   }
 
+  public async getAllForClinic(clinicId: string) {
+    const operations = await Operations.findAll({ where: { clinicId } });
+    return operations;
+  }
+
   public async add(operationPayload: any) {
     const operation = await Operations.create(operationPayload);
     return operation;
