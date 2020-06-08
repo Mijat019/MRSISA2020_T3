@@ -2,7 +2,8 @@ import Vue from "vue";
 
 const state = {
   clinicAdmins: [],
-  doctors: []
+  doctors: [],
+  myClinic: null
 };
 
 const mutations = {
@@ -12,7 +13,9 @@ const mutations = {
   addClinicAdmin(state, clinicAdmin) {
     state.clinicAdmins.push(clinicAdmin);
   },
-
+  setMyClinic(state, clinic) {
+    state.myClinic = clinic;
+  }
 };
 
 const actions = {
@@ -20,6 +23,15 @@ const actions = {
     try {
       const { data: clinicAdmins } = await Vue.$axios.get("/clinicAdmins");
       commit("setClinicAdmins", clinicAdmins);
+    } catch (error) {
+      dispatch("snackbar/showError", error.response.data, { root: true });
+    }
+  },
+
+  async getMyClinicAction({ commit, dispatch }) {
+    try {
+      const { data: clinic } = await Vue.$axios.get("/clinicAdmins/myClinic");
+      commit("setMyClinic", clinic);
     } catch (error) {
       dispatch("snackbar/showError", error.response.data, { root: true });
     }
@@ -40,7 +52,8 @@ const actions = {
 };
 
 const getters = {
-  getClinicAdmins: state => state.clinicAdmins
+  getClinicAdmins: state => state.clinicAdmins,
+  getMyClinic: state => state.myClinic
 };
 
 export default {

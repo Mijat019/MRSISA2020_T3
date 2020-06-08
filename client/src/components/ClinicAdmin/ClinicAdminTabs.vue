@@ -3,7 +3,7 @@
     <v-tabs v-model="tab" class="elevation-2">
       <v-tabs-slider></v-tabs-slider>
 
-      <v-tab :href="`#basicInfo`">basicInfo</v-tab>
+      <v-tab :href="`#basicInfo`">basic info</v-tab>
       <v-tab :href="`#freeApointments`">free apointments</v-tab>
       <v-tab :href="`#doctors`">doctors</v-tab>
       <v-tab :href="`#nurses`">nurses</v-tab>
@@ -13,7 +13,9 @@
       <v-tab :href="`#report`">report</v-tab>
       <v-tab :href="`#leaveRequests`">leave requests</v-tab>
 
-      <v-tab-item :value="'basicInfo'">basicInfo</v-tab-item>
+      <v-tab-item :value="'basicInfo'">
+        <BasicInfo />
+      </v-tab-item>
       <v-tab-item :value="'freeApointments'">
         <ManageFreeAppointments />
       </v-tab-item>
@@ -41,6 +43,7 @@
 </template>
 
 <script>
+import BasicInfo from "./BasicInfoTab/BasicInfo";
 import ManageDoctors from "./DoctorsTab/ManageDoctors";
 import ManageNurses from "./NursesTab/ManageNurses";
 import ManageRooms from "./RoomsTab/ManageRooms";
@@ -53,6 +56,7 @@ import { mapActions } from "vuex";
 export default {
   name: "ClinicProfile",
   components: {
+    BasicInfo,
     ManageDoctors,
     ManageNurses,
     ManageRooms,

@@ -13,6 +13,11 @@ class ClinicsService {
     return clinic;
   }
 
+  public async update(clinicPayload: any): Promise<any> {
+    await Clinics.upsert(clinicPayload);
+    return await Clinics.findByPk(clinicPayload.id);
+  }
+
   public async delete(id: string) {
     await Clinics.destroy({ where: { id } });
   }
