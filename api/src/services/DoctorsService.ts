@@ -6,6 +6,8 @@ import Clinics from "../models/Clinics";
 import AdminAt from "../models/AdminAt";
 import DoctorSpec from "../models/DoctorSpec";
 import AppointmentTypes from "../models/AppointmentTypes";
+import FreeAppointments from "../models/FreeAppointments";
+import ConfirmedAppointments from "../models/ConfirmedAppointments";
 
 class DoctorsService {
   public async getAll(): Promise<any> {
@@ -87,11 +89,28 @@ class DoctorsService {
     });
   }
 
-  /**
-   * OVO TREBA DA SE ISPRAVI DA PROVERAVA DA LI DOKTOR IMA ZAKAZANE PREGLEDE
-   * ILI DODELJENE SLOBODNE PREGLEDE
-   */
+  private async hasFreeAppos(doctorId: number) {
+    const freeAppos = await FreeAppointments.findAll({ where: { doctorId } });
+    return freeAppos.length > 0;
+  }
+
+  private async hasConfirmedAppos(doctorId: number) {
+    const confirmedAppos = await ConfirmedAppointments.findAll({ where: { doctorId } });
+    return confirmedAppos.length > 0;
+  }
+
   public async delete(doctorId: number) {
+    // Does the doctor have allocated Free appointments?
+    if (await this.hasFreeAppos(doctorId)) {
+      throw "Can't delete doctor: they have free appointments allocated to them!";
+    }
+
+    // Does the doctor have Confirmed appointments?
+    if (await this.hasConfirmedAppos(doctorId)) {
+      throw "Can't delete doctor: they have confirmed appointments!";
+    }
+
+    // Doctor is free and can be deleted
     await DoctorAt.destroy({ where: { userId: doctorId } });
     await Users.destroy({ where: { id: doctorId } });
   }
