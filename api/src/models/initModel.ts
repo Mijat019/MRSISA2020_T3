@@ -271,7 +271,7 @@ export default async () => {
     doctorId,
     patientMedicalRecordId,
     start: moment().add(3, 'hour').unix(),
-    duration: 3600,
+    duration: 60,
   });
 
   const { id: operationId } = await Operations.create({
@@ -280,7 +280,7 @@ export default async () => {
     roomId,
     patientMedicalRecordId,
     start: moment().add(3, 'hour').unix(),
-    duration: 3600,
+    duration: 60,
   });
 
   const { id: operationAttendanceId } = await OperationAttendances.create({

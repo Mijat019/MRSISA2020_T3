@@ -1,12 +1,11 @@
 <template>
   <v-dialog v-model="dialog" fullscreen>
     <template v-slot:activator="{ on }">
-      <v-btn color="primary" v-on="on">Schedule another appointment</v-btn>
+      <v-btn color="primary" v-on="on">Request an operation</v-btn>
     </template>
-
     <v-card>
       <v-card-title>
-        Schedule an appointment
+        Request an operation
         <v-spacer></v-spacer>
         <v-btn @click="dialog = false" icon>
           <v-icon>mdi-close</v-icon>
@@ -62,36 +61,33 @@
                 @click:event="showEvent"
                 @click:more="viewDay"
                 @click:date="viewDay"
+                @change="updateRange"
+                :event-color="getEventColor"
                 @click:time="clickedOnCalendar"
                 @mousedown:event="mousedownOnEvent"
                 @mousemove:time="dragEvent"
                 @mouseup:event="dropEvent"
-                @change="updateRange"
-                :event-color="getEventColor"
               >
                 <template v-slot:day-body></template>
               </v-calendar>
 
               <v-menu
-                v-if="selectedEvent.newEvent"
-                offset-x
+                v-model="showMenu"
+                :activator="selectedElement"
                 :close-on-content-click="false"
-                v-model="selectedOpen"
+                offset-x
               >
                 <v-card color="grey lighten-4" min-width="350px" flat>
                   <v-toolbar :color="selectedEvent.color" dark>
                     <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
                     <v-spacer></v-spacer>
-                    <v-btn @click="closeNewAppointment" icon>
+                    <v-btn icon @click="showMenu = false">
                       <v-icon>mdi-close</v-icon>
                     </v-btn>
                   </v-toolbar>
-                  <v-card-text>
-                    <NewAppointmentForm
-                      :start="selectedEvent.start"
-                      v-on:appointmentAdded="appointmentAdded"
-                    />
-                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn color="primary" @click="requestAnOperation">Request an operation</v-btn>
+                  </v-card-actions>
                 </v-card>
               </v-menu>
             </v-sheet>
@@ -103,24 +99,17 @@
 </template>
 
 <script>
-import moment from 'moment';
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import calendarMixin from '../../../../mixins/calendarMixin';
 
-import NewAppointmentForm from './NewAppointmentForm';
-
 export default {
-  name: 'ScheduleAnotherAppointment',
-
-  components: {
-    NewAppointmentForm,
-  },
-
+  name: 'ScheduleAnOperation',
   mixins: [calendarMixin],
 
   data: () => ({
-    newAppointment: null,
     dialog: false,
+    operation: null,
   }),
 
   computed: {
@@ -130,62 +119,36 @@ export default {
   },
 
   methods: {
-    appointmentAdded() {
-      this.newAppointment.draggable = false;
-      this.closeNewAppointment();
-      this.dialog = false;
-    },
-
-    closeNewAppointment() {
-      this.newAppointment = null;
-      this.getEvents.pop();
-      this.selectedOpen = false;
-    },
-
     clickedOnCalendar({ date, time }) {
-      if (this.newAppointment) {
-        this.closeNewAppointment();
+      if (this.operation) {
+        this.closeOperation();
         return;
       }
 
-      this.createNewEvent(date, time);
-      this.selectedEvent = this.newAppointment;
-      this.selectedOpen = true;
+      this.createOperation(date, time);
+      this.selectedEvent = this.operation;
+      this.showMenu = true;
     },
 
-    createNewEvent(date, time) {
+    closeOperation() {
+      this.operation = null;
+      this.getEvents.pop();
+      this.showMenu = false;
+    },
+
+    createOperation(date, time) {
       let start = `${date} ${time}`;
       start = this.getClosestMinute(start);
       const end = this.getEndOfEvent(start);
-      this.newAppointment = {
+      this.operation = {
         start,
         end,
-        name: 'New appointment',
+        name: 'Operation',
         color: 'blue',
         draggable: false,
-        newEvent: true,
       };
 
-      this.getEvents.push(this.newAppointment);
-    },
-
-    mousedownOnEvent({ event }) {
-      event.draggable = true;
-    },
-
-    dragEvent({ date, time }) {
-      if (this.newAppointment?.draggable) {
-        const dateTime = `${date} ${time}`;
-        const start = this.getClosestMinute(dateTime);
-        // no need to rerender if the time hasn't changed enough
-        if (start === dateTime) {
-          return;
-        }
-
-        const end = this.getEndOfEvent(start);
-        this.newAppointment.start = start;
-        this.newAppointment.end = end;
-      }
+      this.getEvents.push(this.operation);
     },
 
     getClosestMinute(dateTime) {
@@ -210,11 +173,32 @@ export default {
       return end.format('YYYY-MM-DD HH:mm');
     },
 
-    dropEvent() {
-      if (this.newAppointment) {
-        this.newAppointment.draggable = false;
+    mousedownOnEvent({ event }) {
+      event.draggable = true;
+    },
+
+    dragEvent({ date, time }) {
+      if (this.operation?.draggable) {
+        const dateTime = `${date} ${time}`;
+        const start = this.getClosestMinute(dateTime);
+        // no need to rerender if the time hasn't changed enough
+        if (start === dateTime) {
+          return;
+        }
+
+        const end = this.getEndOfEvent(start);
+        this.operation.start = start;
+        this.operation.end = end;
       }
     },
+
+    dropEvent() {
+      if (this.operation) {
+        this.operation.draggable = false;
+      }
+    },
+
+    requestAnOperation() {},
   },
 };
 </script>
