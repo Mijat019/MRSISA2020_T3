@@ -17,6 +17,12 @@ const mutations = {
         );
         state.clinics.splice(index, 1);
     },
+    updateClinic(state, clinic) {
+        const index = state.clinics.findIndex(
+            (c) => c.id === clinic.id
+        );
+        state.clinics.splice(index, 1, clinic);
+    }
 };
 
 const actions = {
@@ -37,6 +43,19 @@ const actions = {
             );
             commit("addClinic", newClinic);
             dispatch("snackbar/showSuccess", "Clinic added.", { root: true });
+        } catch (error) {
+            dispatch("snackbar/showError", error.response.data, { root: true });
+        }
+    },
+
+    async updateClinicAction({ commit, dispatch }, clinicPayload) {
+        try {
+            const { data: newClinic } = await Vue.$axios.patch(
+                "/clinics",
+                clinicPayload
+            );
+            commit("updateClinic", newClinic);
+            dispatch("snackbar/showSuccess", "Clinic updated.", { root: true });
         } catch (error) {
             dispatch("snackbar/showError", error.response.data, { root: true });
         }

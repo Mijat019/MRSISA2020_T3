@@ -17,6 +17,12 @@ class ClinicAdminService {
     return clinicAdmins;
   }
 
+  public async getMyClinic(userId: number) {
+    const { clinicId }: any = await AdminAt.findOne({ where: { userId } });
+    const clinic: any = await Clinics.findByPk(clinicId);
+    return clinic;
+  }
+
   public async add(clinicAdminPayload: any, clinicId: number) {
     // create a user
     const { id: userId } = await UsersService.createEmployee(
