@@ -36,25 +36,20 @@
         :items="getFreeAppointments"
         :headers="headers"
         :search="search"
+        @click:row="rowClicked"
       >
-        <template v-slot:item.actions="{ item }">
-          <v-icon small class="mr-2" @click="showDialog(item)"
-            >mdi-check-bold</v-icon
-          >
-        </template>
         <template #item.doctor="{ item }"
           >{{ item.doctor.user.firstName }}
           {{ item.doctor.user.lastName }}</template
         >
         <template #item.start="{ item }">
           {{ format(item.start) }}
-          <!-- {{func(item)}} -->
         </template>
       </v-data-table>
     </v-card-text>
 
     <v-dialog v-model="dialog" width="600">
-      <v-card>
+      <v-card class="pa-3">
         <v-card-text>
           <ConfirmFreeAppointment
             :appoType="dialogAppo.priceList.appointmentType.name"
@@ -69,7 +64,7 @@
             :price="dialogAppo.priceList.price"
           />
         </v-card-text>
-        <v-card-actions class="mx-10">
+        <v-card-actions class="mx-8">
           <v-spacer></v-spacer>
           <v-btn
             class="blue white--text px-5 text-none"
@@ -102,12 +97,15 @@ export default {
       appoType: null,
       search: '',
       headers: [
-        { text: 'Appointment type', value: 'priceList.appointmentType.name' },
+        {
+          text: 'Appointment type',
+          value: 'priceList.appointmentType.name',
+          align: 'center',
+        },
         { text: 'Doctor', value: 'doctor', align: 'center' },
-        { text: 'Room', value: 'room.name' },
+        { text: 'Room', value: 'room.name', align: 'center' },
         { text: 'Scheduled Time', value: 'start', align: 'center' },
-        { text: 'Duration', value: 'duration' },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: 'Price', value: 'priceList.price', align: 'center' },
       ],
       dialog: false,
       dialogAppo: {
@@ -131,11 +129,6 @@ export default {
   },
 
   methods: {
-    format(item) {
-      if (!item) return '';
-
-      return moment.unix(item).format('YYYY-MM-DD HH:mm');
-    },
     ...mapActions({
       getAppointmentTypesAction: 'appointmentTypes/getAppointmentTypesAction',
       getFreeAppointmentsByTypeAction:
@@ -146,6 +139,15 @@ export default {
       openDialog: 'scheduleCustomAppointmentDialog/openDialog',
       setAppointments: 'freeAppointments/setAppointments',
     }),
+    format(item) {
+      if (!item) return '';
+
+      return moment.unix(item).format('YYYY-MM-DD HH:mm');
+    },
+    rowClicked(value) {
+      console.log(value);
+      this.showDialog(value);
+    },
     showDialog: function(item) {
       this.dialogAppo = item;
       this.dialog = true;

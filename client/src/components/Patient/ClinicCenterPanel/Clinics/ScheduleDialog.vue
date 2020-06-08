@@ -5,8 +5,7 @@
     @click:outside="close"
     :retain-focus="false"
   >
-    <v-card>
-      <v-card class="pa-3 ">
+    <v-card class="py-3">
         <v-card-title class="headline">
           <v-row justify="center">
             <v-col cols="2">
@@ -123,7 +122,6 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-card>
   </v-dialog>
 </template>
 
