@@ -7,16 +7,15 @@
         <v-text-field label="Search" v-model="search"></v-text-field>
       </v-card-title>
       <v-card-text>
-
+        <v-data-table
+        :items="patients"
+        :headers="headers"
+        :search="search"
+        >
+          <template #item.patient.fullName="{ item }">{{item.patient.firstName}} {{item.patient.lastName}}</template>
+        </v-data-table>
       </v-card-text>
     </v-card>
-    <v-data-table
-    :items="patients"
-    :headers="headers"
-    :search="search"
-    >
-      <template #item.fullName="{ item }">{{item.firstName}} {{item.lastName}}</template>
-    </v-data-table>
   </div>
 </template>
 
@@ -27,15 +26,15 @@ export default {
 
   data: () => ({
     headers: [
-      { text: "Email", value: "email" },
-      { text: "Name", value: "fullName" },
-      { text: "Country", value: "country" },
-      { text: "City", value: "city" },
-      { text: "JMBG", value: "jmbg" },
+      { text: "Email", value: "patient.email" },
+      { text: "Name", value: "patient.fullName" },
+      { text: "Country", value: "patient.country" },
+      { text: "City", value: "patient.city" },
+      { text: "JMBG", value: "patient.jmbg" },
       // Hidden headers that should still be searchable
-      { text: "ID", value: "id", align: " d-none" },
-      { text: "Address", value: "address", align: " d-none" },
-      { text: "Phone", value: "phoneNumer", align: " d-none" }
+      { text: "ID", value: "patient.id", align: " d-none" },
+      { text: "Address", value: "patient.address", align: " d-none" },
+      { text: "Phone", value: "patient.phoneNumer", align: " d-none" }
     ],
     search: ""
   }),
@@ -52,7 +51,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      patients: "patients/getPatients"
+      patients: "patients/getMyPatients"
     })
   }
 };

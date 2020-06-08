@@ -160,6 +160,13 @@ export default async () => {
     { where: { id: doctorId2 } }
   );
 
+  /*
+  KLINIKA 2
+  */
+  
+
+  
+
   const { id: userId }: any = await UsersService.createUser(
     {
       firstName: 'Pacijent',
