@@ -1,5 +1,6 @@
 import operationsService from '../services/OperationsService';
 import operationRequestsService from '../services/OperationRequestsService';
+import operationAttendancesService from '../services/OperationAttendancesService';
 
 class OperationsController {
   public async getAllForDoctor(req: any, res: any) {
@@ -14,7 +15,10 @@ class OperationsController {
 
   public async createOperationFromOperationRequest(req: any, res: any) {
     try {
-      const operation = await operationsService.add(req.body);
+      const { operationPayload, doctorIds } = req.body;
+      const operation = await operationsService.add(operationPayload);
+      await operationAttendancesService.add(operation.id, doctorIds);
+
       const { operationRequestId } = req.params;
       await operationRequestsService.remove(operationRequestId);
       res.send(operation);
