@@ -24,7 +24,12 @@
         <v-card-subtitle class="mx-12">
           <v-row justify="center" class="mx-4">
             <v-col align="center">
-              <v-btn :class="[step == 1 ? 'black--text font-weight-bold' : 'grey--text']" text>
+              <v-btn
+                :class="[
+                  step == 1 ? 'black--text font-weight-bold' : 'grey--text',
+                ]"
+                text
+              >
                 Details
               </v-btn>
 
@@ -37,7 +42,12 @@
 
             <v-icon color="grey" class="pt-5">mdi-arrow-right</v-icon>
             <v-col align="center">
-              <v-btn :class="[step == 2 ? 'black--text font-weight-bold' : 'grey--text']" text>
+              <v-btn
+                :class="[
+                  step == 2 ? 'black--text font-weight-bold' : 'grey--text',
+                ]"
+                text
+              >
                 Doctor
               </v-btn>
               <div>
@@ -51,7 +61,12 @@
 
             <v-icon color="grey" class="pt-5">mdi-arrow-right</v-icon>
             <v-col align="center">
-              <v-btn :class="[step == 3 ? 'black--text font-weight-bold' : 'grey--text']" text>
+              <v-btn
+                :class="[
+                  step == 3 ? 'black--text font-weight-bold' : 'grey--text',
+                ]"
+                text
+              >
                 Confirm
               </v-btn>
               <div>
@@ -74,15 +89,22 @@
           />
 
           <DialogPageTwo
-            :name="clinic.name"
-            :type="appoType.name"
-            :price="price"
+            :clinic="clinic"
+            :appoType="appoType"
+            :date="date"
+            @dateChanged="date = $event"
+            :time="time"
+            @timeChanged="time = $event"
+            :doctor="doctor"
+            @doctorChanged="doctor = $event"
             :hidden="step != 2"
           />
 
           <DialogPageThree
             :name="clinic.name"
             :type="appoType.name"
+            :date="date"
+            :time="time"
             :price="price"
             :hidden="step != 3"
           />
@@ -122,18 +144,38 @@ export default {
       dialog: false,
       appoType: { name: '' },
       clinic: { name: '' },
+      doctor: null,
+      date: null,
+      time: null,
       price: 0,
       step: 1,
     };
   },
   methods: {
+
     nextStep() {
-      if (this.step < 3) return ++this.step;
+      console.log(this.doctor);
+      if (this.step == 1) return ++this.step;
+      if (this.step == 2) return this.handleDoctorStep();
+
+      // step 3 is last step
+      this.schedule();
     },
 
     stepBackwards() {
       if (this.step > 1) return --this.step;
       this.close();
+    },
+
+    handleDoctorStep() {
+      if (!this.doctor || !this.date || !this.time) 
+        return;
+
+      this.step++;
+    },
+
+    schedule() {
+
     },
 
     close() {

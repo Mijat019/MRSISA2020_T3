@@ -2,22 +2,21 @@ import DoctorRating from '../models/DoctorRating';
 import ClinicRating from '../models/ClinicRating';
 
 class RoomsService {
-
   public async getRatingForDoctor(doctorId: any): Promise<any> {
-    const allRatings = await DoctorRating.findAll({ where: doctorId });
+    const allRatings = await DoctorRating.findAll({ where: { doctorId } });
     const size = allRatings.length;
 
     // sum up all avg ratings
-    const total = allRatings.reduce((a, b) => + a + + b.averageRating, 0);
+    const total = allRatings.reduce((a, b) => +a + +b.averageRating, 0);
     return total / size;
   }
 
   public async getRatingForClinic(clinicId: any): Promise<any> {
-    const allRatings = await ClinicRating.findAll({ where: clinicId });
+    const allRatings = await ClinicRating.findAll({ where: { clinicId } });
     const size = allRatings.length;
 
     // sum up all avg ratings
-    const total = allRatings.reduce((a, b) => + a + + b.averageRating, 0);
+    const total = allRatings.reduce((a, b) => +a + +b.averageRating, 0);
     return total / size;
   }
 

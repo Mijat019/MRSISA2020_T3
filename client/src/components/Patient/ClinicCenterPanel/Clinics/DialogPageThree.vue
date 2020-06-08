@@ -12,8 +12,8 @@
 
       <v-col cols="6" class="pr-6">
         <v-row justify="end">USD {{price}}</v-row>
-        <v-row justify="end">June 3rd 2020</v-row>
-        <v-row justify="end">12:00 AM (30 mins)</v-row>
+        <v-row justify="end">{{ date }}</v-row>
+        <v-row justify="end">{{ time }} (30 mins)</v-row>
       </v-col>
     </v-row>
 
@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  props: ['name', 'type', 'price', 'date'],
+  props: ['name', 'type', 'price', 'date', 'time'],
 };
 </script>
 

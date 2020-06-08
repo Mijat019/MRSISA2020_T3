@@ -133,6 +133,8 @@ export default async () => {
   );
 
   await DoctorsService.addSpecialization(doctorId, appointmentTypeId);
+  await DoctorsService.addSpecialization(doctorId, appointmentTypeId2);
+  await DoctorsService.addSpecialization(doctorId, appointmentTypeId3);
 
   const { userId: doctorId2 } = await DoctorsService.add(
     {
@@ -148,6 +150,9 @@ export default async () => {
     },
     id
   );
+
+  await DoctorsService.addSpecialization(doctorId2, appointmentTypeId);
+  await DoctorsService.addSpecialization(doctorId2, appointmentTypeId3);
 
   await Users.update(
     { password, accountStatus: AccountStatus.ACTIVATED },
@@ -279,8 +284,8 @@ export default async () => {
   });
 
   await DoctorRating.create({
-    patientId: doctorId,
-    doctorId: id,
+    patientId: userId,
+    doctorId: doctorId,
     communicationRating: 5,
     expertiseRating: 5,
     timeRating: 5,
@@ -289,8 +294,8 @@ export default async () => {
   });
 
   await DoctorRating.create({
-    patientId: doctorId2,
-    doctorId: id,
+    patientId: userId2,
+    doctorId: doctorId2,
     communicationRating: 1,
     expertiseRating: 2,
     timeRating: 2,

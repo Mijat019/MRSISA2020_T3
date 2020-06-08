@@ -30,6 +30,17 @@ class DoctorsController {
     }
   }
 
+  public async getAllForScheduling(req: any, res: any){
+    try{
+      const {clinicId, appointmentTypeId, date } = req.body;
+      const doctors = await DoctorsService.getAllForScheduling(clinicId, appointmentTypeId, date);
+      res.send(doctors);
+    } catch(error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  }
+
   public async add(req: any, res: any) {
     try {
       const newDoctor = await DoctorsService.add(req.body, req.user.clinicId);
