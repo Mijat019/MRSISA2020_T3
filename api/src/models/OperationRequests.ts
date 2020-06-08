@@ -59,7 +59,12 @@ OperationRequests.init(
       defaultValue: () => moment().unix(),
     },
   },
-  { sequelize, tableName: 'operation_requests', timestamps: false }
+  {
+    sequelize,
+    tableName: 'operation_requests',
+    timestamps: false,
+    indexes: [{ fields: ['clinicId'], unique: false }],
+  }
 );
 
 Clinics.hasMany(OperationRequests, {
