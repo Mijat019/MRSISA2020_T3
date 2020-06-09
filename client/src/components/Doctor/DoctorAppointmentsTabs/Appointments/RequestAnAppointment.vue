@@ -110,7 +110,7 @@ import NewAppointmentForm from './NewAppointmentForm';
 import { mapMutations } from 'vuex';
 
 export default {
-  name: 'ScheduleAnotherAppointment',
+  name: 'RequestAnAppointment',
 
   components: {
     NewAppointmentForm,

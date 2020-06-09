@@ -2,14 +2,6 @@
   <div>
     <v-form lazy-validation ref="form">
       <v-select
-        item-text="name"
-        item-value="id"
-        label="Room"
-        :items="getRooms"
-        v-model="roomId"
-        :rules="[v => !!v || 'Room is required']"
-      ></v-select>
-      <v-select
         item-text="appoType.name"
         return-object
         label="Appointment type"
@@ -26,58 +18,54 @@
 </template>
 
 <script>
-import moment from "moment";
-import { mapGetters, mapActions } from "vuex";
+import moment from 'moment';
+import { mapGetters, mapActions } from 'vuex';
 export default {
-  name: "NewAppointmentForm",
+  name: 'NewAppointmentForm',
 
-  props: ["start"],
+  props: ['start'],
 
   data: () => ({
-    roomId: null,
-    doctorSpecialization: null
+    doctorSpecialization: null,
   }),
 
   methods: {
     ...mapActions({
-      getRoomsAction: "rooms/getRoomsAction",
-      getPriceListsForDoctorAction: "priceLists/getPriceListsForDoctorAction",
-      addConfirmedAppointmentAction:
-        "confirmedAppointments/addConfirmedAppointmentAction"
+      getPriceListsForDoctorAction: 'priceLists/getPriceListsForDoctorAction',
+      requestAppointmentAction:
+        'scheduleCustomAppointment/requestAppointmentAction',
     }),
 
     schedule() {
       if (this.$refs.form.validate()) {
-        this.addConfirmedAppointmentAction({
-          roomId: this.roomId,
+        this.requestAppointmentAction({
           priceListId: this.doctorSpecialization.appoType.priceList[0].id,
-          patientId: this.getNextAppointment.patient.user.id,
+          patientMedicalRecordId: this.getNextAppointment.patient.user.id,
           doctorId: this.getUser.id,
+          clinicId: this.getUser.clinicId,
           duration: 60,
-          start: moment(this.start).unix()
+          start: moment(this.start).unix(),
         });
-        this.$emit("appointmentAdded");
+        this.$emit('appointmentAdded');
       }
-    }
+    },
   },
 
   computed: {
     ...mapGetters({
-      getPriceListsForDoctor: "priceLists/getPriceListsForDoctor",
-      getRooms: "rooms/getRooms",
-      getUser: "authentication/getUser",
+      getPriceListsForDoctor: 'priceLists/getPriceListsForDoctor',
+      getUser: 'authentication/getUser',
       getNextAppointment:
-        "confirmedAppointments/appointmentReport/getNextAppointment"
-    })
+        'confirmedAppointments/appointmentReport/getNextAppointment',
+    }),
   },
 
   created() {
     this.getPriceListsForDoctorAction({
       doctorId: this.getUser.id,
-      clinicId: this.getUser.clinicId
+      clinicId: this.getUser.clinicId,
     });
-    this.getRoomsAction(this.getUser.clinicId);
-  }
+  },
 };
 </script>
 

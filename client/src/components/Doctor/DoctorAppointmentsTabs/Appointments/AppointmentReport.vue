@@ -9,7 +9,7 @@
         <v-spacer></v-spacer>
         <v-card-actions>
           <v-btn @click="setShowComponent(`nextAppointment`)">Cancel</v-btn>
-          <ScheduleAnotherAppointment />
+          <RequestAnAppointment />
           <RequestAnOperation />
           <v-btn @click="submitReport" color="success">Submit report</v-btn>
         </v-card-actions>
@@ -52,7 +52,7 @@
 
 <script>
 import RequestAnOperation from './RequestAnOperation';
-import ScheduleAnotherAppointment from './ScheduleAnotherAppointment.vue';
+import RequestAnAppointment from './RequestAnAppointment.vue';
 import Prescriptions from './Prescriptions';
 import UpdateMedicalRecord from './UpdateMedicalRecord';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -62,7 +62,7 @@ export default {
   components: {
     Prescriptions,
     UpdateMedicalRecord,
-    ScheduleAnotherAppointment,
+    RequestAnAppointment,
     RequestAnOperation,
   },
 
