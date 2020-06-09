@@ -24,6 +24,7 @@ export default {
       getFreeAppointmentsAction: 'freeAppointments/getFreeAppointmentsAction',
       getConfirmedAppointmentsAction:
         'confirmedAppointments/getConfirmedAppointmentsAction',
+      getOperationsAction: 'operations/getOperationsAction',
       setNextAppointmentAction:
         'confirmedAppointments/appointmentReport/setNextAppointmentAction',
     }),
@@ -98,8 +99,19 @@ export default {
   computed: {
     ...mapGetters({
       getUser: 'authentication/getUser',
-      getAppointments: 'confirmedAppointments/calendar/getAppointments',
+      getFreeAppointments: 'confirmedAppointments/calendar/getFreeAppointments',
+      getConfirmedAppointments:
+        'confirmedAppointments/calendar/getConfirmedAppointments',
+      getOperations: 'confirmedAppointments/calendar/getOperations',
     }),
+
+    events() {
+      return [
+        ...this.getFreeAppointments,
+        ...this.getConfirmedAppointments,
+        ...this.getOperations,
+      ];
+    },
 
     title() {
       const { start, end } = this;
@@ -141,5 +153,6 @@ export default {
   async created() {
     await this.getFreeAppointmentsAction(this.getUser.id);
     await this.getConfirmedAppointmentsAction(this.getUser.id);
+    await this.getOperationsAction(this.getUser.id);
   },
 };

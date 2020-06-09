@@ -55,7 +55,7 @@
                 ref="calendar"
                 v-model="focus"
                 color="primary"
-                :events="getEvents"
+                :events="events"
                 :now="today"
                 :type="type"
                 :value="today"
@@ -104,7 +104,6 @@
 
 <script>
 import moment from 'moment';
-import { mapGetters } from 'vuex';
 import calendarMixin from '../../../../mixins/calendarMixin';
 
 import NewAppointmentForm from './NewAppointmentForm';
@@ -123,11 +122,7 @@ export default {
     dialog: false,
   }),
 
-  computed: {
-    ...mapGetters({
-      getEvents: 'confirmedAppointments/calendar/getEvents',
-    }),
-  },
+  computed: {},
 
   methods: {
     appointmentAdded() {

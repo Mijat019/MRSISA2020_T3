@@ -41,7 +41,7 @@
           ref="calendar"
           v-model="focus"
           color="primary"
-          :events="getAppointments"
+          :events="events"
           :now="today"
           :type="type"
           :value="today"

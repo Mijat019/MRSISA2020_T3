@@ -34,6 +34,7 @@ import time from './modules/time';
 import leaveRequests from './modules/leaveRequests';
 import prescriptionApproving from './modules/prescriptionApproving';
 import operationRequests from './modules/operationRequests';
+import operations from './modules/operations';
 
 Vue.use(Vuex);
 
@@ -77,5 +78,6 @@ export default new Vuex.Store({
     appointmentReport,
     prescriptionApproving,
     operationRequests,
+    operations,
   },
 });

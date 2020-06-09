@@ -54,7 +54,7 @@
                 ref="calendar"
                 v-model="focus"
                 color="primary"
-                :events="getEvents"
+                :events="events"
                 :now="today"
                 :type="type"
                 :value="today"
@@ -114,7 +114,6 @@ export default {
 
   computed: {
     ...mapGetters({
-      getEvents: 'confirmedAppointments/calendar/getEvents',
       getUser: 'authentication/getUser',
       getNextAppointment:
         'confirmedAppointments/appointmentReport/getNextAppointment',
