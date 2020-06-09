@@ -48,6 +48,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import moment from "moment";
 export default {
 
   data: () => ({
@@ -107,9 +108,17 @@ export default {
 
   computed: {
     ...mapGetters({
-      requests: "leaveRequests/getRequests",
+      unixRequests: "leaveRequests/getRequests",
       user: "authentication/getUser"
-    })
+    }),
+
+    requests() {
+        this.unixRequests.forEach(element => {
+            element.from = moment(element.from * 1000).format("DD.MM.YYYY");
+            element.to = moment(element.to * 1000).format("DD.MM.YYYY");
+        });
+        return this.unixRequests;
+    }
   }
 };
 </script>
