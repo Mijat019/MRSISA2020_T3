@@ -34,7 +34,9 @@
       <v-tab-item :value="'requestedAppointments'">
         <ManageRequestedAppointments />
       </v-tab-item>
-      <v-tab-item :value="'report'">report</v-tab-item>
+      <v-tab-item :value="'report'">
+        <Report/>
+      </v-tab-item>
       <v-tab-item :value="'leaveRequests'">
         <ManageLeaveRequests/>
       </v-tab-item>
@@ -51,6 +53,7 @@ import ManageFreeAppointments from "./AppointmentsTab/ManageFreeAppointments";
 import ManagePriceLists from './PriceListsTab/ManagePriceLists'
 import ManageRequestedAppointments from './RequestedAppointmentsTab/ManageRequestedAppointments'
 import ManageLeaveRequests from "./LeaveRequestsTab/ManageLeaveRequests";
+import Report from "./ReportTab/Report";
 // import ManageAppointmentTypes from "./AppointmentTypesTab/ManageAppointmentTypes";
 import { mapActions } from "vuex";
 export default {
@@ -63,7 +66,8 @@ export default {
     ManageFreeAppointments,
     ManagePriceLists,
     ManageRequestedAppointments,
-    ManageLeaveRequests
+    ManageLeaveRequests,
+    Report
   },
   data: () => ({
     tab: null,
