@@ -11,6 +11,18 @@ class ReportController {
       res.status(400).send(error);
     }
   }
+
+  public async getNumberOfAppointments(req: any, res: any) {
+    try {
+      const appointmentCount = await reportService.getNumberOfFinishedAppointments(
+        req.user.clinicId,
+        req.body.dates
+      );
+      res.send(appointmentCount);
+    } catch (error) {
+      res.status(400).send(error.message);
+    }
+  }
 }
 
 export default new ReportController();

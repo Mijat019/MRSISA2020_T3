@@ -15,9 +15,10 @@
         ></v-rating>
       </v-col>
     </v-row>
+    <hr />
     <v-row>
       <v-col>
-        <v-card>
+        <v-card elevation="0">
           <v-card-title>Doctor ratings</v-card-title>
           <v-card-text>
             <v-data-table :headers="headers" :items="getDoctors">
@@ -39,17 +40,50 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col></v-col>
+      <v-col>
+        <v-menu
+          ref="menu"
+          v-model="menu"
+          :close-on-content-click="false"
+          :return-value.sync="dates"
+          transition="scale-transition"
+          offset-y
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="dates"
+              label="Date interval"
+              prepend-icon="mdi-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker v-model="dates" range no-title scrollable>
+            <v-spacer></v-spacer>
+            <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="show">OK</v-btn>
+          </v-date-picker>
+        </v-menu>
+        <AppointmentGraph :dates="dates2" />
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import AppointmentGraph from './AppointmentGraph.vue';
 import { mapGetters, mapActions } from 'vuex';
+import moment from 'moment';
 export default {
+  components: { AppointmentGraph },
+
   name: 'BusinessReport',
 
   data: () => ({
+    menu: false,
+    dates: [],
+    dates2: [moment().startOf('week'), moment().endOf('week')],
     headers: [
       { text: 'First name', value: 'user.firstName' },
       { text: 'Last name', value: 'user.lastName' },
@@ -70,6 +104,11 @@ export default {
       getClinicRatingAction: 'ratings/getClinicRatingAction',
       getDoctorsAction: 'doctors/getDoctorsAction',
     }),
+
+    show() {
+      this.dates2 = [...this.dates];
+      this.menu = false;
+    },
   },
 
   mounted() {

@@ -4,13 +4,13 @@ import {
   DATE,
   ModelAttributeColumnOptions,
   BOOLEAN,
-} from "sequelize";
-import db from "./database";
-import Rooms from "./Rooms";
-import DoctorAt from "./DoctorAt";
-import PriceLists from "./PriceLists";
-import PatientMedicalRecord from "./PatientMedicalRecord";
-import Clinics from "./Clinics";
+} from 'sequelize';
+import db from './database';
+import Rooms from './Rooms';
+import DoctorAt from './DoctorAt';
+import PriceLists from './PriceLists';
+import PatientMedicalRecord from './PatientMedicalRecord';
+import Clinics from './Clinics';
 
 class ConfirmedAppointments extends Model {
   public id!: number;
@@ -75,30 +75,37 @@ ConfirmedAppointments.init(
   },
   {
     timestamps: false,
-    tableName: "confirmed_appointments",
+    tableName: 'confirmed_appointments',
     sequelize: db,
     version: true,
-    indexes: [{ unique: false, fields: ["finished"] }],
+    indexes: [{ unique: false, fields: ['finished'] }],
   }
 );
 
 ConfirmedAppointments.belongsTo(PriceLists, {
-  as: "priceList",
-  foreignKey: "priceListId",
+  as: 'priceList',
+  foreignKey: 'priceListId',
 });
 
 ConfirmedAppointments.belongsTo(PatientMedicalRecord, {
-  as: "patient",
-  foreignKey: "patientId",
+  as: 'patient',
+  foreignKey: 'patientId',
 });
 
-ConfirmedAppointments.belongsTo(Rooms, { as: "room", foreignKey: "roomId" });
+ConfirmedAppointments.belongsTo(Rooms, { as: 'room', foreignKey: 'roomId' });
 
 ConfirmedAppointments.belongsTo(DoctorAt, {
-  as: "doctor",
-  foreignKey: "doctorId",
+  as: 'doctor',
+  foreignKey: 'doctorId',
 });
 
-ConfirmedAppointments.belongsTo(Clinics, { as: "clinic", foreignKey: "clinicId" });
+Clinics.hasMany(ConfirmedAppointments, {
+  as: 'clinics',
+  foreignKey: 'clinicId',
+});
+ConfirmedAppointments.belongsTo(Clinics, {
+  as: 'clinic',
+  foreignKey: 'clinicId',
+});
 
 export default ConfirmedAppointments;

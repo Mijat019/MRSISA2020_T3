@@ -1,30 +1,31 @@
-import Vue from "vue";
+import Vue from 'vue';
 
 const state = {
-  income: null
+  income: null,
 };
 
 const mutations = {
   async setIncome(state, data) {
     state.income = data;
-  }
+  },
 };
 
 const actions = {
   async getIncomeAction({ commit, dispatch }, dates) {
     try {
-      let { data } = await Vue.$axios.post(`/incomeReport`, dates); 
-      commit("setIncome", data.income);
+      let { data } = await Vue.$axios.post(`/report`, dates);
+
+      commit('setIncome', data.income);
     } catch (error) {
-      dispatch("snackbar/showError", error.response.data, {
-        root: true
+      dispatch('snackbar/showError', error.response.data, {
+        root: true,
       });
     }
-  }
+  },
 };
 
 const getters = {
-  getIncome: (state) => state.income
+  getIncome: state => state.income,
 };
 
 export default {
@@ -32,5 +33,5 @@ export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };

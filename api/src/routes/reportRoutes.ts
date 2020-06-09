@@ -8,5 +8,6 @@ router.use(authenticationMiddleware.verifyToken);
 router.use(authenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN));
 
 router.post('/', reportController.getIncome);
+router.post('/appointmentCount', reportController.getNumberOfAppointments);
 
 export default router;
