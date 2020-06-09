@@ -11,28 +11,20 @@
         single-line
         hide-details
       ></v-text-field>
-
-      <v-select
-        class="mx-12 selectInput"
-        item-text="name"
-        :items="appointmentTypes"
-        v-model="appointmentType"
-        menu-props="auto"
-        label="Appointment type"
-        hide-details
-        single-line
-        return-object
-      ></v-select>
     </v-card-title>
     <v-card-text>
       <v-data-table
         :headers="headers"
-        :items="clinics"
+        :items="doctors"
         :search="search"
         @click:row="rowClicked"
       >
         <template v-slot:top>
           <slot name="top"> </slot>
+        </template>
+
+        <template v-slot:item.spec="{ item }">
+          {{ generateSpecForDoctor(item) }}
         </template>
 
         <template v-slot:item.rating="{ item }">
@@ -46,25 +38,21 @@
             readonly
           ></v-rating>
         </template>
-
-        <template v-slot:item.price="{ item }">
-          {{ getPriceListFromClinic(item).price }}
-        </template>
       </v-data-table>
     </v-card-text>
-    <ScheduleDialog />
+    <DoctorScheduleDialog />
   </v-card>
 </template>
 
 <script>
 import { bus } from '../../../../main';
-import ScheduleDialog from './ScheduleDialog';
+import DoctorScheduleDialog from './DoctorScheduleDialog'
 
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
-  name: 'ClinicsTable',
+  name: 'DoctorsTable',
   components: {
-    ScheduleDialog,
+    DoctorScheduleDialog,
   },
   data() {
     return {
@@ -74,31 +62,26 @@ export default {
       headers: [
         {
           text: 'Name',
-          value: 'name',
+          value: 'fullName',
           align: 'center',
         },
         {
-          text: 'Country',
-          value: 'country',
+          text: 'Email',
+          value: 'user.email',
           align: 'center',
         },
         {
-          text: 'City',
-          value: 'city',
+          text: 'Clinic',
+          value: 'clinic.name',
           align: 'center',
         },
         {
-          text: 'Address',
-          value: 'address',
+          text: 'Specializations',
+          value: 'spec',
           align: 'center',
         },
         {
-          text: 'Appointment Price',
-          value: 'price',
-          align: 'center',
-        },
-        {
-          text: 'Clinic Rating',
+          text: 'Rating',
           value: 'rating',
           align: 'center',
         },
@@ -107,13 +90,12 @@ export default {
   },
 
   async mounted() {
-    this.setClinics([]);
-    await this.getAppointmentTypesAction();
-    await this.getPriceListsAction();
+    await this.getDoctorsAction();
   },
 
   methods: {
     ...mapActions({
+      getDoctorsAction: 'doctors/getDoctorsAction',
       getClinicsForAppoType: 'clinics/getClinicsForAppoType',
       getAppointmentTypesAction: 'appointmentTypes/getAppointmentTypesAction',
       getPriceListsAction: 'priceLists/getPriceListsAction',
@@ -124,12 +106,7 @@ export default {
     }),
 
     async rowClicked(value) {
-      const data = {
-        'clinic' : value,
-        'appoType': this.appointmentType,
-        'priceList' : this.getPriceListFromClinic(value)
-      };
-      bus.$emit('clinicChosen', data);
+      bus.$emit('doctorChosen', value);
     },
 
     getPriceListFromClinic(clinic) {
@@ -142,10 +119,17 @@ export default {
       )[0];
       return x ? x : {};
     },
+
+    generateSpecForDoctor(item){
+      if (item.spec)
+        item.spec.map(spec => spec.appoType.name).join(', ');
+      return '';
+    }
   },
 
   computed: {
     ...mapGetters({
+      doctors: 'doctors/getDoctors',
       clinics: 'clinics/getClinics',
       appointmentTypes: 'appointmentTypes/getAppointmentTypes',
       priceLists: 'priceLists/getPriceLists',
@@ -153,22 +137,8 @@ export default {
   },
 
   watch: {
-    async appointmentType(value) {
-      await this.getClinicsForAppoType(value.id);
-      for (let clinic of this.clinics) {
-        await this.getPriceListsAction(clinic.id);
-      }
-    },
   },
 };
 </script>
 
-<style>
-.searchInput {
-  max-width: 500px !important;
-}
-
-.selectInput {
-  max-width: 250px !important;
-}
-</style>
+<style></style>

@@ -13,20 +13,23 @@
       </v-tab-item>
       
       <v-tab-item :value="'clinics'"><ClinicsTable/></v-tab-item>
-      <v-tab-item :value="'doctors'">doctors</v-tab-item>
+      <v-tab-item :value="'doctors'"><DoctorsTable/></v-tab-item>
 
     </v-tabs>
   </div>
 </template>
 
 <script>
-import ScheduleAppointment from "./ScheduleAppointment";
+import ScheduleAppointment from "./FreeAppos/ScheduleAppointment";
 import ClinicsTable from './Clinics/ClinicsTable'
+import DoctorsTable from './Doctors/DoctorsTable'
+
 export default {
   name: "PatientAppointment",
   components: {
     ScheduleAppointment,
-    ClinicsTable
+    ClinicsTable,
+    DoctorsTable
   },
   data: () => ({
     tab: null

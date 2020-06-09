@@ -33,7 +33,9 @@
             </v-btn>
 
             <div>
-              <v-avatar color="blue" size="25" class="white--text">1</v-avatar>
+              <v-avatar color="blue" size="25" class="white--text">
+                1
+              </v-avatar>
             </div>
           </v-col>
 
@@ -45,66 +47,40 @@
               ]"
               text
             >
-              Doctor
-            </v-btn>
-            <div>
-              <v-avatar
-                :class="[step > 1 ? 'blue white--text' : 'grey white--text']"
-                size="25"
-                >2</v-avatar
-              >
-            </div>
-          </v-col>
-
-          <v-icon color="grey" class="pt-5">mdi-arrow-right</v-icon>
-          <v-col align="center">
-            <v-btn
-              :class="[
-                step == 3 ? 'black--text font-weight-bold' : 'grey--text',
-              ]"
-              text
-            >
               Confirm
             </v-btn>
             <div>
               <v-avatar
-                :class="[step > 2 ? 'blue white--text' : 'grey white--text']"
+                :class="[step == 2 ? 'blue white--text' : 'grey white--text']"
                 size="25"
-                >3</v-avatar
               >
+                2
+              </v-avatar>
             </div>
           </v-col>
         </v-row>
       </v-card-subtitle>
       <!-- FORMA -->
       <v-card-text>
-        <DialogPageOne
-          :name="clinic.name"
-          :type="appoType.name"
-          :price="priceList.price"
-          :hidden="step != 1"
-        />
-
-        <DialogPageTwo
-          :clinic="clinic"
-          :appoType="appoType"
+        <DoctorAppoDialog
+          :priceList="priceList"
+          @priceListChanged="priceList = $event"
           :date="date"
           @dateChanged="date = $event"
           :time="time"
           @timeChanged="time = $event"
           :doctor="doctor"
-          @doctorChanged="doctor = $event"
-          :hidden="step != 2"
+          :hidden="step != 1"
         />
 
         <DialogPageThree
-          :name="clinic.name"
-          :type="appoType.name"
+          :name="doctor.clinic.name"
+          :type="priceList.appoType.name"
           :date="date"
           :time="time"
-          :price="priceList.price"
+          :price="priceList.appoType.priceList[0].price"
           :doctor="doctor.fullName"
-          :hidden="step != 3"
+          :hidden="step != 2"
         />
       </v-card-text>
 
@@ -126,41 +102,36 @@
 
 <script>
 import { bus } from '../../../../main';
-import DialogPageOne from './DialogPageOne';
-import DialogPageTwo from './DialogPageTwo';
-import DialogPageThree from './DialogPageThree';
+import DialogPageThree from './../Clinics/DialogPageThree';
+import DoctorAppoDialog from './DoctorAppoDialog';
 import { mapGetters, mapActions } from 'vuex';
-import moment from 'moment'
+import moment from 'moment';
 
 export default {
   components: {
-    DialogPageOne,
-    DialogPageTwo,
+    DoctorAppoDialog,
     DialogPageThree,
   },
   data() {
     return {
       dialog: false,
-      appoType: { name: '' },
-      clinic: { name: '' },
-      doctor: { fullName: '' },
-      date: null,
-      time: null,
-      priceList: { id: -1, price: 0 },
+      doctor: { fullName: '', clinic: '' },
+      date: '',
+      time: '',
+      priceList: { id: -1, price: 0, appoType: {name: '', priceList:[{}]} },
       step: 1,
     };
   },
 
   methods: {
-    ...mapActions('scheduleCustomAppointment',{
+    ...mapActions('scheduleCustomAppointment', {
       requestAppointmentAction: 'requestAppointmentAction',
     }),
 
     nextStep() {
-      if (this.step == 1) return ++this.step;
-      if (this.step == 2) return this.handleDoctorStep();
+      if (this.step == 1) return this.handleDetailsStep();
 
-      // step 3 is last step
+      // step 2 is last step
       this.schedule();
     },
 
@@ -169,21 +140,20 @@ export default {
       this.close();
     },
 
-    handleDoctorStep() {
+    handleDetailsStep() {
       // check if inputs are filled in
-      if (!this.doctor || !this.date || !this.time) return;
+        if (!this.priceList.id < 0 || !this.date || !this.time) return;
 
       this.step++;
     },
 
     async schedule() {
-
       const dateTime = this.date + ' ' + this.time;
-      const start = moment(dateTime, "YYYY-MM-DD HH:mm");
+      const start = moment(dateTime, 'YYYY-MM-DD HH:mm');
 
       const payload = {
-        priceListId: this.priceList.id,
-        clinicId: this.clinic.id,
+        priceListId: this.priceList.appoType.priceList[0].id,
+        clinicId: this.doctor.clinicId,
         patientMedicalRecordId: this.user.id,
         doctorId: this.doctor.user.id,
         duration: 30,
@@ -197,12 +167,10 @@ export default {
 
     resetFields() {
       this.step = 1;
-      this.appoType = { name: '' };
-      this.clinic = { name: '' };
-      this.doctor =  { fullName: '' };
-      this.date = null;
-      this.time =  null;
-      this.priceList = { id: -1, price: 0 };
+      this.doctor = { fullName: '', clinic: '' };
+      this.date = '';
+      this.time = '';
+      this.priceList = { id: -1, price: 0, appoType: {name: '', priceList:[{}]} };
     },
 
     close() {
@@ -218,11 +186,8 @@ export default {
   },
 
   created() {
-    bus.$on('clinicChosen', data => {
-      this.step = 1;
-      this.clinic = data.clinic;
-      this.appoType = data.appoType;
-      this.priceList = data.priceList;
+    bus.$on('doctorChosen', data => {
+      this.doctor = data;
       this.dialog = true;
     });
   },

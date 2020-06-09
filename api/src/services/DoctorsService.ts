@@ -30,7 +30,14 @@ class DoctorsService {
           ],
         },
       ],
-    });
+    }) as any;
+
+    for (let doctor of doctors) {
+      doctor.dataValues.rating = await RatingsService.getRatingForDoctor(
+        doctor.userId
+      );
+    }
+
     return doctors;
   }
 
@@ -60,8 +67,13 @@ class DoctorsService {
           ],
         },
       ],
-    });
+    }) as any;
 
+    for (let doctor of doctors) {
+      doctor.dataValues.rating = await RatingsService.getRatingForDoctor(
+        doctor.userId
+      );
+    }
     return doctors;
   }
 

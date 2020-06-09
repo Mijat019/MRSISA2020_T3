@@ -1,5 +1,17 @@
 <template>
   <v-form ref="form" class="mt-5 mx-8" lazy-validation>
+    <v-select
+      label="Appointment type"
+      :items="getPriceLists"
+      v-model="priceListProp"
+      outlined
+      prepend-inner-icon="mdi-doctor"
+      single
+      item-text="appoType.name"
+      return-object
+    >
+    </v-select>
+
     <v-menu
       v-model="menu"
       :close-on-content-click="false"
@@ -21,38 +33,11 @@
       <v-date-picker
         no-title
         :min="getTomorrowsDate"
-        first-day-of-week=1
+        first-day-of-week="1"
         v-model="dateProp"
         @input="menu = false"
       ></v-date-picker>
     </v-menu>
-
-    <v-select
-      label="Doctor"
-      :items="getDoctors"
-      v-model="doctorProp"
-      outlined
-      prepend-inner-icon="mdi-doctor"
-      single
-      return-object
-      item-text="fullName"
-    >
-      <template v-slot:item="data">
-        {{ data.item.fullName }}
-        <v-spacer> </v-spacer>
-        <v-rating
-          :value="data.item.rating"
-          disabled
-          color="yellow darken-3"
-          background-color="grey darken-1"
-          empty-icon="$ratingFull"
-          half-increments
-          readonly
-          small
-          single
-        ></v-rating>
-      </template>
-    </v-select>
 
     <v-select
       :items="availableTimes"
@@ -68,27 +53,24 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
-  props: ['doctor', 'date', 'time', 'clinic', 'appoType'],
+  props: ['doctor', 'date', 'time', 'priceList'],
   data() {
     return {
       menu: false,
-      tttt: ['13', '15', '17'],
     };
   },
 
   methods: {
     ...mapActions({
-      getDoctorsForSchedulingAction: 'doctors/getDoctorsForSchedulingAction',
+      getPriceListsForDoctorAction: 'priceLists/getPriceListsForDoctorAction',
     }),
 
-    ...mapMutations('doctors', {
-      setDoctors: 'setDoctors',
-    }),
+    ...mapMutations({}),
   },
 
   computed: {
     ...mapGetters({
-      getDoctors: 'doctors/getDoctors',
+      getPriceLists: 'priceLists/getPriceListsForDoctor',
     }),
 
     availableTimes() {
@@ -101,12 +83,12 @@ export default {
       return x;
     },
 
-    doctorProp: {
+    priceListProp: {
       get() {
-        return this.doctor;
+        return this.priceList;
       },
       set(val) {
-        this.$emit('doctorChanged', val);
+        this.$emit('priceListChanged', val);
       },
     },
 
@@ -130,28 +112,18 @@ export default {
 
     getTomorrowsDate() {
       const today = new Date();
-      const tomorrow = new Date(today).setDate(today.getDate() + 1)
+      const tomorrow = new Date(today).setDate(today.getDate() + 1);
       return new Date(tomorrow).toISOString();
-    }
+    },
   },
 
   watch: {
     date(value) {
-      if(!value) return;
-      
       // // when date is changed reset selected doctors and time
-      this.doctorProp = {fullName: ''};
       this.timeProp = '';
-
-      // load new doctors
-      this.getDoctorsForSchedulingAction({
-        clinicId: this.clinic.id,
-        appointmentTypeId: this.appoType.id,
-        date: value,
-      });
     },
 
-    doctor(value) {
+    priceList(value) {
       // when doctors is changed reset selected time
       this.timeProp = '';
 
@@ -159,9 +131,11 @@ export default {
     },
   },
 
-  mounted() {
-    // at first no doctors are loadded
-    this.setDoctors([]);
+  async mounted() {
+    await this.getPriceListsForDoctorAction({
+      doctorId: this.doctor.user.id,
+      clinicId: this.doctor.clinicId,
+    });
   },
 };
 </script>
