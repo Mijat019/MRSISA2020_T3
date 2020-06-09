@@ -2,11 +2,16 @@ import Vue from 'vue';
 
 const state = {
   operations: [],
+  operationAttendances: [],
 };
 
 const mutations = {
   setOperations(state, operations) {
     state.operations = operations;
+  },
+
+  setOperationAttendances(state, operationAttendances) {
+    state.operationAttendances = operationAttendances;
   },
 };
 
@@ -15,6 +20,10 @@ const actions = {
     try {
       const { data } = await Vue.$axios.get(`/operations/doctor/${doctorId}`);
       commit('setOperations', data);
+      const { data: doctor } = await Vue.$axios.get(
+        `/operationAttendances/${doctorId}`
+      );
+      commit('setOperationAttendances', doctor.operationAttendances);
     } catch (error) {
       dispatch('snackbar/showError', error.response.data, { root: true });
     }

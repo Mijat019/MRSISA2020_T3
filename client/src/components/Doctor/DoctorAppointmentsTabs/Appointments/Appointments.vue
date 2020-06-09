@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import AppointmentReport from "./AppointmentReport";
-import NextAppointment from "./NextAppointment";
-import { mapGetters, mapActions } from "vuex";
+import AppointmentReport from './AppointmentReport';
+import NextAppointment from './NextAppointment';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "Appointments",
+  name: 'Appointments',
 
   components: { AppointmentReport, NextAppointment },
 
@@ -23,27 +23,30 @@ export default {
 
   computed: {
     ...mapGetters({
-      getUser: "authentication/getUser",
+      getUser: 'authentication/getUser',
       getShowComponent:
-        "confirmedAppointments/appointmentReport/getShowComponent",
+        'confirmedAppointments/appointmentReport/getShowComponent',
       getNextAppointment:
-        "confirmedAppointments/appointmentReport/getNextAppointment"
-    })
+        'confirmedAppointments/appointmentReport/getNextAppointment',
+    }),
   },
 
   methods: {
     ...mapActions({
       getConfirmedAppointmentsAction:
-        "confirmedAppointments/getConfirmedAppointmentsAction",
+        'confirmedAppointments/getConfirmedAppointmentsAction',
       setNextAppointmentAction:
-        "confirmedAppointments/appointmentReport/setNextAppointmentAction"
-    })
+        'confirmedAppointments/appointmentReport/setNextAppointmentAction',
+      setShowComponent:
+        'confirmedAppointments/appointmentReport/setShowComponent',
+    }),
   },
 
   async created() {
     await this.getConfirmedAppointmentsAction(this.getUser.id);
+    this.setShowComponent('nextAppointment');
     this.setNextAppointmentAction();
-  }
+  },
 };
 </script>
 

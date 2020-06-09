@@ -25,6 +25,7 @@ const getters = {
         rootState.confirmedAppointments.confirmedAppointments
       ),
       ...operationsToEvents(rootState.operations.operations),
+      ...attendancesToEvents(rootState.operations.operationAttendances),
     ];
 
     state.events = test;
@@ -62,6 +63,25 @@ function operationsToEvents(operations) {
       end: end.format('YYYY-MM-DD HH:mm'),
     };
   });
+}
+
+function attendancesToEvents(attendances) {
+  return (
+    attendances?.map(attendance => {
+      const end = moment.unix(attendance.operation.start);
+      end.add(1, 'hour');
+      return {
+        appointmentType: 'Operation attendance',
+        roomName: attendance.operation.room.name,
+        name: `${attendance.operation.patientMedicalRecord.user.firstName} ${attendance.operation.patientMedicalRecord.user.lastName} ${attendance.operation.room.name}`,
+        color: 'pink',
+        start: moment
+          .unix(attendance.operation.start)
+          .format('YYYY-MM-DD HH:mm'),
+        end: end.format('YYYY-MM-DD HH:mm'),
+      };
+    }) || []
+  );
 }
 
 export default {

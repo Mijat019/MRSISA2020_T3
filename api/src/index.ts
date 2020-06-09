@@ -31,6 +31,7 @@ import ratingsRoutes from './routes/ratingsRoutes';
 import leaveRequestsRoutes from './routes/leaveRequestsRoutes';
 import operationRequestsRoutes from './routes/operationRequestsRoutes';
 import operationsRoutes from './routes/operationsRoutes';
+import operationAttendancesRoutes from './routes/operationAttendancesRoutes';
 
 // connect to the database
 (async () => {
@@ -40,8 +41,8 @@ import operationsRoutes from './routes/operationsRoutes';
     // creates tables from model
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
-    await db.sync({ force: true });
-    await initModel();
+    // await db.sync({ force: true });
+    // await initModel();
     // await initModelStega();
   } catch (error) {
     console.log(error);
@@ -81,6 +82,7 @@ app.use('/leaveRequests', leaveRequestsRoutes);
 app.use('/ratings', ratingsRoutes);
 app.use('/operationRequests', operationRequestsRoutes);
 app.use('/operations', operationsRoutes);
+app.use('/operationAttendances', operationAttendancesRoutes);
 
 app.use(express.static(__dirname + '/public/'));
 
