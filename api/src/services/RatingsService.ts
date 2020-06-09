@@ -1,7 +1,7 @@
 import DoctorRating from '../models/DoctorRating';
 import ClinicRating from '../models/ClinicRating';
 
-class RoomsService {
+class RatingService {
   public async getRatingForDoctor(doctorId: any): Promise<any> {
     const allRatings = await DoctorRating.findAll({ where: { doctorId } });
     const size = allRatings.length;
@@ -31,4 +31,4 @@ class RoomsService {
   }
 }
 
-export default new RoomsService();
+export default new RatingService();

@@ -1,15 +1,15 @@
-import express from "express";
-import RatingsController from "../controllers/RatingsController";
-import AuthenticationMiddleware from "../middleware/AuthenticationMiddleware";
+import express from 'express';
+import ratingsController from '../controllers/RatingsController';
+import authenticationMiddleware from '../middleware/AuthenticationMiddleware';
 
 const router = express.Router();
 
-router.use(AuthenticationMiddleware.verifyToken);
+router.use(authenticationMiddleware.verifyToken);
 
+router.get('/clinic', ratingsController.getClinicRating);
 
-router.post("/doctor", RatingsController.addDoctorRating);
+router.post('/doctor', ratingsController.addDoctorRating);
 
-router.post("/clinic", RatingsController.addClinicRating);
-
+router.post('/clinic', ratingsController.addClinicRating);
 
 export default router;
