@@ -74,6 +74,7 @@ const getters = {
       patient: `${operationRequest.patientMedicalRecord.user.firstName} ${operationRequest.patientMedicalRecord.user.lastName}`,
       patientEmail: operationRequest.patientMedicalRecord.user.email,
       time: moment.unix(operationRequest.start).format('llll'),
+      doctorIds: [],
     })),
 };
 

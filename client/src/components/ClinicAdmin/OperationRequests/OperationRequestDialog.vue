@@ -1,55 +1,65 @@
 <template>
   <v-dialog v-model="value.showDialog" @click:outside="$emit('input', {})">
-    <v-card>
-      <v-card-title>Operation request information</v-card-title>
-      <v-card-text>
-        <hr />
-        <v-list>
-          <v-list-item v-for="(item, index) in items" :key="index">
-            <v-list-item-avatar>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-              <v-list-item-subtitle>{{ item.subtitle }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>Room</v-list-item-title>
-              <v-row class="pa-0 ma-0">
-                <v-col cols="2" class="pa-0 ma-0">
-                  <v-form ref="form" lazy-validation>
-                    <v-select
-                      class="pa-0 ma-0"
-                      :items="getRooms"
-                      item-text="name"
-                      item-value="id"
-                      v-model="roomId"
-                      :rules="[v => !!v || `Required`]"
-                    ></v-select>
-                  </v-form>
-                </v-col>
-              </v-row>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn @click="schedule" color="primary">Schedule</v-btn>
-      </v-card-actions>
-    </v-card>
+    <v-row>
+      <v-col cols="6">
+        <v-card>
+          <v-card-title>Operation request information</v-card-title>
+          <v-card-text>
+            <hr />
+            <v-list>
+              <v-list-item v-for="(item, index) in items" :key="index">
+                <v-list-item-avatar>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ item.subtitle }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-avatar>
+                  <v-icon>mdi-account</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>Room</v-list-item-title>
+                  <v-row class="pa-0 ma-0">
+                    <v-col cols="2" class="pa-0 ma-0">
+                      <v-form ref="form" lazy-validation>
+                        <v-select
+                          class="pa-0 ma-0"
+                          :items="getRooms"
+                          item-text="name"
+                          item-value="id"
+                          v-model="roomId"
+                          :rules="[v => !!v || `Required`]"
+                        ></v-select>
+                      </v-form>
+                    </v-col>
+                  </v-row>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click="schedule" color="primary">Schedule</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+      <v-col cols="6">
+        <ManageOperationAttendance v-model="value.item.doctorIds" :doctorId="value.item.doctorId" />
+      </v-col>
+    </v-row>
   </v-dialog>
 </template>
 
 <script>
+import ManageOperationAttendance from './ManageOperationAttendance.vue';
 import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'OperationRequestDialog',
+
+  components: { ManageOperationAttendance },
 
   props: ['value'],
 
@@ -105,9 +115,15 @@ export default {
           clinicId: item.clinicId,
           duration: 60,
         },
-        doctorIds: [],
+        doctorIds: item.doctorIds.map(el => el.id),
       };
-      this.$emit('input', {});
+
+      this.$emit('input', {
+        showDialog: false,
+        item: {
+          doctorIds: [],
+        },
+      });
       this.scheduleOperation(operation);
     },
   },

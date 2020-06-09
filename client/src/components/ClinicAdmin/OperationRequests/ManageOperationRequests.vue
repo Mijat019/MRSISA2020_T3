@@ -17,7 +17,6 @@
 <script>
 import OperationRequestDialog from './OperationRequestDialog.vue';
 import { mapGetters, mapActions } from 'vuex';
-import moment from 'moment';
 
 export default {
   components: { OperationRequestDialog },
@@ -27,6 +26,9 @@ export default {
   data: () => ({
     clickedOperationRequest: {
       showDialog: false,
+      item: {
+        doctorIds: [],
+      },
     },
     headers: [
       { text: 'Doctor', value: 'doctor' },
@@ -41,14 +43,6 @@ export default {
       getOperationRequests: 'operationRequests/getOperationRequests',
       getUser: 'authentication/getUser',
     }),
-
-    items() {
-      return this.getOperationRequests.map(operationRequest => ({
-        doctor: `${operationRequest.doctor.user.firstName} ${operationRequest.doctor.user.lastName}`,
-        patient: `${operationRequest.patientMedicalRecord.user.firstName} ${operationRequest.patientMedicalRecord.user.lastName}`,
-        start: moment(operationRequest.start).format('llll'),
-      }));
-    },
   },
 
   methods: {
