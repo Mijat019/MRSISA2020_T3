@@ -19,6 +19,7 @@ import DoctorRating from './DoctorRating';
 import ClinicRating from './ClinicRating';
 import NursesService from '../services/NursesService';
 import ConfirmedAppointmentService from '../services/ConfirmedAppointmentService';
+import LeaveRequestsService from '../services/LeaveRequestsService';
 
 export default async () => {
   await Diagnosis.create({ name: 'Insane in the membrane' });
@@ -310,4 +311,5 @@ export default async () => {
     averageRating: 1.67,
     comment: 'SUX',
   });
+
 };

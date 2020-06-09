@@ -1,5 +1,5 @@
 import db from "./database";
-import { Model, STRING, INTEGER, DATE } from "sequelize";
+import { Model, STRING, INTEGER } from "sequelize";
 import Users from "./Users";
 import Clinics from "./Clinics";
 
@@ -7,8 +7,8 @@ class LeaveRequests extends Model {
     public id!: number;
     public userId!: number;
     public clinicId!: number;
-    public from!: Date;
-    public to!: Date;
+    public from!: number;
+    public to!: number;
     public status!: string;
     public reason!: string;
 }
@@ -29,11 +29,11 @@ LeaveRequests.init(
             allowNull: false
         },
         from: {
-            type: DATE,
+            type: INTEGER,
             allowNull: false
         },
         to: {
-            type: DATE,
+            type: INTEGER,
             allowNull: false
         },
         status: {
