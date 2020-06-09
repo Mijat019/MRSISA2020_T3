@@ -20,11 +20,11 @@ const mutations = {
 };
 
 const actions = {
-    async requestAppointmentAction({ commit, dispatch }, typePayload) {
+    async requestAppointmentAction({ commit, dispatch }, payload) {
         try {
             const { data: newReq } = await Vue.$axios.post(
                 `/appointmentRequests`,
-                typePayload
+                payload
             );
             commit("addAppointmentRequest", newReq);
             dispatch(

@@ -8,7 +8,9 @@ const router = express.Router();
 router.use(AuthenticationMiddleware.verifyToken);
 
 router.get("/", DoctorsController.getAll);
+router.post("/schedule", DoctorsController.getAllForScheduling);
 router.get("/:clinicId", DoctorsController.getByClinic);
+
 router.post(
   "/",
   AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),

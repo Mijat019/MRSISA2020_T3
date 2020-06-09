@@ -21,9 +21,6 @@ import NursesService from '../services/NursesService';
 import ConfirmedAppointmentService from '../services/ConfirmedAppointmentService';
 
 export default async () => {
-  await DoctorRating.findAll({});
-  await ClinicRating.findAll({});
-
   await Diagnosis.create({ name: 'Insane in the membrane' });
   await Diagnosis.create({ name: 'Vucic' });
 
@@ -84,7 +81,6 @@ export default async () => {
     price: 420,
   });
 
-
   const { id: priceListId2 } = await PriceLists.create({
     clinicId: id,
     appointmentTypeId: appointmentTypeId2,
@@ -117,7 +113,6 @@ export default async () => {
     { where: { id: nurseId } }
   );
 
-
   const { userId: doctorId } = await DoctorsService.add(
     {
       firstName: 'Doktor',
@@ -139,6 +134,8 @@ export default async () => {
   );
 
   await DoctorsService.addSpecialization(doctorId, appointmentTypeId);
+  await DoctorsService.addSpecialization(doctorId, appointmentTypeId2);
+  await DoctorsService.addSpecialization(doctorId, appointmentTypeId3);
 
   const { userId: doctorId2 } = await DoctorsService.add(
     {
@@ -154,6 +151,9 @@ export default async () => {
     },
     id
   );
+
+  await DoctorsService.addSpecialization(doctorId2, appointmentTypeId);
+  await DoctorsService.addSpecialization(doctorId2, appointmentTypeId3);
 
   await Users.update(
     { password, accountStatus: AccountStatus.ACTIVATED },
@@ -185,7 +185,6 @@ export default async () => {
 
   const { userId: patient1Id } = await PatientMedicalRecord.create({ userId });
 
-
   const { id: userId2 }: any = await UsersService.createUser(
     {
       firstName: 'Pacijent',
@@ -203,7 +202,6 @@ export default async () => {
   );
 
   const { userId: patient2Id } = await PatientMedicalRecord.create({ userId: userId2 });
-
 
   await ConfirmedAppointmentService.add({
     priceListId,
@@ -252,7 +250,6 @@ export default async () => {
     { where: { id: tutu } }
   );
 
-
   const { userId: id2 } = await ClinicAdminService.add(
     {
       firstName: 'Drugi',
@@ -273,4 +270,44 @@ export default async () => {
     { password, accountStatus: AccountStatus.ACTIVATED },
     { where: { id: id2 } }
   );
+
+  await ClinicRating.create({
+    patientId: userId,
+    clinicId: id,
+    serviceRating: 4,
+    cleanlinessRating: 3,
+    timeRating: 2,
+    averageRating: 3,
+    comment: 'OKAY',
+  });
+
+  await ClinicRating.create({
+    patientId: userId2,
+    clinicId: id,
+    serviceRating: 5,
+    cleanlinessRating: 4,
+    timeRating: 3,
+    averageRating: 4,
+    comment: 'GOOD',
+  });
+
+  await DoctorRating.create({
+    patientId: userId,
+    doctorId: doctorId,
+    communicationRating: 5,
+    expertiseRating: 5,
+    timeRating: 5,
+    averageRating: 5,
+    comment: 'GREAT',
+  });
+
+  await DoctorRating.create({
+    patientId: userId2,
+    doctorId: doctorId2,
+    communicationRating: 1,
+    expertiseRating: 2,
+    timeRating: 2,
+    averageRating: 1.67,
+    comment: 'SUX',
+  });
 };

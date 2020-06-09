@@ -7,6 +7,7 @@ import ConfirmedAppointments from "../models/ConfirmedAppointments";
 import ConfirmedAppointmentService from "./ConfirmedAppointmentService";
 import PriceLists from "../models/PriceLists";
 import { IncludeOptions } from "sequelize/types";
+import Clinics from "../models/Clinics";
 
 const include: IncludeOptions[] = [
   { model: Rooms, as: "room" },
@@ -24,6 +25,7 @@ const include: IncludeOptions[] = [
     required: true,
     include: [
       { model: AppointmentTypes, as: "appointmentType", required: true },
+      { model: Clinics, as: "clinic", attributes: ['name'], required: true}
     ],
   },
 ];
