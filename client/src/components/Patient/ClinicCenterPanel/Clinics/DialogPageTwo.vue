@@ -21,7 +21,7 @@
       <v-date-picker
         no-title
         :min="getTomorrowsDate"
-        first-day-of-week=1
+        first-day-of-week="1"
         v-model="dateProp"
         @input="menu = false"
       ></v-date-picker>
@@ -39,7 +39,7 @@
     >
       <template v-slot:item="data">
         {{ data.item.fullName }}
-        <v-spacer> </v-spacer>
+        <v-spacer></v-spacer>
         <v-rating
           :value="data.item.rating"
           disabled
@@ -130,17 +130,17 @@ export default {
 
     getTomorrowsDate() {
       const today = new Date();
-      const tomorrow = new Date(today).setDate(today.getDate() + 1)
+      const tomorrow = new Date(today).setDate(today.getDate() + 1);
       return new Date(tomorrow).toISOString();
-    }
+    },
   },
 
   watch: {
     date(value) {
-      if(!value) return;
-      
+      if (!value) return;
+
       // // when date is changed reset selected doctors and time
-      this.doctorProp = {fullName: ''};
+      this.doctorProp = { fullName: '' };
       this.timeProp = '';
 
       // load new doctors
@@ -152,6 +152,7 @@ export default {
     },
 
     doctor(value) {
+      value;
       // when doctors is changed reset selected time
       this.timeProp = '';
 
