@@ -1,23 +1,35 @@
 import moment from 'moment';
 
-const state = {};
+const state = {
+  events: [],
+};
 
-const mutations = {};
+const mutations = {
+  addEvent(state, event) {
+    state.events.push(event);
+  },
+
+  removeLastEvent(state) {
+    state.events.pop();
+  },
+};
 
 const actions = {};
 
 const getters = {
   /*eslint no-unused-vars: ["error", { "args": "none" }]*/
-  getFreeAppointments: (state, getters, rootState) =>
-    appointmentsToEvents(rootState.freeAppointments.appointments),
+  getEvents: (state, getters, rootState) => {
+    const test = [
+      ...appointmentsToEvents(rootState.freeAppointments.appointments),
+      ...appointmentsToEvents(
+        rootState.confirmedAppointments.confirmedAppointments
+      ),
+      ...operationsToEvents(rootState.operations.operations),
+    ];
 
-  /*eslint no-unused-vars: ["error", { "args": "none" }]*/
-  getConfirmedAppointments: (state, getters, rootState) =>
-    appointmentsToEvents(rootState.confirmedAppointments.confirmedAppointments),
-
-  /*eslint no-unused-vars: ["error", { "args": "none" }]*/
-  getOperations: (state, getters, rootState) =>
-    operationsToEvents(rootState.operations.operations),
+    state.events = test;
+    return test;
+  },
 };
 
 function appointmentsToEvents(appointments) {
@@ -40,7 +52,6 @@ function operationsToEvents(operations) {
   return operations.map(operation => {
     const end = moment.unix(operation.start);
     end.add(1, 'hour');
-    console.log(operation);
     return {
       id: operation.id,
       color: 'purple',

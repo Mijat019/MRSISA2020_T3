@@ -55,7 +55,7 @@
                 ref="calendar"
                 v-model="focus"
                 color="primary"
-                :events="events"
+                :events="getEvents"
                 :now="today"
                 :type="type"
                 :value="today"
@@ -107,6 +107,7 @@ import moment from 'moment';
 import calendarMixin from '../../../../mixins/calendarMixin';
 
 import NewAppointmentForm from './NewAppointmentForm';
+import { mapMutations } from 'vuex';
 
 export default {
   name: 'ScheduleAnotherAppointment',
@@ -125,6 +126,11 @@ export default {
   computed: {},
 
   methods: {
+    ...mapMutations({
+      addEvent: 'confirmedAppointments/calendar/addEvent',
+      removeLastEvent: 'confirmedAppointments/calendar/removeLastEvent',
+    }),
+
     appointmentAdded() {
       this.closeNewAppointment();
       this.dialog = false;
@@ -132,7 +138,7 @@ export default {
 
     closeNewAppointment() {
       this.newAppointment = null;
-      this.getEvents.pop();
+      this.removeLastEvent();
       this.selectedOpen = false;
     },
 
@@ -160,7 +166,7 @@ export default {
         newEvent: true,
       };
 
-      this.getEvents.push(this.newAppointment);
+      this.addEvent(this.newAppointment);
     },
 
     mousedownOnEvent({ event }) {

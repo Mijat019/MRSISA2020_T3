@@ -99,19 +99,8 @@ export default {
   computed: {
     ...mapGetters({
       getUser: 'authentication/getUser',
-      getFreeAppointments: 'confirmedAppointments/calendar/getFreeAppointments',
-      getConfirmedAppointments:
-        'confirmedAppointments/calendar/getConfirmedAppointments',
-      getOperations: 'confirmedAppointments/calendar/getOperations',
+      getEvents: 'confirmedAppointments/calendar/getEvents',
     }),
-
-    events() {
-      return [
-        ...this.getFreeAppointments,
-        ...this.getConfirmedAppointments,
-        ...this.getOperations,
-      ];
-    },
 
     title() {
       const { start, end } = this;

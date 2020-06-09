@@ -54,7 +54,7 @@
                 ref="calendar"
                 v-model="focus"
                 color="primary"
-                :events="events"
+                :events="getEvents"
                 :now="today"
                 :type="type"
                 :value="today"
@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
 import calendarMixin from '../../../../mixins/calendarMixin';
 
@@ -125,6 +125,11 @@ export default {
       createOperationRequest: 'operationRequests/createOperationRequest',
     }),
 
+    ...mapMutations({
+      addEvent: 'confirmedAppointments/calendar/addEvent',
+      removeLastEvent: 'confirmedAppointments/calendar/removeLastEvent',
+    }),
+
     clickedOnCalendar({ date, time }) {
       if (this.operation) {
         this.closeOperation();
@@ -138,7 +143,7 @@ export default {
 
     closeOperation() {
       this.operation = null;
-      this.getEvents.pop();
+      this.removeLastEvent();
       this.showMenu = false;
     },
 
@@ -154,7 +159,7 @@ export default {
         draggable: false,
       };
 
-      this.getEvents.push(this.operation);
+      this.addEvent(this.operation);
     },
 
     getClosestMinute(dateTime) {
