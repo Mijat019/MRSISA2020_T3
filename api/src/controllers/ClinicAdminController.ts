@@ -11,6 +11,15 @@ class ClinicAdminController {
     }
   }
 
+  public async getMyClinic(req: any, res: any) {
+    try {
+      const clinic = await ClinicAdminService.getMyClinic(req.user.id);
+      return res.send(clinic);
+    } catch (error) {
+      return res.status(400).send(error.message);
+    }
+  }
+
   public async add(req: any, res: any) {
     try {
       const { clinicId, clinicAdminPayload } = req.body;

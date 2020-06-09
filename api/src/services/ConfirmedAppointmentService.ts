@@ -9,6 +9,7 @@ import PatientMedicalRecord from "../models/PatientMedicalRecord";
 import { IncludeOptions, Op } from "sequelize";
 import { getStartAndEndOfDay } from "../util/dateUtil";
 import freeAppointmentService from "./FreeAppointmentService";
+import PatientAt from "../models/PatientAt";
 
 const include: IncludeOptions[] = [
     { model: Rooms, as: "room", attributes: ["name", "id"] },
@@ -73,6 +74,11 @@ class ConfirmedAppointmentService {
             include,
             attributes,
         });
+        // Associate patient with clinic
+        if (appointment) {
+            const { clinicId }: any = await DoctorAt.findOne({ where: { userId: appointmentPayload.doctorId }});
+            await PatientAt.upsert({ userId: appointmentPayload.patientId, clinicId });
+        }
         return appointment;
     }
 

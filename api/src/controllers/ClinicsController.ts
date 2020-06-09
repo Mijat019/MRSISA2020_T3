@@ -31,6 +31,15 @@ class ClinicsController {
     }
   }
 
+  public async update(req: any, res: any) {
+    try {
+      const newClinic = await ClinicsService.update(req.body);
+      res.send(newClinic);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }
+
   public async delete(req: any, res: any) {
     try {
       const { clinicId } = req.params;

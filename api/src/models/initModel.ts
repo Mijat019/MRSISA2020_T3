@@ -18,6 +18,7 @@ import FreeAppointments from './FreeAppointments';
 import DoctorRating from './DoctorRating';
 import ClinicRating from './ClinicRating';
 import NursesService from '../services/NursesService';
+import ConfirmedAppointmentService from '../services/ConfirmedAppointmentService';
 
 export default async () => {
   await Diagnosis.create({ name: 'Insane in the membrane' });
@@ -159,6 +160,13 @@ export default async () => {
     { where: { id: doctorId2 } }
   );
 
+  /*
+  KLINIKA 2
+  */
+  
+
+  
+
   const { id: userId }: any = await UsersService.createUser(
     {
       firstName: 'Pacijent',
@@ -175,7 +183,7 @@ export default async () => {
     UserRole.PATIENT
   );
 
-  const { userId: patientId } = await PatientMedicalRecord.create({ userId });
+  const { userId: patient1Id } = await PatientMedicalRecord.create({ userId });
 
   const { id: userId2 }: any = await UsersService.createUser(
     {
@@ -193,23 +201,23 @@ export default async () => {
     UserRole.PATIENT
   );
 
-  await PatientMedicalRecord.create({ userId: userId2 });
+  const { userId: patient2Id } = await PatientMedicalRecord.create({ userId: userId2 });
 
-  await ConfirmedAppointments.create({
+  await ConfirmedAppointmentService.add({
     priceListId,
     doctorId,
-    patientId,
+    patientId: patient1Id,
     roomId,
     start: moment().unix(),
     duration: 60,
   });
 
-  await ConfirmedAppointments.create({
+  await ConfirmedAppointmentService.add({
     priceListId,
     doctorId,
-    patientId,
+    patientId: patient2Id,
     roomId,
-    start: moment().add(1, 'hour').unix(),
+    start: moment().add(2, 'hour').unix(),
     duration: 60,
   });
 

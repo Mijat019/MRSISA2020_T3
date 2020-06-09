@@ -1,6 +1,7 @@
 import express from "express";
-import PatientsController from "../controllers/PatientsController";
 import RegistrationReqController from "../controllers/RegistrationReqController";
+import PatientMedicalRecordController from "../controllers/PatientMedicalRecordController";
+import PatientsController from "../controllers/PatientsController";
 
 const router = express.Router();
 
