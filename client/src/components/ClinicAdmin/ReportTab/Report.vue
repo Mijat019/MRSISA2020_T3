@@ -1,6 +1,7 @@
 <template>
   <div>
     <BusinessReport/>
+    <hr/>
     <IncomeReport/>
   </div>
 </template>

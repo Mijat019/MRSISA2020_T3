@@ -10,12 +10,14 @@ import Rooms from "./Rooms";
 import DoctorAt from "./DoctorAt";
 import PriceLists from "./PriceLists";
 import PatientMedicalRecord from "./PatientMedicalRecord";
+import Clinics from "./Clinics";
 
 class ConfirmedAppointments extends Model {
   public id!: number;
   public priceListId!: number;
   public doctorId!: number;
   public patientId!: number;
+  public clinicId!: number;
   public roomId!: number;
   public start!: number;
   public duration!: number;
@@ -42,6 +44,11 @@ ConfirmedAppointments.init(
     },
 
     patientId: {
+      type: INTEGER.UNSIGNED,
+      allowNull: false,
+    },
+
+    clinicId: {
       type: INTEGER.UNSIGNED,
       allowNull: false,
     },
@@ -91,5 +98,7 @@ ConfirmedAppointments.belongsTo(DoctorAt, {
   as: "doctor",
   foreignKey: "doctorId",
 });
+
+ConfirmedAppointments.belongsTo(Clinics, { as: "clinic", foreignKey: "clinicId" });
 
 export default ConfirmedAppointments;
