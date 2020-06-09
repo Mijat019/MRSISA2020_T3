@@ -15,7 +15,8 @@
     <v-row class="subtitle-1">
       <v-col cols="6">
         {{ appoType }} <br />
-        {{ doctor }}
+        {{ doctor }} <br>
+        {{ clinic }}
       </v-col>
 
       <v-col cols="6" class="pr-6">
@@ -41,7 +42,7 @@
 
 <script>
 export default {
-  props: ['appoType', 'doctor', 'room', 'time', 'date', 'price'],
+  props: ['appoType', 'doctor', 'room', 'time', 'date', 'price', 'clinic'],
 
 };
 </script>

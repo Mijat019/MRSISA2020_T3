@@ -20,6 +20,8 @@
       </template>
       <v-date-picker
         no-title
+        :min="getTomorrowsDate"
+        first-day-of-week=1
         v-model="dateProp"
         @input="menu = false"
       ></v-date-picker>
@@ -125,12 +127,18 @@ export default {
         this.$emit('timeChanged', val);
       },
     },
+
+    getTomorrowsDate() {
+      const today = new Date();
+      const tomorrow = new Date(today).setDate(today.getDate() + 1)
+      return new Date(tomorrow).toISOString();
+    }
   },
 
   watch: {
     date(value) {
       // // when date is changed reset selected doctors and time
-      this.doctorProp = null;
+      this.doctorProp = {fullName: ''};
       this.timeProp = '';
 
       // load new doctors

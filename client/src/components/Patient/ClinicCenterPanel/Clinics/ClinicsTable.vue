@@ -48,7 +48,7 @@
         </template>
 
         <template v-slot:item.price="{ item }">
-          {{ calculatePrice(item) }}
+          {{ getPriceListFromClinic(item).price }}
         </template>
       </v-data-table>
     </v-card-text>
@@ -127,12 +127,12 @@ export default {
       const data = {
         'clinic' : value,
         'appoType': this.appointmentType,
-        'price' : this.calculatePrice(value)
+        'priceList' : this.getPriceListFromClinic(value)
       };
       bus.$emit('clinicChosen', data);
     },
 
-    calculatePrice(clinic) {
+    getPriceListFromClinic(clinic) {
       if (!clinic || this.priceLists.length == 0) return 0;
 
       let x = this.priceLists.filter(
@@ -140,7 +140,7 @@ export default {
           priceList.appointmentTypeId == this.appointmentType.id &&
           priceList.clinicId == clinic.id
       )[0];
-      return x ? x.price : 0;
+      return x ? x : {};
     },
   },
 

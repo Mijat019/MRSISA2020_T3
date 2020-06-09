@@ -7,6 +7,7 @@
     <v-row class="subtitle-1">
       <v-col cols="6">
         {{ type }} <br>
+        {{ doctor }} <br>
         {{ name }}
       </v-col>
 
@@ -33,7 +34,7 @@
 
 <script>
 export default {
-  props: ['name', 'type', 'price', 'date', 'time'],
+  props: ['name', 'type', 'price', 'date', 'time', 'doctor'],
 };
 </script>
 

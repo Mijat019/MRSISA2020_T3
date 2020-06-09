@@ -42,6 +42,9 @@
           >{{ item.doctor.user.firstName }}
           {{ item.doctor.user.lastName }}</template
         >
+        <template #item.clinic="{ item }">
+          {{ item.priceList.clinic.name }}
+        </template>
         <template #item.start="{ item }">
           {{ format(item.start) }}
         </template>
@@ -53,15 +56,12 @@
         <v-card-text>
           <ConfirmFreeAppointment
             :appoType="dialogAppo.priceList.appointmentType.name"
-            :doctor="
-              dialogAppo.doctor.user.firstName +
-                ' ' +
-                dialogAppo.doctor.user.lastName
-            "
+            :doctor="getFullName"
             :room="dialogAppo.room.name"
             :time="appointmentTime"
             :date="appointmentDate"
             :price="dialogAppo.priceList.price"
+            :clinic="clinicName"
           />
         </v-card-text>
         <v-card-actions class="mx-8">
@@ -102,6 +102,7 @@ export default {
           value: 'priceList.appointmentType.name',
           align: 'center',
         },
+        { text: 'Clinic', value: 'clinic', align: 'center' },
         { text: 'Doctor', value: 'doctor', align: 'center' },
         { text: 'Room', value: 'room.name', align: 'center' },
         { text: 'Scheduled Time', value: 'start', align: 'center' },
@@ -182,6 +183,19 @@ export default {
       const start = moment.unix(this.dialogAppo.start).format('YYYY-MM-DD');
       return start;
     },
+
+    getFullName() {
+      return (
+        this.dialogAppo.doctor.user.firstName +
+        ' ' +
+        this.dialogAppo.doctor.user.lastName
+      );
+    },
+
+    clinicName() {
+      if(this.dialogAppo.priceList.clinic) return this.dialogAppo.priceList.clinic.name;
+      return '';
+    }
   },
 
   watch: {
