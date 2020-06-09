@@ -10,8 +10,9 @@
       <v-tab :href="`#rooms`">rooms</v-tab>
       <v-tab :href="`#priceLists`">Price Lists</v-tab>
       <v-tab :href="`#requestedAppointments`">Requested Appointments</v-tab>
-      <v-tab :href="`#report`">report</v-tab>
+      <!-- <v-tab :href="`#report`">report</v-tab> -->
       <v-tab :href="`#leaveRequests`">leave requests</v-tab>
+      <v-tab :href="`#operationRequests`">operation requests</v-tab>
 
       <v-tab-item :value="'basicInfo'">basicInfo</v-tab-item>
       <v-tab-item :value="'freeApointments'">
@@ -32,26 +33,30 @@
       <v-tab-item :value="'requestedAppointments'">
         <ManageRequestedAppointments />
       </v-tab-item>
-      <v-tab-item :value="'report'">report</v-tab-item>
+      <!-- <v-tab-item :value="'report'">report</v-tab-item> -->
       <v-tab-item :value="'leaveRequests'">
-        <ManageLeaveRequests/>
+        <ManageLeaveRequests />
+      </v-tab-item>
+      <v-tab-item value="operationRequests">
+        <ManageOperationRequests />
       </v-tab-item>
     </v-tabs>
   </div>
 </template>
 
 <script>
-import ManageDoctors from "./DoctorsTab/ManageDoctors";
-import ManageNurses from "./NursesTab/ManageNurses";
-import ManageRooms from "./RoomsTab/ManageRooms";
-import ManageFreeAppointments from "./AppointmentsTab/ManageFreeAppointments";
-import ManagePriceLists from './PriceListsTab/ManagePriceLists'
-import ManageRequestedAppointments from './RequestedAppointmentsTab/ManageRequestedAppointments'
-import ManageLeaveRequests from "./LeaveRequestsTab/ManageLeaveRequests";
+import ManageOperationRequests from './OperationRequests/ManageOperationRequests';
+import ManageDoctors from './DoctorsTab/ManageDoctors';
+import ManageNurses from './NursesTab/ManageNurses';
+import ManageRooms from './RoomsTab/ManageRooms';
+import ManageFreeAppointments from './AppointmentsTab/ManageFreeAppointments';
+import ManagePriceLists from './PriceListsTab/ManagePriceLists';
+import ManageRequestedAppointments from './RequestedAppointmentsTab/ManageRequestedAppointments';
+import ManageLeaveRequests from './LeaveRequestsTab/ManageLeaveRequests';
 // import ManageAppointmentTypes from "./AppointmentTypesTab/ManageAppointmentTypes";
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 export default {
-  name: "ClinicProfile",
+  name: 'ClinicProfile',
   components: {
     ManageDoctors,
     ManageNurses,
@@ -59,7 +64,8 @@ export default {
     ManageFreeAppointments,
     ManagePriceLists,
     ManageRequestedAppointments,
-    ManageLeaveRequests
+    ManageLeaveRequests,
+    ManageOperationRequests,
   },
   data: () => ({
     tab: null,

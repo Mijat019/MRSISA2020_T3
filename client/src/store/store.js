@@ -33,6 +33,7 @@ import ratings from './modules/ratings';
 import time from './modules/time';
 import leaveRequests from './modules/leaveRequests';
 import prescriptionApproving from './modules/prescriptionApproving';
+import operationRequests from './modules/operationRequests';
 
 Vue.use(Vuex);
 
@@ -75,5 +76,6 @@ export default new Vuex.Store({
     ratings,
     appointmentReport,
     prescriptionApproving,
+    operationRequests,
   },
 });

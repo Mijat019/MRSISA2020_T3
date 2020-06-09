@@ -7,7 +7,7 @@ class OperationRequestsController {
       const operationRequests = await operationRequestsService.getAllForClinic(
         clinicId
       );
-      return operationRequests;
+      res.send(operationRequests);
     } catch (error) {
       res.status(400).send(error.message);
     }

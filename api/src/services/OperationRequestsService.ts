@@ -1,9 +1,40 @@
 import OperationRequests from '../models/OperationRequests';
+import DoctorAt from '../models/DoctorAt';
+import Users from '../models/Users';
+import PatientMedicalRecord from '../models/PatientMedicalRecord';
 
 class OperationRequestsService {
   public async getAllForClinic(clinicId: string) {
     const operationRequests = await OperationRequests.findAll({
       where: { clinicId },
+      include: [
+        {
+          model: DoctorAt,
+          as: 'doctor',
+          attributes: ['userId'],
+          required: true,
+          include: [
+            {
+              model: Users,
+              as: 'user',
+              attributes: ['id', 'firstName', 'lastName', 'email'],
+            },
+          ],
+        },
+        {
+          model: PatientMedicalRecord,
+          as: 'patientMedicalRecord',
+          attributes: ['userId'],
+          required: true,
+          include: [
+            {
+              model: Users,
+              as: 'user',
+              attributes: ['id', 'firstName', 'lastName', 'email'],
+            },
+          ],
+        },
+      ],
     });
     return operationRequests;
   }

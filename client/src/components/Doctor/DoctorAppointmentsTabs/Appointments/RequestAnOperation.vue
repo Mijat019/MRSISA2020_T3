@@ -99,12 +99,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import moment from 'moment';
 import calendarMixin from '../../../../mixins/calendarMixin';
 
 export default {
-  name: 'ScheduleAnOperation',
+  name: 'RequestAnOperation',
   mixins: [calendarMixin],
 
   data: () => ({
@@ -115,10 +115,17 @@ export default {
   computed: {
     ...mapGetters({
       getEvents: 'confirmedAppointments/calendar/getEvents',
+      getUser: 'authentication/getUser',
+      getNextAppointment:
+        'confirmedAppointments/appointmentReport/getNextAppointment',
     }),
   },
 
   methods: {
+    ...mapActions({
+      createOperationRequest: 'operationRequests/createOperationRequest',
+    }),
+
     clickedOnCalendar({ date, time }) {
       if (this.operation) {
         this.closeOperation();
@@ -154,14 +161,10 @@ export default {
     getClosestMinute(dateTime) {
       const date = moment(dateTime);
       const minutes = date.get('minute');
-      if (minutes >= 0 && minutes < 15) {
+      if (minutes >= 0 && minutes < 30) {
         date.set('minute', 0);
-      } else if (minutes >= 15 && minutes < 30) {
-        date.set('minute', 15);
-      } else if (minutes >= 30 && minutes < 45) {
+      } else if (minutes >= 30 && minutes < 60) {
         date.set('minute', 30);
-      } else if (minutes >= 45 && minutes < 60) {
-        date.set('minute', 45);
       }
 
       return date.format('YYYY-MM-DD HH:mm');
@@ -198,7 +201,18 @@ export default {
       }
     },
 
-    requestAnOperation() {},
+    requestAnOperation() {
+      const operationRequest = {
+        doctorId: this.getUser.id,
+        clinicId: this.getUser.clinicId,
+        patientMedicalRecordId: this.getNextAppointment.patient.user.id,
+        start: moment(this.selectedEvent.start).unix(),
+        duration: 60,
+      };
+      this.closeOperation();
+      this.createOperationRequest(operationRequest);
+      this.dialog = false;
+    },
   },
 };
 </script>

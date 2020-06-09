@@ -55,7 +55,7 @@
         </v-calendar>
 
         <v-menu
-          v-model="selectedOpen"
+          v-model="showMenu"
           :activator="selectedElement"
           :close-on-content-click="false"
           offset-x
@@ -64,7 +64,7 @@
             <v-toolbar :color="selectedEvent.color" dark>
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn icon @click="selectedOpen = false">
+              <v-btn icon @click="showMenu = false">
                 <v-icon>mdi-close</v-icon>
               </v-btn>
             </v-toolbar>
@@ -88,10 +88,10 @@
 </template>
 
 <script>
-import calendarMixin from "../../../mixins/calendarMixin";
+import calendarMixin from '../../../mixins/calendarMixin';
 
 export default {
-  mixins: [calendarMixin]
+  mixins: [calendarMixin],
 };
 </script>
 

@@ -131,7 +131,6 @@ export default {
 
   methods: {
     appointmentAdded() {
-      this.newAppointment.draggable = false;
       this.closeNewAppointment();
       this.dialog = false;
     },
@@ -191,14 +190,10 @@ export default {
     getClosestMinute(dateTime) {
       const date = moment(dateTime);
       const minutes = date.get('minute');
-      if (minutes >= 0 && minutes < 15) {
+      if (minutes >= 0 && minutes < 30) {
         date.set('minute', 0);
-      } else if (minutes >= 15 && minutes < 30) {
-        date.set('minute', 15);
-      } else if (minutes >= 30 && minutes < 45) {
+      } else if (minutes >= 30 && minutes < 60) {
         date.set('minute', 30);
-      } else if (minutes >= 45 && minutes < 60) {
-        date.set('minute', 45);
       }
 
       return date.format('YYYY-MM-DD HH:mm');
