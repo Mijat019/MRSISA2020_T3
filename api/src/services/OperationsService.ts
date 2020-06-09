@@ -4,59 +4,43 @@ import DoctorAt from '../models/DoctorAt';
 import Users from '../models/Users';
 import Rooms from '../models/Rooms';
 import PatientMedicalRecord from '../models/PatientMedicalRecord';
-import { attempt } from 'joi';
 
 const include: IncludeOptions[] = [
   {
-    model: DoctorAt,
-    as: 'doctor',
-    attributes: ['userId'],
+    model: Operations,
+    as: 'operations',
     required: true,
+    attributes: ['id', 'start'],
     include: [
+      { model: Rooms, as: 'room', attributes: ['name'], required: true },
       {
-        model: Users,
-        as: 'user',
-        attributes: ['firstName', 'lastName'],
+        model: PatientMedicalRecord,
+        as: 'patientMedicalRecord',
+        attributes: ['userId'],
         required: true,
-      },
-    ],
-  },
-  { model: Rooms, as: 'room', attributes: ['name'], required: true },
-  {
-    model: PatientMedicalRecord,
-    as: 'patientMedicalRecord',
-    attributes: ['userId'],
-    required: true,
-    include: [
-      {
-        model: Users,
-        as: 'user',
-        attributes: ['firstName', 'lastName'],
-        required: true,
+        include: [
+          {
+            model: Users,
+            as: 'user',
+            attributes: ['firstName', 'lastName'],
+            required: true,
+          },
+        ],
       },
     ],
   },
 ];
 
-const attributes = ['id', 'start'];
-
 class OperationsServices {
   public async getAllForDoctor(doctorId: string) {
-    const operations = await Operations.findAll({
-      where: { doctorId },
-      attributes,
+    const doctorWithOperations = (await DoctorAt.findByPk(doctorId, {
       include,
-    });
-    return operations;
+    })) as any;
+    return doctorWithOperations?.operations || [];
   }
 
   public async getAllForClinic(clinicId: string) {
-    const operations = await Operations.findAll({
-      where: { clinicId },
-      attributes,
-      include,
-    });
-    return operations;
+    throw new Error('Not implemented');
   }
 
   public async add(operationPayload: any) {
