@@ -21,6 +21,6 @@ router.post('/', confirmedAppointmentController.add);
 
 router.patch('/', confirmedAppointmentController.update);
 
-router.delete('/', confirmedAppointmentController.delete);
+router.delete('/:appointmentId', confirmedAppointmentController.delete);
 
 export default router;
