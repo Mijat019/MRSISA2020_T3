@@ -106,7 +106,9 @@ class ConfirmedAppointmentService {
   }
 
   public async delete(id: any) {
-    const confirmedAppointment = await ConfirmedAppointments.findByPk(id);
+    const confirmedAppointment = await ConfirmedAppointments.findByPk(id, {
+      include,
+    });
     if (!confirmedAppointment) {
       throw new Error('Wrong id');
     }
@@ -117,6 +119,7 @@ class ConfirmedAppointmentService {
     }
 
     await ConfirmedAppointments.destroy({ where: { id } });
+    return confirmedAppointment;
   }
 
   public async createFromFree(freeAppo: FreeAppointments, patientId: number) {
