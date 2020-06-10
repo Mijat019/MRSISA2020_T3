@@ -47,6 +47,7 @@
 <script>
 import { bus } from '../../../../main';
 import DoctorScheduleDialog from './DoctorScheduleDialog'
+import moment from 'moment'
 
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
@@ -95,6 +96,7 @@ export default {
 
   methods: {
     ...mapActions({
+      getAvailableTimesAction: 'doctors/getAvailableTimesAction',
       getDoctorsAction: 'doctors/getDoctorsAction',
       getClinicsForAppoType: 'clinics/getClinicsForAppoType',
       getAppointmentTypesAction: 'appointmentTypes/getAppointmentTypesAction',

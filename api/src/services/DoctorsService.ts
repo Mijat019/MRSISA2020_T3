@@ -1,19 +1,20 @@
-import Users, { usersSelect } from "../models/Users";
-import UserRole from "../models/UserRole";
-import UsersService from "./UsersService";
-import DoctorAt from "../models/DoctorAt";
-import Clinics from "../models/Clinics";
-import AdminAt from "../models/AdminAt";
-import DoctorSpec from "../models/DoctorSpec";
-import AppointmentTypes from "../models/AppointmentTypes";
+import Users, { usersSelect } from '../models/Users';
+import UserRole from '../models/UserRole';
+import UsersService from './UsersService';
+import DoctorAt from '../models/DoctorAt';
+import Clinics from '../models/Clinics';
+import AdminAt from '../models/AdminAt';
+import DoctorSpec from '../models/DoctorSpec';
+import AppointmentTypes from '../models/AppointmentTypes';
 import RatingsService from './RatingsService';
-import FreeAppointments from "../models/FreeAppointments";
-import ConfirmedAppointments from "../models/ConfirmedAppointments";
-
+import FreeAppointments from '../models/FreeAppointments';
+import ConfirmedAppointments from '../models/ConfirmedAppointments';
+import moment from 'moment';
+import { Op } from 'sequelize';
 
 class DoctorsService {
   public async getAll(): Promise<any> {
-    const doctors = await DoctorAt.findAll({
+    const doctors = (await DoctorAt.findAll({
       include: [
         { model: Users, attributes: usersSelect, as: 'user' },
         { model: Clinics, attributes: ['name'], as: 'clinic' },
@@ -30,7 +31,7 @@ class DoctorsService {
           ],
         },
       ],
-    }) as any;
+    })) as any;
 
     for (let doctor of doctors) {
       doctor.dataValues.rating = await RatingsService.getRatingForDoctor(
@@ -49,7 +50,7 @@ class DoctorsService {
     //   throw "Given user " + _userId + " is not an admin of clinic " + _clinicId;
     // }
 
-    const doctors = await DoctorAt.findAll({
+    const doctors = (await DoctorAt.findAll({
       where: { clinicId },
       include: [
         { model: Users, attributes: usersSelect, as: 'user' },
@@ -67,7 +68,7 @@ class DoctorsService {
           ],
         },
       ],
-    }) as any;
+    })) as any;
 
     for (let doctor of doctors) {
       doctor.dataValues.rating = await RatingsService.getRatingForDoctor(
@@ -162,8 +163,65 @@ class DoctorsService {
   }
 
   private async hasConfirmedAppos(doctorId: number) {
-    const confirmedAppos = await ConfirmedAppointments.findAll({ where: { doctorId } });
+    const confirmedAppos = await ConfirmedAppointments.findAll({
+      where: { doctorId },
+    });
     return confirmedAppos.length > 0;
+  }
+
+  /** Returns a list of all available times for doctor given the date */
+  public async getAvailableTimes(doctorId: any, date: any) {
+    
+    date = moment.unix(date);
+
+    // generate all possible times
+    let allTimes = ['09:00', '09:30'];
+    for (let i = 10; i < 17; i++) {
+      allTimes.push(i + ':' + '00');
+      allTimes.push(i + ':' + '30');
+    }
+
+    // set time bounds
+    // (min = date at 9AM, max = date at 5PM)
+    const minTime = date.clone().set({ hour: 9, minute: 0, second: 0 });
+    const maxTime = date.clone().set({ hour: 17, minute: 0, second: 0 });
+
+    //get all free Appos
+    const freeApps = await FreeAppointments.findAll({
+      where: {
+        doctorId,
+        start: {
+          [Op.between]: [minTime.unix(), maxTime.unix()],
+        },
+      },
+    });
+
+    // delete busy times
+    this.parseApposAndDeleteTimes(freeApps, allTimes);
+
+    //get all conf appos
+    const confApps = await ConfirmedAppointments.findAll({
+      where: {
+        doctorId,
+        start: {
+          [Op.between]: [minTime.unix(), maxTime.unix()],
+        },
+      },
+    });
+
+    // delete busy times
+    this.parseApposAndDeleteTimes(confApps, allTimes);
+
+    console.log(allTimes);
+    return allTimes;
+  }
+
+  public parseApposAndDeleteTimes(appos: any, times: any): any {
+    for (let app of appos) {
+      const formatted = moment.unix(app.start).format('HH:mm');
+      const idx = times.indexOf(formatted);
+      if (idx >= 0) times.splice(idx, 1);
+    }
   }
 
   public async delete(doctorId: number) {

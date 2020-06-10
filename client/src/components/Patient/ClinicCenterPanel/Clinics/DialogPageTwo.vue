@@ -21,7 +21,7 @@
       <v-date-picker
         no-title
         :min="getTomorrowsDate"
-        first-day-of-week=1
+        first-day-of-week="1"
         v-model="dateProp"
         @input="menu = false"
       ></v-date-picker>
@@ -55,7 +55,7 @@
     </v-select>
 
     <v-select
-      :items="availableTimes"
+      :items="getTimes"
       v-model="timeProp"
       label="Availabe Hours"
       outlined
@@ -66,6 +66,7 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
+import moment from 'moment';
 
 export default {
   props: ['doctor', 'date', 'time', 'clinic', 'appoType'],
@@ -79,27 +80,23 @@ export default {
   methods: {
     ...mapActions({
       getDoctorsForSchedulingAction: 'doctors/getDoctorsForSchedulingAction',
+      getAvailableTimesAction: 'doctors/getAvailableTimesAction',
     }),
 
     ...mapMutations('doctors', {
       setDoctors: 'setDoctors',
     }),
+
+    async getAvailableTimes(payload) {
+      await this.getAvailableTimesAction(payload);
+    },
   },
 
   computed: {
     ...mapGetters({
       getDoctors: 'doctors/getDoctors',
+      getTimes: 'doctors/getTimes',
     }),
-
-    availableTimes() {
-      let x = [];
-      for (let i = 10; i < 17; i++) {
-        x.push(i + ':00');
-        x.push(i + ':30');
-      }
-
-      return x;
-    },
 
     doctorProp: {
       get() {
@@ -130,17 +127,17 @@ export default {
 
     getTomorrowsDate() {
       const today = new Date();
-      const tomorrow = new Date(today).setDate(today.getDate() + 1)
+      const tomorrow = new Date(today).setDate(today.getDate() + 1);
       return new Date(tomorrow).toISOString();
-    }
+    },
   },
 
   watch: {
     date(value) {
-      if(!value) return;
-      
+      if (!value) return;
+
       // // when date is changed reset selected doctors and time
-      this.doctorProp = {fullName: ''};
+      this.doctorProp = { fullName: '' };
       this.timeProp = '';
 
       // load new doctors
@@ -154,6 +151,12 @@ export default {
     doctor(value) {
       // when doctors is changed reset selected time
       this.timeProp = '';
+      if (!value.user) return;
+
+      this.getAvailableTimes({
+        doctorId: value.user.id,
+        date: moment(this.date, 'YYYY-MM-DD').unix(),
+      });
 
       //this.availableTimes = value.availableTimes;
     },

@@ -157,7 +157,7 @@ export default {
         patientMedicalRecordId: this.user.id,
         doctorId: this.doctor.user.id,
         duration: 30,
-        start: start,
+        start: start.unix(),
       };
 
       await this.requestAppointmentAction(payload);
