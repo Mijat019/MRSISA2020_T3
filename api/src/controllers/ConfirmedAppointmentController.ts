@@ -1,4 +1,5 @@
 import confirmedAppointmentService from '../services/ConfirmedAppointmentService';
+import emailService from '../services/EmailService';
 
 class FreeAppointmentController {
   public async getAll(req: any, res: any) {
@@ -62,8 +63,11 @@ class FreeAppointmentController {
 
   public async delete(req: any, res: any) {
     try {
-      const { id } = req.params;
-      await confirmedAppointmentService.delete(id);
+      const { appointmentId } = req.params;
+      const confirmedAppointment: any = await confirmedAppointmentService.delete(
+        appointmentId
+      );
+      await emailService.sendAppointmentCancellationEmail(confirmedAppointment);
       res.send('Confirmed appointment successfully deleted.');
     } catch (error) {
       res.status(400).send(error.message);

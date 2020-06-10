@@ -3,7 +3,9 @@
     <v-col>
       <v-sheet height="64">
         <v-toolbar flat color="white">
-          <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">Today</v-btn>
+          <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday"
+            >Today</v-btn
+          >
           <v-btn fab text small color="grey darken-2" @click="prev">
             <v-icon small>mdi-chevron-left</v-icon>
           </v-btn>
@@ -55,7 +57,7 @@
         </v-calendar>
 
         <v-menu
-          v-model="selectedOpen"
+          v-model="showMenu"
           :activator="selectedElement"
           :close-on-content-click="false"
           offset-x
@@ -64,7 +66,7 @@
             <v-toolbar :color="selectedEvent.color" dark>
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn icon @click="selectedOpen = false">
+              <v-btn icon @click="showMenu = false">
                 <v-icon>mdi-close</v-icon>
               </v-btn>
             </v-toolbar>
@@ -74,11 +76,19 @@
               Room: {{ selectedEvent.roomName }}
             </v-card-text>
             <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                v-if="selectedEvent.color === `red`"
+                color="error"
+                @click="cancelAppointment"
+                >Cancel</v-btn
+              >
               <v-btn
                 v-if="selectedEvent.color === `red`"
                 color="primary"
                 @click="openReport(selectedEvent.id)"
-              >See appointment</v-btn>
+                >See appointment</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-menu>
@@ -88,10 +98,25 @@
 </template>
 
 <script>
-import calendarMixin from "../../../mixins/calendarMixin";
+import calendarMixin from '../../../mixins/calendarMixin';
+import { mapActions } from 'vuex';
 
 export default {
-  mixins: [calendarMixin]
+  mixins: [calendarMixin],
+
+  methods: {
+    ...mapActions({
+      cancelConfirmedAppointmentAction:
+        'confirmedAppointments/cancelConfirmedAppointmentAction',
+    }),
+
+    async cancelAppointment() {
+      if (confirm('Are you sure you want to cancel this appointment?')) {
+        await this.cancelConfirmedAppointmentAction(this.selectedEvent.id);
+        this.showMenu = false;
+      }
+    },
+  },
 };
 </script>
 
