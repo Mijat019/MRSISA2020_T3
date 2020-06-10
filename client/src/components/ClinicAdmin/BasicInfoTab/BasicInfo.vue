@@ -46,9 +46,9 @@
 
             <div id="map" style="width: 100%; height: 300px">
               <ClinicLocation
-                :address="myClinic.address"
-                :city="myClinic.city"
-                :country="myClinic.country"
+                :address="location.address"
+                :city="location.city"
+                :country="location.country"
               />
             </div>
           </v-list>
@@ -75,6 +75,7 @@ export default {
 
   data() {
     return {
+      location: { address: '', city: '', country: '' },
       formValid: false,
       rules: [v => !!v || 'Required'],
     };
@@ -89,12 +90,24 @@ export default {
     async saveClinic() {
       if (this.formValid) {
         await this.updateClinicAction(this.myClinic);
+        this.location = {
+          address: this.myClinic.address,
+          city: this.myClinic.city,
+          country: this.myClinic.country,
+        };
       }
     },
   },
 
   mounted() {
     this.getMyClinicAction();
+
+    this.location = {
+      address: this.myClinic.address,
+      city: this.myClinic.city,
+      country: this.myClinic.country,
+    };
+    console.log(this.location);
   },
 
   computed: {
