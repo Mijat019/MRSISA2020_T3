@@ -31,3 +31,7 @@
 
 This application is deployed to heroku [(link)](https://covid19-clinic.herokuapp.com/).
 Automatic deployment is setup so that each time someone pushes to the master branch, deployment is triggered. Heroku then builds the application and deploys it. For a database server, we used https://freemysqlhosting.net.
+
+
+### Branches and User Stories
+Every Trello US has a corresponding branch which was deleted after merging, however all merged branches can be seen in the closed pull requests tab.
