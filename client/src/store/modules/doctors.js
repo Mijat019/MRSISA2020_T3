@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 const state = {
   doctors: [],
+  availableTimes: [],
 };
 
 const mutations = {
@@ -10,6 +11,10 @@ const mutations = {
       doctor.fullName = doctor.user.firstName + ' ' + doctor.user.lastName;
     });
     state.doctors = doctors;
+  },
+
+  setTimes(state, times) {
+    state.availableTimes = times;
   },
 
   addDoctor(state, newDoctor) {
@@ -61,6 +66,19 @@ const actions = {
         `/doctors/schedule/`, payload
       );
       commit('setDoctors', data);
+    } catch (error) {
+      console.log(error);
+      dispatch('snackbar/showError', error.response.data, { root: true });
+    }
+  },
+
+  
+  async getAvailableTimesAction({ commit, dispatch }, payload) {
+    try {
+      const { data } = await Vue.$axios.post(
+        `/doctors/availableTimes/`, payload
+      );
+      commit('setTimes', data);
     } catch (error) {
       console.log(error);
       dispatch('snackbar/showError', error.response.data, { root: true });
@@ -124,6 +142,7 @@ const actions = {
 
 const getters = {
   getDoctors: state => state.doctors,
+  getTimes: state => state.availableTimes,
 };
 
 export default {

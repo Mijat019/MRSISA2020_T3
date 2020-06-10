@@ -12,7 +12,7 @@
                 :min-datetime="getCurrentTimeISO"
                 placeholder="Select date"
                 v-model="appointment.start"
-                :minute-step="15"
+                :minute-step="30"
                 auto
               />
             </div>

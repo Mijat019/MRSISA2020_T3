@@ -171,7 +171,7 @@ export default {
 
     handleDoctorStep() {
       // check if inputs are filled in
-      if (!this.doctor || !this.date || !this.time) return;
+      if (!this.doctor.user || !this.date || !this.time) return;
 
       this.step++;
     },
@@ -187,7 +187,7 @@ export default {
         patientMedicalRecordId: this.user.id,
         doctorId: this.doctor.user.id,
         duration: 30,
-        start: start,
+        start: start.unix(),
       };
 
       await this.requestAppointmentAction(payload);

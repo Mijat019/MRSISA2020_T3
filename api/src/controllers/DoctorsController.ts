@@ -41,6 +41,17 @@ class DoctorsController {
     }
   }
 
+  public async getAvailableTimes(req: any, res: any){
+    try{
+      const {doctorId, date } = req.body;
+      const times = await DoctorsService.getAvailableTimes(doctorId, date);
+      res.send(times);
+    } catch(error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  }
+
   public async add(req: any, res: any) {
     try {
       const newDoctor = await DoctorsService.add(req.body, req.user.clinicId);

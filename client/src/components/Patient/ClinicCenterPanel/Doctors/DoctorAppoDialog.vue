@@ -39,7 +39,7 @@
     </v-menu>
 
     <v-select
-      :items="availableTimes"
+      :items="getTimes"
       v-model="timeProp"
       label="Availabe Hours"
       outlined
@@ -50,6 +50,7 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
+import moment from 'moment'
 
 export default {
   props: ['doctor', 'date', 'time', 'priceList'],
@@ -62,25 +63,21 @@ export default {
   methods: {
     ...mapActions({
       getPriceListsForDoctorAction: 'priceLists/getPriceListsForDoctorAction',
+      getAvailableTimesAction: 'doctors/getAvailableTimesAction',
     }),
 
     ...mapMutations({}),
+
+    async getAvailableTimes(payload) {
+      await this.getAvailableTimesAction(payload);
+    },
   },
 
   computed: {
     ...mapGetters({
       getPriceLists: 'priceLists/getPriceListsForDoctor',
+      getTimes: 'doctors/getTimes',
     }),
-
-    availableTimes() {
-      let x = [];
-      for (let i = 10; i < 17; i++) {
-        x.push(i + ':00');
-        x.push(i + ':30');
-      }
-
-      return x;
-    },
 
     priceListProp: {
       get() {
@@ -118,17 +115,21 @@ export default {
 
   watch: {
     date(value) {
-      // // when date is changed reset selected doctors and time
-      value;
+      // // when date is changed reset time
       this.timeProp = '';
+
+      if(!value) return;
+
+      this.getAvailableTimes({
+        doctorId: this.doctor.user.id,
+        date: moment(value, 'YYYY-MM-DD').unix(),
+      });
     },
 
     priceList(value) {
       value;
       // when doctors is changed reset selected time
       this.timeProp = '';
-
-      //this.availableTimes = value.availableTimes;
     },
   },
 
