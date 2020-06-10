@@ -7,13 +7,18 @@
           <hr />
 
           <v-list dense>
-            <v-list-item :key="information.title" v-for="information in medicalInformation">
+            <v-list-item
+              :key="information.title"
+              v-for="information in medicalInformation"
+            >
               <v-list-item-avatar>
                 <v-icon>{{ information.icon }}</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>{{ information.title }}</v-list-item-title>
-                <v-list-item-subtitle>{{ information.subtitle }}</v-list-item-subtitle>
+                <v-list-item-subtitle>{{
+                  information.subtitle
+                }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -25,37 +30,32 @@
 
 <script>
 export default {
-  name: "MedicalInfo",
+  name: 'MedicalInfo',
 
-  props: ["user"],
+  props: ['user'],
 
-  methods: {},
-  mounted() {
-    console.log(this.user);
-  },
   computed: {
     medicalInformation() {
       return [
         {
-          icon: "mdi-human-male-height",
-          title: "Height",
-          subtitle: this.user.medicalRecord.height || "Not provided"
+          icon: 'mdi-human-male-height',
+          title: 'Height',
+          subtitle: this.user.medicalRecord.height || 'Not provided',
         },
         {
-          icon: "mdi-weight-kilogram",
-          title: "Weight",
-          subtitle: this.user.medicalRecord.weight || "Not provided"
+          icon: 'mdi-weight-kilogram',
+          title: 'Weight',
+          subtitle: this.user.medicalRecord.weight || 'Not provided',
         },
         {
-          icon: "mdi-blood-bag",
-          title: "Blood type",
-          subtitle: this.user.medicalRecord.bloodType || "Not provided"
-        }
+          icon: 'mdi-blood-bag',
+          title: 'Blood type',
+          subtitle: this.user.medicalRecord.bloodType || 'Not provided',
+        },
       ];
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

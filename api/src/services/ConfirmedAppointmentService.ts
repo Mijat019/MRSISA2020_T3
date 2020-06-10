@@ -11,30 +11,45 @@ import { getStartAndEndOfDay } from '../util/dateUtil';
 import freeAppointmentService from './FreeAppointmentService';
 import PatientAt from '../models/PatientAt';
 import moment from 'moment';
+import Clinics from '../models/Clinics';
 
 const include: IncludeOptions[] = [
-  { model: Rooms, as: 'room', attributes: ['name', 'id'] },
+  { model: Rooms, as: 'room', required: true, attributes: ['name', 'id'] },
   {
     model: DoctorAt,
     as: 'doctor',
-    attributes: [],
+    attributes: ['userId'],
+    required: true,
     include: [{ model: Users, as: 'user', attributes: usersSelect }],
   },
   {
     model: PriceLists,
     as: 'priceList',
     attributes: ['id', 'price'],
-    include: [{ model: AppointmentTypes, as: 'appointmentType' }],
+    required: true,
+    include: [
+      { model: AppointmentTypes, required: true, as: 'appointmentType' },
+    ],
   },
   {
     model: PatientMedicalRecord,
     as: 'patient',
+    required: true,
     attributes: ['bloodType', 'height', 'weight'],
-    include: [{ model: Users, as: 'user', attributes: usersSelect }],
+    include: [
+      { model: Users, required: true, as: 'user', attributes: usersSelect },
+    ],
   },
+  { model: Clinics, as: 'clinic', required: true, attributes: ['name'] },
 ];
 
-const attributes: string[] = ['id', 'start', 'duration', 'finished'];
+const attributes: string[] = [
+  'id',
+  'start',
+  'duration',
+  'finished',
+  'clinicId',
+];
 
 class ConfirmedAppointmentService {
   public async getAll() {
@@ -66,6 +81,17 @@ class ConfirmedAppointmentService {
       order: [['start', 'ASC']],
     });
     return appointments;
+  }
+
+  public async getUpcomingForPatient(patientId: string) {
+    const now = moment().unix();
+    const upcomingAppointments = await ConfirmedAppointments.findAll({
+      where: { patientId, start: { [Op.gt]: now }, finished: false },
+      include,
+      attributes,
+    });
+    console.log(upcomingAppointments);
+    return upcomingAppointments;
   }
 
   public async add(appointmentPayload: any): Promise<any> {

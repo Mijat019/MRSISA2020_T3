@@ -35,6 +35,18 @@ class FreeAppointmentController {
     }
   }
 
+  public async getUpcomingForPatient(req: any, res: any) {
+    try {
+      const { patientId } = req.params;
+      const appointments = await confirmedAppointmentService.getUpcomingForPatient(
+        patientId
+      );
+      res.send(appointments);
+    } catch (error) {
+      res.status(400).send(error.message);
+    }
+  }
+
   public async add(req: any, res: any) {
     try {
       const confirmedAppointment = await confirmedAppointmentService.add(
