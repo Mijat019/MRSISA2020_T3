@@ -39,7 +39,7 @@
     >
       <template v-slot:item="data">
         {{ data.item.fullName }}
-        <v-spacer> </v-spacer>
+        <v-spacer></v-spacer>
         <v-rating
           :value="data.item.rating"
           disabled
@@ -149,6 +149,7 @@ export default {
     },
 
     doctor(value) {
+      value;
       // when doctors is changed reset selected time
       this.timeProp = '';
       if (!value.user) return;

@@ -9,8 +9,7 @@
       single
       item-text="appoType.name"
       return-object
-    >
-    </v-select>
+    ></v-select>
 
     <v-menu
       v-model="menu"
@@ -128,6 +127,8 @@ export default {
     },
 
     priceList(value) {
+      value;
+      // when doctors is changed reset selected time
       this.timeProp = '';
     },
   },

@@ -69,6 +69,10 @@ class ConfirmedAppointmentService {
 
     public async add(appointmentPayload: any): Promise<any> {
         freeAppointmentService.checkForConflicts(appointmentPayload);
+        // Associate with clinic
+        let { clinicId }: any = await PriceLists.findByPk(appointmentPayload.priceListId);
+        appointmentPayload.clinicId = clinicId;
+
         const { id } = await ConfirmedAppointments.create(appointmentPayload);
         const appointment = await ConfirmedAppointments.findByPk(id, {
             include,
@@ -98,8 +102,11 @@ class ConfirmedAppointmentService {
     }
 
     public async createFromFree(freeAppo: FreeAppointments, patientId: number) {
+        // Associate with clinic
+        let { clinicId }: any = await PriceLists.findByPk(freeAppo.priceListId);
         await ConfirmedAppointments.create({
             patientId,
+            clinicId,
             priceListId: freeAppo.priceListId,
             doctorId: freeAppo.doctorId,
             roomId: freeAppo.roomId,

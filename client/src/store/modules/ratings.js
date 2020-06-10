@@ -1,10 +1,27 @@
 import Vue from 'vue';
 
-const state = {};
+const state = {
+  clinicRating: null,
+};
 
-const mutations = {};
+const mutations = {
+  setClinicRating(state, clinicRating) {
+    state.clinicRating = clinicRating;
+  },
+};
 
 const actions = {
+  async getClinicRatingAction({ commit, dispatch }) {
+    try {
+      const { data } = await Vue.$axios.get('/ratings/clinic');
+      commit('setClinicRating', data.rating);
+    } catch (error) {
+      dispatch('snackbar/showError', error.response.data, {
+        root: true,
+      });
+    }
+  },
+
   async submitDoctorRatingAction({ dispatch }, payload) {
     try {
       await Vue.$axios.post('/ratings/doctor', payload);
@@ -32,7 +49,9 @@ const actions = {
   },
 };
 
-const getters = {};
+const getters = {
+  getClinicRating: state => state.clinicRating,
+};
 
 export default {
   namespaced: true,
