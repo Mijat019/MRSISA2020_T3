@@ -74,6 +74,7 @@
                 </v-menu>
               </v-col>
             </v-row>
+
             <AppointmentGraph :dates="dates2" />
           </v-card-text>
         </v-card>
