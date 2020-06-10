@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import calendar from './calendar';
 import appointmentReport from './appointmentReport';
+import moment from 'moment';
 
 const state = {
   confirmedAppointments: [],
@@ -42,6 +43,17 @@ const actions = {
     }
   },
 
+  async getUpcomingAppointmentsAction({ commit, dispatch }, patientId) {
+    try {
+      const { data: appointments } = await Vue.$axios.get(
+        `/confirmedAppointments/patient/${patientId}`
+      );
+      commit('setConfirmedAppointments', appointments);
+    } catch (error) {
+      dispatch('snackbar/showError', error.response.data, { root: true });
+    }
+  },
+
   async addConfirmedAppointmentAction({ commit, dispatch }, appointment) {
     try {
       const { data } = await Vue.$axios.post(
@@ -66,7 +78,12 @@ const actions = {
 };
 
 const getters = {
-  getConfirmedAppointments: state => state.confirmedAppointments,
+  getConfirmedAppointments: state =>
+    state.confirmedAppointments.map(el => ({
+      ...el,
+      doctorFullName: `${el.doctor.user.firstName} ${el.doctor.user.lastName}`,
+      start: moment.unix(el.start).format('lll'),
+    })),
 };
 
 export default {

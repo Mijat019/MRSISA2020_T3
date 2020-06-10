@@ -17,6 +17,11 @@ router.get(
   confirmedAppointmentController.getAllUnfinishedForDoctorForToday
 );
 
+router.get(
+  '/patient/:patientId',
+  confirmedAppointmentController.getUpcomingForPatient
+);
+
 router.post('/', confirmedAppointmentController.add);
 
 router.patch('/', confirmedAppointmentController.update);
