@@ -78,7 +78,12 @@ ConfirmedAppointments.init(
     tableName: 'confirmed_appointments',
     sequelize: db,
     version: true,
-    indexes: [{ unique: false, fields: ['finished'] }],
+    indexes: [
+      { unique: false, fields: ['finished'] },
+      { unique: true, fields: ['doctorId', 'start'] },
+      { unique: true, fields: ['patientId', 'start'] },
+      { unique: true, fields: ['roomId', 'start'] },
+    ],
   }
 );
 

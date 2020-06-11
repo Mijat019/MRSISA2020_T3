@@ -86,8 +86,11 @@ class AppointmentRequestsService {
 
         // if deleted 0 rows it means that 
         // request has already been approved or denied
-        if (result == 0)
+        if (result == 0){
+          console.log('---------------------')
+          console.log('NUUUUUUUUUUUUUULA')
           throw new Error(); 
+        }
 
         // now send mail to notify
         EmailService.sendAppointmentRequestAcceptedMail(requestPayload);
