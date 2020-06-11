@@ -83,7 +83,6 @@ class AppointmentRequestsService {
       })
       .then((result) => {
         // Transaction has been committed
-        // result is whatever the result of the promise chain returned to the transaction callback
 
         // if deleted 0 rows it means that 
         // request has already been approved or denied
@@ -91,16 +90,7 @@ class AppointmentRequestsService {
           throw new Error(); 
 
         // now send mail to notify
-        const patient = requestPayload.patientMedicalRecord.user;
-        const emailText = `Dear ${patient.firstName + ' ' + patient.lastName},
-        \n\nYour Covid clinic appointment request has been approved!\n`;
-        console.log(emailText);
-        EmailService.send({
-          from: config.mail,
-          to: patient.email,
-          subject: 'Covid Clinic Appointment request',
-          text: emailText,
-        });
+        EmailService.sendAppointmentRequestAcceptedMail(requestPayload);
       })
       .catch((err) => {
         // Transaction has been rolled back

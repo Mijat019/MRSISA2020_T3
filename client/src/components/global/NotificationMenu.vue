@@ -1,5 +1,5 @@
 <template>
-  <v-menu bottom origin="center center" transition="scale-transition">
+  <v-menu bottom origin="center center" :offset-y="true" transition="scale-transition">
     <template v-slot:activator="{ on }">
       <v-btn v-on="on" text>
         <v-icon color="white" size="20">mdi-bell</v-icon>

@@ -26,6 +26,7 @@ const mutations = {
   },
   openEditDialog(state, appointment) {
     state.dialogAppointment = Object.assign({}, appointment);
+    console.log(state.dialogAppointment.start);
     state.showDialog = true;
     state.dialogType = "edit";
   },
