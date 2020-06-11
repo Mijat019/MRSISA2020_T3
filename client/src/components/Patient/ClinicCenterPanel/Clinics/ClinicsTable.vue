@@ -171,4 +171,8 @@ export default {
 .selectInput {
   max-width: 250px !important;
 }
+
+table>tbody>tr {
+  cursor: pointer;
+}
 </style>

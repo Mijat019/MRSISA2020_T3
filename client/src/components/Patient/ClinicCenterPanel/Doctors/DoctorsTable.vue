@@ -124,7 +124,7 @@ export default {
 
     generateSpecForDoctor(item){
       if (item.spec)
-        item.spec.map(spec => spec.appoType.name).join(', ');
+        return item.spec.map(spec => spec.appoType.name).join(', ');
       return '';
     }
   },
@@ -143,4 +143,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+</style>

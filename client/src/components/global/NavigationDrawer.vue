@@ -52,7 +52,7 @@
       </v-list>
       <template v-slot:append>
         <div class="pa-2 ma-2 mb-6">
-          <v-btn @click="onLogout" block class="blue white--text" :hidden="mini">Logout</v-btn>
+          <v-btn @click="onLogout" block class="white black--text" :hidden="mini">Logout</v-btn>
         </div>
       </template>
     </v-navigation-drawer>
