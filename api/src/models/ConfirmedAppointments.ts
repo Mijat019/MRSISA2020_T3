@@ -22,6 +22,7 @@ class ConfirmedAppointments extends Model {
   public start!: number;
   public duration!: number;
   public finished!: boolean;
+  public room!: Rooms;
 }
 
 ConfirmedAppointments.init(
@@ -98,6 +99,7 @@ ConfirmedAppointments.belongsTo(PatientMedicalRecord, {
 });
 
 ConfirmedAppointments.belongsTo(Rooms, { as: 'room', foreignKey: 'roomId' });
+// Rooms.hasMany(ConfirmedAppointments);
 
 ConfirmedAppointments.belongsTo(DoctorAt, {
   as: 'doctor',

@@ -9,6 +9,9 @@ router.use(AuthenticationMiddleware.verifyToken);
 
 router.get("/:id", RoomsController.getAllForClinic);
 
+router.post("/available", RoomsController.getAvailableForClinic);
+router.post("/availableTimes", RoomsController.getAvailableTimes);
+
 router.post(
   "/",
   AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
