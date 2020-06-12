@@ -20,9 +20,9 @@ import ClinicRating from './ClinicRating';
 import NursesService from '../services/NursesService';
 import ConfirmedAppointmentService from '../services/ConfirmedAppointmentService';
 import LeaveRequestsService from '../services/LeaveRequestsService';
+import AppointmentRequests from './AppointmentRequests';
 
 export default async () => {
-
   const { id } = await ClinicsService.add({
     name: 'Druga Klinika',
     city: 'Novi Sad',
@@ -31,7 +31,8 @@ export default async () => {
     description: 'Nije nam losa klinika',
   });
 
-  const password = "$2b$05$pkbjSCsHotPLcnduIUB5huFXsXPutSq3oBzWoiUG5wIVrcg/lAgp.";
+  const password =
+    '$2b$05$pkbjSCsHotPLcnduIUB5huFXsXPutSq3oBzWoiUG5wIVrcg/lAgp.';
 
   const { id: roomId } = await Rooms.create({
     clinicId: id,
@@ -48,12 +49,11 @@ export default async () => {
     price: 1420,
   });
 
-
   const { userId: nurseId } = await NursesService.add(
     {
       firstName: 'Sestra',
       lastName: 'Sestric',
-      email: '22222s',
+      email: '2s',
       jmbg: '2504686',
       phoneNumber: '666',
       country: 'Serbia',
@@ -73,7 +73,7 @@ export default async () => {
     {
       firstName: 'Milovan',
       lastName: 'Deretic',
-      email: 'd2.2.2',
+      email: '2d1',
       jmbg: '55943318',
       phoneNumber: '444',
       country: 'Serbia',
@@ -91,7 +91,7 @@ export default async () => {
 
   await DoctorsService.addSpecialization(doctorId, appointmentTypeId);
 
-  const june = moment("2020-06-25 12:00","YYYY-MM-DD");    
+  const june = moment('2020-06-25 12:00', 'YYYY-MM-DD HH:mm');
 
   const { id: userId }: any = await UsersService.createUser(
     {
@@ -111,19 +111,41 @@ export default async () => {
 
   const { userId: patient1Id } = await PatientMedicalRecord.create({ userId });
 
+  // await ConfirmedAppointmentService.add({
+  //   priceListId,
+  //   doctorId,
+  //   patientId: patient1Id,
+  //   roomId,
+  //   start: june.unix(),
+  //   duration: 60,
+  // });
 
-  await ConfirmedAppointmentService.add({
-    priceListId,
-    doctorId,
-    patientId: patient1Id,
-    roomId,
-    start: june.unix(),
-    duration: 60,
-  });
-
+  // 12:00
   await FreeAppointments.create({
     priceListId,
     doctorId,
+    roomId,
+    duration: 60,
+    start: june.unix(),
+  });
+
+  await AppointmentRequests.create({
+    priceListId,
+    clinicId: id,
+    doctorId,
+    patientMedicalRecordId: patient1Id,
+    createdAt: Date.now(),
+    roomId,
+    duration: 60,
+    start: june.unix(),
+  });
+
+  await AppointmentRequests.create({
+    priceListId,
+    clinicId: id,
+    doctorId,
+    patientMedicalRecordId: patient1Id,
+    createdAt: Date.now(),
     roomId,
     duration: 60,
     start: june.add(2, 'hour').unix(),
@@ -150,7 +172,6 @@ export default async () => {
     { where: { id: tutu } }
   );
 
-
   await ClinicRating.create({
     patientId: userId,
     clinicId: id,
@@ -161,7 +182,6 @@ export default async () => {
     comment: 'OKAY',
   });
 
-
   await DoctorRating.create({
     patientId: userId,
     doctorId: doctorId,
@@ -171,5 +191,4 @@ export default async () => {
     averageRating: 5,
     comment: 'GREAT',
   });
-
 };

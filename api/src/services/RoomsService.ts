@@ -16,6 +16,7 @@ class RoomsService {
     clinicId: number,
     date: any
   ): Promise<any> {
+    
     // find all taken rooms
     let occupiedRooms = await FreeAppointments.findAll({
       where: {
@@ -28,14 +29,11 @@ class RoomsService {
           model: Rooms,
           as: 'room',
           where: { clinicId },
-
-          attributes: [],
           required: true,
         },
       ],
     });
-
-    let occupiedIds = occupiedRooms.map((app) => app.room.id);
+    let occupiedIds = occupiedRooms.map((app) => app.roomId);
 
     // now do the same for conf appos
     const occupiedRoomsConf = await FreeAppointments.findAll({
@@ -49,13 +47,11 @@ class RoomsService {
           model: Rooms,
           as: 'room',
           where: { clinicId },
-
-          attributes: [],
           required: true,
         },
       ],
     });
-    occupiedIds = occupiedIds.concat(occupiedRoomsConf.map((app) => app.room.id));
+    occupiedIds = occupiedIds.concat(occupiedRoomsConf.map((app) => app.roomId));
 
     // return all clinic rooms minus those who are occupied
     const allRooms = await Rooms.findAll({ where: { clinicId } });

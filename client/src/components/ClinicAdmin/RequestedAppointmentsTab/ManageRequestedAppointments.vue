@@ -26,6 +26,9 @@
           >
         </div>
       </template>
+      <template #item.start="{ item }">
+        {{ format(item.start) }}
+      </template>
     </v-data-table>
 
     <!-- APPROVE DIALOG -->
@@ -160,7 +163,7 @@ export default {
       getAllForClinicAction: 'getAllForClinicAction',
       confirmRequestAction: 'confirmRequestAction',
       rejectRequestAction: 'rejectRequestAction',
-      updateRequestAction: 'updateRequestAction'
+      updateRequestAction: 'updateRequestAction',
     }),
 
     ...mapActions('rooms', {
@@ -188,7 +191,7 @@ export default {
 
     async approve(item) {
       // if there was available room
-      if (this.availableRooms > 0){
+      if (this.availableRooms > 0) {
         if (!this.room) return;
         item.roomId = this.room;
         await this.confirmRequestAction(item);
@@ -197,12 +200,15 @@ export default {
       }
 
       // if there was no rooms update request first then confirm it
-      item.start = moment(this.newDate + ' ' + this.newTime, "YYYY-MM-DD HH:mm").unix();
-      try{
+      item.start = moment(
+        this.newDate + ' ' + this.newTime,
+        'YYYY-MM-DD HH:mm'
+      ).unix();
+      try {
         await this.updateRequestAction(item);
-      }catch{
+      } catch {
         alert('Update failed, Try again or reject');
-        return
+        return;
       }
       console.log(item);
       item.roomId = this.newRoom;
@@ -222,15 +228,16 @@ export default {
       this.room = null;
       this.dialogApprove = false;
     },
+
+    format(item) {
+      if (!item) return '';
+
+      return moment.unix(item).format('YYYY-MM-DD HH:mm');
+    },
   },
   async created() {
     await this.getAllForClinicAction(this.user.clinicId);
     await this.getRoomsAction(this.user.clinicId);
-    // await this.getAvailableRoomsAction({
-    //   clinicId: this.user.clinicId,
-    //   // date: moment().unix()
-    //   date: 1591916802,
-    // })
   },
 
   watch: {
