@@ -36,7 +36,7 @@ class RoomsService {
     let occupiedIds = occupiedRooms.map((app) => app.roomId);
 
     // now do the same for conf appos
-    const occupiedRoomsConf = await FreeAppointments.findAll({
+    const occupiedRoomsConf = await ConfirmedAppointments.findAll({
       where: {
         start: {
           [Op.eq]: date,
