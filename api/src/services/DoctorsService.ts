@@ -11,20 +11,41 @@ import FreeAppointments from '../models/FreeAppointments';
 import ConfirmedAppointments from '../models/ConfirmedAppointments';
 import moment from 'moment';
 import { Op } from 'sequelize';
+import DoctorRating from '../models/DoctorRating';
+import sequelize from 'sequelize';
 
 class DoctorsService {
-  public async getAll(): Promise<any> {
+  public async getAll(clinicId?: any): Promise<any> {
+    let where = {};
+    if (clinicId) {
+      // Defined, get only for one clinic
+      where = { clinicId };
+    }
+
     const doctors = (await DoctorAt.findAll({
+      where,
+      group: 'doctorId',
+      attributes: [
+        [sequelize.fn('avg', sequelize.col('ratingList.averageRating')), 'rating']
+      ],
       include: [
-        { model: Users, attributes: usersSelect, as: 'user' },
-        { model: Clinics, attributes: ['name'], as: 'clinic' },
+        { model: Users, attributes: usersSelect, as: 'user', required: true },
+        { model: Clinics, attributes: ['name'], as: 'clinic', required: true },
+        {
+          model: DoctorRating,
+          as: 'ratingList',
+          attributes: ['averageRating'],
+          required: true
+        },
         {
           model: DoctorSpec,
+          required: true,
           attributes: ['id'],
           as: 'spec',
           include: [
             {
               model: AppointmentTypes,
+              required: true,
               attributes: ['id', 'name'],
               as: 'appoType',
             },
@@ -32,55 +53,18 @@ class DoctorsService {
         },
       ],
     })) as any;
-
-    for (let doctor of doctors) {
-      doctor.dataValues.rating = await RatingsService.getRatingForDoctor(
-        doctor.userId
-      );
-    }
 
     return doctors;
   }
 
-  public async getByClinicId(clinicId: number, userId: number): Promise<any> {
-    // Does the user id match the admin of this clinic?
-    const adminAt = await AdminAt.findOne({ where: { userId, clinicId } });
-    // if (adminAt == null) {
-    //   // Given user is NOT an admin of this clinic or either of them don't exist
-    //   throw "Given user " + _userId + " is not an admin of clinic " + _clinicId;
-    // }
-
-    const doctors = (await DoctorAt.findAll({
-      where: { clinicId },
-      include: [
-        { model: Users, attributes: usersSelect, as: 'user' },
-        { model: Clinics, attributes: ['name'], as: 'clinic' },
-        {
-          model: DoctorSpec,
-          attributes: ['id'],
-          as: 'spec',
-          include: [
-            {
-              model: AppointmentTypes,
-              attributes: ['id', 'name'],
-              as: 'appoType',
-            },
-          ],
-        },
-      ],
-    })) as any;
-
-    for (let doctor of doctors) {
-      doctor.dataValues.rating = await RatingsService.getRatingForDoctor(
-        doctor.userId
-      );
-    }
-    return doctors;
+  public async getByClinicId(clinicId: number): Promise<any> {
+    return await this.getAll(clinicId);
   }
 
   /**
    * Gets all doctors for appo type and their available hours for appointment
    */
+  //TODO: Pogledaj zasto se date ne koristi
   public async getAllForScheduling(
     clinicId: any,
     appointmentTypeId: any,
@@ -157,21 +141,8 @@ class DoctorsService {
     });
   }
 
-  private async hasFreeAppos(doctorId: number) {
-    const freeAppos = await FreeAppointments.findAll({ where: { doctorId } });
-    return freeAppos.length > 0;
-  }
-
-  private async hasConfirmedAppos(doctorId: number) {
-    const confirmedAppos = await ConfirmedAppointments.findAll({
-      where: { doctorId },
-    });
-    return confirmedAppos.length > 0;
-  }
-
   /** Returns a list of all available times for doctor given the date */
   public async getAvailableTimes(doctorId: any, date: any) {
-    
     date = moment.unix(date);
 
     // generate all possible times
@@ -225,17 +196,7 @@ class DoctorsService {
   }
 
   public async delete(doctorId: number) {
-    // Does the doctor have allocated Free appointments?
-    
-    // if (await this.hasFreeAppos(doctorId)) {
-    //   throw "Can't delete doctor: they have free appointments allocated to them!";
-    // }
-
-    // // Does the doctor have Confirmed appointments?
-    // if (await this.hasConfirmedAppos(doctorId)) {
-    //   throw "Can't delete doctor: they have confirmed appointments!";
-    // }
-    // Doctor is free and can be deleted
+    // This will fail on foreign key reference if they have free appos or confirmed appos
     await DoctorAt.destroy({ where: { userId: doctorId } });
     await Users.destroy({ where: { id: doctorId } });
   }

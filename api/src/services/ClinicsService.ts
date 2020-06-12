@@ -1,23 +1,32 @@
-import Clinics from "../models/Clinics";
-import RatingsService from './RatingsService'
-import AdminOf from "../models/AdminAt";
-import Users from "../models/Users";
-import PriceLists from "../models/PriceLists";
+import Clinics, { clinicsSelect } from '../models/Clinics';
+import RatingsService from './RatingsService';
+import AdminOf from '../models/AdminAt';
+import Users from '../models/Users';
+import PriceLists from '../models/PriceLists';
+import ClinicRating from '../models/ClinicRating';
 
 class ClinicsService {
   public async getAll(): Promise<any> {
-    const clinics = await Clinics.findAll() as any;
+    const clinics: any = await Clinics.findAll({
+      group: 'id',
+      attributes: clinicsSelect,
+      include: [
+        {
+          model: ClinicRating,
+          as: 'ratingList',
+          attributes: ['averageRating'],
+          required: true,
+        },
+      ],
+    });
 
-    // get average rating of clinic
-    for (let clinic of clinics) {
-      clinic.dataValues.rating = await RatingsService.getRatingForClinic(clinic.id);
-    }
     return clinics;
   }
 
   public async getAllForAppoType(appointmentTypeId: any): Promise<any> {
-
-    const clinics = await Clinics.findAll({
+    const clinics: any = (await Clinics.findAll({
+      group: 'id',
+      attributes: clinicsSelect,
       include: [
         {
           model: PriceLists,
@@ -25,13 +34,15 @@ class ClinicsService {
           required: true,
           where: { appointmentTypeId },
         },
+        {
+          model: ClinicRating,
+          as: 'ratingList',
+          attributes: ['averageRating'],
+          required: true,
+        },
       ],
-    }) as any;
+    }));
 
-    // get average rating of clinic
-    for (let clinic of clinics) {
-      clinic.dataValues.rating = await RatingsService.getRatingForClinic(clinic.id);
-    }
     return clinics;
   }
 

@@ -64,5 +64,6 @@ ClinicRating.init(
 ClinicRating.belongsTo(Users, { as: 'patient', foreignKey: 'patientId' });
 
 ClinicRating.belongsTo(Clinics, { as: 'clinic', foreignKey: 'clinicId' });
+Clinics.hasMany(ClinicRating, { as: 'ratingList', foreignKey: 'clinicId' });
 
 export default ClinicRating;

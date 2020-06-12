@@ -17,11 +17,7 @@ class DoctorsController {
 
   public async getByClinic(req: any, res: any) {
     try {
-      // if (req.user.role != UserRole.CLINIC_ADMIN) {
-      //   res.status(403).send("Only clinic admins may use this route.");
-      //   return;
-      // }
-      const doctors = await DoctorsService.getByClinicId(req.params["clinicId"], req.user.id);
+      const doctors = await DoctorsService.getByClinicId(req.params["clinicId"]);
 
       res.send(doctors);
     } catch (error) {
