@@ -63,7 +63,7 @@ DoctorRating.init(
 
 DoctorRating.belongsTo(Users, { as: 'patient', foreignKey: 'patientId' });
 
-DoctorRating.belongsTo(DoctorAt, { as: 'doctor', foreignKey: 'doctorId' });
+DoctorRating.belongsTo(DoctorAt, { as: 'doctor', foreignKey: 'doctorId', onDelete: 'cascade'});
 DoctorAt.hasMany(DoctorRating, { as: 'ratings', foreignKey: 'doctorId'  });
 
 export default DoctorRating;

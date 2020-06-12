@@ -236,8 +236,8 @@ class DoctorsService {
     //   throw "Can't delete doctor: they have confirmed appointments!";
     // }
     // Doctor is free and can be deleted
-    await Users.destroy({ where: { id: doctorId } });
     await DoctorAt.destroy({ where: { userId: doctorId } });
+    await Users.destroy({ where: { id: doctorId } });
   }
 }
 
