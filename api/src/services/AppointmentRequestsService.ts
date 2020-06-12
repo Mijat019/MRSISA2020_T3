@@ -67,7 +67,6 @@ class AppointmentRequestsService {
 
     // check if there are conflicts
     // with existing appos
-    //await FreeAppointmentService.checkForConflicts(requestPayload);
 
     return sequelize
       .transaction((t) => {

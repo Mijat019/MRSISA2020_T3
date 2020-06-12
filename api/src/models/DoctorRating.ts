@@ -2,6 +2,7 @@ import db from './database';
 import { Model, INTEGER, DOUBLE, STRING } from 'sequelize';
 import Users from './Users';
 import { number } from 'joi';
+import DoctorAt from './DoctorAt';
 
 class DoctorRating extends Model {
   public id!: number;
@@ -62,6 +63,7 @@ DoctorRating.init(
 
 DoctorRating.belongsTo(Users, { as: 'patient', foreignKey: 'patientId' });
 
-DoctorRating.belongsTo(Users, { as: 'doctor', foreignKey: 'doctorId' });
+DoctorRating.belongsTo(DoctorAt, { as: 'doctor', foreignKey: 'doctorId' });
+DoctorAt.hasMany(DoctorRating, { as: 'ratings', foreignKey: 'doctorId'  });
 
 export default DoctorRating;

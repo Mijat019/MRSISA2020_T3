@@ -226,18 +226,18 @@ class DoctorsService {
 
   public async delete(doctorId: number) {
     // Does the doctor have allocated Free appointments?
-    if (await this.hasFreeAppos(doctorId)) {
-      throw "Can't delete doctor: they have free appointments allocated to them!";
-    }
+    
+    // if (await this.hasFreeAppos(doctorId)) {
+    //   throw "Can't delete doctor: they have free appointments allocated to them!";
+    // }
 
-    // Does the doctor have Confirmed appointments?
-    if (await this.hasConfirmedAppos(doctorId)) {
-      throw "Can't delete doctor: they have confirmed appointments!";
-    }
-
+    // // Does the doctor have Confirmed appointments?
+    // if (await this.hasConfirmedAppos(doctorId)) {
+    //   throw "Can't delete doctor: they have confirmed appointments!";
+    // }
     // Doctor is free and can be deleted
-    await DoctorAt.destroy({ where: { userId: doctorId } });
     await Users.destroy({ where: { id: doctorId } });
+    await DoctorAt.destroy({ where: { userId: doctorId } });
   }
 }
 
