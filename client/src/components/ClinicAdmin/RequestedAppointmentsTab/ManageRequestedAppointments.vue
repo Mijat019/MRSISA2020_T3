@@ -21,8 +21,13 @@
             small
             >Approve</v-btn
           >
-          <v-btn @click="openRejectDialog(item)" color="error" small>reject</v-btn>
+          <v-btn @click="openRejectDialog(item)" color="error" small
+            >reject</v-btn
+          >
         </div>
+      </template>
+      <template #item.start="{ item }">
+        {{ format(item.start) }}
       </template>
     </v-data-table>
 
@@ -33,20 +38,76 @@
       @click:outside="cancel"
       :retain-focus="false"
     >
-      <v-card>
+      <v-card class="px-5">
         <v-card-title>Select a room for the appointment</v-card-title>
         <v-card-text>
+          <!-- if has avilable rooms -->
           <v-select
-            :items="getRooms"
+            v-if="availableRooms > 0"
+            :items="getAvailableRooms"
             v-model="room"
             item-text="name"
             item-value="id"
             label="Room"
           />
+
+          <!-- If no available rooms -->
+          <v-container class="" v-else>
+            <v-row class=" mt-5">
+              <v-menu
+                v-model="menu"
+                :close-on-content-click="false"
+                :nudge-right="10"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="newDate"
+                    label="Date"
+                    prepend-inner-icon="mdi-calendar"
+                    readonly
+                    outlined
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  no-title
+                  :min="new Date().toISOString()"
+                  first-day-of-week="1"
+                  v-model="newDate"
+                  @input="menu = false"
+                ></v-date-picker>
+              </v-menu>
+            </v-row>
+
+            <v-row class="">
+              <v-select
+                :items="getRooms"
+                v-model="newRoom"
+                item-text="name"
+                outlined
+                prepend-inner-icon="mdi-door"
+                item-value="id"
+                label="Room"
+              />
+            </v-row>
+
+            <v-row class="">
+              <v-select
+                :items="getAvailableTimes"
+                v-model="newTime"
+                label="Availabe Hours"
+                outlined
+                prepend-inner-icon="mdi-watch"
+              ></v-select>
+            </v-row>
+          </v-container>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="mx-3">
           <v-spacer></v-spacer>
-          <v-btn @click="cancel">Cancel</v-btn>
+          <v-btn class="mx-3" @click="cancel">Cancel</v-btn>
           <v-btn @click="approve(editedItem)" color="success">Approve</v-btn>
         </v-card-actions>
       </v-card>
@@ -71,11 +132,19 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import moment from 'moment';
+
 export default {
+  components: {},
   data: () => ({
+    menu: false,
     dialogReject: false,
     dialogApprove: false,
     room: null,
+    availableRooms: 0,
+    newDate: '',
+    newTime: '',
+    newRoom: '',
     reason: '',
     search: '',
     editedItem: '',
@@ -94,11 +163,25 @@ export default {
       getAllForClinicAction: 'getAllForClinicAction',
       confirmRequestAction: 'confirmRequestAction',
       rejectRequestAction: 'rejectRequestAction',
+      updateRequestAction: 'updateRequestAction',
     }),
 
-    openApproveDialog(item) {
+    ...mapActions('rooms', {
+      getRoomsAction: 'getRoomsAction',
+      getAvailableRoomsAction: 'getAvailableRoomsAction',
+      getAvailableTimesAction: 'getAvailableTimesAction',
+    }),
+
+    async openApproveDialog(item) {
       this.dialogApprove = true;
       this.editedItem = item;
+      await this.getAvailableRoomsAction({
+        clinicId: item.clinicId,
+        date: item.start,
+      });
+
+      this.availableRooms = this.getAvailableRooms.length;
+      this.newDate = moment.unix(item.start).format('YYYY-MM-DD');
     },
 
     openRejectDialog(item) {
@@ -106,17 +189,36 @@ export default {
       this.editedItem = item;
     },
 
-    approve(item) {
-      if (!this.room) return;
+    async approve(item) {
+      // if there was available room
+      if (this.availableRooms > 0) {
+        if (!this.room) return;
+        item.roomId = this.room;
+        await this.confirmRequestAction(item);
+        this.cancel();
+        return;
+      }
 
-      item.roomId = this.room;
-      this.confirmRequestAction(item);
+      // if there was no rooms update request first then confirm it
+      item.start = moment(
+        this.newDate + ' ' + this.newTime,
+        'YYYY-MM-DD HH:mm'
+      ).unix();
+      try {
+        await this.updateRequestAction(item);
+      } catch {
+        alert('Update failed, Try again or reject');
+        return;
+      }
+      console.log(item);
+      item.roomId = this.newRoom;
+      await this.confirmRequestAction(item);
       this.cancel();
     },
 
-    reject(item) {
+    async reject(item) {
       item.reason = this.reason;
-      this.rejectRequestAction(item);
+      await this.rejectRequestAction(item);
       this.cancel();
     },
 
@@ -126,9 +228,37 @@ export default {
       this.room = null;
       this.dialogApprove = false;
     },
+
+    format(item) {
+      if (!item) return '';
+
+      return moment.unix(item).format('YYYY-MM-DD HH:mm');
+    },
   },
   async created() {
     await this.getAllForClinicAction(this.user.clinicId);
+    await this.getRoomsAction(this.user.clinicId);
+  },
+
+  watch: {
+    newDate(val) {
+      if (val && this.newRoom) {
+        this.getAvailableTimesAction({
+          roomId: this.newRoom,
+          date: moment(val, 'YYYY-MM-DD').unix(),
+        });
+      }
+    },
+
+    newRoom(val) {
+      if (val && this.newDate) {
+        console.log(val);
+        this.getAvailableTimesAction({
+          roomId: val,
+          date: moment(this.newDate, 'YYYY-MM-DD').unix(),
+        });
+      }
+    },
   },
 
   computed: {
@@ -136,7 +266,14 @@ export default {
       appointments: 'scheduleCustomAppointment/getAppointmentRequests',
       user: 'authentication/getUser',
       getRooms: 'rooms/getRooms',
+      getAvailableRooms: 'rooms/getAvailableRooms',
+      getAvailableTimes: 'rooms/getAvailableTimes',
+      getCurrentTimeISO: 'time/getCurrentTimeISO',
     }),
+
+    noRooms() {
+      return this.availableRooms == 0;
+    },
   },
 };
 </script>

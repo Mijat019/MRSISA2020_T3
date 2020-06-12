@@ -22,6 +22,7 @@ class ConfirmedAppointments extends Model {
   public start!: number;
   public duration!: number;
   public finished!: boolean;
+  public room!: Rooms;
 }
 
 ConfirmedAppointments.init(
@@ -78,7 +79,12 @@ ConfirmedAppointments.init(
     tableName: 'confirmed_appointments',
     sequelize: db,
     version: true,
-    indexes: [{ unique: false, fields: ['finished'] }],
+    indexes: [
+      { unique: false, fields: ['finished'] },
+      { unique: true, fields: ['doctorId', 'start'] },
+      { unique: true, fields: ['patientId', 'start'] },
+      { unique: true, fields: ['roomId', 'start'] },
+    ],
   }
 );
 
@@ -93,6 +99,7 @@ ConfirmedAppointments.belongsTo(PatientMedicalRecord, {
 });
 
 ConfirmedAppointments.belongsTo(Rooms, { as: 'room', foreignKey: 'roomId' });
+// Rooms.hasMany(ConfirmedAppointments);
 
 ConfirmedAppointments.belongsTo(DoctorAt, {
   as: 'doctor',

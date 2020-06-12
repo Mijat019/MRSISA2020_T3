@@ -20,6 +20,7 @@ import ClinicRating from './ClinicRating';
 import NursesService from '../services/NursesService';
 import ConfirmedAppointmentService from '../services/ConfirmedAppointmentService';
 import LeaveRequestsService from '../services/LeaveRequestsService';
+import initModelK2 from './initModelK2';
 
 export default async () => {
   await Diagnosis.create({ name: 'Insane in the membrane' });
@@ -164,9 +165,8 @@ export default async () => {
   /*
   KLINIKA 2
   */
-  
 
-  
+  const now = moment().set({ hour: 12, minute: 0, second: 0 });
 
   const { id: userId }: any = await UsersService.createUser(
     {
@@ -202,14 +202,16 @@ export default async () => {
     UserRole.PATIENT
   );
 
-  const { userId: patient2Id } = await PatientMedicalRecord.create({ userId: userId2 });
+  const { userId: patient2Id } = await PatientMedicalRecord.create({
+    userId: userId2,
+  });
 
   await ConfirmedAppointmentService.add({
     priceListId,
     doctorId,
     patientId: patient1Id,
     roomId,
-    start: moment().unix(),
+    start: now.unix(),
     duration: 60,
   });
 
@@ -218,7 +220,7 @@ export default async () => {
     doctorId,
     patientId: patient2Id,
     roomId,
-    start: moment().add(2, 'hour').unix(),
+    start: now.add(2, 'hour').unix(),
     duration: 60,
   });
 
@@ -227,8 +229,9 @@ export default async () => {
     doctorId,
     roomId,
     duration: 60,
-    start: moment().add(2, 'hour').unix(),
+    start: now.add(2, 'hour').unix(),
   });
+  
 
   const { userId: tutu } = await ClinicAdminService.add(
     {
@@ -312,4 +315,6 @@ export default async () => {
     comment: 'SUX',
   });
 
+  // model for second clinic
+  await initModelK2();
 };

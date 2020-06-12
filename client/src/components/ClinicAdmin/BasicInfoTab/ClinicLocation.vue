@@ -59,7 +59,8 @@ export default {
         `https://nominatim.openstreetmap.org/search?format=json&q=${clinicAdress}`
       );
 
-      const { lat, lon } = data[0];
+      const lat = data[0]?.lat;
+      const lon = data[0]?.lon; 
       this.currentCenter = latLng(lat, lon);
       this.center = latLng(lat, lon);
       this.marker = latLng(lat, lon);
