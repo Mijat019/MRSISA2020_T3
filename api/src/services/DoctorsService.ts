@@ -22,11 +22,16 @@ class DoctorsService {
       where = { clinicId };
     }
 
-    const doctors = (await DoctorAt.findAll({
+    const doctors = await DoctorAt.findAll({
       where,
-      group: 'doctorId',
+      group: ['doctorId', 'spec.appoType.id'],
       attributes: [
-        [sequelize.fn('avg', sequelize.col('ratingList.averageRating')), 'rating'], 'clinicId'
+        [
+          sequelize.fn('avg', sequelize.col('ratingList.averageRating')),
+          'rating',
+        ],
+        'clinicId',
+        'userId',
       ],
       include: [
         { model: Users, attributes: usersSelect, as: 'user', required: true },
@@ -35,7 +40,7 @@ class DoctorsService {
           model: DoctorRating,
           as: 'ratingList',
           attributes: ['averageRating'],
-          required: true
+          required: true,
         },
         {
           model: DoctorSpec,
@@ -52,7 +57,7 @@ class DoctorsService {
           ],
         },
       ],
-    }));
+    });
 
     return doctors;
   }

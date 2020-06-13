@@ -102,21 +102,12 @@ export default {
       getAlreadyRatedAction: 'ratings/getAlreadyRatedAction',
     }),
 
-    rateDoctor(item) {
-      console.log(item);
-    },
-
-    rateClinic(item) {
-      console.log(item);
-    },
-
     format(item) {
       if (!item) return '';
       return moment.unix(item).format('YYYY-MM-DD HH:mm');
     },
 
     isDoctorRated(item) {
-      console.log("IZVRSSSION")
       if (!this.getAlreadyRated.doctors) return false;
 
       const id = item.confirmedAppointment.doctorId;
@@ -145,7 +136,6 @@ export default {
     await this.getReportsForPatientAction(this.user.id);
 
     bus.$on('ratingChanged', () => {
-      console.log("WWWWWWWWWWWWWWWWWWWWWWWWAT");
       this.forceRerender();
     });
   },

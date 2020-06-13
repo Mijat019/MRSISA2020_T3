@@ -63,7 +63,7 @@ export default {
 
   methods: {
     ...mapActions({
-      getDoctorsAction: 'doctors/getDoctorsAction',
+      getDoctorsByClinicAction: 'doctors/getDoctorsByClinicAction',
       getFreeAppointmentsAction: 'freeAppointments/getFreeAppointmentsAction',
     }),
 
@@ -80,13 +80,14 @@ export default {
 
   async mounted() {
     this.setAppointments([]);
-    await this.getDoctorsAction();
+    await this.getDoctorsByClinicAction(this.user.clinicId);
   },
 
   computed: {
     ...mapGetters({
       getDoctors: 'doctors/getDoctors',
       getFreeAppointments: 'freeAppointments/getFreeAppointments',
+      user: "authentication/getUser"
     }),
   },
 

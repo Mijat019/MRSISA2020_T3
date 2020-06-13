@@ -43,6 +43,7 @@ export default {
       updatePriceListAction: "updatePriceListAction"
     }),
 
+
     ...mapMutations("priceLists", {
       close: "closeDialog"
     }),
