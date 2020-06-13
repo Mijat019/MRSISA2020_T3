@@ -29,6 +29,9 @@ import appointmentReportRoutes from './routes/appointmentReportRoutes';
 import patientMedicalRecordRoutes from './routes/patientMedicalRecordRoutes';
 import ratingsRoutes from './routes/ratingsRoutes';
 import leaveRequestsRoutes from './routes/leaveRequestsRoutes';
+import operationRequestsRoutes from './routes/operationRequestsRoutes';
+import operationsRoutes from './routes/operationsRoutes';
+import operationAttendancesRoutes from './routes/operationAttendancesRoutes';
 import patientsAtRoutes from './routes/patientsAtRoutes';
 import reportRoutes from './routes/reportRoutes';
 
@@ -40,8 +43,8 @@ import reportRoutes from './routes/reportRoutes';
     // creates tables from model
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
-      await db.sync({ force: true });
-      await initModel();
+    await db.sync({ force: true });
+    await initModel();
     // await initModelStega();
   } catch (error) {
     console.log(error);
@@ -79,6 +82,9 @@ app.use('/appointmentReport', appointmentReportRoutes);
 app.use('/patientMedicalRecord', patientMedicalRecordRoutes);
 app.use('/leaveRequests', leaveRequestsRoutes);
 app.use('/ratings', ratingsRoutes);
+app.use('/operationRequests', operationRequestsRoutes);
+app.use('/operations', operationsRoutes);
+app.use('/operationAttendances', operationAttendancesRoutes);
 app.use('/myPatients', patientsAtRoutes);
 app.use('/report', reportRoutes);
 

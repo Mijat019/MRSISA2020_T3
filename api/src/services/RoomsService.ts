@@ -5,6 +5,7 @@ import { Op } from 'sequelize';
 import ConfirmedAppointments from '../models/ConfirmedAppointments';
 import DoctorsService from './DoctorsService';
 import moment from 'moment';
+import Operations from '../models/Operations';
 
 class RoomsService {
   public async getAllForClinic(clinicId: number): Promise<any> {
@@ -14,51 +15,38 @@ class RoomsService {
 
   public async getAvailableForClinic(
     clinicId: number,
-    date: any
+    start: any
   ): Promise<any> {
-    
     // find all taken rooms
     let occupiedRooms = await FreeAppointments.findAll({
-      where: {
-        start: {
-          [Op.eq]: date,
-        },
-      },
-      include: [
-        {
-          model: Rooms,
-          as: 'room',
-          where: { clinicId },
-          required: true,
-        },
-      ],
+      attributes: ['roomId'],
+      where: { clinicId, start },
     });
     let occupiedIds = occupiedRooms.map((app) => app.roomId);
 
     // now do the same for conf appos
     const occupiedRoomsConf = await ConfirmedAppointments.findAll({
-      where: {
-        start: {
-          [Op.eq]: date,
-        },
-      },
-      include: [
-        {
-          model: Rooms,
-          as: 'room',
-          where: { clinicId },
-          required: true,
-        },
-      ],
+      attributes: ['roomId'],
+      where: { clinicId, start },
     });
-    occupiedIds = occupiedIds.concat(occupiedRoomsConf.map((app) => app.roomId));
+    occupiedIds = occupiedIds.concat(
+      occupiedRoomsConf.map((app) => app.roomId)
+    );
+
+    const occupiedRoomsOperations = await Operations.findAll({
+      attributes: ['roomId'],
+      where: { clinicId, start },
+    });
+    occupiedIds = occupiedIds.concat(
+      occupiedRoomsOperations.map((op) => op.roomId)
+    );
 
     // return all clinic rooms minus those who are occupied
-    const allRooms = await Rooms.findAll({ where: { clinicId } });
+    const availableRooms = await Rooms.findAll({
+      where: { clinicId, id: { [Op.notIn]: occupiedIds } },
+    });
 
-    console.log('--------------------');
-    console.log(occupiedIds.length);
-    return allRooms.filter((room) => !occupiedIds.includes(room.id));
+    return availableRooms;
   }
 
   public async add(roomPayload: any, clinicId: number): Promise<any> {

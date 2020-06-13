@@ -25,7 +25,7 @@ import diagnosisDialog from './modules/diagnosisDialog';
 import clinicCenterAdmins from './modules/clinicCenterAdmins';
 import priceLists from './modules/priceLists';
 import confirmedAppointments from './modules/confirmedAppointments/confirmedAppointments';
-import appointmentReport from './modules/confirmedAppointments/appointmentReport'
+import appointmentReport from './modules/confirmedAppointments/appointmentReport';
 import scheduleCustomAppointment from './modules/customAppointment/scheduleCustomAppointment';
 import scheduleCustomAppointmentDialog from './modules/customAppointment/scheduleCustomAppointmentDialog';
 import prescriptions from './modules/prescriptions';
@@ -33,7 +33,9 @@ import ratings from './modules/ratings';
 import time from './modules/time';
 import leaveRequests from './modules/leaveRequests';
 import prescriptionApproving from './modules/prescriptionApproving';
-import incomeReport from "./modules/incomeReport";
+import operationRequests from './modules/operationRequests';
+import operations from './modules/operations';
+import incomeReport from './modules/incomeReport';
 
 Vue.use(Vuex);
 
@@ -76,6 +78,8 @@ export default new Vuex.Store({
     ratings,
     appointmentReport,
     prescriptionApproving,
-    incomeReport
+    operationRequests,
+    operations,
+    incomeReport,
   },
 });

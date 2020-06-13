@@ -2,6 +2,12 @@ import { mapActions, mapGetters } from 'vuex';
 import moment from 'moment';
 
 export default {
+  async mounted() {
+    await this.getFreeAppointmentsAction(this.getUser.id);
+    await this.getConfirmedAppointmentsAction(this.getUser.id);
+    await this.getOperationsAction(this.getUser.id);
+  },
+
   data: () => ({
     today: moment().format('YYYY-MM-DD HH:mm'),
     type: 'week',
@@ -24,6 +30,7 @@ export default {
       getFreeAppointmentsAction: 'freeAppointments/getFreeAppointmentsAction',
       getConfirmedAppointmentsAction:
         'confirmedAppointments/getConfirmedAppointmentsAction',
+      getOperationsAction: 'operations/getOperationsAction',
       setNextAppointmentAction:
         'confirmedAppointments/appointmentReport/setNextAppointmentAction',
     }),
@@ -98,6 +105,7 @@ export default {
   computed: {
     ...mapGetters({
       getUser: 'authentication/getUser',
+      getEvents: 'confirmedAppointments/calendar/getEvents',
       getAppointments: 'confirmedAppointments/calendar/getAppointments',
     }),
 

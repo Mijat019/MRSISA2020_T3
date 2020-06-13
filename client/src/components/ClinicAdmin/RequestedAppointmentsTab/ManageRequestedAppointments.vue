@@ -14,30 +14,15 @@
     <v-data-table :headers="headers" :items="appointments" :search="search">
       <template v-slot:item.actions="{ item }">
         <div>
-          <v-btn
-            class="mx-2"
-            @click="openApproveDialog(item)"
-            color="success"
-            small
-            >Approve</v-btn
-          >
-          <v-btn @click="openRejectDialog(item)" color="error" small
-            >reject</v-btn
-          >
+          <v-btn class="mx-2" @click="openApproveDialog(item)" color="success" small>Approve</v-btn>
+          <v-btn @click="openRejectDialog(item)" color="error" small>reject</v-btn>
         </div>
       </template>
-      <template #item.start="{ item }">
-        {{ format(item.start) }}
-      </template>
+      <template #item.start="{ item }">{{ format(item.start) }}</template>
     </v-data-table>
 
     <!-- APPROVE DIALOG -->
-    <v-dialog
-      v-model="dialogApprove"
-      width="50%"
-      @click:outside="cancel"
-      :retain-focus="false"
-    >
+    <v-dialog v-model="dialogApprove" width="50%" @click:outside="cancel" :retain-focus="false">
       <v-card class="px-5">
         <v-card-title>Select a room for the appointment</v-card-title>
         <v-card-text>
@@ -52,37 +37,36 @@
           />
 
           <!-- If no available rooms -->
-          <v-container class="" v-else>
-            <v-row class=" mt-5">
-              <v-menu
-                v-model="menu"
-                :close-on-content-click="false"
-                :nudge-right="10"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="newDate"
-                    label="Date"
-                    prepend-inner-icon="mdi-calendar"
-                    readonly
-                    outlined
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  no-title
-                  :min="new Date().toISOString()"
-                  first-day-of-week="1"
+          <v-container class v-else>
+            <v-row class="mt-5"></v-row>
+            <v-menu
+              v-model="menu"
+              :close-on-content-click="false"
+              :nudge-right="10"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
                   v-model="newDate"
-                  @input="menu = false"
-                ></v-date-picker>
-              </v-menu>
-            </v-row>
+                  label="Date"
+                  prepend-inner-icon="mdi-calendar"
+                  readonly
+                  outlined
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                no-title
+                :min="new Date().toISOString()"
+                first-day-of-week="1"
+                v-model="newDate"
+                @input="menu = false"
+              ></v-date-picker>
+            </v-menu>
 
-            <v-row class="">
+            <v-row class>
               <v-select
                 :items="getRooms"
                 v-model="newRoom"
@@ -94,7 +78,7 @@
               />
             </v-row>
 
-            <v-row class="">
+            <v-row class>
               <v-select
                 :items="getAvailableTimes"
                 v-model="newTime"
@@ -252,7 +236,6 @@ export default {
 
     newRoom(val) {
       if (val && this.newDate) {
-        console.log(val);
         this.getAvailableTimesAction({
           roomId: val,
           date: moment(this.newDate, 'YYYY-MM-DD').unix(),

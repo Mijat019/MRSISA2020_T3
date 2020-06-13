@@ -18,13 +18,18 @@ import FreeAppointments from './FreeAppointments';
 import DoctorRating from './DoctorRating';
 import ClinicRating from './ClinicRating';
 import NursesService from '../services/NursesService';
+import OperationRequests from './OperationRequests';
+import Operations from './Operations';
+import OperationAttendances from './OperationAttendances';
 import ConfirmedAppointmentService from '../services/ConfirmedAppointmentService';
 import LeaveRequestsService from '../services/LeaveRequestsService';
 import initModelK2 from './initModelK2';
 import AppointmentReports from './AppointmentReports';
 
 export default async () => {
-  const {id : diagnosisId} = await Diagnosis.create({ name: 'Insane in the membrane' });
+  const { id: diagnosisId } = await Diagnosis.create({
+    name: 'Insane in the membrane',
+  });
   await Diagnosis.create({ name: 'Vucic' });
 
   await Drugs.create({ name: 'Percocet' });
@@ -245,10 +250,10 @@ export default async () => {
     priceListId,
     doctorId,
     roomId,
+    clinicId: id,
     duration: 60,
     start: now.add(2, 'hour').unix(),
   });
-  
 
   const { userId: tutu } = await ClinicAdminService.add(
     {
@@ -292,6 +297,27 @@ export default async () => {
     { where: { id: id2 } }
   );
 
+  const { id: operationRequests } = await OperationRequests.create({
+    clinicId: id,
+    doctorId,
+    patientMedicalRecordId: patient1Id,
+    start: moment().add(3, 'hour').unix(),
+    duration: 60,
+  });
+
+  const { id: operationId } = await Operations.create({
+    clinicId: id,
+    doctorId,
+    roomId,
+    patientMedicalRecordId: patient1Id,
+    start: moment().add(3, 'hour').unix(),
+    duration: 60,
+  });
+
+  const { id: operationAttendanceId } = await OperationAttendances.create({
+    doctorId: doctorId2,
+    operationId,
+  });
   await ClinicRating.create({
     patientId: userId,
     clinicId: id,

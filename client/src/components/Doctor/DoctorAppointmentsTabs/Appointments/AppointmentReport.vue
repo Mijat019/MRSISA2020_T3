@@ -4,12 +4,13 @@
       <v-card-title>
         Appointment report for patient:
         {{
-          `${getNextAppointment.patient.user.firstName} ${getNextAppointment.patient.user.lastName}`
+        `${getNextAppointment.patient.user.firstName} ${getNextAppointment.patient.user.lastName}`
         }}
         <v-spacer></v-spacer>
         <v-card-actions>
           <v-btn @click="setShowComponent(`nextAppointment`)">Cancel</v-btn>
-          <ScheduleAnotherAppointment />
+          <RequestAnAppointment />
+          <RequestAnOperation />
           <v-btn @click="submitReport" color="success">Submit report</v-btn>
         </v-card-actions>
       </v-card-title>
@@ -20,10 +21,7 @@
               <v-card-title>Notes</v-card-title>
               <v-card-text>
                 <v-form>
-                  <v-textarea
-                    label="Notes about the patient"
-                    v-model="report.notes"
-                  ></v-textarea>
+                  <v-textarea label="Notes about the patient" v-model="report.notes"></v-textarea>
                 </v-form>
               </v-card-text>
               <v-card-title>Diagnosis</v-card-title>
@@ -53,7 +51,8 @@
 </template>
 
 <script>
-import ScheduleAnotherAppointment from './ScheduleAnotherAppointment.vue';
+import RequestAnOperation from './RequestAnOperation';
+import RequestAnAppointment from './RequestAnAppointment.vue';
 import Prescriptions from './Prescriptions';
 import UpdateMedicalRecord from './UpdateMedicalRecord';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -63,7 +62,8 @@ export default {
   components: {
     Prescriptions,
     UpdateMedicalRecord,
-    ScheduleAnotherAppointment,
+    RequestAnAppointment,
+    RequestAnOperation,
   },
 
   data: () => ({

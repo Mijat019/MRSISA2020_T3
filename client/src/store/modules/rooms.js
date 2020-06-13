@@ -53,10 +53,7 @@ const actions = {
 
   async getAvailableTimesAction({ commit, dispatch }, payload) {
     try {
-      const { data } = await Vue.$axios.post(
-        `/rooms/availableTimes/`,
-        payload
-      );
+      const { data } = await Vue.$axios.post(`/rooms/availableTimes/`, payload);
       commit('setAvailableTimes', data);
     } catch (error) {
       console.log(error);

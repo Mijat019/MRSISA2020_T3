@@ -17,13 +17,7 @@
           <v-col>
             <v-sheet height="64">
               <v-toolbar flat color="white">
-                <v-btn
-                  outlined
-                  class="mr-4"
-                  color="grey darken-2"
-                  @click="setToday"
-                  >Today</v-btn
-                >
+                <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">Today</v-btn>
                 <v-btn fab text small color="grey darken-2" @click="prev">
                   <v-icon small>mdi-chevron-left</v-icon>
                 </v-btn>
@@ -86,9 +80,7 @@
               >
                 <v-card color="grey lighten-4" min-width="350px" flat>
                   <v-toolbar :color="selectedEvent.color" dark>
-                    <v-toolbar-title
-                      v-html="selectedEvent.name"
-                    ></v-toolbar-title>
+                    <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn @click="closeNewAppointment" icon>
                       <v-icon>mdi-close</v-icon>
@@ -112,13 +104,13 @@
 
 <script>
 import moment from 'moment';
-import { mapGetters } from 'vuex';
 import calendarMixin from '../../../../mixins/calendarMixin';
 
 import NewAppointmentForm from './NewAppointmentForm';
+import { mapMutations } from 'vuex';
 
 export default {
-  name: 'ScheduleAnotherAppointment',
+  name: 'RequestAnAppointment',
 
   components: {
     NewAppointmentForm,
@@ -131,22 +123,22 @@ export default {
     dialog: false,
   }),
 
-  computed: {
-    ...mapGetters({
-      getEvents: 'confirmedAppointments/calendar/getEvents',
-    }),
-  },
+  computed: {},
 
   methods: {
+    ...mapMutations({
+      addEvent: 'confirmedAppointments/calendar/addEvent',
+      removeLastEvent: 'confirmedAppointments/calendar/removeLastEvent',
+    }),
+
     appointmentAdded() {
-      this.newAppointment.draggable = false;
       this.closeNewAppointment();
       this.dialog = false;
     },
 
     closeNewAppointment() {
       this.newAppointment = null;
-      this.getEvents.pop();
+      this.removeLastEvent();
       this.selectedOpen = false;
     },
 
@@ -174,7 +166,7 @@ export default {
         newEvent: true,
       };
 
-      this.getEvents.push(this.newAppointment);
+      this.addEvent(this.newAppointment);
     },
 
     mousedownOnEvent({ event }) {
@@ -199,14 +191,10 @@ export default {
     getClosestMinute(dateTime) {
       const date = moment(dateTime);
       const minutes = date.get('minute');
-      if (minutes >= 0 && minutes < 15) {
+      if (minutes >= 0 && minutes < 30) {
         date.set('minute', 0);
-      } else if (minutes >= 15 && minutes < 30) {
-        date.set('minute', 15);
-      } else if (minutes >= 30 && minutes < 45) {
+      } else if (minutes >= 30 && minutes < 60) {
         date.set('minute', 30);
-      } else if (minutes >= 45 && minutes < 60) {
-        date.set('minute', 45);
       }
 
       return date.format('YYYY-MM-DD HH:mm');

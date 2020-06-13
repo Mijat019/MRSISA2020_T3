@@ -3,9 +3,7 @@
     <v-col>
       <v-sheet height="64">
         <v-toolbar flat color="white">
-          <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday"
-            >Today</v-btn
-          >
+          <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">Today</v-btn>
           <v-btn fab text small color="grey darken-2" @click="prev">
             <v-icon small>mdi-chevron-left</v-icon>
           </v-btn>
@@ -43,7 +41,7 @@
           ref="calendar"
           v-model="focus"
           color="primary"
-          :events="getAppointments"
+          :events="getEvents"
           :now="today"
           :type="type"
           :value="today"
@@ -81,14 +79,12 @@
                 v-if="selectedEvent.color === `red`"
                 color="error"
                 @click="cancelAppointment"
-                >Cancel</v-btn
-              >
+              >Cancel appointment</v-btn>
               <v-btn
                 v-if="selectedEvent.color === `red`"
                 color="primary"
                 @click="openReport(selectedEvent.id)"
-                >See appointment</v-btn
-              >
+              >See appointment</v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>

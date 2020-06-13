@@ -1,5 +1,6 @@
-import Vue from "vue";
-import jwt from "jsonwebtoken";
+import Vue from 'vue';
+import jwt from 'jsonwebtoken';
+import router from '../../router/router';
 
 const state = {
   user: null,
@@ -8,48 +9,48 @@ const state = {
 const mutations = {
   async logUser(state, data) {
     state.user = await jwt.decode(data.token);
-    localStorage.setItem("token", data.token);
-    Vue.$axios.defaults.headers["Authorization"] = data.token;
+    localStorage.setItem('token', data.token);
+    Vue.$axios.defaults.headers['Authorization'] = data.token;
   },
 
   logoutUser(state) {
     state.user = null;
-    localStorage.removeItem("token");
-    Vue.$axios.defaults.headers.Authorization = "";
+    localStorage.removeItem('token');
+    Vue.$axios.defaults.headers.Authorization = '';
   },
 };
 
 const actions = {
   async login({ commit, dispatch }, credentialsPayload) {
     try {
-      let { data } = await Vue.$axios.post("/auth/login", credentialsPayload);
-      commit("logUser", data);
-      dispatch("snackbar/showSuccess", "You are now logged in.", {
+      let { data } = await Vue.$axios.post('/auth/login', credentialsPayload);
+      commit('logUser', data);
+      dispatch('snackbar/showSuccess', 'You are now logged in.', {
         root: true,
       });
     } catch (error) {
-      dispatch("snackbar/showError", "Wrong email or password", {
+      dispatch('snackbar/showError', 'Wrong email or password', {
         root: true,
       });
     }
   },
 
   async logout({ commit }) {
-    commit("logoutUser");
+    commit('logoutUser');
   },
 
   async setPasswordAction({ dispatch }, payload) {
     try {
-      await Vue.$axios.post("/auth/setPassword", payload);
+      await Vue.$axios.post('/auth/setPassword', payload);
       dispatch(
-        "snackbar/showSuccess",
+        'snackbar/showSuccess',
         "You've successfully set your password, no you can login.",
         {
           root: true,
         }
       );
     } catch (error) {
-      dispatch("snackbar/showError", error.response.data, {
+      dispatch('snackbar/showError', error.response.data, {
         root: true,
       });
     }
@@ -58,41 +59,42 @@ const actions = {
   async changeInfoAction({ commit, dispatch }, payload) {
     try {
       // Grab new info
-      let { info } = await Vue.$axios.post("/auth/changeInfo", payload); 
-      commit("setInfo", info);
+      let { info } = await Vue.$axios.post('/auth/changeInfo', payload);
+      commit('setInfo', info);
 
-      dispatch(
-        "snackbar/showSuccess",
-        "Personal info changed.",
-        {
-          root: true,
-        }
-      );
+      dispatch('snackbar/showSuccess', 'Personal info changed.', {
+        root: true,
+      });
     } catch (error) {
-      dispatch("snackbar/showError", error.response.data, {
+      dispatch('snackbar/showError', error.response.data, {
         root: true,
       });
     }
   },
 
   async verifyTokenAction({ commit }) {
+    if (!localStorage.getItem('token')) {
+      return;
+    }
+
     try {
-      Vue.$axios.defaults.headers["Authorization"] = localStorage.getItem(
-        "token"
+      Vue.$axios.defaults.headers['Authorization'] = localStorage.getItem(
+        'token'
       );
-      const { data } = await Vue.$axios.post("/auth/verify");
-      commit("logUser", data);
+      const { data } = await Vue.$axios.post('/auth/verify');
+      commit('logUser', data);
     } catch (error) {
-      commit("logoutUser");
+      commit('logoutUser');
+      router.go();
     }
   },
 };
 
 const getters = {
-  isAuthenticated: (state) => (state.user ? true : false),
-  getUser: (state) => state.user,
-  getRole: (state) => state.user?.role,
-  getFullName: (state) => `${state.user?.firstName} ${state.user?.lastName}`,
+  isAuthenticated: state => (state.user ? true : false),
+  getUser: state => state.user,
+  getRole: state => state.user?.role,
+  getFullName: state => `${state.user?.firstName} ${state.user?.lastName}`,
 };
 
 export default {
