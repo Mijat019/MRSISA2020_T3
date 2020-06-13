@@ -54,6 +54,12 @@ class ClinicsService {
   }
 
   public async update(clinicPayload: any): Promise<any> {
+    const { version }: any = await Clinics.findByPk(clinicPayload.id);
+    if (version != clinicPayload.version) {
+      throw new Error("Optimistic lock error");
+    }
+
+    clinicPayload.version += 1;
     await Clinics.upsert(clinicPayload);
     return await Clinics.findByPk(clinicPayload.id);
   }

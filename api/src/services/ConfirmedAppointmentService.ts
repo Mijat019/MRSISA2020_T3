@@ -95,7 +95,6 @@ class ConfirmedAppointmentService {
   }
 
   public async add(appointmentPayload: any): Promise<any> {
-    freeAppointmentService.checkForConflicts(appointmentPayload);
     // Associate with clinic
     let { clinicId }: any = await PriceLists.findByPk(
       appointmentPayload.priceListId

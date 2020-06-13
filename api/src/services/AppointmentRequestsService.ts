@@ -161,8 +161,6 @@ class AppointmentRequestsService {
       for (const room of roomsForClinic) {
         confirmedReq.roomId = room.id;
         try {
-          await FreeAppointmentService.checkForConflicts(confirmedReq);
-          // if chech for conflicts didn't cause an error approve request
           await ConfirmedAppointmentService.add(confirmedReq);
           await this.delete(request.id);
           success = true;

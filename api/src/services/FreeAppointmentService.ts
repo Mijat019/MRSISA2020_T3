@@ -56,7 +56,6 @@ class FreeAppointmentService {
     });
     appointmentPayload.appointmentTypeId = priceList?.appointmentTypeId;
 
-    await this.checkForConflicts(appointmentPayload);
     const { id } = await FreeAppointments.create(appointmentPayload);
     const freeAppointment = FreeAppointments.findByPk(id, {
       include,
@@ -94,8 +93,6 @@ class FreeAppointmentService {
       include,
     });
 
-    await this.checkForConflicts_Schedule(patientId, freeAppo);
-
     if (freeAppo == null) throw 'Free appointment ' + appoId + ' not found.';
 
     // Make confirmed appointment from free
@@ -110,46 +107,6 @@ class FreeAppointmentService {
     return confAppo;
   }
 
-  public async checkForConflicts_Schedule(patientId: number, appointment: any) {
-    const conflictAppo = await ConfirmedAppointments.findOne({
-      where: {
-        patientId,
-        start: appointment.start,
-      },
-    });
-    console.log('Conflict appo: ' + conflictAppo);
-    if (conflictAppo)
-      throw new Error('You already have a scheduled appointment at that time.');
-  }
-
-  public async checkForConflicts(appointment: any) {
-    // first check if room is occupied
-    const time = appointment.start;
-    const room = appointment.roomId;
-
-    if (
-      (await ConfirmedAppointments.findOne({
-        where: { start: time, roomId: room },
-      })) ||
-      (await FreeAppointments.findOne({ where: { start: time, roomId: room } }))
-    ) {
-      return Promise.reject(new Error('Room is occupied at that time'));
-    }
-
-    // now check if doctor is occupied
-    const doctor = appointment.doctorId;
-
-    if (
-      (await ConfirmedAppointments.findOne({
-        where: { start: time, doctorId: doctor },
-      })) ||
-      (await FreeAppointments.findOne({
-        where: { start: time, doctorId: doctor },
-      }))
-    ) {
-      return Promise.reject(new Error('Doctor is occupied at that time.'));
-    }
-  }
 }
 
 export default new FreeAppointmentService();

@@ -66,6 +66,10 @@ FreeAppointments.init(
     tableName: 'free_appointments',
     version: true,
     sequelize: db,
+    indexes: [
+      { unique: true, fields: ['doctorId', 'start'] },
+      { unique: true, fields: ['roomId', 'start'] },
+    ]
   }
 );
 
