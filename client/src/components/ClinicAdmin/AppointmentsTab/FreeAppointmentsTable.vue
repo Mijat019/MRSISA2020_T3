@@ -21,7 +21,7 @@
     <v-card-text>
       <v-data-table
         :headers="headers"
-        :items="getFreeAppointments"
+        :items="getFreeApposForSelectedDoctor"
         :search="search"
       >
         <template v-slot:top>
@@ -51,7 +51,11 @@ export default {
   data: () => ({
     search: '',
     headers: [
-      { text: 'Appointment type', value: 'priceList.appointmentType.name',align: 'center' },
+      {
+        text: 'Appointment type',
+        value: 'priceList.appointmentType.name',
+        align: 'center',
+      },
       { text: 'Doctor', value: 'doctor', align: 'center' },
       { text: 'Room', value: 'room.name', align: 'center' },
       { text: 'Scheduled time', value: 'start', align: 'center' },
@@ -63,7 +67,7 @@ export default {
 
   methods: {
     ...mapActions({
-      getDoctorsAction: 'doctors/getDoctorsAction',
+      getDoctorsByClinicAction: 'doctors/getDoctorsByClinicAction',
       getFreeAppointmentsAction: 'freeAppointments/getFreeAppointmentsAction',
     }),
 
@@ -80,14 +84,21 @@ export default {
 
   async mounted() {
     this.setAppointments([]);
-    await this.getDoctorsAction();
+    await this.getDoctorsByClinicAction(this.user.clinicId);
   },
 
   computed: {
     ...mapGetters({
       getDoctors: 'doctors/getDoctors',
       getFreeAppointments: 'freeAppointments/getFreeAppointments',
+      user: 'authentication/getUser',
     }),
+
+    getFreeApposForSelectedDoctor() {
+      return this.getFreeAppointments.filter(
+        appo => appo.doctorId == this.doctor?.user.id
+      );
+    },
   },
 
   watch: {

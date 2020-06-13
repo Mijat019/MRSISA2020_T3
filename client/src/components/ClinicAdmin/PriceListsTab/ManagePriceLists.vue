@@ -17,7 +17,9 @@
     <v-card-text>
       <v-data-table :headers="headers" :items="getPriceLists" :search="search">
         <template v-slot:top>
-          <v-btn dark class="mb-2" @click="showAddDialog">Add new price list</v-btn>
+          <v-btn dark class="mb-2" @click="showAddDialog"
+            >Add new price list</v-btn
+          >
         </template>
         <template v-slot:item.actions="item">
           <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
@@ -29,33 +31,37 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
-import PriceListsDialog from "./PriceListsDialog";
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import PriceListsDialog from './PriceListsDialog';
 export default {
-  name: "AppointmentTypeTable",
+  name: 'AppointmentTypeTable',
   components: {
-    PriceListsDialog
+    PriceListsDialog,
   },
   data() {
     return {
-      search: "",
+      search: '',
       headers: [
-        { text: "Appointment Type", value: "appointmentType.name" },
-        { text: "Price", value: "price" },
-        { text: "Actions", value: "actions", sortable: false }
-      ]
+        { text: 'Appointment Type', value: 'appointmentType.name' },
+        { text: 'Price', value: 'price' },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
     };
   },
 
   methods: {
-    ...mapActions("priceLists", {
-      getPriceListsAction: "getPriceListsAction",
-      deletePriceListAction: "deletePriceListAction"
+    ...mapActions('priceLists', {
+      getPriceListsAction: 'getPriceListsAction',
+      deletePriceListAction: 'deletePriceListAction',
     }),
 
-    ...mapMutations("priceLists", {
-      showAddDialog: "openAddDialog",
-      showEditDialog: "openEditDialog"
+    ...mapActions('appointmentTypes', {
+      getAppointmentTypesAction: 'getAppointmentTypesAction',
+    }),
+
+    ...mapMutations('priceLists', {
+      showAddDialog: 'openAddDialog',
+      showEditDialog: 'openEditDialog',
     }),
 
     editItem(item) {
@@ -63,23 +69,24 @@ export default {
     },
 
     deleteItem(item) {
-      if (confirm("Are you sure you want to delete this price list?")) {
+      if (confirm('Are you sure you want to delete this price list?')) {
         this.deletePriceListAction(item.item.id);
       }
-    }
+    },
   },
 
   async mounted() {
     await this.getPriceListsAction(this.getUser.clinicId);
+    await this.getAppointmentTypesAction();
   },
 
   computed: {
     ...mapGetters({
-      getPriceLists: "priceLists/getPriceLists",
-      getAppointmentTypes: "appointmentTypes/getAppointmentTypes",
-      getUser: "authentication/getUser"
-    })
-  }
+      getPriceLists: 'priceLists/getPriceLists',
+      getAppointmentTypes: 'appointmentTypes/getAppointmentTypes',
+      getUser: 'authentication/getUser',
+    }),
+  },
 };
 </script>
 

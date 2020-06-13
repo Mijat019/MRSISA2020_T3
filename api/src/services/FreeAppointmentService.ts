@@ -1,31 +1,32 @@
-import DoctorAt from "../models/DoctorAt";
-import Rooms from "../models/Rooms";
-import Users, { usersSelect } from "../models/Users";
-import AppointmentTypes from "../models/AppointmentTypes";
-import FreeAppointments from "../models/FreeAppointments";
-import ConfirmedAppointments from "../models/ConfirmedAppointments";
-import ConfirmedAppointmentService from "./ConfirmedAppointmentService";
-import PriceLists from "../models/PriceLists";
-import { IncludeOptions } from "sequelize/types";
-import Clinics from "../models/Clinics";
+import DoctorAt from '../models/DoctorAt';
+import Rooms from '../models/Rooms';
+import Users, { usersSelect } from '../models/Users';
+import AppointmentTypes from '../models/AppointmentTypes';
+import FreeAppointments from '../models/FreeAppointments';
+import ConfirmedAppointments from '../models/ConfirmedAppointments';
+import ConfirmedAppointmentService from './ConfirmedAppointmentService';
+import PriceLists from '../models/PriceLists';
+import { IncludeOptions } from 'sequelize/types';
+import Clinics from '../models/Clinics';
+import sequelize from './../models/database';
 
 const include: IncludeOptions[] = [
-  { model: Rooms, as: "room" },
+  { model: Rooms, as: 'room' },
   {
     model: DoctorAt,
-    as: "doctor",
+    as: 'doctor',
     required: true,
     include: [
-      { model: Users, as: "user", attributes: usersSelect, required: true },
+      { model: Users, as: 'user', attributes: usersSelect, required: true },
     ],
   },
   {
     model: PriceLists,
-    as: "priceList",
+    as: 'priceList',
     required: true,
     include: [
-      { model: AppointmentTypes, as: "appointmentType", required: true },
-      { model: Clinics, as: "clinic", attributes: ['name'], required: true}
+      { model: AppointmentTypes, as: 'appointmentType', required: true },
+      { model: Clinics, as: 'clinic', attributes: ['name'], required: true },
     ],
   },
 ];
@@ -65,17 +66,22 @@ class FreeAppointmentService {
   }
 
   public async update(id: number, appointmentPayload: any) {
+    try {
+      return await sequelize.transaction(async (t) => {
+        const { version } = (await FreeAppointments.findByPk(id)) as any;
+        if (version > appointmentPayload.version)
+          throw new Error('Optimistic Lock error');
 
-    const { version } = await FreeAppointments.findByPk(id) as any;
-    if(version > appointmentPayload.version)
-      throw new Error("Optimistic Lock error");
-    
-    appointmentPayload.version += 1;    
-    await FreeAppointments.upsert(appointmentPayload);
-    const updatedAppointment = await FreeAppointments.findByPk(id, {
-      include,
-    });
-    return updatedAppointment;
+        appointmentPayload.version += 1;
+        await FreeAppointments.upsert(appointmentPayload);
+        return await FreeAppointments.findByPk(id, {
+          include,
+        });
+      });
+    } catch (error) {
+      // notify user of error and rollback
+      throw new Error(error);
+    }
   }
 
   public async delete(id: any) {
@@ -90,7 +96,7 @@ class FreeAppointmentService {
 
     await this.checkForConflicts_Schedule(patientId, freeAppo);
 
-    if (freeAppo == null) throw "Free appointment " + appoId + " not found.";
+    if (freeAppo == null) throw 'Free appointment ' + appoId + ' not found.';
 
     // Make confirmed appointment from free
     const confAppo = await ConfirmedAppointmentService.createFromFree(
@@ -111,9 +117,9 @@ class FreeAppointmentService {
         start: appointment.start,
       },
     });
-    console.log("Conflict appo: " + conflictAppo);
+    console.log('Conflict appo: ' + conflictAppo);
     if (conflictAppo)
-      throw new Error("You already have a scheduled appointment at that time.");
+      throw new Error('You already have a scheduled appointment at that time.');
   }
 
   public async checkForConflicts(appointment: any) {
@@ -127,7 +133,7 @@ class FreeAppointmentService {
       })) ||
       (await FreeAppointments.findOne({ where: { start: time, roomId: room } }))
     ) {
-      return Promise.reject(new Error("Room is occupied at that time"));
+      return Promise.reject(new Error('Room is occupied at that time'));
     }
 
     // now check if doctor is occupied
@@ -141,7 +147,7 @@ class FreeAppointmentService {
         where: { start: time, doctorId: doctor },
       }))
     ) {
-      return Promise.reject(new Error("Doctor is occupied at that time."))
+      return Promise.reject(new Error('Doctor is occupied at that time.'));
     }
   }
 }

@@ -175,7 +175,7 @@ class AppointmentRequestsService {
       if (!success) {
         // if got here it means no room is available at the time so reject request
         const payload = request as any;
-        payload.reason = 'asdfds';
+        payload.reason = 'No room is available.';
         await this.reject(payload);
       }
     }
