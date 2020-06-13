@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 const state = {
   doctors: [],
+  availableDoctors: [],
   availableTimes: [],
 };
 
@@ -11,6 +12,10 @@ const mutations = {
       doctor.fullName = doctor.user.firstName + ' ' + doctor.user.lastName;
     });
     state.doctors = doctors;
+  },
+
+  setAvailableDoctors(state, doctors) {
+    state.availableDoctors = doctors;
   },
 
   setTimes(state, times) {
@@ -51,6 +56,15 @@ const actions = {
     }
   },
 
+  async getAvailableDoctorsAction({ commit, dispatch }, { clinicId, start }) {
+    try {
+      const { data } = await Vue.$axios.get(`/doctors/${clinicId}/${start}`);
+      commit('setAvailableDoctors', data);
+    } catch (error) {
+      dispatch('snackbar/showError', error.response.data, { root: true });
+    }
+  },
+
   async getDoctorsByClinicAction({ commit, dispatch }, clinicId) {
     try {
       const { data: doctorsAt } = await Vue.$axios.get('/doctors/' + clinicId);
@@ -62,9 +76,7 @@ const actions = {
 
   async getDoctorsForSchedulingAction({ commit, dispatch }, payload) {
     try {
-      const { data } = await Vue.$axios.post(
-        `/doctors/schedule/`, payload
-      );
+      const { data } = await Vue.$axios.post(`/doctors/schedule/`, payload);
       commit('setDoctors', data);
     } catch (error) {
       console.log(error);
@@ -72,11 +84,11 @@ const actions = {
     }
   },
 
-  
   async getAvailableTimesAction({ commit, dispatch }, payload) {
     try {
       const { data } = await Vue.$axios.post(
-        `/doctors/availableTimes/`, payload
+        `/doctors/availableTimes/`,
+        payload
       );
       commit('setTimes', data);
     } catch (error) {
@@ -143,6 +155,7 @@ const actions = {
 const getters = {
   getDoctors: state => state.doctors,
   getTimes: state => state.availableTimes,
+  getAvailableDoctors: state => state.availableDoctors,
 };
 
 export default {

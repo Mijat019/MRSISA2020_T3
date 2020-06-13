@@ -250,6 +250,7 @@ export default async () => {
     priceListId,
     doctorId,
     roomId,
+    clinicId: id,
     duration: 60,
     start: now.add(2, 'hour').unix(),
   });

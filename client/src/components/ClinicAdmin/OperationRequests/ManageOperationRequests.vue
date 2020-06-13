@@ -2,7 +2,10 @@
   <v-card>
     <v-card-title>Operation requests</v-card-title>
     <v-card-text>
-      <OperationRequestDialog v-model="clickedOperationRequest" />
+      <OperationRequestDialog
+        v-if="clickedOperationRequest.showDialog"
+        v-model="clickedOperationRequest"
+      />
       <v-data-table :headers="headers" :items="getOperationRequests">
         <template v-slot:item.actions="{item}">
           <v-btn @click="clickedOperationRequest = {showDialog: true, item}" small icon>

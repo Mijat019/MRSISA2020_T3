@@ -1,9 +1,10 @@
-import { Model, INTEGER, DATE } from "sequelize";
-import db from "./database";
-import AppointmentTypes from "./AppointmentTypes";
-import Rooms from "./Rooms";
-import DoctorAt from "./DoctorAt";
-import PriceLists from "./PriceLists";
+import { Model, INTEGER, DATE } from 'sequelize';
+import db from './database';
+import AppointmentTypes from './AppointmentTypes';
+import Rooms from './Rooms';
+import DoctorAt from './DoctorAt';
+import PriceLists from './PriceLists';
+import Clinics from './Clinics';
 
 class FreeAppointments extends Model {
   public id!: number;
@@ -11,6 +12,7 @@ class FreeAppointments extends Model {
   public doctorId!: number;
   public roomId!: number;
   public start!: number;
+  public clinicId!: number;
   public duration!: number;
   public version!: number;
   public room!: Rooms;
@@ -26,6 +28,12 @@ FreeAppointments.init(
     },
 
     priceListId: {
+      type: INTEGER.UNSIGNED,
+      unique: false,
+      allowNull: false,
+    },
+
+    clinicId: {
       type: INTEGER.UNSIGNED,
       unique: false,
       allowNull: false,
@@ -55,20 +63,29 @@ FreeAppointments.init(
   },
   {
     timestamps: false,
-    tableName: "free_appointments",
+    tableName: 'free_appointments',
     version: true,
     sequelize: db,
   }
 );
 
 FreeAppointments.belongsTo(PriceLists, {
-  as: "priceList",
-  foreignKey: "priceListId",
+  as: 'priceList',
+  foreignKey: 'priceListId',
 });
 
-FreeAppointments.belongsTo(Rooms, { as: "room", foreignKey: "roomId" });
-Rooms.hasMany(FreeAppointments, {as: "freeAppointments", foreignKey: "roomId"});
+FreeAppointments.belongsTo(Rooms, { as: 'room', foreignKey: 'roomId' });
+Rooms.hasMany(FreeAppointments, {
+  as: 'freeAppointments',
+  foreignKey: 'roomId',
+});
 
-FreeAppointments.belongsTo(DoctorAt, { as: "doctor", foreignKey: "doctorId" });
+FreeAppointments.belongsTo(DoctorAt, { as: 'doctor', foreignKey: 'doctorId' });
+
+FreeAppointments.belongsTo(Clinics, { as: 'clinic', foreignKey: 'clinicId' });
+Clinics.hasMany(FreeAppointments, {
+  as: 'freeAppointments',
+  foreignKey: 'clinicId',
+});
 
 export default FreeAppointments;

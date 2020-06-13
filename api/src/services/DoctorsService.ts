@@ -3,7 +3,6 @@ import UserRole from '../models/UserRole';
 import UsersService from './UsersService';
 import DoctorAt from '../models/DoctorAt';
 import Clinics from '../models/Clinics';
-import AdminAt from '../models/AdminAt';
 import DoctorSpec from '../models/DoctorSpec';
 import AppointmentTypes from '../models/AppointmentTypes';
 import RatingsService from './RatingsService';
@@ -13,6 +12,8 @@ import moment from 'moment';
 import { Op } from 'sequelize';
 import DoctorRating from '../models/DoctorRating';
 import sequelize from 'sequelize';
+import Operations from '../models/Operations';
+import OperationAttendances from '../models/OperationAttendances';
 
 class DoctorsService {
   public async getAll(clinicId?: any): Promise<any> {
@@ -21,12 +22,16 @@ class DoctorsService {
       // Defined, get only for one clinic
       where = { clinicId };
     }
-
-    const doctors = (await DoctorAt.findAll({
+    const doctors = await DoctorAt.findAll({
       where,
       group: 'doctorId',
       attributes: [
-        [sequelize.fn('avg', sequelize.col('ratingList.averageRating')), 'rating'], 'clinicId'
+        [
+          sequelize.fn('avg', sequelize.col('ratingList.averageRating')),
+          'rating',
+        ],
+        'clinicId',
+        'userId',
       ],
       include: [
         { model: Users, attributes: usersSelect, as: 'user', required: true },
@@ -35,7 +40,7 @@ class DoctorsService {
           model: DoctorRating,
           as: 'ratingList',
           attributes: ['averageRating'],
-          required: true
+          required: true,
         },
         {
           model: DoctorSpec,
@@ -52,7 +57,7 @@ class DoctorsService {
           ],
         },
       ],
-    }));
+    });
 
     return doctors;
   }
@@ -199,6 +204,44 @@ class DoctorsService {
     // This will fail on foreign key reference if they have free appos or confirmed appos
     await DoctorAt.destroy({ where: { userId: doctorId } });
     await Users.destroy({ where: { id: doctorId } });
+  }
+
+  public async getAvailableDoctors(clinicId: string, start: string) {
+    const doctorsWithFreeAppos = await FreeAppointments.findAll({
+      attributes: ['doctorId'],
+      where: { clinicId, start },
+    });
+    let busyDoctorIds = await doctorsWithFreeAppos.map((t) => t.doctorId);
+
+    const doctorsWithConfirmedAppos = await ConfirmedAppointments.findAll({
+      attributes: ['doctorId'],
+      where: { clinicId, start },
+    });
+    busyDoctorIds = busyDoctorIds.concat(
+      doctorsWithConfirmedAppos.map((t) => t.doctorId)
+    );
+
+    const doctorsWithOperations = await Operations.findAll({
+      where: { clinicId, start },
+      attributes: ['doctorId'],
+    });
+    busyDoctorIds = busyDoctorIds.concat(
+      doctorsWithOperations.map((t) => t.doctorId)
+    );
+
+    const availableDoctors = DoctorAt.findAll({
+      attributes: ['userId'],
+      where: { clinicId, userId: { [Op.notIn]: busyDoctorIds } },
+      include: [
+        {
+          model: Users,
+          as: 'user',
+          attributes: ['firstName', 'lastName', 'email'],
+          required: true,
+        },
+      ],
+    });
+    return availableDoctors;
   }
 }
 

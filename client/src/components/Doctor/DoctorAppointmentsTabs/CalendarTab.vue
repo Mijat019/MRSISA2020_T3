@@ -79,7 +79,7 @@
                 v-if="selectedEvent.color === `red`"
                 color="error"
                 @click="cancelAppointment"
-              >Cancel</v-btn>
+              >Cancel appointment</v-btn>
               <v-btn
                 v-if="selectedEvent.color === `red`"
                 color="primary"

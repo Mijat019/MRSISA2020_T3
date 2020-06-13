@@ -92,8 +92,6 @@ export default async () => {
 
   await DoctorsService.addSpecialization(doctorId, appointmentTypeId);
 
-
-
   const { userId: doctorId2 } = await DoctorsService.add(
     {
       firstName: 'Milos',
@@ -172,6 +170,7 @@ export default async () => {
   await FreeAppointments.create({
     priceListId,
     doctorId,
+    clinicId: id,
     roomId,
     duration: 60,
     start: june.unix(),

@@ -44,7 +44,7 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'ManageOperationAttanedance',
 
-  props: ['value', 'doctorId'],
+  props: ['value', 'doctorId', 'start'],
 
   data: () => ({
     dialog: false,
@@ -57,17 +57,20 @@ export default {
 
   computed: {
     ...mapGetters({
-      getDoctors: 'doctors/getDoctors',
+      getAvailableDoctors: 'doctors/getAvailableDoctors',
+      getUser: 'authentication/getUser',
     }),
 
     doctors() {
-      return this.getDoctors.filter(doctor => doctor.userId !== this.doctorId);
+      return this.getAvailableDoctors.filter(
+        doctor => doctor.userId !== this.doctorId
+      );
     },
   },
 
   methods: {
     ...mapActions({
-      getDoctorsAction: 'doctors/getDoctorsAction',
+      getAvailableDoctorsAction: 'doctors/getAvailableDoctorsAction',
     }),
 
     addDoctor() {
@@ -93,7 +96,19 @@ export default {
   },
 
   created() {
-    this.getDoctorsAction();
+    this.getAvailableDoctorsAction({
+      clinicId: this.getUser.clinicId,
+      start: this.start,
+    });
+  },
+
+  watch: {
+    start(newValue) {
+      this.getAvailableDoctorsAction({
+        clinicId: this.getUser.clinicId,
+        start: this.start,
+      });
+    },
   },
 };
 </script>

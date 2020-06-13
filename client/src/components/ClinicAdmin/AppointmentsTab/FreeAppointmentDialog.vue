@@ -18,11 +18,7 @@
             </div>
             <hr class="mb-6" />
           </div>
-          <v-text-field
-            type="number"
-            label="Duration(in minutes)"
-            v-model="appointment.duration"
-          />
+          <v-text-field type="number" label="Duration(in minutes)" v-model="appointment.duration" />
           <v-select
             :items="getRooms"
             v-model="appointment.roomId"
@@ -50,9 +46,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn @click="close">Cancel</v-btn>
-        <v-btn v-if="type === 'add'" color="primary" @click="addAppointment"
-          >Add</v-btn
-        >
+        <v-btn v-if="type === 'add'" color="primary" @click="addAppointment">Add</v-btn>
         <v-btn v-else color="primary" @click="updateAppointment">Save</v-btn>
       </v-card-actions>
     </v-card>
@@ -96,11 +90,11 @@ export default {
       }
 
       //convert datetime to unix seconds
-      console.log(this.appointment.start);
       this.appointment.start = moment(this.appointment.start).unix();
 
       // Prepare fields for backend
       this.appointment.priceListId = this.appointment.priceList.id;
+      this.appointment.clinicId = this.getUser.clinicId;
       delete this.appointment.priceList;
 
       await this.addAppointmentAction(this.appointment);

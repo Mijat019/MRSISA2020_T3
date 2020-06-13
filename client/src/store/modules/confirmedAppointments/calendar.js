@@ -42,7 +42,7 @@ function appointmentsToEvents(appointments) {
       color: item.patient ? (item.finished ? 'grey' : 'red') : 'green',
       appointmentType: item.priceList.appointmentType.name,
       roomName: item.room.name,
-      name: `${item.priceList.appointmentType.name} ${item.room.name}`,
+      name: `${item.priceList.appointmentType.name}, ${item.room.name}`,
       start: moment.unix(item.start).format('YYYY-MM-DD HH:mm'),
       end: end.format('YYYY-MM-DD HH:mm'),
     };
@@ -56,7 +56,7 @@ function operationsToEvents(operations) {
     return {
       id: operation.id,
       color: 'purple',
-      name: `${operation.patientMedicalRecord.user.firstName} ${operation.patientMedicalRecord.user.lastName} ${operation.room.name}`,
+      name: `${operation.patientMedicalRecord.user.firstName} ${operation.patientMedicalRecord.user.lastName}, ${operation.room.name}`,
       appointmentType: 'Operation',
       roomName: operation.room.name,
       start: moment.unix(operation.start).format('YYYY-MM-DD HH:mm'),
@@ -73,7 +73,7 @@ function attendancesToEvents(attendances) {
       return {
         appointmentType: 'Operation attendance',
         roomName: attendance.operation.room.name,
-        name: `${attendance.operation.patientMedicalRecord.user.firstName} ${attendance.operation.patientMedicalRecord.user.lastName} ${attendance.operation.room.name}`,
+        name: `${attendance.operation.patientMedicalRecord.user.firstName} ${attendance.operation.patientMedicalRecord.user.lastName}, ${attendance.operation.room.name}`,
         color: 'pink',
         start: moment
           .unix(attendance.operation.start)
