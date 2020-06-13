@@ -54,9 +54,9 @@ class OperationRequestsService {
       where: { start, doctorId },
     });
     if (
-      !operationsCount ||
-      !freeAppointmentsCount ||
-      !confirmedAppointmentsCount
+      operationsCount ||
+      freeAppointmentsCount ||
+      confirmedAppointmentsCount
     ) {
       throw new Error('Doctor is busy');
     }
