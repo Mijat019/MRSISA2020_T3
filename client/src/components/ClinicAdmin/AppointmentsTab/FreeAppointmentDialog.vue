@@ -110,7 +110,6 @@ export default {
       }
 
       //convert datetime to unix seconds
-      console.log(this.appointment.start);
       this.appointment.start = moment(this.appointment.start).unix();
 
       // Prepare fields for backend
@@ -155,13 +154,13 @@ export default {
     dialog(val) {
       if (val == false) return;
 
-      this.typeChanged();
-
       this.getPriceLists.map(pList => {
         if (pList.appointmentTypeId == this.appointment.appointmentTypeId) {
           this.appointment.priceList = pList;
         }
       });
+
+      this.typeChanged();
     },
   },
 };
