@@ -15,19 +15,29 @@
       <v-data-table
         :headers="headers"
         :items="getPatientReports"
+        :key="componentKey"
         :search="search"
       >
         <template #item.doctorFullName="{item}">
           {{ item.confirmedAppointment.doctor.user.firstName }}
           {{ item.confirmedAppointment.doctor.user.lastName }}
         </template>
+        <template #item.start="{item}">
+          {{ format(item.confirmedAppointment.start) }}
+        </template>
         <template v-slot:top>
           <slot name="top"></slot>
         </template>
 
         <template v-slot:item.actions="{ item }">
-          <RateDoctors :item="item.confirmedAppointment.doctor.user" />
-          <RateClinics :item="item.confirmedAppointment.doctor.clinic" />
+          <RateDoctors
+            :disableBtn="isDoctorRated(item)"
+            :item="item.confirmedAppointment.doctor.user"
+          />
+          <RateClinics
+            :disableBtn="isClinicRated(item)"
+            :item="item.confirmedAppointment.doctor.clinic"
+          />
         </template>
       </v-data-table>
     </v-card-text>
@@ -36,8 +46,10 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import moment from 'moment';
 import RateDoctors from './RateDoctors';
 import RateClinics from './RateClinics';
+import { bus } from '@/main';
 
 export default {
   components: {
@@ -47,6 +59,7 @@ export default {
   data() {
     return {
       search: '',
+      componentKey: 0,
       headers: [
         {
           text: 'Clinic',
@@ -70,7 +83,7 @@ export default {
         },
         {
           text: 'Date',
-          value: 'confirmedAppointment.start',
+          value: 'start',
         },
         {
           text: 'Actions',
@@ -83,8 +96,10 @@ export default {
   },
 
   methods: {
-    ...mapActions('appointmentReport', {
-      getReportsForPatientAction: 'getReportsForPatientAction',
+    ...mapActions({
+      getReportsForPatientAction:
+        'appointmentReport/getReportsForPatientAction',
+      getAlreadyRatedAction: 'ratings/getAlreadyRatedAction',
     }),
 
     rateDoctor(item) {
@@ -94,16 +109,52 @@ export default {
     rateClinic(item) {
       console.log(item);
     },
+
+    format(item) {
+      if (!item) return '';
+      return moment.unix(item).format('YYYY-MM-DD HH:mm');
+    },
+
+    isDoctorRated(item) {
+      console.log("IZVRSSSION")
+      if (!this.getAlreadyRated.doctors) return false;
+
+      const id = item.confirmedAppointment.doctorId;
+      return (
+        this.getAlreadyRated.doctors.filter(rated => rated.doctorId == id)
+          .length > 0
+      );
+    },
+
+    isClinicRated(item) {
+      if (!this.getAlreadyRated.clinics) return false;
+      const id = item.confirmedAppointment.clinicId;
+      return (
+        this.getAlreadyRated.clinics.filter(rated => rated.clinicId == id)
+          .length > 0
+      );
+    },
+
+    forceRerender() {
+      this.componentKey += 1;
+    },
   },
 
-  async mounted() {
+  async created() {
+    await this.getAlreadyRatedAction(this.user.id);
     await this.getReportsForPatientAction(this.user.id);
+
+    bus.$on('ratingChanged', () => {
+      console.log("WWWWWWWWWWWWWWWWWWWWWWWWAT");
+      this.forceRerender();
+    });
   },
 
   computed: {
     ...mapGetters({
       getPatientReports: 'appointmentReport/getPatientReports',
       user: 'authentication/getUser',
+      getAlreadyRated: 'ratings/getAlreadyRated',
     }),
   },
 };

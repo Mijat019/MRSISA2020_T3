@@ -94,9 +94,18 @@ export default {
   computed: {
       ...mapGetters({
           user: "authentication/getUser",
-          requests: "leaveRequests/getRequests",
+          unixRequests: "leaveRequests/getRequests",
           currentDate: "time/getCurrentDateISO"
       }),
+
+      requests() {
+          this.unixRequests.forEach(element => {
+              element.from = moment(element.from * 1000).format("DD.MM.YYYY");
+              element.to = moment(element.to * 1000).format("DD.MM.YYYY");
+          });
+          return this.unixRequests;
+      },
+
       tomorrowDate() {
           let date = new Date();
           date.setDate(date.getDate() + 1);

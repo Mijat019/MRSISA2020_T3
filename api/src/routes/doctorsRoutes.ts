@@ -9,6 +9,10 @@ router.use(AuthenticationMiddleware.verifyToken);
 
 router.get("/", DoctorsController.getAll);
 router.get("/:clinicId", DoctorsController.getByClinic);
+
+router.post("/schedule", DoctorsController.getAllForScheduling);
+router.post("/availableTimes", DoctorsController.getAvailableTimes);
+
 router.post(
   "/",
   AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),

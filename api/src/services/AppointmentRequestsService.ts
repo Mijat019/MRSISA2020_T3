@@ -67,7 +67,6 @@ class AppointmentRequestsService {
 
     // check if there are conflicts
     // with existing appos
-    await FreeAppointmentService.checkForConflicts(requestPayload);
 
     return sequelize
       .transaction((t) => {
@@ -83,26 +82,18 @@ class AppointmentRequestsService {
       })
       .then((result) => {
         // Transaction has been committed
-        // result is whatever the result of the promise chain returned to the transaction callback
 
         // if deleted 0 rows it means that 
         // request has already been approved or denied
-        if (result == 0)
+        if (result == 0){
           throw new Error(); 
+        }
 
         // now send mail to notify
-        const patient = requestPayload.patientMedicalRecord.user;
-        const emailText = `Dear ${patient.firstName + ' ' + patient.lastName},
-        \n\nYour Covid clinic appointment request has been approved!\n`;
-        console.log(emailText);
-        EmailService.send({
-          from: config.mail,
-          to: patient.email,
-          subject: 'Covid Clinic Appointment request',
-          text: emailText,
-        });
+        EmailService.sendAppointmentRequestAcceptedMail(requestPayload);
       })
       .catch((err) => {
+        console.log(err);
         // Transaction has been rolled back
         // err is whatever rejected the promise chain returned to the transaction callback
         throw new Error("Requested already approved or rejected by another admin!")
@@ -197,12 +188,13 @@ class AppointmentRequestsService {
   }
 
   public async update(id: number, requestPayload: any): Promise<any> {
-    await AppointmentRequests.update(requestPayload, {
-      where: { id },
-    });
+    const { version } = (await AppointmentRequests.findByPk(id)) as any;
+    if (version > requestPayload.version) throw new Error('Optimistic Lock error');
 
-    const updatedAppointmentRequest = await AppointmentRequests.findByPk(id);
-    return updatedAppointmentRequest;
+    requestPayload.version += 1;
+    await AppointmentRequests.upsert(requestPayload);
+
+    return await AppointmentRequests.findByPk(id);
   }
 
   public async delete(id: any) {

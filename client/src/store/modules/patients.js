@@ -2,18 +2,23 @@ import Vue from "vue";
 
 const state = {
   patients: [],
+  myPatients: []
 };
 
 const mutations = {
-  addUser(state, patient) {
+  addPatient(state, patient) {
     state.patients.push(patient);
   },
+  setMyPatients(state, data) {
+    state.myPatients = data;
+  }
 };
 
 const actions = {
-  async addPatientAction({ dispatch }, patientPayload) {
+  async addPatientAction({ commit, dispatch }, patientPayload) {
     try {
       const { data } = await Vue.$axios.post("/patients", patientPayload);
+      commit("addPatient", data);
       dispatch("snackbar/showSuccess", data, {
         root: true,
       });
@@ -23,9 +28,22 @@ const actions = {
       });
     }
   },
+
+  async getMyPatientsAction({ commit, dispatch }) {
+    try {
+      const { data } = await Vue.$axios.get("/myPatients/");
+      commit("setMyPatients", data);
+    } catch (error) {
+      dispatch("snackbar/showError", error.response.data, {
+        root: true,
+      });
+    }
+  },
 };
 
-const getters = {};
+const getters = {
+  getMyPatients: (state) => state.myPatients
+};
 
 export default {
   namespaced: true,

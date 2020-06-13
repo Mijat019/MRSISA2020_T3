@@ -13,6 +13,7 @@ class FreeAppointments extends Model {
   public start!: number;
   public duration!: number;
   public version!: number;
+  public room!: Rooms;
 }
 
 FreeAppointments.init(
@@ -66,6 +67,7 @@ FreeAppointments.belongsTo(PriceLists, {
 });
 
 FreeAppointments.belongsTo(Rooms, { as: "room", foreignKey: "roomId" });
+Rooms.hasMany(FreeAppointments, {as: "freeAppointments", foreignKey: "roomId"});
 
 FreeAppointments.belongsTo(DoctorAt, { as: "doctor", foreignKey: "doctorId" });
 

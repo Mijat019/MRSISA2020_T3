@@ -3,7 +3,6 @@
     <v-toolbar-title>Covid19Clinic</v-toolbar-title>
     <v-spacer></v-spacer>
     <NotificationMenu/>
-    <v-btn @click="onLogout">logout</v-btn>
   </v-app-bar>
 </template>
 

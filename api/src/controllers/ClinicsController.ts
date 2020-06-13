@@ -11,9 +11,29 @@ class ClinicsController {
     }
   }
 
+  public async getAllForAppoType(req: any, res: any) {
+    try {
+      const { appoTypeId } = req.params;
+      const clinics = await ClinicsService.getAllForAppoType(appoTypeId);
+      res.send(clinics);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  }
+
   public async add(req: any, res: any) {
     try {
       const newClinic = await ClinicsService.add(req.body);
+      res.send(newClinic);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }
+
+  public async update(req: any, res: any) {
+    try {
+      const newClinic = await ClinicsService.update(req.body);
       res.send(newClinic);
     } catch (error) {
       res.status(400).send(error);

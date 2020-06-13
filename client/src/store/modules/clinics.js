@@ -1,7 +1,7 @@
-import Vue from "vue";
+import Vue from 'vue';
 
 const state = {
-    clinics: [],
+  clinics: [],
 };
 
 const mutations = {
@@ -17,26 +17,54 @@ const mutations = {
         );
         state.clinics.splice(index, 1);
     },
+    updateClinic(state, clinic) {
+        const index = state.clinics.findIndex(
+            (c) => c.id === clinic.id
+        );
+        state.clinics.splice(index, 1, clinic);
+    }
 };
 
 const actions = {
-    async getClinicsAction({ commit, dispatch }) {
-        try {
-            const { data: clinics } = await Vue.$axios.get("/clinics");
-            commit("setClinics", clinics);
-        } catch (error) {
-            dispatch("snackbar/showError", error.response.data, { root: true });
-        }
-    },
+  async getClinicsAction({ commit, dispatch }) {
+    try {
+      const { data: clinics } = await Vue.$axios.get('/clinics');
+      commit('setClinics', clinics);
+    } catch (error) {
+      dispatch('snackbar/showError', error.response.data, { root: true });
+    }
+  },
 
-    async addClinicAction({ commit, dispatch }, clinicPayload) {
+  async getClinicsForAppoType({ commit, dispatch }, appoTypeId) {
+    try {
+      const { data: clinics } = await Vue.$axios.get(`/clinics/${appoTypeId}`);
+      commit('setClinics', clinics);
+    } catch (error) {
+      dispatch('snackbar/showError', error.response.data, { root: true });
+    }
+  },
+
+  async addClinicAction({ commit, dispatch }, clinicPayload) {
+    try {
+      const { data: newClinic } = await Vue.$axios.post(
+        '/clinics',
+        clinicPayload
+      );
+      commit('addClinic', newClinic);
+      dispatch('snackbar/showSuccess', 'Clinic added.', { root: true });
+    } catch (error) {
+      dispatch('snackbar/showError', error.response.data, { root: true });
+    }
+  },
+
+    async updateClinicAction({ commit, dispatch }, clinicPayload) {
         try {
-            const { data: newClinic } = await Vue.$axios.post(
+            const { data: newClinic } = await Vue.$axios.patch(
                 "/clinics",
                 clinicPayload
             );
-            commit("addClinic", newClinic);
-            dispatch("snackbar/showSuccess", "Clinic added.", { root: true });
+            commit("updateClinic", newClinic);
+            dispatch("snackbar/showSuccess", "Clinic updated.", { root: true });
         } catch (error) {
             dispatch("snackbar/showError", error.response.data, { root: true });
         }
@@ -54,13 +82,13 @@ const actions = {
 };
 
 const getters = {
-    getClinics: (state) => state.clinics,
+  getClinics: state => state.clinics,
 };
 
 export default {
-    namespaced: true,
-    state,
-    mutations,
-    actions,
-    getters,
+  namespaced: true,
+  state,
+  mutations,
+  actions,
+  getters,
 };

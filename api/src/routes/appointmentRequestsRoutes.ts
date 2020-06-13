@@ -32,7 +32,7 @@ router.delete(
 
 router.patch(
   "/:id",
-  AuthenticationMiddleware.hasRole(UserRole.CLINIC_CENTER_ADMIN),
+  AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
   AppointmentRequestsController.update
 );
 

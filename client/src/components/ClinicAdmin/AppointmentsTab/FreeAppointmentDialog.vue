@@ -12,7 +12,7 @@
                 :min-datetime="getCurrentTimeISO"
                 placeholder="Select date"
                 v-model="appointment.start"
-                :minute-step="15"
+                :minute-step="30"
                 auto
               />
             </div>
@@ -34,8 +34,8 @@
             :items="getPriceLists"
             v-model="appointment.priceList"
             item-text="appointmentType.name"
-            :return-object="true"
             label="Price list entry"
+            return-object
           />
           <v-select
             v-if="appointment.priceList"
@@ -96,6 +96,7 @@ export default {
       }
 
       //convert datetime to unix seconds
+      console.log(this.appointment.start);
       this.appointment.start = moment(this.appointment.start).unix();
 
       // Prepare fields for backend
@@ -112,6 +113,7 @@ export default {
       }
       // Prepare fields for backend
       this.appointment.priceListId = this.appointment.priceList.id;
+      this.appointment.start = moment(this.appointment.start).unix();
       delete this.appointment.priceList;
 
       await this.updateAppointmentAction(this.appointment);
@@ -137,6 +139,18 @@ export default {
         return doc.spec.some(sp => {
           return sp.appoType.id === appoTypeId;
         });
+      });
+    },
+  },
+
+  watch: {
+    dialog(val) {
+      if (val == false) return;
+
+      this.getPriceLists.map(pList => {
+        if (pList.appointmentTypeId == this.appointment.appointmentTypeId) {
+          this.appointment.priceList = pList;
+        }
       });
     },
   },

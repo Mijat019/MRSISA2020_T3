@@ -74,6 +74,12 @@
               Room: {{ selectedEvent.roomName }}
             </v-card-text>
             <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                v-if="selectedEvent.color === `red`"
+                color="error"
+                @click="cancelAppointment"
+              >Cancel</v-btn>
               <v-btn
                 v-if="selectedEvent.color === `red`"
                 color="primary"
@@ -89,9 +95,24 @@
 
 <script>
 import calendarMixin from '../../../mixins/calendarMixin';
+import { mapActions } from 'vuex';
 
 export default {
   mixins: [calendarMixin],
+
+  methods: {
+    ...mapActions({
+      cancelConfirmedAppointmentAction:
+        'confirmedAppointments/cancelConfirmedAppointmentAction',
+    }),
+
+    async cancelAppointment() {
+      if (confirm('Are you sure you want to cancel this appointment?')) {
+        await this.cancelConfirmedAppointmentAction(this.selectedEvent.id);
+        this.showMenu = false;
+      }
+    },
+  },
 };
 </script>
 

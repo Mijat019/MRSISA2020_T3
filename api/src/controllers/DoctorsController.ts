@@ -17,14 +17,32 @@ class DoctorsController {
 
   public async getByClinic(req: any, res: any) {
     try {
-      // if (req.user.role != UserRole.CLINIC_ADMIN) {
-      //   res.status(403).send("Only clinic admins may use this route.");
-      //   return;
-      // }
-      const doctors = await DoctorsService.getByClinicId(req.params["clinicId"], req.user.id);
+      const doctors = await DoctorsService.getByClinicId(req.params["clinicId"]);
 
       res.send(doctors);
     } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  }
+
+  public async getAllForScheduling(req: any, res: any){
+    try{
+      const {clinicId, appointmentTypeId, date } = req.body;
+      const doctors = await DoctorsService.getAllForScheduling(clinicId, appointmentTypeId, date);
+      res.send(doctors);
+    } catch(error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  }
+
+  public async getAvailableTimes(req: any, res: any){
+    try{
+      const {doctorId, date } = req.body;
+      const times = await DoctorsService.getAvailableTimes(doctorId, date);
+      res.send(times);
+    } catch(error) {
       console.log(error);
       res.status(400).send(error);
     }

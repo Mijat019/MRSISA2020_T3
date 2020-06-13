@@ -1,10 +1,43 @@
 import Vue from 'vue';
 
-const state = {};
+const state = {
+  clinicRating: null,
+  alreadyRated: {},
+};
 
-const mutations = {};
+const mutations = {
+  setClinicRating(state, clinicRating) {
+    state.clinicRating = clinicRating;
+  },
+
+  setAlreadyRated(state, newRated) {
+    Object.assign(state.alreadyRated, newRated);
+  },
+};
 
 const actions = {
+  async getClinicRatingAction({ commit, dispatch }) {
+    try {
+      const { data } = await Vue.$axios.get('/ratings/clinic');
+      commit('setClinicRating', data.rating);
+    } catch (error) {
+      dispatch('snackbar/showError', error.response.data, {
+        root: true,
+      });
+    }
+  },
+
+  async getAlreadyRatedAction({ commit, dispatch }, patientId) {
+    try {
+      const { data } = await Vue.$axios.get(`/ratings/rated/${patientId}`);
+      commit('setAlreadyRated', data);
+    } catch (error) {
+      dispatch('snackbar/showError', error.response.data, {
+        root: true,
+      });
+    }
+  },
+
   async submitDoctorRatingAction({ dispatch }, payload) {
     try {
       await Vue.$axios.post('/ratings/doctor', payload);
@@ -32,7 +65,10 @@ const actions = {
   },
 };
 
-const getters = {};
+const getters = {
+  getClinicRating: state => state.clinicRating,
+  getAlreadyRated: state => state.alreadyRated
+};
 
 export default {
   namespaced: true,

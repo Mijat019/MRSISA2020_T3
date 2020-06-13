@@ -29,9 +29,14 @@ import appointmentReportRoutes from './routes/appointmentReportRoutes';
 import patientMedicalRecordRoutes from './routes/patientMedicalRecordRoutes';
 import ratingsRoutes from './routes/ratingsRoutes';
 import leaveRequestsRoutes from './routes/leaveRequestsRoutes';
+<<<<<<< HEAD
 import operationRequestsRoutes from './routes/operationRequestsRoutes';
 import operationsRoutes from './routes/operationsRoutes';
 import operationAttendancesRoutes from './routes/operationAttendancesRoutes';
+=======
+import patientsAtRoutes from './routes/patientsAtRoutes';
+import reportRoutes from './routes/reportRoutes';
+>>>>>>> develop
 
 // connect to the database
 (async () => {
@@ -41,8 +46,13 @@ import operationAttendancesRoutes from './routes/operationAttendancesRoutes';
     // creates tables from model
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
+<<<<<<< HEAD
     // await db.sync({ force: true });
     // await initModel();
+=======
+     await db.sync({ force: true });
+     await initModel();
+>>>>>>> develop
     // await initModelStega();
   } catch (error) {
     console.log(error);
@@ -80,9 +90,14 @@ app.use('/appointmentReport', appointmentReportRoutes);
 app.use('/patientMedicalRecord', patientMedicalRecordRoutes);
 app.use('/leaveRequests', leaveRequestsRoutes);
 app.use('/ratings', ratingsRoutes);
+<<<<<<< HEAD
 app.use('/operationRequests', operationRequestsRoutes);
 app.use('/operations', operationsRoutes);
 app.use('/operationAttendances', operationAttendancesRoutes);
+=======
+app.use('/myPatients', patientsAtRoutes);
+app.use('/report', reportRoutes);
+>>>>>>> develop
 
 app.use(express.static(__dirname + '/public/'));
 

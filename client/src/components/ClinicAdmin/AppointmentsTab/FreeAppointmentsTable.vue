@@ -30,38 +30,52 @@
         <template v-slot:item.actions="{ item }">
           <slot name="actions" :appointment="item"></slot>
         </template>
+        <template #item.doctor="{ item }"
+          >{{ item.doctor.user.firstName }}
+          {{ item.doctor.user.lastName }}</template
+        >
+        <template #item.start="{ item }">
+          {{ format(item.start) }}
+        </template>
       </v-data-table>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import moment from 'moment';
+
 export default {
-  name: "FreeAppointmentsTable",
+  name: 'FreeAppointmentsTable',
   data: () => ({
-    search: "",
+    search: '',
     headers: [
-      { text: "Start", value: "start" },
-      { text: "Room", value: "room.name" },
-      { text: "Doctors first name", value: "doctor.user.firstName" },
-      { text: "Doctors last name", value: "doctor.user.lastName" },
-      { text: "Appointment type", value: "priceList.appointmentType.name" },
-      { text: "Duration", value: "duration" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: 'Appointment type', value: 'priceList.appointmentType.name',align: 'center' },
+      { text: 'Doctor', value: 'doctor', align: 'center' },
+      { text: 'Room', value: 'room.name', align: 'center' },
+      { text: 'Scheduled time', value: 'start', align: 'center' },
+      { text: 'Duration', value: 'duration', align: 'center' },
+      { text: 'Actions', value: 'actions', sortable: false },
     ],
     doctor: null,
   }),
 
   methods: {
     ...mapActions({
-      getDoctorsAction: "doctors/getDoctorsAction",
-      getFreeAppointmentsAction: "freeAppointments/getFreeAppointmentsAction",
+      getDoctorsAction: 'doctors/getDoctorsAction',
+      getFreeAppointmentsAction: 'freeAppointments/getFreeAppointmentsAction',
     }),
 
     ...mapMutations('freeAppointments', {
       setAppointments: 'setAppointments',
     }),
+
+    format(item) {
+      if (!item) return '';
+
+      return moment.unix(item).format('YYYY-MM-DD HH:mm');
+    },
   },
 
   async mounted() {
@@ -71,8 +85,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      getDoctors: "doctors/getDoctors",
-      getFreeAppointments: "freeAppointments/getFreeAppointments",
+      getDoctors: 'doctors/getDoctors',
+      getFreeAppointments: 'freeAppointments/getFreeAppointments',
     }),
   },
 

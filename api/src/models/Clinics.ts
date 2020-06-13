@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import db from './database';
 import { Model, STRING, INTEGER } from 'sequelize';
 import OperationRequests from './OperationRequests';
 import Operations from './Operations';
+=======
+import db from "./database";
+import { Model, STRING, INTEGER } from "sequelize";
+import PriceLists from "./PriceLists";
+import sequelize from "sequelize";
+>>>>>>> develop
 
 class Clinics extends Model {
   public id!: number;
@@ -48,6 +55,7 @@ Clinics.init(
 
 export default Clinics;
 
+<<<<<<< HEAD
 export const clinicsSelectForAdmins = ['name'];
 export const clinicsSelect = [
   'id',
@@ -56,4 +64,24 @@ export const clinicsSelect = [
   'city',
   'address',
   'description',
+=======
+export const clinicsSelectForAdmins = ["name"];
+export const clinicsSelect: any = [
+  "id",
+  "name",
+  "country",
+  "city",
+  "address",
+  "description",
+>>>>>>> develop
+];
+
+export const clinicsSelectForRating: any = [
+  "id",
+  "name",
+  "country",
+  "city",
+  "address",
+  "description",
+  [sequelize.fn('avg', sequelize.col('ratingList.averageRating')), 'rating']
 ];

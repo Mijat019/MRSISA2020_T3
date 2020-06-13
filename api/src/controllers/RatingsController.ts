@@ -1,21 +1,29 @@
-import RatingsService from '../services/RatingsService'
-
+import ratingService from '../services/RatingsService';
 
 class RatingsController {
-//   public async getAllForClinic(req: any, res: any) {
-//     try {
-//       const { clinicId } = req.user;
-//       const rooms = await RoomsService.getAllForClinic(clinicId);
-//       res.send(rooms);
-//     } catch (error) {
-//       res.status(400).send(error);
-//     }
-//   }
+  public async getClinicRating(req: any, res: any) {
+    try {
+      const { clinicId } = req.user;
+      const rating = await ratingService.getRatingForClinic(clinicId);
+      res.send({ rating });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }
 
+  public async getRatedClinicsAndDoctors(req: any, res: any) {
+    try {
+      const { patientId } = req.params;
+      const ids = await ratingService.getRatedClinicsAndDoctors(patientId);
+      res.send(ids);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }
 
   public async addDoctorRating(req: any, res: any) {
     try {
-      const rating = await RatingsService.addDoctorRating(req.body);
+      const rating = await ratingService.addDoctorRating(req.body);
       res.send(rating);
     } catch (error) {
       res.status(400).send(error);
@@ -24,7 +32,7 @@ class RatingsController {
 
   public async addClinicRating(req: any, res: any) {
     try {
-      const rating = await RatingsService.addClinicRating(req.body);
+      const rating = await ratingService.addClinicRating(req.body);
       res.send(rating);
     } catch (error) {
       res.status(400).send(error);

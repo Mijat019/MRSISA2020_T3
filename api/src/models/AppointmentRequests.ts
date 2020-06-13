@@ -69,6 +69,10 @@ AppointmentRequests.init(
     tableName: "appointment_requests",
     sequelize: db,
     version: true,
+    indexes: [
+      // { unique: true, fields: ['doctorId', 'start'] },
+      { unique: true, fields: ['patientMedicalRecordId', 'start'] },
+    ],
   }
 );
 

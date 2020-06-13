@@ -18,15 +18,19 @@ import FreeAppointments from './FreeAppointments';
 import DoctorRating from './DoctorRating';
 import ClinicRating from './ClinicRating';
 import NursesService from '../services/NursesService';
+<<<<<<< HEAD
 import OperationRequests from './OperationRequests';
 import Operations from './Operations';
 import OperationAttendances from './OperationAttendances';
+=======
+import ConfirmedAppointmentService from '../services/ConfirmedAppointmentService';
+import LeaveRequestsService from '../services/LeaveRequestsService';
+import initModelK2 from './initModelK2';
+import AppointmentReports from './AppointmentReports';
+>>>>>>> develop
 
 export default async () => {
-  await DoctorRating.findAll({});
-  await ClinicRating.findAll({});
-
-  await Diagnosis.create({ name: 'Insane in the membrane' });
+  const {id : diagnosisId} = await Diagnosis.create({ name: 'Insane in the membrane' });
   await Diagnosis.create({ name: 'Vucic' });
 
   await Drugs.create({ name: 'Percocet' });
@@ -139,6 +143,8 @@ export default async () => {
   );
 
   await DoctorsService.addSpecialization(doctorId, appointmentTypeId);
+  await DoctorsService.addSpecialization(doctorId, appointmentTypeId2);
+  await DoctorsService.addSpecialization(doctorId, appointmentTypeId3);
 
   const { userId: doctorId2 } = await DoctorsService.add(
     {
@@ -155,10 +161,19 @@ export default async () => {
     id
   );
 
+  await DoctorsService.addSpecialization(doctorId2, appointmentTypeId);
+  await DoctorsService.addSpecialization(doctorId2, appointmentTypeId3);
+
   await Users.update(
     { password, accountStatus: AccountStatus.ACTIVATED },
     { where: { id: doctorId2 } }
   );
+
+  /*
+  KLINIKA 2
+  */
+
+  const now = moment().set({ hour: 12, minute: 0, second: 0 });
 
   const { id: userId }: any = await UsersService.createUser(
     {
@@ -176,7 +191,11 @@ export default async () => {
     UserRole.PATIENT
   );
 
+<<<<<<< HEAD
   const { userId: patientId } = await PatientMedicalRecord.create({ userId });
+=======
+  const { userId: patient1Id } = await PatientMedicalRecord.create({ userId });
+>>>>>>> develop
 
   const { id: userId2 }: any = await UsersService.createUser(
     {
@@ -194,26 +213,46 @@ export default async () => {
     UserRole.PATIENT
   );
 
+<<<<<<< HEAD
   const { userId: patientMedicalRecordId } = await PatientMedicalRecord.create({
+=======
+  const { userId: patient2Id } = await PatientMedicalRecord.create({
+>>>>>>> develop
     userId: userId2,
   });
 
-  await ConfirmedAppointments.create({
+  await ConfirmedAppointmentService.add({
     priceListId,
     doctorId,
-    patientId,
+    patientId: patient1Id,
     roomId,
-    start: moment().unix(),
+    start: now.unix(),
     duration: 60,
   });
 
-  await ConfirmedAppointments.create({
+  await ConfirmedAppointmentService.add({
     priceListId,
     doctorId,
-    patientId,
+    patientId: patient2Id,
     roomId,
-    start: moment().add(1, 'hour').unix(),
+    start: now.add(2, 'hour').unix(),
     duration: 60,
+  });
+
+  const { id: confId2 } = await ConfirmedAppointmentService.add({
+    priceListId,
+    doctorId: doctorId2,
+    patientId: patient1Id,
+    roomId,
+    start: now.add(-31, 'day').unix(),
+    duration: 60,
+  });
+
+  await AppointmentReports.create({
+    patientMedicalRecordId: userId,
+    confirmedAppointmentId: confId2,
+    diagnosisId: diagnosisId,
+    clinicId: id,
   });
 
   await FreeAppointments.create({
@@ -221,8 +260,9 @@ export default async () => {
     doctorId,
     roomId,
     duration: 60,
-    start: moment().add(2, 'hour').unix(),
+    start: now.add(2, 'hour').unix(),
   });
+  
 
   const { userId: tutu } = await ClinicAdminService.add(
     {
@@ -266,6 +306,7 @@ export default async () => {
     { where: { id: id2 } }
   );
 
+<<<<<<< HEAD
   const { id: operationRequests } = await OperationRequests.create({
     clinicId: id,
     doctorId,
@@ -287,4 +328,48 @@ export default async () => {
     doctorId: doctorId2,
     operationId,
   });
+=======
+  await ClinicRating.create({
+    patientId: userId,
+    clinicId: id,
+    serviceRating: 4,
+    cleanlinessRating: 3,
+    timeRating: 2,
+    averageRating: 3,
+    comment: 'OKAY',
+  });
+
+  await ClinicRating.create({
+    patientId: userId2,
+    clinicId: id,
+    serviceRating: 5,
+    cleanlinessRating: 4,
+    timeRating: 3,
+    averageRating: 4,
+    comment: 'GOOD',
+  });
+
+  await DoctorRating.create({
+    patientId: userId,
+    doctorId: doctorId,
+    communicationRating: 5,
+    expertiseRating: 5,
+    timeRating: 5,
+    averageRating: 5,
+    comment: 'GREAT',
+  });
+
+  await DoctorRating.create({
+    patientId: userId2,
+    doctorId: doctorId2,
+    communicationRating: 1,
+    expertiseRating: 2,
+    timeRating: 2,
+    averageRating: 1.67,
+    comment: 'SUX',
+  });
+
+  // model for second clinic
+  await initModelK2();
+>>>>>>> develop
 };

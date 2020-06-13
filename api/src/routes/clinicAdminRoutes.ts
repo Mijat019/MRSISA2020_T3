@@ -16,4 +16,10 @@ router.post(
   AuthenticationMiddleware.hasRole(UserRole.CLINIC_CENTER_ADMIN),
   ClinicAdminController.add
 );
+
+router.get(
+  "/myClinic",
+  AuthenticationMiddleware.hasRole(UserRole.CLINIC_ADMIN),
+  ClinicAdminController.getMyClinic
+);
 export default router;

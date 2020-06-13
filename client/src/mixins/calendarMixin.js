@@ -106,6 +106,7 @@ export default {
     ...mapGetters({
       getUser: 'authentication/getUser',
       getEvents: 'confirmedAppointments/calendar/getEvents',
+      getAppointments: 'confirmedAppointments/calendar/getAppointments',
     }),
 
     title() {
@@ -145,5 +146,8 @@ export default {
     },
   },
 
-  async created() {},
+  async created() {
+    await this.getFreeAppointmentsAction(this.getUser.id);
+    await this.getConfirmedAppointmentsAction(this.getUser.id);
+  },
 };

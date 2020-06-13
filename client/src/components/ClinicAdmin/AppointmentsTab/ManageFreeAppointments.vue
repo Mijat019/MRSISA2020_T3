@@ -23,6 +23,8 @@
 import FreeAppointmentsTable from './FreeAppointmentsTable';
 import FreeAppointmentsDialog from './FreeAppointmentDialog';
 import { mapActions, mapMutations } from 'vuex';
+import moment from 'moment'
+
 export default {
   name: 'ManageFreeAppointments',
   components: {
@@ -41,7 +43,7 @@ export default {
     editItem({ appointment }) {
       this.showEditDialog({
         id: appointment.id,
-        start: appointment.start,
+        start: moment.unix(appointment.start).toISOString(),
         duration: appointment.duration,
         roomId: appointment.roomId,
         appointmentTypeId: appointment.priceList.appointmentTypeId,
