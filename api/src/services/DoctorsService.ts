@@ -26,7 +26,7 @@ class DoctorsService {
       where,
       group: 'doctorId',
       attributes: [
-        [sequelize.fn('avg', sequelize.col('ratingList.averageRating')), 'rating']
+        [sequelize.fn('avg', sequelize.col('ratingList.averageRating')), 'rating'], 'clinicId'
       ],
       include: [
         { model: Users, attributes: usersSelect, as: 'user', required: true },
@@ -52,7 +52,7 @@ class DoctorsService {
           ],
         },
       ],
-    })) as any;
+    }));
 
     return doctors;
   }
@@ -75,7 +75,7 @@ class DoctorsService {
         { model: Users, attributes: usersSelect, as: 'user', required: true },
         {
           model: Clinics,
-          attributes: [],
+          attributes: ['id', 'name'],
           where: { id: clinicId },
           as: 'clinic',
           required: true,

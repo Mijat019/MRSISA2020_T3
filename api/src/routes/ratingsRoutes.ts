@@ -7,6 +7,7 @@ const router = express.Router();
 router.use(authenticationMiddleware.verifyToken);
 
 router.get('/clinic', ratingsController.getClinicRating);
+router.get("/rated/:patientId", ratingsController.getRatedClinicsAndDoctors);
 
 router.post('/doctor', ratingsController.addDoctorRating);
 

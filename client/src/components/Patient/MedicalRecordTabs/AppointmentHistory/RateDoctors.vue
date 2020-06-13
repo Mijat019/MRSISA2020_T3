@@ -1,7 +1,9 @@
 <template>
   <v-dialog v-model="dialog" width="700px" @click:outside="close">
     <template v-slot:activator="{ on }">
-      <v-btn v-on="on" class="mx-5 cyan lighten-3" small>Rate Doctor</v-btn>
+      <v-btn v-on="on" :disabled="disableBtn" class="mx-5 cyan lighten-3" small
+        >Rate Doctor</v-btn
+      >
     </template>
     <v-card>
       <v-card-title class="justify-center mb-6">
@@ -54,10 +56,11 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { bus } from '@/main';
 import RatingComponent from './RatingComponent';
 
 export default {
-  props: ['item'],
+  props: ['item', 'disableBtn'],
   components: {
     RatingComponent,
   },
@@ -72,6 +75,7 @@ export default {
   methods: {
     ...mapActions('ratings', {
       submitDoctorRatingAction: 'submitDoctorRatingAction',
+      getAlreadyRatedAction: 'getAlreadyRatedAction',
     }),
 
     async rate() {
@@ -89,6 +93,8 @@ export default {
       };
 
       await this.submitDoctorRatingAction(payload);
+      this.getAlreadyRated.doctors.push({doctorId: this.item.id});
+      bus.$emit('ratingChanged');
       this.reset();
       this.close();
     },
@@ -106,7 +112,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ user: 'authentication/getUser' }),
+    ...mapGetters({
+      user: 'authentication/getUser',
+      getAlreadyRated: 'ratings/getAlreadyRated',
+    }),
   },
 };
 </script>

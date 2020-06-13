@@ -50,7 +50,7 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
-import moment from 'moment'
+import moment from 'moment';
 
 export default {
   props: ['doctor', 'date', 'time', 'priceList'],
@@ -118,7 +118,7 @@ export default {
       // // when date is changed reset time
       this.timeProp = '';
 
-      if(!value) return;
+      if (!value) return;
 
       this.getAvailableTimes({
         doctorId: this.doctor.user.id,
@@ -130,6 +130,15 @@ export default {
       value;
       // when doctors is changed reset selected time
       this.timeProp = '';
+    },
+
+    async doctor() {
+      if (!this.doctor.user) return;
+
+      await this.getPriceListsForDoctorAction({
+        doctorId: this.doctor.user.id,
+        clinicId: this.doctor.clinicId,
+      });
     },
   },
 

@@ -5,8 +5,17 @@ class RatingsController {
     try {
       const { clinicId } = req.user;
       const rating = await ratingService.getRatingForClinic(clinicId);
-      console.log(rating);
       res.send({ rating });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }
+
+  public async getRatedClinicsAndDoctors(req: any, res: any) {
+    try {
+      const { patientId } = req.params;
+      const ids = await ratingService.getRatedClinicsAndDoctors(patientId);
+      res.send(ids);
     } catch (error) {
       res.status(400).send(error);
     }

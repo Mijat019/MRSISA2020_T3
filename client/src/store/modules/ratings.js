@@ -2,11 +2,16 @@ import Vue from 'vue';
 
 const state = {
   clinicRating: null,
+  alreadyRated: {},
 };
 
 const mutations = {
   setClinicRating(state, clinicRating) {
     state.clinicRating = clinicRating;
+  },
+
+  setAlreadyRated(state, newRated) {
+    Object.assign(state.alreadyRated, newRated);
   },
 };
 
@@ -15,6 +20,17 @@ const actions = {
     try {
       const { data } = await Vue.$axios.get('/ratings/clinic');
       commit('setClinicRating', data.rating);
+    } catch (error) {
+      dispatch('snackbar/showError', error.response.data, {
+        root: true,
+      });
+    }
+  },
+
+  async getAlreadyRatedAction({ commit, dispatch }, patientId) {
+    try {
+      const { data } = await Vue.$axios.get(`/ratings/rated/${patientId}`);
+      commit('setAlreadyRated', data);
     } catch (error) {
       dispatch('snackbar/showError', error.response.data, {
         root: true,
@@ -51,6 +67,7 @@ const actions = {
 
 const getters = {
   getClinicRating: state => state.clinicRating,
+  getAlreadyRated: state => state.alreadyRated
 };
 
 export default {

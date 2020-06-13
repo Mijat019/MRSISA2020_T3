@@ -21,9 +21,10 @@ import NursesService from '../services/NursesService';
 import ConfirmedAppointmentService from '../services/ConfirmedAppointmentService';
 import LeaveRequestsService from '../services/LeaveRequestsService';
 import initModelK2 from './initModelK2';
+import AppointmentReports from './AppointmentReports';
 
 export default async () => {
-  await Diagnosis.create({ name: 'Insane in the membrane' });
+  const {id : diagnosisId} = await Diagnosis.create({ name: 'Insane in the membrane' });
   await Diagnosis.create({ name: 'Vucic' });
 
   await Drugs.create({ name: 'Percocet' });
@@ -222,6 +223,22 @@ export default async () => {
     roomId,
     start: now.add(2, 'hour').unix(),
     duration: 60,
+  });
+
+  const { id: confId2 } = await ConfirmedAppointmentService.add({
+    priceListId,
+    doctorId: doctorId2,
+    patientId: patient1Id,
+    roomId,
+    start: now.add(-31, 'day').unix(),
+    duration: 60,
+  });
+
+  await AppointmentReports.create({
+    patientMedicalRecordId: userId,
+    confirmedAppointmentId: confId2,
+    diagnosisId: diagnosisId,
+    clinicId: id,
   });
 
   await FreeAppointments.create({

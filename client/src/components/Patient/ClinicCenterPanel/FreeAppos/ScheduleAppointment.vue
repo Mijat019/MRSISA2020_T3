@@ -1,12 +1,6 @@
 <template>
   <v-card>
-    <ScheduleAppointmentDialog />
-
-    <!-- <v-card-title>
-      <v-btn @click="openDialog" dark>Custom Appointment</v-btn>
-    </v-card-title> -->
-
-    <v-card-title class="mx-8 mb-12 mt-5">
+    <v-card-title class="mx-3 mb-12 mt-5">
       Free Appointments
       <v-spacer></v-spacer>
       <v-text-field
@@ -82,13 +76,11 @@
 <script>
 import moment from 'moment';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
-import ScheduleAppointmentDialog from './ScheduleAppointmentDialog';
 import ConfirmFreeAppointment from './ConfirmFreeAppointment';
 
 export default {
   name: 'ScheduleAppointment',
   components: {
-    ScheduleAppointmentDialog,
     ConfirmFreeAppointment,
   },
   data() {

@@ -1,15 +1,17 @@
-import Clinics, { clinicsSelect } from '../models/Clinics';
+import Clinics, { clinicsSelectForRating } from '../models/Clinics';
 import RatingsService from './RatingsService';
 import AdminOf from '../models/AdminAt';
 import Users from '../models/Users';
 import PriceLists from '../models/PriceLists';
 import ClinicRating from '../models/ClinicRating';
+import sequelize from 'sequelize';
 
 class ClinicsService {
+
   public async getAll(): Promise<any> {
     const clinics: any = await Clinics.findAll({
       group: 'id',
-      attributes: clinicsSelect,
+      attributes: clinicsSelectForRating,
       include: [
         {
           model: ClinicRating,
@@ -24,9 +26,9 @@ class ClinicsService {
   }
 
   public async getAllForAppoType(appointmentTypeId: any): Promise<any> {
-    const clinics: any = (await Clinics.findAll({
+    const clinics: any = await Clinics.findAll({
       group: 'id',
-      attributes: clinicsSelect,
+      attributes: clinicsSelectForRating,
       include: [
         {
           model: PriceLists,
@@ -41,7 +43,7 @@ class ClinicsService {
           required: true,
         },
       ],
-    }));
+    });
 
     return clinics;
   }

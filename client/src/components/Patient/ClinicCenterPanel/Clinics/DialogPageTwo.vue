@@ -159,7 +159,6 @@ export default {
         date: moment(this.date, 'YYYY-MM-DD').unix(),
       });
 
-      //this.availableTimes = value.availableTimes;
     },
   },
 

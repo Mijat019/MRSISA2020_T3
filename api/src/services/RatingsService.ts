@@ -20,6 +20,18 @@ class RatingService {
     return total / size;
   }
 
+  public async getRatedClinicsAndDoctors(patientId: any): Promise<any> {
+    const clinics = await ClinicRating.findAll({
+      where: { patientId },
+      attributes: ['clinicId'],
+    });
+    const doctors = await DoctorRating.findAll({
+      where: { patientId },
+      attributes: ['doctorId'],
+    });
+    return { clinics, doctors };
+  }
+
   public async addDoctorRating(payload: any): Promise<any> {
     const rating = await DoctorRating.create(payload);
     return rating;

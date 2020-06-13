@@ -21,6 +21,7 @@ import NursesService from '../services/NursesService';
 import ConfirmedAppointmentService from '../services/ConfirmedAppointmentService';
 import LeaveRequestsService from '../services/LeaveRequestsService';
 import AppointmentRequests from './AppointmentRequests';
+import AppointmentReports from './AppointmentReports';
 
 export default async () => {
   const { id } = await ClinicsService.add({
@@ -91,6 +92,30 @@ export default async () => {
 
   await DoctorsService.addSpecialization(doctorId, appointmentTypeId);
 
+
+
+  const { userId: doctorId2 } = await DoctorsService.add(
+    {
+      firstName: 'Milos',
+      lastName: 'Milosevic',
+      email: '2d2',
+      jmbg: '455318',
+      phoneNumber: '444',
+      country: 'Serbia',
+      city: 'Novi Sad',
+      address: 'Cara Lazara 21',
+      accountStatus: 1,
+    },
+    id
+  );
+
+  await Users.update(
+    { password, accountStatus: AccountStatus.ACTIVATED },
+    { where: { id: doctorId2 } }
+  );
+
+  await DoctorsService.addSpecialization(doctorId2, appointmentTypeId);
+
   const june = moment('2020-06-25 12:00', 'YYYY-MM-DD HH:mm');
 
   const { id: userId }: any = await UsersService.createUser(
@@ -111,14 +136,37 @@ export default async () => {
 
   const { userId: patient1Id } = await PatientMedicalRecord.create({ userId });
 
-  // await ConfirmedAppointmentService.add({
-  //   priceListId,
-  //   doctorId,
-  //   patientId: patient1Id,
-  //   roomId,
-  //   start: june.unix(),
-  //   duration: 60,
-  // });
+  const { id: confId1 } = await ConfirmedAppointmentService.add({
+    priceListId,
+    doctorId,
+    patientId: patient1Id,
+    roomId,
+    start: june.add(-25, 'day').unix(),
+    duration: 60,
+  });
+
+  const { id: confId2 } = await ConfirmedAppointmentService.add({
+    priceListId,
+    doctorId: doctorId2,
+    patientId: patient1Id,
+    roomId,
+    start: june.add(-31, 'day').unix(),
+    duration: 60,
+  });
+
+  await AppointmentReports.create({
+    patientMedicalRecordId: userId,
+    confirmedAppointmentId: confId1,
+    diagnosisId: 1,
+    clinicId: id,
+  });
+
+  await AppointmentReports.create({
+    patientMedicalRecordId: userId,
+    confirmedAppointmentId: confId2,
+    diagnosisId: 1,
+    clinicId: id,
+  });
 
   // 12:00
   await FreeAppointments.create({

@@ -56,5 +56,14 @@ export const clinicsSelect: any = [
   "city",
   "address",
   "description",
+];
+
+export const clinicsSelectForRating: any = [
+  "id",
+  "name",
+  "country",
+  "city",
+  "address",
+  "description",
   [sequelize.fn('avg', sequelize.col('ratingList.averageRating')), 'rating']
 ];
