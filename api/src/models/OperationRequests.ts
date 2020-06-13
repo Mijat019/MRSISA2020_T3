@@ -63,7 +63,11 @@ OperationRequests.init(
     sequelize,
     tableName: 'operation_requests',
     timestamps: false,
-    indexes: [{ fields: ['clinicId'], unique: false }],
+    indexes: [
+      { fields: ['clinicId'], unique: false },
+      { fields: ['patientMedicalRecordId', 'start'], unique: true },
+      { fields: ['doctorId', 'start'], unique: true },
+    ],
   }
 );
 

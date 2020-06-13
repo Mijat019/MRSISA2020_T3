@@ -1,4 +1,4 @@
-import FreeAppointmentService from "../services/FreeAppointmentService";
+import FreeAppointmentService from '../services/FreeAppointmentService';
 
 class FreeAppointmentController {
   public async getAllForDoctor(req: any, res: any) {
@@ -25,7 +25,6 @@ class FreeAppointmentController {
 
   public async schedule(req: any, res: any) {
     try {
-      console.log(req.body);
       const { appoId, patientId } = req.body;
       const confAppo = await FreeAppointmentService.schedule(appoId, patientId);
       res.send(confAppo);
@@ -60,7 +59,7 @@ class FreeAppointmentController {
     try {
       const { id } = req.params;
       await FreeAppointmentService.delete(id);
-      res.send("Free appointment successfully deleted.");
+      res.send('Free appointment successfully deleted.');
     } catch (error) {
       res.status(400).send(error.message);
     }

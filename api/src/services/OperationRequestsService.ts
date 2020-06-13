@@ -2,6 +2,9 @@ import OperationRequests from '../models/OperationRequests';
 import DoctorAt from '../models/DoctorAt';
 import Users from '../models/Users';
 import PatientMedicalRecord from '../models/PatientMedicalRecord';
+import Operations from '../models/Operations';
+import FreeAppointments from '../models/FreeAppointments';
+import ConfirmedAppointments from '../models/ConfirmedAppointments';
 
 class OperationRequestsService {
   public async getAllForClinic(clinicId: string) {
@@ -39,9 +42,27 @@ class OperationRequestsService {
     return operationRequests;
   }
 
-  public async add(operationRequestsPayload: any) {
+  public async add(operationRequestPayload: any) {
+    const { start, doctorId } = operationRequestPayload;
+    const operationsCount = await Operations.count({
+      where: { start, doctorId },
+    });
+    const freeAppointmentsCount = await FreeAppointments.count({
+      where: { start, doctorId },
+    });
+    const confirmedAppointmentsCount = await ConfirmedAppointments.count({
+      where: { start, doctorId },
+    });
+    if (
+      !operationsCount ||
+      !freeAppointmentsCount ||
+      !confirmedAppointmentsCount
+    ) {
+      throw new Error('Doctor is busy');
+    }
+
     const operationRequest = await OperationRequests.create(
-      operationRequestsPayload
+      operationRequestPayload
     );
     return operationRequest;
   }
