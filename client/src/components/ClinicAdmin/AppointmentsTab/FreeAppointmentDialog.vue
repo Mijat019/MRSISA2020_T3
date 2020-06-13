@@ -30,6 +30,7 @@
             :items="getPriceLists"
             v-model="appointment.priceList"
             item-text="appointmentType.name"
+            @change="typeChanged"
             label="Price list entry"
             return-object
           />
@@ -65,6 +66,7 @@ export default {
 
   data: () => ({
     rules: [v => !!v || 'This field is required'],
+    filteredDocs: [],
   }),
   mounted() {
     this.getRoomsAction();
@@ -83,6 +85,18 @@ export default {
     ...mapMutations('freeAppointmentsDialog', {
       close: 'closeDialog',
     }),
+
+    typeChanged() {
+      if(!this.appointment.priceList) return;
+
+      const appoTypeId = this.appointment.priceList.appointmentTypeId;
+      // Return all doctors that specialize in this appointment type
+      this.filteredDocs = this.getDoctors.filter(doc => {
+        return doc.spec.some(sp => {
+          return sp.appoType.id === appoTypeId;
+        });
+      });
+    },
 
     async addAppointment() {
       if (!this.$refs.form.validate() || !this.appointment.start) {
@@ -127,13 +141,7 @@ export default {
     }),
 
     filteredDoctors() {
-      const appoTypeId = this.appointment.priceList.appointmentTypeId;
-      // Return all doctors that specialize in this appointment type
-      return this.getDoctors.filter(doc => {
-        return doc.spec.some(sp => {
-          return sp.appoType.id === appoTypeId;
-        });
-      });
+      return this.filteredDocs;
     },
   },
 
@@ -146,6 +154,8 @@ export default {
           this.appointment.priceList = pList;
         }
       });
+
+      this.typeChanged();
     },
   },
 };

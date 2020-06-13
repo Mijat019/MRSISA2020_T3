@@ -172,51 +172,51 @@ class DoctorsService {
         });
     }
 
-    /** Returns a list of all available times for doctor given the date */
-    public async getAvailableTimes(doctorId: any, date: any) {
-        date = moment.unix(date);
+/** Returns a list of all available times for doctor given the date */
+  public async getAvailableTimes(doctorId: any, date: any) {
+    date = moment.unix(date);
 
-        // generate all possible times
-        let allTimes = ['09:00', '09:30'];
-        for (let i = 10; i < 17; i++) {
-            allTimes.push(i + ':' + '00');
-            allTimes.push(i + ':' + '30');
-        }
-
-        // set time bounds
-        // (min = date at 9AM, max = date at 5PM)
-        const minTime = date.clone().set({ hour: 9, minute: 0, second: 0 });
-        const maxTime = date.clone().set({ hour: 17, minute: 0, second: 0 });
-
-        //get all free Appos
-        const freeApps = await FreeAppointments.findAll({
-            where: {
-                doctorId,
-                start: {
-                    [Op.between]: [minTime.unix(), maxTime.unix()],
-                },
-            },
-        });
-
-        // delete busy times
-        this.parseApposAndDeleteTimes(freeApps, allTimes);
-
-        //get all conf appos
-        const confApps = await ConfirmedAppointments.findAll({
-            where: {
-                doctorId,
-                start: {
-                    [Op.between]: [minTime.unix(), maxTime.unix()],
-                },
-            },
-        });
-
-        // delete busy times
-        this.parseApposAndDeleteTimes(confApps, allTimes);
-
-        console.log(allTimes);
-        return allTimes;
+    // generate all possible times
+    let allTimes = ['09:00', '09:30'];
+    for (let i = 10; i < 17; i++) {
+      allTimes.push(i + ':' + '00');
+      allTimes.push(i + ':' + '30');
     }
+
+    // set time bounds
+    // (min = date at 9AM, max = date at 5PM)
+    const minTime = date.clone().set({ hour: 9, minute: 0, second: 0 });
+    const maxTime = date.clone().set({ hour: 17, minute: 0, second: 0 });
+
+    //get all free Appos
+    const freeApps = await FreeAppointments.findAll({
+      where: {
+        doctorId,
+        start: {
+          [Op.between]: [minTime.unix(), maxTime.unix()],
+        },
+      },
+    });
+
+    // delete busy times
+    this.parseApposAndDeleteTimes(freeApps, allTimes);
+
+    //get all conf appos
+    const confApps = await ConfirmedAppointments.findAll({
+      where: {
+        doctorId,
+        start: {
+          [Op.between]: [minTime.unix(), maxTime.unix()],
+        },
+      },
+    });
+
+    // delete busy times
+    this.parseApposAndDeleteTimes(confApps, allTimes);
+
+    console.log(allTimes);
+    return allTimes;
+  }
 
     public parseApposAndDeleteTimes(appos: any, times: any): any {
         for (let app of appos) {
