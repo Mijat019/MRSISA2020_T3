@@ -38,12 +38,18 @@ class LeaveRequestsService {
 
   public async approve(id: number): Promise<any> {
     let leaveReq = await LeaveRequests.findByPk(id);
+    if (leaveReq!.status !== "Pending") {
+      throw new Error("This leave request was already " + leaveReq!.status);
+    }
     leaveReq!.status = "Approved";
     leaveReq?.save();
   }
 
   public async deny(id: number, reason: string): Promise<any> {
     let leaveReq = await LeaveRequests.findByPk(id);
+    if (leaveReq!.status !== "Pending") {
+      throw new Error("This leave request was already " + leaveReq!.status);
+    }
     leaveReq!.status = "Denied";
     leaveReq!.reason = reason;
     leaveReq?.save();
