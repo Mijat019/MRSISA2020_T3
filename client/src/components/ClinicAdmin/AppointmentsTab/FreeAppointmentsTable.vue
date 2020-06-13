@@ -21,7 +21,7 @@
     <v-card-text>
       <v-data-table
         :headers="headers"
-        :items="getFreeAppointments"
+        :items="getFreeApposForSelectedDoctor"
         :search="search"
       >
         <template v-slot:top>
@@ -51,7 +51,11 @@ export default {
   data: () => ({
     search: '',
     headers: [
-      { text: 'Appointment type', value: 'priceList.appointmentType.name',align: 'center' },
+      {
+        text: 'Appointment type',
+        value: 'priceList.appointmentType.name',
+        align: 'center',
+      },
       { text: 'Doctor', value: 'doctor', align: 'center' },
       { text: 'Room', value: 'room.name', align: 'center' },
       { text: 'Scheduled time', value: 'start', align: 'center' },
@@ -87,8 +91,14 @@ export default {
     ...mapGetters({
       getDoctors: 'doctors/getDoctors',
       getFreeAppointments: 'freeAppointments/getFreeAppointments',
-      user: "authentication/getUser"
+      user: 'authentication/getUser',
     }),
+
+    getFreeApposForSelectedDoctor() {
+      return this.getFreeAppointments.filter(
+        appo => appo.doctorId == this.doctor?.user.id
+      );
+    },
   },
 
   watch: {
