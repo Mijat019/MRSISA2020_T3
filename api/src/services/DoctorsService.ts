@@ -13,6 +13,7 @@ import { Op } from 'sequelize';
 import DoctorRating from '../models/DoctorRating';
 import sequelize from 'sequelize';
 import Operations from '../models/Operations';
+import LeaveRequests from '../models/LeaveRequests';
 import OperationAttendances from '../models/OperationAttendances';
 
 class DoctorsService {
@@ -206,6 +207,11 @@ class DoctorsService {
     await Users.destroy({ where: { id: doctorId } });
   }
 
+  /**
+   * Returns a list of available doctors for a given time
+   * @param clinicId
+   * @param start
+   */
   public async getAvailableDoctors(clinicId: string, start: string) {
     const doctorsWithFreeAppos = await FreeAppointments.findAll({
       attributes: ['doctorId'],
@@ -227,6 +233,28 @@ class DoctorsService {
     });
     busyDoctorIds = busyDoctorIds.concat(
       doctorsWithOperations.map((t) => t.doctorId)
+    );
+
+    const doctorsWithLeave = await LeaveRequests.findAll({
+      attributes: ['userId'],
+      where: { clinicId, from: { [Op.lt]: start }, end: { [Op.gt]: start } },
+    });
+    busyDoctorIds = busyDoctorIds.concat(doctorsWithLeave.map((t) => t.userId));
+
+    const doctorsWithAttendance: any = await OperationAttendances.findAll({
+      attributes: ['id'],
+      include: [
+        {
+          model: Operations,
+          as: 'operation',
+          attributes: ['doctorId'],
+          where: { start, clinicId },
+          required: true,
+        },
+      ],
+    });
+    busyDoctorIds = busyDoctorIds.concat(
+      doctorsWithAttendance.map((t: any) => t.operation.doctorId)
     );
 
     const availableDoctors = DoctorAt.findAll({
