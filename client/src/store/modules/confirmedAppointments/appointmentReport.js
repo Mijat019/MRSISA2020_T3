@@ -1,12 +1,20 @@
 import Vue from 'vue';
 
-const state = {
-  showComponent: 'nextAppointment',
-  nextAppointment: null,
-  patientReports: [],
-};
+const getInitialState = () => {
+  return {
+    showComponent: 'nextAppointment',
+    nextAppointment: null,
+    patientReports: []
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   setShowComponent(state, component) {
     state.showComponent = component;
   },

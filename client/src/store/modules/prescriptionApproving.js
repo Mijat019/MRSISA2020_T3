@@ -1,10 +1,18 @@
 import Vue from 'vue';
 
-const state = {
-  reportsWithPrescriptions: [],
-};
+const getInitialState = () => {
+  return {
+    reportsWithPrescriptions: [],
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   setReports(state, reports) {
     state.reportsWithPrescriptions = reports;
   },

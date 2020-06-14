@@ -1,10 +1,18 @@
 import Vue from "vue";
 
-const state = {
-  user: null,
-};
+const getInitialState = () => {
+  return {
+    user: null,
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   async setUser(state, data) {
     state.user = data;
   }

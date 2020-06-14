@@ -1,11 +1,19 @@
 import Vue from 'vue';
 
-const state = {
-  clinicRating: null,
-  alreadyRated: {},
-};
+const getInitialState = () => {
+  return {
+    clinicRating: null,
+    alreadyRated: {},
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   setClinicRating(state, clinicRating) {
     state.clinicRating = clinicRating;
   },

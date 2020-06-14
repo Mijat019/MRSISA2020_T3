@@ -1,8 +1,17 @@
-const state = {
-  prescriptions: [],
-};
+
+const getInitialState = () => {
+  return {
+    prescriptions: [],
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   addPrescription(state, prescription) {
     state.prescriptions.push(prescription);
   },

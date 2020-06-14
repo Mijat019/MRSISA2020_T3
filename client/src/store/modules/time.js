@@ -1,7 +1,17 @@
-const state = {};
-
-const mutations = {};
-
+const getInitialState = () => {
+    return {
+      
+    }
+  }
+  
+  const state = getInitialState();
+  
+  const mutations = {
+    resetState(state) {
+      state = getInitialState();
+    },
+}
+  
 const actions = {};
 
 const getters = {

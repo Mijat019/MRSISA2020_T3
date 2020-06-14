@@ -1,11 +1,19 @@
 import Vue from 'vue';
 import moment from 'moment';
 
-const state = {
-  operationRequests: [],
-};
+const getInitialState = () => {
+  return {
+    operationRequests: [],
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   setOperationRequests(state, operationRequests) {
     state.operationRequests = operationRequests;
   },

@@ -1,13 +1,22 @@
-const state = {
-  dialogDiagnosis: {
-    id: "",
-    name: "",
-  },
-  showDialog: false,
-  dialogType: "add",
-};
+
+const getInitialState = () => {
+  return {
+    dialogDiagnosis: {
+      id: "",
+      name: "",
+    },
+    showDialog: false,
+    dialogType: "add",
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   openAddDialog(state) {
     state.dialogDiagnosis = {
       name: "",

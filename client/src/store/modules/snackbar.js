@@ -1,10 +1,18 @@
-const state = {
-  text: "",
-  snackbar: false,
-  color: ""
-};
+const getInitialState = () => {
+  return {
+    text: "",
+    snackbar: false,
+    color: ""
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   showSnackbar(state, data) {
     state.text = data.text;
     state.snackbar = true;

@@ -2,11 +2,19 @@ import Vue from 'vue';
 import jwt from 'jsonwebtoken';
 import router from '../../router/router';
 
-const state = {
-  user: null,
-};
+const getInitialState = () => {
+  return {
+    user: null,
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   async logUser(state, data) {
     state.user = await jwt.decode(data.token);
     localStorage.setItem('token', data.token);

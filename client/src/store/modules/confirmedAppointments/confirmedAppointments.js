@@ -3,11 +3,19 @@ import calendar from './calendar';
 import appointmentReport from './appointmentReport';
 import moment from 'moment';
 
-const state = {
-  confirmedAppointments: [],
-};
+const getInitialState = () => {
+  return {
+    confirmedAppointments: [],
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   setConfirmedAppointments(state, confirmedAppointments) {
     state.confirmedAppointments = confirmedAppointments;
   },

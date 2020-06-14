@@ -1,12 +1,20 @@
-const state = {
-  dialogRoom: {
-    name: "",
-  },
-  showDialog: false,
-  dialogType: "add",
-};
+const getInitialState = () => {
+  return {
+    dialogRoom: {
+      name: "",
+    },
+    showDialog: false,
+    dialogType: "add",
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   openAddDialog(state) {
     state.dialogRoom = {
       name: "",

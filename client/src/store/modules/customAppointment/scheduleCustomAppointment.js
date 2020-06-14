@@ -1,10 +1,17 @@
 import Vue from 'vue';
 
-const state = {
-  appointmentRequests: [],
-};
+const getInitialState = () => {
+  return {
+    appointmentRequests: []
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
   setAppointmentRequests(state, requests) {
     state.appointmentRequests = requests;
   },

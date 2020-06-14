@@ -1,12 +1,20 @@
 import Vue from "vue";
 
-const state = {
-  clinicAdmins: [],
-  doctors: [],
-  myClinic: null
-};
+const getInitialState = () => {
+  return {
+    clinicAdmins: [],
+    doctors: [],
+    myClinic: null
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   setClinicAdmins(state, clinicAdmins) {
     state.clinicAdmins = clinicAdmins;
   },

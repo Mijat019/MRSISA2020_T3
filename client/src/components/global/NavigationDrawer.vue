@@ -133,10 +133,11 @@ export default {
 
   methods: {
     ...mapActions('authentication', { logout: 'logout' }),
-
+    ...mapActions({ resetStore: 'resetStore' }),
     onLogout() {
       this.logout();
       this.$router.push('/');
+      this.resetStore();
     },
   },
 
