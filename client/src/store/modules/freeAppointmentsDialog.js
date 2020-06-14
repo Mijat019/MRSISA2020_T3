@@ -1,10 +1,13 @@
+import moment from 'moment'
+
 const state = {
   dialogAppointment: {
     id: "",
     appointmentTypeId: "",
     doctorId: "",
     roomId: "",
-    start: "",
+    date: "",
+    time: "",
     duration: 30,
   },
   showDialog: false,
@@ -18,7 +21,8 @@ const mutations = {
       appointmentTypeId: "",
       doctorId: "",
       roomId: "",
-      start: "",
+      date: "",
+      time: "",
       duration: 30,
     };
     state.showDialog = true;

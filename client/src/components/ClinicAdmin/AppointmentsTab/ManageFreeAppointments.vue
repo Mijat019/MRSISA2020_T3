@@ -43,7 +43,7 @@ export default {
     editItem({ appointment }) {
       this.showEditDialog({
         id: appointment.id,
-        start: moment.unix(appointment.start).toISOString(),
+        start: appointment.start,
         duration: appointment.duration,
         roomId: appointment.roomId,
         appointmentTypeId: appointment.priceList.appointmentTypeId,

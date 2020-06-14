@@ -14,6 +14,8 @@ import config from '../config';
 import { request } from 'http';
 import scheduler from 'node-schedule';
 import sequelize from './../models/database';
+import DoctorsService from './DoctorsService';
+import moment from 'moment';
 
 class AppointmentRequestsService {
   private include = [
@@ -43,9 +45,13 @@ class AppointmentRequestsService {
     },
   ];
 
-  // private automaticScheduler = scheduler.scheduleJob({ second: 0 }, () => {
-  //   this.automaticResponse();
-  // });
+  // run at 4am when nobody is working
+  private automaticScheduler = scheduler.scheduleJob(
+    { second: 0, minute: 0, hour: 4 },
+    () => {
+      this.automaticResponse();
+    }
+  );
 
   public async getAll(): Promise<any> {
     const appointmentRequest = await AppointmentRequests.findAll({});
@@ -65,46 +71,36 @@ class AppointmentRequestsService {
     const { id } = requestPayload;
     delete requestPayload.id;
 
-    // check if there are conflicts
-    // with existing appos
-
-    return sequelize
-      .transaction((t) => {
-        // add requested appo to confirmed
-        return ConfirmedAppointments.create(requestPayload, {
+    try {
+      return sequelize.transaction(async (t) => {
+        await ConfirmedAppointments.create(requestPayload, {
           transaction: t,
-        }).then((appo) => {
-          return AppointmentRequests.destroy({
-            where: { id: id },
-            transaction: t,
-          });
         });
-      })
-      .then((result) => {
-        // Transaction has been committed
+        const result = await AppointmentRequests.destroy({
+          where: { id: id },
+          transaction: t,
+        });
 
-        // if deleted 0 rows it means that 
+        // if deleted 0 rows it means that
         // request has already been approved or denied
-        if (result == 0){
-          throw new Error(); 
-        }
+        if (result == 0) throw new Error('Requested already approved or rejected by another admin!');
 
         // now send mail to notify
-        EmailService.sendAppointmentRequestAcceptedMail(requestPayload);
-      })
-      .catch((err) => {
-        console.log(err);
-        // Transaction has been rolled back
-        // err is whatever rejected the promise chain returned to the transaction callback
-        throw new Error("Requested already approved or rejected by another admin!")
+        await EmailService.sendAppointmentRequestAcceptedMail(requestPayload);
       });
+    } catch (error) {
+      // notify user of error and rollback
+      throw new Error(error);
+    }
   }
 
   public async reject(requestPayload: any): Promise<any> {
     // delete from requests since it's rejected
     const result = await this.delete(requestPayload.id);
-    if(result == 0)
-      throw new Error("Requested already approved or rejected by another admin!")
+    if (result == 0)
+      throw new Error(
+        'Requested already approved or rejected by another admin!'
+      );
 
     console.log(requestPayload.start);
 
@@ -126,7 +122,6 @@ class AppointmentRequestsService {
 
   /** Automatically responds to appointment requests */
   public async automaticResponse(): Promise<any> {
-    // return;
     const now = Date.now();
     const day_length = 24 * 60 * 60 * 1000; // 24 hours in miliseconds
 
@@ -142,8 +137,13 @@ class AppointmentRequestsService {
 
     for (const request of appointmentRequests) {
       const doctor = await DoctorAt.findByPk(request.doctorId);
+      let date = moment(request.start).format('YYYY-MM-DD');
       if (doctor == null) return;
       const clinicId = doctor.clinicId;
+      const doctorAvailableTimes = await DoctorsService.getAvailableTimes(
+        request.doctorId,
+        request.start
+      );
       const roomsForClinic = await RoomsService.getAllForClinic(clinicId);
 
       const confirmedReq = {
@@ -160,13 +160,39 @@ class AppointmentRequestsService {
       //check for every room if it is available at that time
       for (const room of roomsForClinic) {
         confirmedReq.roomId = room.id;
+
+        // try to schedule it with user's start time
         try {
           await ConfirmedAppointmentService.add(confirmedReq);
+          await EmailService.automaticResponseAccept(confirmedReq);
           await this.delete(request.id);
           success = true;
           break;
         } catch {
-          console.log('Room :' + room.id + ' is occupied');
+          // error means room or doctor is occupied
+          // so find time when both room and doctor are free
+          const roomAvailableTimes = await RoomsService.getAvailableTimes(
+            room.id,
+            request.start
+          );
+          const intersection = roomAvailableTimes.filter(
+            (value) => doctorAvailableTimes.indexOf(value) > 0
+          );
+
+          if (intersection.length > 0) {
+            // set hours of new start of appo
+            date = date + ' ' + intersection[0];
+            confirmedReq.start = moment(date, 'YYYY-MM-DD HH:mm').unix();
+            // try to schedule it now
+            try {
+              await ConfirmedAppointmentService.add(confirmedReq);
+              // EmailService.sendAppointmentRequestAcceptedMail(request);
+              await EmailService.automaticResponseAccept(confirmedReq);
+              await this.delete(request.id);
+              success = true;
+              break;
+            } catch {}
+          }
         }
       }
 
@@ -187,7 +213,8 @@ class AppointmentRequestsService {
 
   public async update(id: number, requestPayload: any): Promise<any> {
     const { version } = (await AppointmentRequests.findByPk(id)) as any;
-    if (version > requestPayload.version) throw new Error('Optimistic Lock error');
+    if (version > requestPayload.version)
+      throw new Error('Optimistic Lock error');
 
     requestPayload.version += 1;
     await AppointmentRequests.upsert(requestPayload);

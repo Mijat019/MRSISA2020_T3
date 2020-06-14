@@ -126,6 +126,7 @@ const actions = {
                 }
             );
         } catch (error) {
+            commit("removeAppointment", appoId);
             dispatch("snackbar/showError", error.response.data, { root: true });
         }
     },
