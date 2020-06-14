@@ -1,5 +1,3 @@
-import config from '../config';
-import bcrypt from 'bcrypt';
 import LeaveRequests from '../models/LeaveRequests';
 import DoctorAt from '../models/DoctorAt';
 import Users from '../models/Users';

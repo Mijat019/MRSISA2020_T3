@@ -1,10 +1,9 @@
-import { Model, INTEGER, DOUBLE, STRING, DATE, Op } from "sequelize";
-import db from "./database";
-import Users from "./Users";
-import DoctorAt from "./DoctorAt";
-import Clinics from "./Clinics";
-import PriceLists from "./PriceLists";
-import PatientMedicalRecord from "./PatientMedicalRecord";
+import { Model, INTEGER, DATE } from 'sequelize';
+import db from './database';
+import DoctorAt from './DoctorAt';
+import Clinics from './Clinics';
+import PriceLists from './PriceLists';
+import PatientMedicalRecord from './PatientMedicalRecord';
 
 class AppointmentRequests extends Model {
   public id!: number;
@@ -62,11 +61,11 @@ AppointmentRequests.init(
     createdAt: {
       type: DATE,
       allowNull: false,
-    }
+    },
   },
   {
     timestamps: false,
-    tableName: "appointment_requests",
+    tableName: 'appointment_requests',
     sequelize: db,
     version: true,
     indexes: [
@@ -77,20 +76,20 @@ AppointmentRequests.init(
 );
 
 AppointmentRequests.belongsTo(PatientMedicalRecord, {
-  as: "patientMedicalRecord",
-  foreignKey: "patientMedicalRecordId",
+  as: 'patientMedicalRecord',
+  foreignKey: 'patientMedicalRecordId',
 });
 AppointmentRequests.belongsTo(DoctorAt, {
-  as: "doctor",
-  foreignKey: "doctorId",
+  as: 'doctor',
+  foreignKey: 'doctorId',
 });
 AppointmentRequests.belongsTo(PriceLists, {
-  as: "priceList",
-  foreignKey: "priceListId",
+  as: 'priceList',
+  foreignKey: 'priceListId',
 });
 AppointmentRequests.belongsTo(Clinics, {
-  as: "clinic",
-  foreignKey: "clinicId",
+  as: 'clinic',
+  foreignKey: 'clinicId',
 });
 
 export default AppointmentRequests;

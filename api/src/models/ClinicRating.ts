@@ -2,7 +2,6 @@ import db from './database';
 import { Model, INTEGER, DOUBLE, STRING } from 'sequelize';
 import Users from './Users';
 import Clinics from './Clinics';
-import { number } from 'joi';
 
 class ClinicRating extends Model {
   public id!: number;

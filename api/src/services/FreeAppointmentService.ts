@@ -3,7 +3,6 @@ import Rooms from '../models/Rooms';
 import Users, { usersSelect } from '../models/Users';
 import AppointmentTypes from '../models/AppointmentTypes';
 import FreeAppointments from '../models/FreeAppointments';
-import ConfirmedAppointments from '../models/ConfirmedAppointments';
 import ConfirmedAppointmentService from './ConfirmedAppointmentService';
 import PriceLists from '../models/PriceLists';
 import { IncludeOptions } from 'sequelize/types';

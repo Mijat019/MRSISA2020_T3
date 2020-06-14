@@ -1,9 +1,6 @@
-import { INTEGER, STRING, Model, Association } from "sequelize";
-import db from "./database";
-import Clinics from "./Clinics";
-import FreeAppointments from './FreeAppointments'
-import ConfirmedAppointments from "./ConfirmedAppointments";
-import Operations from "./Operations";
+import { INTEGER, STRING, Model, Association } from 'sequelize';
+import db from './database';
+import Clinics from './Clinics';
 
 class Rooms extends Model {
   public id!: number;
@@ -31,11 +28,11 @@ Rooms.init(
   {
     timestamps: false,
     sequelize: db,
-    tableName: "rooms",
+    tableName: 'rooms',
     version: true,
   }
 );
 
-Rooms.belongsTo(Clinics, { as: "clinic", foreignKey: "clinicId" });
+Rooms.belongsTo(Clinics, { as: 'clinic', foreignKey: 'clinicId' });
 
 export default Rooms;
