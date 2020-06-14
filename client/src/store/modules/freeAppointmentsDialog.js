@@ -4,7 +4,8 @@ const state = {
     appointmentTypeId: "",
     doctorId: "",
     roomId: "",
-    start: "",
+    date: "",
+    time: "",
     duration: 30,
   },
   showDialog: false,
@@ -18,7 +19,8 @@ const mutations = {
       appointmentTypeId: "",
       doctorId: "",
       roomId: "",
-      start: "",
+      date: "",
+      time: "",
       duration: 30,
     };
     state.showDialog = true;

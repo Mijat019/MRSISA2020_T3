@@ -1,13 +1,5 @@
 <template>
   <v-container>
-    <!-- Appointment type: {{ dialogAppo.priceList.appointmentType.name }}
-    <br />
-    Doctor: {{ dialogAppo.doctor.user.firstName }}
-    {{ dialogAppo.doctor.user.lastName }}
-    <br />
-    Room: {{ dialogAppo.room.name }}
-    <br />
-    Time: {{ appointmentTime }} -->
     <v-row class=" headline font-weight-bold px-3 py-3 black--text">
       Appointment Summary:
     </v-row>
