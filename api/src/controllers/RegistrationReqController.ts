@@ -17,7 +17,7 @@ class RegistrationReqController {
       await RegistrationReqService.register(user);
       res.send("Registration was successful");
     } catch (error) {
-      res.status(400).send(error);
+      res.status(400).send(error.message);
     }
   }
 
@@ -27,7 +27,7 @@ class RegistrationReqController {
       await RegistrationReqService.approveRegistration(email);
       res.send("Approval successful");
     } catch (error) {
-      res.status(400).send(error);
+      res.status(400).send(error.message);
     }
   }
 
@@ -38,7 +38,7 @@ class RegistrationReqController {
       await RegistrationReqService.rejectRegistration(email, reason);
       res.send("Rejection successful");
     } catch (error) {
-      res.status(400).send(error);
+      res.status(400).send(error.message);
     }
   }
 

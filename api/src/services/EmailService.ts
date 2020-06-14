@@ -5,8 +5,8 @@ import moment from 'moment';
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: config.mail,
-    pass: config.password,
+    user: "covid19.clinic.llc@gmail.com",
+    pass: "M33y4tsuX!",
   },
 });
 
@@ -58,10 +58,10 @@ class EmailService {
     console.log(text);
 
     // Send email to doctor
-    text = `Dear Dr. ${doctor.firstName + ' ' +  doctor.lastName},\n
+    text = `Dear Dr. ${doctor.firstName + ' ' + doctor.lastName},\n
     you have a new confirmed appointment.\n
     Appointment type: ${appointment.priceList.appointmentType.name}\n
-    Patient: ${patient.firstName  + ' ' + patient.lastName}
+    Patient: ${patient.firstName + ' ' + patient.lastName}
     Date: ${moment.unix(appointment.start).format('YYYY-MM-DD HH:mm')}`;
     subject = 'New confirmed appointment';
     await this.send({
@@ -71,6 +71,46 @@ class EmailService {
       subject,
     });
     console.log(text);
+  }
+
+  public async sendAccountConfirmationMail(req: any, email: string) {
+    let emailText = `Dear ${
+      req.firstName + ' ' + req.lastName
+    },\n\nYour Covid clinic account has been approved!\nYou have 24h to activate it: http://localhost:4200/patients/activate/${email}`;
+    await this.send({
+      from: config.mail,
+      to: email,
+      subject: 'Covid Clinic Registration',
+      text: emailText,
+    });
+    console.log(emailText);
+  }
+
+  public async sendAccountRejectionMail(req: any, email: string, reason: any) {
+    //now send notification email
+    let emailText = `Dear ${
+      req.firstName + ' ' + req.lastName
+    },\n\nYour request to register to covid clinic has been rejected.\nReason: ${reason}.`;
+    await this.send({
+      from: config.mail,
+      to: email,
+      subject: 'Covid Clinic Registration',
+      text: emailText,
+    });
+    console.log(emailText);
+  }
+
+  public async sendAccountActivationMail(req: any, email: string) {
+    let emailText = `Dear ${
+      req.firstName + ' ' + req.lastName
+    },\n\nYour Covid clinic account has been activated!`;
+    await this.send({
+      from: config.mail,
+      to: email,
+      subject: 'Covid Clinic Registration',
+      text: emailText,
+    });
+    console.log(emailText);
   }
 
   // mailOption is an object
