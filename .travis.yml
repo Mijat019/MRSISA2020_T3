@@ -2,8 +2,14 @@ language: node_js
 node_js:
     - 12
 
+addons:
+    sonarcloud:
+        organization: "mijat019"
+        token: $SONAR_TOKEN
+
 script:
     - npm run build
+    - sonar-scanner
 
 deploy:
     provider: heroku
