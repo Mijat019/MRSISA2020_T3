@@ -22,7 +22,7 @@ class RoomsService {
       attributes: ['roomId'],
       where: { clinicId, start },
     });
-    let occupiedIds = occupiedRooms.map((app) => app.roomId);
+    let occupiedIds = occupiedRooms.map((app: any) => app.roomId);
 
     // now do the same for conf appos
     const occupiedRoomsConf = await ConfirmedAppointments.findAll({
@@ -30,7 +30,7 @@ class RoomsService {
       where: { clinicId, start },
     });
     occupiedIds = occupiedIds.concat(
-      occupiedRoomsConf.map((app) => app.roomId)
+      occupiedRoomsConf.map((app: any) => app.roomId)
     );
 
     const occupiedRoomsOperations = await Operations.findAll({
@@ -38,7 +38,7 @@ class RoomsService {
       where: { clinicId, start },
     });
     occupiedIds = occupiedIds.concat(
-      occupiedRoomsOperations.map((op) => op.roomId)
+      occupiedRoomsOperations.map((op: any) => op.roomId)
     );
 
     // return all clinic rooms minus those who are occupied

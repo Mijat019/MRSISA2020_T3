@@ -7,7 +7,10 @@ class RatingService {
     const size = allRatings.length;
 
     // sum up all avg ratings
-    const total = allRatings.reduce((a, b) => +a + +b.averageRating, 0);
+    const total = allRatings.reduce(
+      (a: any, b: any) => +a + +b.averageRating,
+      0
+    );
     return total / size;
   }
 
@@ -16,7 +19,10 @@ class RatingService {
     const size = allRatings.length;
 
     // sum up all avg ratings
-    const total = allRatings.reduce((a, b) => +a + +b.averageRating, 0);
+    const total = allRatings.reduce(
+      (a: any, b: any) => +a + +b.averageRating,
+      0
+    );
     return total / size;
   }
 
