@@ -1,10 +1,18 @@
 import Vue from "vue";
 
-const state = {
-  nurses: [],
-};
+const getInitialState = () => {
+  return {
+    nurses: [],
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   setNurses(state, nurses) {
     state.nurses = nurses;
   },

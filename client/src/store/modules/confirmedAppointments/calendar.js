@@ -1,10 +1,17 @@
 import moment from 'moment';
 
-const state = {
-  events: [],
-};
+const getInitialState = () => {
+  return {
+    events: []
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
   addEvent(state, event) {
     state.events.push(event);
   },

@@ -1,10 +1,18 @@
 import Vue from "vue";
 
-const state = {
-  requests: []
-};
+const getInitialState = () => {
+  return {
+    requests: []
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   setRequests(state, requests) {
     state.requests = requests;
   },

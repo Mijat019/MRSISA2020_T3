@@ -99,7 +99,7 @@ ConfirmedAppointments.belongsTo(PatientMedicalRecord, {
 });
 
 ConfirmedAppointments.belongsTo(Rooms, { as: 'room', foreignKey: 'roomId' });
-// Rooms.hasMany(ConfirmedAppointments);
+Rooms.hasMany(ConfirmedAppointments, { as: 'confirmedAppointments', foreignKey: 'roomId' });
 
 ConfirmedAppointments.belongsTo(DoctorAt, {
   as: 'doctor',

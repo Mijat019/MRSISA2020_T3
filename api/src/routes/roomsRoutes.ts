@@ -11,6 +11,7 @@ router.get("/:id", RoomsController.getAllForClinic);
 
 router.post("/available", RoomsController.getAvailableForClinic);
 router.post("/availableTimes", RoomsController.getAvailableTimes);
+router.get("/occupancy/:id", RoomsController.getOccupancies);
 
 router.post(
   "/",

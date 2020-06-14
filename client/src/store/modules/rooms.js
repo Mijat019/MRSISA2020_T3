@@ -1,12 +1,19 @@
 import Vue from 'vue';
+const getInitialState = () => {
+  return {
+    rooms: [],
+    availableRooms: [],
+    availableTimes: [],
+  }
+}
 
-const state = {
-  rooms: [],
-  availableRooms: [],
-  availableTimes: [],
-};
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   setRooms(state, rooms) {
     state.rooms = rooms;
   },

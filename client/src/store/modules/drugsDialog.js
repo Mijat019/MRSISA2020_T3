@@ -1,14 +1,23 @@
-const state = {
-  dialogDrug: {
-    id: "",
-    name: "",
-    price: "",
-  },
-  showDialog: false,
-  dialogType: "add",
-};
+
+const getInitialState = () => {
+  return {
+    dialogDrug: {
+      id: "",
+      name: "",
+      price: "",
+    },
+    showDialog: false,
+    dialogType: "add",
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   openAddDialog(state) {
     state.dialogDrug = {
       name: "",

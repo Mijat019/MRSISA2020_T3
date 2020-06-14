@@ -1,10 +1,18 @@
 import Vue from "vue";
 
-const state = {
-  specTypes: [],
-};
+const getInitialState = () => {
+  return {
+    specTypes: [],
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   setSpecTypes(state, specTypes) {
     state.specTypes = specTypes;
   },

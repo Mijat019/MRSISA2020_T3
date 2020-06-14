@@ -107,7 +107,6 @@ export default {
       city: this.myClinic.city,
       country: this.myClinic.country,
     };
-    console.log(this.location);
   },
 
   computed: {

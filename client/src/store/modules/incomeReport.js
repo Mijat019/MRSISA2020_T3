@@ -1,10 +1,18 @@
 import Vue from 'vue';
 
-const state = {
-  income: null,
-};
+const getInitialState = () => {
+  return {
+    income: null,
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   async setIncome(state, data) {
     state.income = data;
   },

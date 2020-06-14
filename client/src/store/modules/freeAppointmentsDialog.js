@@ -1,20 +1,27 @@
-import moment from 'moment'
 
-const state = {
-  dialogAppointment: {
-    id: "",
-    appointmentTypeId: "",
-    doctorId: "",
-    roomId: "",
-    date: "",
-    time: "",
-    duration: 30,
-  },
-  showDialog: false,
-  dialogType: "add",
-};
+const getInitialState = () => {
+  return {
+    dialogAppointment: {
+      id: "",
+      appointmentTypeId: "",
+      doctorId: "",
+      roomId: "",
+      date: "",
+      time: "",
+      duration: 30,
+    },
+    showDialog: false,
+    dialogType: "add",
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   openAddDialog(state) {
     state.dialogAppointment = {
       id: "",

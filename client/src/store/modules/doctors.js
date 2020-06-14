@@ -1,12 +1,20 @@
 import Vue from 'vue';
 
-const state = {
-  doctors: [],
-  availableDoctors: [],
-  availableTimes: [],
-};
+const getInitialState = () => {
+  return {
+    doctors: [],
+    availableDoctors: [],
+    availableTimes: []
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   setDoctors(state, doctors) {
     doctors.map(doctor => {
       doctor.fullName = doctor.user.firstName + ' ' + doctor.user.lastName;

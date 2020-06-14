@@ -36,6 +36,7 @@ import prescriptionApproving from './modules/prescriptionApproving';
 import operationRequests from './modules/operationRequests';
 import operations from './modules/operations';
 import incomeReport from './modules/incomeReport';
+import roomOccupancyDialog from "./modules/roomOccupancyDialog";
 
 Vue.use(Vuex);
 
@@ -44,42 +45,52 @@ const vuexPersist = new VuexPersist({
   storage: window.localStorage,
 });
 
+const modules = {
+  authentication,
+  profile,
+  patients,
+  clinics,
+  doctors,
+  doctorSpec,
+  clinicAdmins,
+  nurses,
+  rooms,
+  roomsDialog,
+  snackbar,
+  patientRequests,
+  freeAppointments,
+  freeAppointmentsDialog,
+  appointmentTypes,
+  appointmentTypesDialog,
+  drugs,
+  drugsDialog,
+  diagnosis,
+  diagnosisDialog,
+  clinicCenterAdmins,
+  priceLists,
+  confirmedAppointments,
+  scheduleCustomAppointment,
+  scheduleCustomAppointmentDialog,
+  prescriptions,
+  time,
+  leaveRequests,
+  ratings,
+  appointmentReport,
+  prescriptionApproving,
+  operationRequests,
+  operations,
+  incomeReport,
+  roomOccupancyDialog,
+};
+
 export default new Vuex.Store({
   plugins: [vuexPersist.plugin],
-  modules: {
-    authentication,
-    profile,
-    patients,
-    clinics,
-    doctors,
-    doctorSpec,
-    clinicAdmins,
-    nurses,
-    rooms,
-    roomsDialog,
-    snackbar,
-    patientRequests,
-    freeAppointments,
-    freeAppointmentsDialog,
-    appointmentTypes,
-    appointmentTypesDialog,
-    drugs,
-    drugsDialog,
-    diagnosis,
-    diagnosisDialog,
-    clinicCenterAdmins,
-    priceLists,
-    confirmedAppointments,
-    scheduleCustomAppointment,
-    scheduleCustomAppointmentDialog,
-    prescriptions,
-    time,
-    leaveRequests,
-    ratings,
-    appointmentReport,
-    prescriptionApproving,
-    operationRequests,
-    operations,
-    incomeReport,
-  },
+  modules,
+  actions: {
+    resetStore({ commit }) {
+      for(let module in modules) {
+        commit(`${module}/resetState`);
+      }
+    }
+  }
 });

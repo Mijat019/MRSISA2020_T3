@@ -1,10 +1,18 @@
 import Vue from "vue";
 
-const state = {
-    appointmentTypes: [],
-};
-
-const mutations = {
+const getInitialState = () => {
+    return {
+      appointmentTypes: []
+    }
+  }
+  
+  const state = getInitialState();
+  
+  const mutations = {
+    resetState(state) {
+      state = getInitialState();
+    },
+  
     setAppointmentTypes(state, types) {
         state.appointmentTypes = types;
     },

@@ -1,15 +1,23 @@
-const state = {
-    dialogAppointment: {
-      clinicId: "",
-      priceListId: "",
-      doctorId: "",
-      start : "",
-      duration : '30',
-    },
-    showDialog: false,
-  };
+  const getInitialState = () => {
+    return {
+        dialogAppointment: {
+        clinicId: "",
+        priceListId: "",
+        doctorId: "",
+        start : "",
+        duration : '30',
+      },
+      showDialog: false,
+    }
+  }
+  
+  const state = getInitialState();
   
   const mutations = {
+    resetState(state) {
+      state = getInitialState();
+    },
+    
     // resets all values except clinic
     resetDialogValues(state) {
       state.dialogAppointment = {

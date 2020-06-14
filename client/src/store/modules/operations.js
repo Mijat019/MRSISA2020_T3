@@ -1,11 +1,19 @@
 import Vue from 'vue';
 
-const state = {
-  operations: [],
-  operationAttendances: [],
-};
+const getInitialState = () => {
+  return {
+    operationAttendances: [],
+    operations: [],
+  }
+}
+
+const state = getInitialState();
 
 const mutations = {
+  resetState(state) {
+    state = getInitialState();
+  },
+
   setOperations(state, operations) {
     state.operations = operations;
   },

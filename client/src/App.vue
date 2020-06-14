@@ -23,6 +23,7 @@ export default {
   methods: {
     ...mapActions({ verifyTokenAction: "authentication/verifyTokenAction" }),
   },
+  
   async created() {
     await this.verifyTokenAction();
   },

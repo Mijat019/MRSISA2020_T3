@@ -1,19 +1,27 @@
 import Vue from "vue";
 
-const state = {
-    priceLists: [],
-    priceListsForDoctor: [],
-    dialogPriceList: {
-        clinicId: "",
-        appointmentTypeId: "",
-        price: 0,
-        id: "",
+const getInitialState = () => {
+    return {
+        priceLists: [],
+        priceListsForDoctor: [],
+        dialogPriceList: {
+            clinicId: "",
+            appointmentTypeId: "",
+            price: 0,
+            id: "",
+        },
+        showDialog: false,
+        dialogType: "add",
+    }
+  }
+  
+const state = getInitialState();
+  
+  const mutations = {
+    resetState(state) {
+      state = getInitialState();
     },
-    showDialog: false,
-    dialogType: "add",
-};
-
-const mutations = {
+  
     setPriceLists(state, prices) {
         state.priceLists = prices;
     },
