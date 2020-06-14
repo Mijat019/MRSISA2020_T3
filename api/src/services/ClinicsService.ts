@@ -1,13 +1,8 @@
 import Clinics, { clinicsSelectForRating } from '../models/Clinics';
-import RatingsService from './RatingsService';
-import AdminOf from '../models/AdminAt';
-import Users from '../models/Users';
 import PriceLists from '../models/PriceLists';
 import ClinicRating from '../models/ClinicRating';
-import sequelize from 'sequelize';
 
 class ClinicsService {
-
   public async getAll(): Promise<any> {
     const clinics: any = await Clinics.findAll({
       group: 'id',
@@ -56,7 +51,7 @@ class ClinicsService {
   public async update(clinicPayload: any): Promise<any> {
     const { version }: any = await Clinics.findByPk(clinicPayload.id);
     if (version != clinicPayload.version) {
-      throw new Error("Optimistic lock error");
+      throw new Error('Optimistic lock error');
     }
 
     clinicPayload.version += 1;

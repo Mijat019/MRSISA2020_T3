@@ -6,7 +6,6 @@ import ConfirmedAppointments from './ConfirmedAppointments';
 import Diagnosis from './Diagnosis';
 import Clinics from './Clinics';
 import Prescription from './Prescriptions';
-import Drugs from './Drugs';
 
 class AppointmentReports extends Model {
   public id!: number;

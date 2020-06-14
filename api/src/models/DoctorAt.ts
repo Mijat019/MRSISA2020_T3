@@ -3,8 +3,6 @@ import { Model, INTEGER } from 'sequelize';
 import Users from './Users';
 import Clinics from './Clinics';
 import DoctorSpec from './DoctorSpec';
-import OperationRequests from './OperationRequests';
-import Operations from './Operations';
 
 class DoctorAt extends Model {
   public userId!: number;

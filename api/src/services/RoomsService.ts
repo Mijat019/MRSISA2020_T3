@@ -1,5 +1,4 @@
 import Rooms from '../models/Rooms';
-import sequelize from './../models/database';
 import FreeAppointments from '../models/FreeAppointments';
 import { Op } from 'sequelize';
 import ConfirmedAppointments from '../models/ConfirmedAppointments';
@@ -16,10 +15,18 @@ class RoomsService {
   public async getOccupancies(roomId: number): Promise<any> {
     const occupancies: any = await Rooms.findByPk(roomId, {
       include: [
-        { model: FreeAppointments, attributes: ['start'], as: 'freeAppointments' },
-        { model: ConfirmedAppointments, attributes: ['start'], as: 'confirmedAppointments' },
+        {
+          model: FreeAppointments,
+          attributes: ['start'],
+          as: 'freeAppointments',
+        },
+        {
+          model: ConfirmedAppointments,
+          attributes: ['start'],
+          as: 'confirmedAppointments',
+        },
         { model: Operations, attributes: ['start'], as: 'operations' },
-      ]
+      ],
     });
 
     return occupancies;

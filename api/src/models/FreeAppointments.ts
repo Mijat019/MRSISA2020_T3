@@ -1,6 +1,5 @@
 import { Model, INTEGER, DATE } from 'sequelize';
 import db from './database';
-import AppointmentTypes from './AppointmentTypes';
 import Rooms from './Rooms';
 import DoctorAt from './DoctorAt';
 import PriceLists from './PriceLists';
@@ -69,7 +68,7 @@ FreeAppointments.init(
     indexes: [
       { unique: true, fields: ['doctorId', 'start'] },
       { unique: true, fields: ['roomId', 'start'] },
-    ]
+    ],
   }
 );
 

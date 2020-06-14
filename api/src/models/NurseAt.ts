@@ -1,7 +1,7 @@
-import db from "./database";
-import { Model, STRING, INTEGER, Association } from "sequelize";
-import Users from "./Users";
-import Clinics from "./Clinics";
+import db from './database';
+import { Model, INTEGER } from 'sequelize';
+import Users from './Users';
+import Clinics from './Clinics';
 
 class NurseAt extends Model {
   public userId!: number;
@@ -25,14 +25,14 @@ NurseAt.init(
     timestamps: false,
     sequelize: db,
     version: true,
-    tableName: "nurse_at",
+    tableName: 'nurse_at',
   }
 );
 
 // one user can have one row in NurseAt table
-NurseAt.belongsTo(Users, { as: "user", foreignKey: "userId" });
+NurseAt.belongsTo(Users, { as: 'user', foreignKey: 'userId' });
 
 // one clinic can have many rows in NurseAt table
-NurseAt.belongsTo(Clinics, { as: "clinic", foreignKey: "clinicId" });
+NurseAt.belongsTo(Clinics, { as: 'clinic', foreignKey: 'clinicId' });
 
 export default NurseAt;

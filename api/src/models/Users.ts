@@ -1,10 +1,7 @@
-import { INTEGER, STRING, Model, Association } from "sequelize";
-import db from "./database";
-import AccountStatus from "./AccountStatus";
-import UserRole from "./UserRole";
-// import AdminOf from "./AdminOf";
-import Clinics from "./Clinics";
-import AdminOf from "./AdminAt";
+import { INTEGER, STRING, Model, Association } from 'sequelize';
+import db from './database';
+import AccountStatus from './AccountStatus';
+import UserRole from './UserRole';
 
 class Users extends Model {
   public id!: number;
@@ -78,7 +75,7 @@ Users.init(
   {
     timestamps: false,
     sequelize: db,
-    tableName: "users",
+    tableName: 'users',
     version: true,
   }
 );
@@ -86,15 +83,15 @@ Users.init(
 export default Users;
 
 export const usersSelect = [
-  "id",
-  "email",
-  "firstName",
-  "lastName",
-  "jmbg",
-  "city",
-  "country",
-  "address",
-  "phoneNumber",
-  "accountStatus",
-  "role",
+  'id',
+  'email',
+  'firstName',
+  'lastName',
+  'jmbg',
+  'city',
+  'country',
+  'address',
+  'phoneNumber',
+  'accountStatus',
+  'role',
 ];
