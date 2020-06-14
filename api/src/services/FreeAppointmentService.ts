@@ -9,6 +9,7 @@ import PriceLists from '../models/PriceLists';
 import { IncludeOptions } from 'sequelize/types';
 import Clinics from '../models/Clinics';
 import sequelize from './../models/database';
+import EmailService from './EmailService';
 
 const include: IncludeOptions[] = [
   { model: Rooms, as: 'room' },
@@ -88,25 +89,33 @@ class FreeAppointmentService {
   }
 
   public async schedule(appoId: number, patientId: number) {
-    // Get free appointment
-    const freeAppo = await FreeAppointments.findByPk(appoId, {
-      include,
-    });
+    try {
+      return sequelize.transaction(async (t) => {
+        // Get free appointment
+        const freeAppo = await FreeAppointments.findByPk(appoId, {
+          include,
+        });
 
-    if (freeAppo == null) throw 'Free appointment ' + appoId + ' not found.';
+        if (!freeAppo)
+          throw new Error('Free appointment ' + appoId + ' not found.');
 
-    // Make confirmed appointment from free
-    const confAppo = await ConfirmedAppointmentService.createFromFree(
-      freeAppo,
-      patientId
-    );
+        // Delete free appointment
+        await FreeAppointments.destroy({ where: { id: freeAppo.id } });
 
-    // Delete free appointment
-    await FreeAppointments.destroy({ where: { id: freeAppo.id } });
+        // Make confirmed appointment from free
+        const confAppo = await ConfirmedAppointmentService.createFromFree(
+          freeAppo,
+          patientId
+        );
+        await EmailService.sendFreeAppoAccept(freeAppo, patientId);
+        return confAppo;
+      });
+    } catch (error) {
+      // notify user of error and rollback
+      throw new Error(error);
+    }
 
-    return confAppo;
   }
-
 }
 
 export default new FreeAppointmentService();

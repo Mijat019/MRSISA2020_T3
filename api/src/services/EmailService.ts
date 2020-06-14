@@ -1,12 +1,13 @@
 import nodemailer from 'nodemailer';
 import config from '../config';
 import moment from 'moment';
+import Users from '../models/Users';
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: "covid19.clinic.llc@gmail.com",
-    pass: "M33y4tsuX!",
+    user: 'covid19.clinic.llc@gmail.com',
+    pass: 'M33y4tsuX!',
   },
 });
 
@@ -43,9 +44,9 @@ class EmailService {
     const patient = appointment.patientMedicalRecord.user;
     const doctor = appointment.doctor.user;
     // first send to patient
-    let text = `Dear ${patient.firstName + ' ' + patient.lastName},\n
+    let text = `Dear ${patient.firstName + ' ' + patient.lastName},
     your appointment request has been approved.\n
-    Appointment type: ${appointment.priceList.appointmentType.name}\n
+    Appointment type: ${appointment.priceList.appointmentType.name}
     Doctor: ${doctor.firstName + ' ' + doctor.lastName}
     Date: ${moment.unix(appointment.start).format('YYYY-MM-DD HH:mm')}`;
     let subject = 'Appointment request';
@@ -58,9 +59,9 @@ class EmailService {
     console.log(text);
 
     // Send email to doctor
-    text = `Dear Dr. ${doctor.firstName + ' ' + doctor.lastName},\n
+    text = `Dear Dr. ${doctor.firstName + ' ' + doctor.lastName},
     you have a new confirmed appointment.\n
-    Appointment type: ${appointment.priceList.appointmentType.name}\n
+    Appointment type: ${appointment.priceList.appointmentType.name}
     Patient: ${patient.firstName + ' ' + patient.lastName}
     Date: ${moment.unix(appointment.start).format('YYYY-MM-DD HH:mm')}`;
     subject = 'New confirmed appointment';
@@ -76,7 +77,7 @@ class EmailService {
   public async sendAccountConfirmationMail(req: any, email: string) {
     let emailText = `Dear ${
       req.firstName + ' ' + req.lastName
-    },\n\nYour Covid clinic account has been approved!\nYou have 24h to activate it: http://localhost:4200/patients/activate/${email}`;
+    },\nYour Covid clinic account has been approved!\nYou have 24h to activate it: http://localhost:4200/patients/activate/${email}`;
     await this.send({
       from: config.mail,
       to: email,
@@ -90,7 +91,7 @@ class EmailService {
     //now send notification email
     let emailText = `Dear ${
       req.firstName + ' ' + req.lastName
-    },\n\nYour request to register to covid clinic has been rejected.\nReason: ${reason}.`;
+    },\nYour request to register to covid clinic has been rejected.\nReason: ${reason}.`;
     await this.send({
       from: config.mail,
       to: email,
@@ -103,7 +104,7 @@ class EmailService {
   public async sendAccountActivationMail(req: any, email: string) {
     let emailText = `Dear ${
       req.firstName + ' ' + req.lastName
-    },\n\nYour Covid clinic account has been activated!`;
+    },\nYour Covid clinic account has been activated!`;
     await this.send({
       from: config.mail,
       to: email,
@@ -111,6 +112,36 @@ class EmailService {
       text: emailText,
     });
     console.log(emailText);
+  }
+
+  public async automaticResponseAccept(req: any) {
+    const user = await Users.findOne({ where: { id: req.patientId } });
+    let text = `Dear ${user?.firstName + ' ' + user?.lastName},
+    your appointment request has been approved.\n
+    Date: ${moment.unix(req.start).format('YYYY-MM-DD HH:mm')}`;
+    let subject = 'Appointment request';
+    await this.send({
+      to: user?.email,
+      from: config.mail,
+      text,
+      subject,
+    });
+    console.log(text);
+  }
+
+  public async sendFreeAppoAccept(appo: any, patientId: any) {
+    const user = await Users.findOne({ where: { id: patientId } });
+    let text = `Dear ${user?.firstName + ' ' + user?.lastName},
+    you have successfully reserved free appointment.
+    Date: ${moment.unix(appo.start).format('YYYY-MM-DD HH:mm')}`;
+    let subject = 'Appointment request';
+    await this.send({
+      to: user?.email,
+      from: config.mail,
+      text,
+      subject,
+    });
+    console.log(text);
   }
 
   // mailOption is an object
