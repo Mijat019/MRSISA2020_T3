@@ -11,6 +11,15 @@ class RoomsController {
     }
   }
 
+  public async getOccupancies(req: any, res: any) {
+    try {
+      const occupancies = await RoomsService.getOccupancies(req.params["id"]);
+      res.send(occupancies);
+    } catch (error) {
+      res.status(400).send(error.message);
+    }
+  }
+
   public async getAvailableForClinic(req: any, res: any) {
     try {
       const { clinicId, date } = req.body;

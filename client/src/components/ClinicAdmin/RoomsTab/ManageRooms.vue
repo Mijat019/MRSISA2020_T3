@@ -13,6 +13,7 @@
     </v-card-title>
 
     <RoomDialog />
+    <RoomOccupancyDialog />
 
     <v-card-text>
       <v-data-table :headers="headers" :items="getRooms" :search="search">
@@ -20,8 +21,9 @@
           <v-btn dark class="mb-2" @click="showAddDialog">Add Room</v-btn>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon small @click="showEditDialog(item)">mdi-pencil</v-icon>
-          <v-icon small @click="deleteRoomAction(item.id)">mdi-delete</v-icon>
+          <v-icon small @click="showEditDialog(item)">mdi-pencil</v-icon> 
+          <v-icon small @click="deleteRoomAction(item.id)">mdi-delete</v-icon> 
+          <v-icon small @click="showOccupancyDialog(item.id)">mdi-calendar</v-icon> 
         </template>
       </v-data-table>
     </v-card-text>
@@ -29,36 +31,55 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
-import RoomDialog from "./RoomDialog";
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import RoomDialog from './RoomDialog';
+import RoomOccupancyDialog from './RoomOccupancyDialog';
 export default {
-  name: "ManageRooms",
+  name: 'ManageRooms',
   components: {
-    RoomDialog
+    RoomDialog,
+    RoomOccupancyDialog
   },
   data() {
     return {
-      search: "",
+      search: '',
       headers: [
         {
-          text: "Name",
-          value: "name"
+          text: 'Name',
+          value: 'name',
         },
-        { text: "Actoins", value: "actions", sortable: false }
-      ]
+        {
+          text: 'Actions',
+          value: 'actions',
+          sortable: false,
+        },
+      ],
     };
   },
 
   methods: {
-    ...mapActions("rooms", {
-      getRoomsAction: "getRoomsAction",
-      deleteRoomAction: "deleteRoomAction"
+    ...mapActions('rooms', {
+      getRoomsAction: 'getRoomsAction',
+      deleteRoomAction: 'deleteRoomAction',
     }),
 
-    ...mapMutations("roomsDialog", {
-      showAddDialog: "openAddDialog",
-      showEditDialog: "openEditDialog"
-    })
+    ...mapActions('roomOccupancyDialog', {
+      pullOccupancies: "pullOccupancies"
+    }),
+
+    ...mapMutations('roomsDialog', {
+      showAddDialog: 'openAddDialog',
+      showEditDialog: 'openEditDialog',
+    }),
+
+    ...mapMutations('roomOccupancyDialog', {
+      openOccupancyDialog: 'openDialog',
+    }),
+
+    showOccupancyDialog(roomId) {
+      this.pullOccupancies(roomId);
+      this.openOccupancyDialog();
+    }
   },
 
   async mounted() {
@@ -67,10 +88,10 @@ export default {
 
   computed: {
     ...mapGetters({
-      getRooms: "rooms/getRooms",
-      getUser: "authentication/getUser"
-    })
-  }
+      getRooms: 'rooms/getRooms',
+      getUser: 'authentication/getUser',
+    }),
+  },
 };
 </script>
 

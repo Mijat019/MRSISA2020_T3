@@ -13,6 +13,18 @@ class RoomsService {
     return rooms;
   }
 
+  public async getOccupancies(roomId: number): Promise<any> {
+    const occupancies: any = await Rooms.findByPk(roomId, {
+      include: [
+        { model: FreeAppointments, attributes: ['start'], as: 'freeAppointments' },
+        { model: ConfirmedAppointments, attributes: ['start'], as: 'confirmedAppointments' },
+        { model: Operations, attributes: ['start'], as: 'operations' },
+      ]
+    });
+
+    return occupancies;
+  }
+
   public async getAvailableForClinic(
     clinicId: number,
     start: any

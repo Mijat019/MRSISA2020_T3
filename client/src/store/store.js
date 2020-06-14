@@ -36,6 +36,7 @@ import prescriptionApproving from './modules/prescriptionApproving';
 import operationRequests from './modules/operationRequests';
 import operations from './modules/operations';
 import incomeReport from './modules/incomeReport';
+import roomOccupancyDialog from "./modules/roomOccupancyDialog";
 
 Vue.use(Vuex);
 
@@ -79,6 +80,7 @@ const modules = {
   operationRequests,
   operations,
   incomeReport,
+  roomOccupancyDialog,
 };
 
 export default new Vuex.Store({
