@@ -72,22 +72,25 @@ class AppointmentRequestsService {
     delete requestPayload.id;
 
     try {
-      return sequelize.transaction(async (t) => {
-        await ConfirmedAppointments.create(requestPayload, {
-          transaction: t,
-        });
-        const result = await AppointmentRequests.destroy({
-          where: { id: id },
-          transaction: t,
-        });
+      let transaction = await sequelize.transaction();
 
-        // if deleted 0 rows it means that
-        // request has already been approved or denied
-        if (result == 0) throw new Error('Requested already approved or rejected by another admin!');
-
-        // now send mail to notify
-        await EmailService.sendAppointmentRequestAcceptedMail(requestPayload);
+      await ConfirmedAppointments.create(requestPayload, {
+        transaction,
       });
+      const result = await AppointmentRequests.destroy({
+        where: { id: id },
+        transaction,
+      });
+
+      // if deleted 0 rows it means that
+      // request has already been approved or denied
+      if (result == 0)
+        throw new Error(
+          'Requested already approved or rejected by another admin!'
+        );
+
+      // now send mail to notify
+      await EmailService.sendAppointmentRequestAcceptedMail(requestPayload);
     } catch (error) {
       // notify user of error and rollback
       throw new Error(error);

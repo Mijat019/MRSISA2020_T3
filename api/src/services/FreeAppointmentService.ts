@@ -67,16 +67,15 @@ class FreeAppointmentService {
 
   public async update(id: number, appointmentPayload: any) {
     try {
-      return await sequelize.transaction(async (t) => {
-        const { version } = (await FreeAppointments.findByPk(id)) as any;
-        if (version > appointmentPayload.version)
-          throw new Error('Optimistic Lock error');
+      const transaction = await sequelize.transaction();
+      const { version } = (await FreeAppointments.findByPk(id)) as any;
+      if (version > appointmentPayload.version)
+        throw new Error('Optimistic Lock error');
 
-        appointmentPayload.version += 1;
-        await FreeAppointments.upsert(appointmentPayload);
-        return await FreeAppointments.findByPk(id, {
-          include,
-        });
+      appointmentPayload.version += 1;
+      await FreeAppointments.upsert(appointmentPayload);
+      return await FreeAppointments.findByPk(id, {
+        include,
       });
     } catch (error) {
       // notify user of error and rollback
@@ -114,7 +113,6 @@ class FreeAppointmentService {
       // notify user of error and rollback
       throw new Error(error);
     }
-
   }
 }
 
