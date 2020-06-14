@@ -5,7 +5,6 @@ import operationsController from '../controllers/OperationsController';
 const router = Router();
 
 router.use(authenticationMiddleware.verifyToken);
-router.get('/clinic/:clinicId', operationsController.getAllForClinic);
 router.get('/doctor/:doctorId', operationsController.getAllForDoctor);
 router.post(
   '/:operationRequestId',

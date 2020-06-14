@@ -13,16 +13,6 @@ class OperationsController {
     }
   }
 
-  public async getAllForClinic(req: any, res: any) {
-    try {
-      const { clinicId } = req.params;
-      const operations = await operationsService.getAllForClinic(clinicId);
-      res.send(operations);
-    } catch (error) {
-      res.status(400).send(error.message);
-    }
-  }
-
   public async createOperationFromOperationRequest(req: any, res: any) {
     try {
       const { operationPayload, doctorIds } = req.body;

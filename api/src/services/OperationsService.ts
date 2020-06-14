@@ -39,10 +39,6 @@ class OperationsServices {
     return doctorWithOperations?.operations || [];
   }
 
-  public async getAllForClinic(clinicId: string) {
-    throw new Error('Not implemented');
-  }
-
   public async add(operationPayload: any) {
     const operation = await Operations.create(operationPayload);
     return operation;
