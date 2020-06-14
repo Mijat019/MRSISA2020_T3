@@ -9,7 +9,7 @@ addons:
 
 script:
     - npm run build
-    - sonar-scanner
+    - sonar-scanner -X
 
 deploy:
     provider: heroku
