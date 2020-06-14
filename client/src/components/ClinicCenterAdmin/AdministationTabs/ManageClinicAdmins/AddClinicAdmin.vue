@@ -129,41 +129,41 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
   data() {
     return {
       dialog: false,
       valid: true,
       clinicAdmin: {
-        firstName: "",
-        lastName: "",
-        jmbg: "",
-        phoneNumber: "",
-        address: "",
-        city: "",
-        country: ""
+        firstName: '',
+        lastName: '',
+        jmbg: '',
+        phoneNumber: '',
+        address: '',
+        city: '',
+        country: '',
       },
       clinicId: null,
-      clinicName: "",
+      clinicName: '',
 
       // FORM VALIDATION RULES
-      requiredRule: [v => !!v || "This field is required"],
-      emailRule: [v => !!v || "This field is required"],
+      requiredRule: [v => !!v || 'This field is required'],
+      emailRule: [v => !!v || 'This field is required'],
       jmbgRule: [
-        v => !!v || "This field is required",
-        v => !/[a-zA-Z]/.test(v) || "JMBG must not contain letters"
+        v => !!v || 'This field is required',
+        v => !/[a-zA-Z]/.test(v) || 'JMBG must not contain letters',
       ],
       phoneNumRule: [
-        v => !!v || "This field is required",
-        v => !/[a-zA-Z]/.test(v) || "Phone number must not contain letters"
-      ]
+        v => !!v || 'This field is required',
+        v => !/[a-zA-Z]/.test(v) || 'Phone number must not contain letters',
+      ],
     };
   },
   methods: {
     ...mapActions({
-      addClinicAdminAction: "clinicAdmins/addClinicAdminAction",
-      showError: "snackbar/showError"
+      addClinicAdminAction: 'clinicAdmins/addClinicAdminAction',
+      showError: 'snackbar/showError',
     }),
 
     async save() {
@@ -172,40 +172,40 @@ export default {
       }
 
       if (!this.clinicId) {
-        this.showError("You need to select a clinic.");
+        this.showError('You need to select a clinic.');
         return;
       }
 
       try {
         await this.addClinicAdminAction({
           clinicAdminPayload: this.clinicAdmin,
-          clinicId: this.clinicId
+          clinicId: this.clinicId,
         });
         this.dialog = false;
       } catch (error) {
-        error;
+        console.log(error);
       }
     },
 
     close() {
       this.dialog = false;
-    }
+    },
   },
 
   computed: {
-    ...mapGetters("clinics", { getClinics: "getClinics" }),
+    ...mapGetters('clinics', { getClinics: 'getClinics' }),
     clinicNames() {
       const clinicNames = this.getClinics.map(clinic => clinic.name);
       return clinicNames;
-    }
+    },
   },
 
   watch: {
     clinicName(clinicName) {
       const { id } = this.getClinics.find(clinic => clinic.name === clinicName);
       this.clinicId = id;
-    }
-  }
+    },
+  },
 };
 </script>
 

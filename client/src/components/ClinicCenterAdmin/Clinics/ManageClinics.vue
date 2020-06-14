@@ -3,23 +3,18 @@
     <template v-slot:top>
       <AddClinic />
     </template>
-    <template v-slot:actions="item">
-      <EditDeleteClinicAction :item="item" />
-    </template>
   </ClinicsTable>
 </template>
 
 <script>
-import AddClinic from "./AddClinic";
-import ClinicsTable from "./ClinicsTable";
-import EditDeleteClinicAction from "./EditDeleteClinicAction";
+import AddClinic from './AddClinic';
+import ClinicsTable from './ClinicsTable';
 export default {
-  name: "ManageClinics",
+  name: 'ManageClinics',
   components: {
     AddClinic,
     ClinicsTable,
-    EditDeleteClinicAction
-  }
+  },
 };
 </script>
 

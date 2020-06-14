@@ -16,56 +16,52 @@
         <template v-slot:top>
           <slot name="top"></slot>
         </template>
-
-        <template v-slot:item.actions="{ item }">
-          <slot name="actions" :item="item"></slot>
-        </template>
       </v-data-table>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
-  name: "ManageClinics",
+  name: 'ManageClinics',
   data() {
     return {
-      search: "",
+      search: '',
       headers: [
         {
-          text: "Name",
-          value: "name"
+          text: 'Name',
+          value: 'name',
         },
         {
-          text: "Country",
-          value: "country"
+          text: 'Country',
+          value: 'country',
         },
         {
-          text: "City",
-          value: "city"
+          text: 'City',
+          value: 'city',
         },
         {
-          text: "Address",
-          value: "address"
+          text: 'Address',
+          value: 'address',
         },
         {
-          text: "Description",
-          value: "description"
+          text: 'Description',
+          value: 'description',
         },
         {
-          text: "Actions",
-          value: "actions",
-          sortable: false
-        }
-      ]
+          text: 'Actions',
+          value: 'actions',
+          sortable: false,
+        },
+      ],
     };
   },
 
   methods: {
-    ...mapActions("clinics", {
-      getClinicsAction: "getClinicsAction"
-    })
+    ...mapActions('clinics', {
+      getClinicsAction: 'getClinicsAction',
+    }),
   },
 
   async mounted() {
@@ -73,10 +69,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters("clinics", {
-      getClinics: "getClinics"
-    })
-  }
+    ...mapGetters('clinics', {
+      getClinics: 'getClinics',
+    }),
+  },
 };
 </script>
 

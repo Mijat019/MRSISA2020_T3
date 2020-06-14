@@ -149,7 +149,6 @@ export default {
     },
 
     doctor(value) {
-      value;
       // when doctors is changed reset selected time
       this.timeProp = '';
       if (!value.user) return;
@@ -158,7 +157,6 @@ export default {
         doctorId: value.user.id,
         date: moment(this.date, 'YYYY-MM-DD').unix(),
       });
-
     },
   },
 

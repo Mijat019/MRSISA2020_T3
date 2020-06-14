@@ -126,8 +126,7 @@ export default {
       });
     },
 
-    priceList(value) {
-      value;
+    priceList() {
       // when doctors is changed reset selected time
       this.timeProp = '';
     },

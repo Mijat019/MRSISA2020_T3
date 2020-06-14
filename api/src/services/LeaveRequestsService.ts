@@ -1,8 +1,8 @@
-import config from "../config";
-import bcrypt from "bcrypt";
+import config from '../config';
+import bcrypt from 'bcrypt';
 import LeaveRequests from '../models/LeaveRequests';
-import DoctorAt from "../models/DoctorAt";
-import Users from "../models/Users";
+import DoctorAt from '../models/DoctorAt';
+import Users from '../models/Users';
 
 class LeaveRequestsService {
   public async add(userId: number, dates: any): Promise<any> {
@@ -15,15 +15,15 @@ class LeaveRequestsService {
       clinicId,
       from: dates.from,
       to: dates.to,
-      status: "Pending"
+      status: 'Pending',
     });
 
     return leaveReq;
   }
 
   public async getForUser(userId: number): Promise<any> {
-    return await LeaveRequests.findAll({ 
-      where: { userId }
+    return await LeaveRequests.findAll({
+      where: { userId },
     });
   }
 
@@ -31,29 +31,44 @@ class LeaveRequestsService {
     return await LeaveRequests.findAll({
       where: { clinicId },
       include: [
-        { model: Users, attributes: ["id", "firstName", "lastName"], as: "employee" }
-      ]
+        {
+          model: Users,
+          attributes: ['id', 'firstName', 'lastName'],
+          as: 'employee',
+        },
+      ],
     });
   }
 
   public async approve(id: number): Promise<any> {
-    let leaveReq = await LeaveRequests.findByPk(id);
-    if (leaveReq!.status !== "Pending") {
-      throw new Error("This leave request was already " + leaveReq!.status);
+    let leaveReq: any = this.getLeaveReq(id);
+
+    if (leaveReq!.status !== 'Pending') {
+      throw new Error('This leave request was already ' + leaveReq!.status);
     }
-    leaveReq!.status = "Approved";
-    leaveReq?.save();
+    leaveReq!.status = 'Approved';
+    leaveReq.save();
   }
 
   public async deny(id: number, reason: string): Promise<any> {
-    let leaveReq = await LeaveRequests.findByPk(id);
-    if (leaveReq!.status !== "Pending") {
-      throw new Error("This leave request was already " + leaveReq!.status);
+    let leaveReq: any = this.getLeaveReq(id);
+
+    if (leaveReq!.status !== 'Pending') {
+      throw new Error('This leave request was already ' + leaveReq!.status);
     }
-    leaveReq!.status = "Denied";
+    leaveReq!.status = 'Denied';
     leaveReq!.reason = reason;
-    leaveReq?.save();
+    leaveReq.save();
   }
+
+  private getLeaveReq = async (id: number) => {
+    let leaveReq = await LeaveRequests.findByPk(id);
+    if (!leaveReq) {
+      throw new Error('Wrong id for leave req.');
+    }
+
+    return leaveReq;
+  };
 }
 
 export default new LeaveRequestsService();
