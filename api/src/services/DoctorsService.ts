@@ -25,7 +25,7 @@ class DoctorsService {
         }
         const doctors = await DoctorAt.findAll({
             where,
-            group: 'doctorId',
+            group: ['doctorId', 'spec.appoType.id'],
             attributes: [
                 [
                     sequelize.fn(
@@ -54,7 +54,6 @@ class DoctorsService {
                     model: DoctorRating,
                     as: 'ratingList',
                     attributes: ['averageRating'],
-                    required: true,
                 },
                 {
                     model: DoctorSpec,
@@ -172,51 +171,89 @@ class DoctorsService {
         });
     }
 
-/** Returns a list of all available times for doctor given the date */
-  public async getAvailableTimes(doctorId: any, date: any) {
-    date = moment.unix(date);
+    /** Returns a list of all available times for doctor given the date */
+    public async getAvailableTimes(doctorId: any, date: any) {
+        date = moment.unix(date);
 
-    // generate all possible times
-    let allTimes = ['09:00', '09:30'];
-    for (let i = 10; i < 17; i++) {
-      allTimes.push(i + ':' + '00');
-      allTimes.push(i + ':' + '30');
+        // generate all possible times
+        let allTimes = ['09:00', '09:30'];
+        for (let i = 10; i < 17; i++) {
+            allTimes.push(i + ':' + '00');
+            allTimes.push(i + ':' + '30');
+        }
+
+        // set time bounds
+        // (min = date at 9AM, max = date at 5PM)
+        const minTime = date.clone().set({ hour: 9, minute: 0, second: 0 });
+        const maxTime = date.clone().set({ hour: 17, minute: 0, second: 0 });
+
+        // if on vacation return empty list
+        const hasLeave = await LeaveRequests.findAll({
+            where: {
+                userId: doctorId,
+                from: { [Op.lte]: minTime.unix() },
+                to: { [Op.gte]: minTime.unix() },
+            },
+        });
+        if (hasLeave.length > 0) return [];
+
+        //get all free Appos
+        const freeApps = await FreeAppointments.findAll({
+            where: {
+                doctorId,
+                start: {
+                    [Op.between]: [minTime.unix(), maxTime.unix()],
+                },
+            },
+        });
+        // delete busy times
+        this.parseApposAndDeleteTimes(freeApps, allTimes);
+
+        //get all conf appos
+        const confApps = await ConfirmedAppointments.findAll({
+            where: {
+                doctorId,
+                start: {
+                    [Op.between]: [minTime.unix(), maxTime.unix()],
+                },
+            },
+        });
+        // delete busy times
+        this.parseApposAndDeleteTimes(confApps, allTimes);
+
+        const operations = await Operations.findAll({
+            where: {
+                doctorId,
+                start: {
+                    [Op.between]: [minTime.unix(), maxTime.unix()],
+                },
+            },
+        });
+        // delete busy times
+        this.parseApposAndDeleteTimes(operations, allTimes);
+
+        // check if doctor has operation attendance
+        const attendances: any = await OperationAttendances.findAll({
+            where: {doctorId},
+            include: [
+                {
+                    model: Operations,
+                    as: 'operation',
+                    where: {
+                        start: {
+                            [Op.between]: [minTime.unix(), maxTime.unix()],
+                        },
+                    },
+                    required: true,
+                },
+            ],
+        });
+        // delete busy times
+        this.parseApposAndDeleteTimes(attendances.map((att: { operation: any; }) => att.operation), allTimes);
+
+        console.log(allTimes);
+        return allTimes;
     }
-
-    // set time bounds
-    // (min = date at 9AM, max = date at 5PM)
-    const minTime = date.clone().set({ hour: 9, minute: 0, second: 0 });
-    const maxTime = date.clone().set({ hour: 17, minute: 0, second: 0 });
-
-    //get all free Appos
-    const freeApps = await FreeAppointments.findAll({
-      where: {
-        doctorId,
-        start: {
-          [Op.between]: [minTime.unix(), maxTime.unix()],
-        },
-      },
-    });
-
-    // delete busy times
-    this.parseApposAndDeleteTimes(freeApps, allTimes);
-
-    //get all conf appos
-    const confApps = await ConfirmedAppointments.findAll({
-      where: {
-        doctorId,
-        start: {
-          [Op.between]: [minTime.unix(), maxTime.unix()],
-        },
-      },
-    });
-
-    // delete busy times
-    this.parseApposAndDeleteTimes(confApps, allTimes);
-
-    console.log(allTimes);
-    return allTimes;
-  }
 
     public parseApposAndDeleteTimes(appos: any, times: any): any {
         for (let app of appos) {

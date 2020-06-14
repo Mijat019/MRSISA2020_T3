@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title class="mx-8 mb-12 mt-5">
-      Clinics
+      Doctors
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
