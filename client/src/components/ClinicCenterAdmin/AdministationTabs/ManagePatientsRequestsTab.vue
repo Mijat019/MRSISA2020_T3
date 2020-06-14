@@ -85,8 +85,9 @@ export default {
         email: item.email,
         reason: this.reason
       });
-      this.reason = '';
+      this.cancel();
     },
+    
     cancel() {
       this.reason = '';
       this.dialog = false;
