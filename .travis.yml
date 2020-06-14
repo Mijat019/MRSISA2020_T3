@@ -1,11 +1,17 @@
 language: node_js
-node_js: 
+node_js:
     - 12
+
+addons:
+    sonarcloud:
+        organization: "mijat019"
+        token: $SONAR_TOKEN
 
 script:
     - npm run build
+    - sonar-scanner -X
 
 deploy:
-          provider: heroku
-          api_key: $HEROKU_API_KEY
-              app: covid19-clinic
+    provider: heroku
+    api_key: $HEROKU_API_KEY
+    app: covid19-clinic
