@@ -264,7 +264,7 @@ export default async () => {
         doctorId,
         patientId: patient2Id,
         roomId,
-        start: now.add(2, 'hour').unix(),
+        start: now.add(3, 'hour').unix(),
         duration: 30,
     });
 
