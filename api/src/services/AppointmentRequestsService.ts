@@ -89,8 +89,11 @@ class AppointmentRequestsService {
 
       // now send mail to notify
       await EmailService.sendAppointmentRequestAcceptedMail(requestPayload);
+      await transaction.commit();
     } catch (error) {
       // notify user of error and rollback
+      // @ts-ignore
+      if (transaction) await transaction.rollback();
       throw new Error(error);
     }
   }

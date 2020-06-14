@@ -67,8 +67,8 @@ class OperationRequestsService {
     return operationRequest;
   }
 
-  public async remove(id: string) {
-    await OperationRequests.destroy({ where: { id } });
+  public async remove(id: string, transaction: any) {
+    await OperationRequests.destroy({ where: { id }, transaction });
   }
 }
 

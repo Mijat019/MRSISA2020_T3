@@ -1,9 +1,12 @@
 import Operations from '../models/Operations';
-import { IncludeOptions } from 'sequelize/types';
+import { IncludeOptions, Transaction } from 'sequelize/types';
 import DoctorAt from '../models/DoctorAt';
 import Users from '../models/Users';
 import Rooms from '../models/Rooms';
 import PatientMedicalRecord from '../models/PatientMedicalRecord';
+import operationRequestsService from '../services/OperationRequestsService';
+import operationAttendancesService from '../services/OperationAttendancesService';
+import sequelize from '../models/database';
 
 const include: IncludeOptions[] = [
   {
@@ -39,9 +42,30 @@ class OperationsServices {
     return doctorWithOperations?.operations || [];
   }
 
-  public async add(operationPayload: any) {
-    const operation = await Operations.create(operationPayload);
-    return operation;
+  public async add(
+    operationRequestId: string,
+    operationPayload: any,
+    doctorIds: any
+  ) {
+    try {
+      const transaction = await sequelize.transaction();
+      const operation = await Operations.create(operationPayload, {
+        transaction,
+      });
+      await operationAttendancesService.add(
+        operation.id,
+        doctorIds,
+        transaction
+      );
+
+      await operationRequestsService.remove(operationRequestId, transaction);
+      await transaction.commit();
+      return operation;
+    } catch (error) {
+      // @ts-ignore
+      if (transaction) await transaction.rollback();
+      throw error;
+    }
   }
 }
 

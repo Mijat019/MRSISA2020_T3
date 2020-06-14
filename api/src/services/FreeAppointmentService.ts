@@ -67,17 +67,23 @@ class FreeAppointmentService {
   public async update(id: number, appointmentPayload: any) {
     try {
       const transaction = await sequelize.transaction();
-      const { version } = (await FreeAppointments.findByPk(id)) as any;
+      const { version } = (await FreeAppointments.findByPk(id, {
+        transaction,
+      })) as any;
       if (version > appointmentPayload.version)
         throw new Error('Optimistic Lock error');
 
       appointmentPayload.version += 1;
-      await FreeAppointments.upsert(appointmentPayload);
+      await FreeAppointments.upsert(appointmentPayload, { transaction });
+      await transaction.commit();
       return await FreeAppointments.findByPk(id, {
         include,
+        transaction,
       });
     } catch (error) {
       // notify user of error and rollback
+      // @ts-ignore
+      if (transaction) await transaction.rollback();
       throw new Error(error);
     }
   }
@@ -88,28 +94,33 @@ class FreeAppointmentService {
 
   public async schedule(appoId: number, patientId: number) {
     try {
-      return sequelize.transaction(async (t) => {
-        // Get free appointment
-        const freeAppo = await FreeAppointments.findByPk(appoId, {
-          include,
-        });
-
-        if (!freeAppo)
-          throw new Error('Free appointment ' + appoId + ' not found.');
-
-        // Delete free appointment
-        await FreeAppointments.destroy({ where: { id: freeAppo.id } });
-
-        // Make confirmed appointment from free
-        const confAppo = await ConfirmedAppointmentService.createFromFree(
-          freeAppo,
-          patientId
-        );
-        await EmailService.sendFreeAppoAccept(freeAppo, patientId);
-        return confAppo;
+      const transaction = await sequelize.transaction();
+      // Get free appointment
+      const freeAppo = await FreeAppointments.findByPk(appoId, {
+        include,
+        transaction,
       });
+
+      if (!freeAppo)
+        throw new Error('Free appointment ' + appoId + ' not found.');
+
+      // Delete free appointment
+      await FreeAppointments.destroy({
+        where: { id: freeAppo.id },
+        transaction,
+      });
+
+      // Make confirmed appointment from free
+      const confAppo = await ConfirmedAppointmentService.createFromFree(
+        freeAppo,
+        patientId
+      );
+      await EmailService.sendFreeAppoAccept(freeAppo, patientId);
+      await transaction.commit();
+      return confAppo;
     } catch (error) {
-      // notify user of error and rollback
+      // @ts-ignore
+      if (transaction) await transaction.rollback();
       throw new Error(error);
     }
   }

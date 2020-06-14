@@ -51,9 +51,12 @@ class OperationAttendancesService {
     return attendances;
   }
 
-  public async add(operationId: number, doctorIds: string[]) {
+  public async add(operationId: number, doctorIds: string[], transaction: any) {
     for (let doctorId of doctorIds) {
-      await OperationAttendances.create({ doctorId, operationId });
+      await OperationAttendances.create(
+        { doctorId, operationId },
+        { transaction }
+      );
     }
   }
 }
