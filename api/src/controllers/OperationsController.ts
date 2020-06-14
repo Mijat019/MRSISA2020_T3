@@ -1,4 +1,5 @@
 import operationsService from '../services/OperationsService';
+import EmailService from '../services/EmailService';
 
 class OperationsController {
   public async getAllForDoctor(req: any, res: any) {

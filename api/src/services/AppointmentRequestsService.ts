@@ -68,9 +68,9 @@ class AppointmentRequestsService {
     requestPayload.patientId = requestPayload.patientMedicalRecord.userId;
     const { id } = requestPayload;
     delete requestPayload.id;
-
+    let transaction;
     try {
-      let transaction = await sequelize.transaction();
+      transaction = await sequelize.transaction();
 
       await ConfirmedAppointments.create(requestPayload, {
         transaction,

@@ -1,11 +1,11 @@
-import config from "../config";
-import bcrypt from "bcrypt";
-import Users from "../models/Users";
-import UserRole from "../models/UserRole";
-import EmailService from "./EmailService";
-import AccountStatus from "../models/AccountStatus";
-import DoctorAt from "../models/DoctorAt";
-import NurseAt from "../models/NurseAt";
+import config from '../config';
+import bcrypt from 'bcrypt';
+import Users from '../models/Users';
+import UserRole from '../models/UserRole';
+import EmailService from './EmailService';
+import AccountStatus from '../models/AccountStatus';
+import DoctorAt from '../models/DoctorAt';
+import NurseAt from '../models/NurseAt';
 
 class UsersService {
   /**
@@ -33,7 +33,7 @@ class UsersService {
   public async createEmployee(userPayload: any, role: UserRole) {
     userPayload.status = AccountStatus.PENDING;
     userPayload.role = role;
-    userPayload.password = "";
+    userPayload.password = '';
     const user = await Users.create(userPayload);
     await this.sendEmailWithLinkToSetPassword(user);
     return user;
@@ -45,14 +45,14 @@ class UsersService {
   }
 
   public async sendEmailWithLinkToSetPassword(user: any) {
-    const link = `http://localhost:8080/setPassword/${user.id}`;
+    const link = `https://covid19-clinic.herokuapp.com/setPassword/${user.id}`;
     // log this so you can click on it without checking your email
     console.log(link);
     const emailText = `Dear ${user.firstName} ${user.lastName} \n You have been registered to Covid19Clinic, to login you need to set a password. You can do that by clicking on this link ${link}`;
     EmailService.send({
       from: config.mail,
       to: user.email,
-      subject: "Covid Clinic Registration",
+      subject: 'Covid Clinic Registration',
       text: emailText,
     });
   }
@@ -61,14 +61,14 @@ class UsersService {
     let user: any = await Users.findByPk(id);
     const hashedPassword = await bcrypt.hash(password, config.saltRounds);
     await user.update({
-      password: hashedPassword
+      password: hashedPassword,
     });
   }
 
   public async getInfo(id: number) {
     return await Users.findByPk(id);
   }
-  
+
   public async changeInfo(payload: any) {
     let user: any = await Users.findByPk(payload.id);
     user.firstName = payload.firstName;
@@ -77,13 +77,12 @@ class UsersService {
     user.country = payload.country;
     user.address = payload.address;
     user.phoneNumber = payload.phoneNumber;
-    
+
     await user.save();
-    console.log("Changed user info: ");
+    console.log('Changed user info: ');
     console.log(user);
     return user;
   }
-
 }
 
 export default new UsersService();

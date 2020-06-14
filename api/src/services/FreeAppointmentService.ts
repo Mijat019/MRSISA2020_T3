@@ -65,8 +65,9 @@ class FreeAppointmentService {
   }
 
   public async update(id: number, appointmentPayload: any) {
+    let transaction;
     try {
-      const transaction = await sequelize.transaction();
+      transaction = await sequelize.transaction();
       const { version } = (await FreeAppointments.findByPk(id, {
         transaction,
       })) as any;
@@ -93,8 +94,9 @@ class FreeAppointmentService {
   }
 
   public async schedule(appoId: number, patientId: number) {
+    let transaction;
     try {
-      const transaction = await sequelize.transaction();
+      transaction = await sequelize.transaction();
       // Get free appointment
       const freeAppo = await FreeAppointments.findByPk(appoId, {
         include,

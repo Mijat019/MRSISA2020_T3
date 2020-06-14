@@ -1,5 +1,5 @@
 import Operations from '../models/Operations';
-import { IncludeOptions, Transaction } from 'sequelize/types';
+import { IncludeOptions } from 'sequelize/types';
 import DoctorAt from '../models/DoctorAt';
 import Users from '../models/Users';
 import Rooms from '../models/Rooms';
@@ -47,8 +47,9 @@ class OperationsServices {
     operationPayload: any,
     doctorIds: any
   ) {
+    let transaction;
     try {
-      const transaction = await sequelize.transaction();
+      transaction = await sequelize.transaction();
       const operation = await Operations.create(operationPayload, {
         transaction,
       });
@@ -67,6 +68,8 @@ class OperationsServices {
       throw error;
     }
   }
+
+  public async sendEmailsToDoctorsAndPatients(doctorIds: any, patient: any) {}
 }
 
 export default new OperationsServices();

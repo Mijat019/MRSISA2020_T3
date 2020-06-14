@@ -12,6 +12,36 @@ var transporter = nodemailer.createTransport({
 });
 
 class EmailService {
+  public async sendMailAboutOperation(operation: any) {
+    const time = moment.unix(operation.start).format('lll');
+    let text = `Dear ${operation.doctor.user.firstName} ${operation.doctor.user.lastName} you have an operation at ${time} for patient ${operation.patient.user.firstName} ${operation.patient.user.lastName} in room in room ${operation.room.name}`;
+
+    await this.send({
+      from: config.mail,
+      to: operation.doctor.user.email,
+      subject: 'operacija',
+      text,
+    });
+
+    for (let e of operation.operationAttendances) {
+      let text = `Dear ${e.user.firstName} ${e.user.lastName} you need to attend an operation at ${time} in room ${operation.room.name}`;
+      await this.send({
+        from: config.mail,
+        to: e.user.email,
+        subject: 'operacija',
+        text,
+      });
+    }
+
+    text = `Dear ${operation.patient.user.firstName} ${operation.patient.user.lastName} you have an operation at ${time} in room ${operation.room.name}`;
+    await this.send({
+      from: config.mail,
+      to: operation.patient.user.email,
+      subject: 'operacija',
+      text,
+    });
+  }
+
   public async sendAppointmentCancellationEmail(appointment: any) {
     let text = `Dear ${appointment.patient.user.firstName} ${
       appointment.patient.user.firstName
@@ -77,7 +107,7 @@ class EmailService {
   public async sendAccountConfirmationMail(req: any, email: string) {
     let emailText = `Dear ${
       req.firstName + ' ' + req.lastName
-    },\nYour Covid clinic account has been approved!\nYou have 24h to activate it: http://localhost:4200/patients/activate/${email}`;
+    },\nYour Covid clinic account has been approved!\nYou have 24h to activate it: https://covid19-clinic.herokuapp.com/patients/activate/${email}`;
     await this.send({
       from: config.mail,
       to: email,
