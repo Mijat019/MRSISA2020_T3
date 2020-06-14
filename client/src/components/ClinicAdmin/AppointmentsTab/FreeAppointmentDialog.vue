@@ -116,8 +116,9 @@ export default {
       getRoomTimesAction: 'rooms/getAvailableTimesAction',
     }),
 
-    ...mapMutations('freeAppointmentsDialog', {
-      close: 'closeDialog',
+    ...mapMutations({
+      close: 'freeAppointmentsDialog/closeDialog',
+      addDoctorTime: 'doctors/addTime',
     }),
 
     typeChanged() {
@@ -154,9 +155,11 @@ export default {
       if (!this.$refs.form.validate() || !this.appointment.start) {
         return;
       }
+      const dateTime = this.appointment.date + ' ' + this.appointment.time;
+      this.appointment.start = moment(dateTime, 'YYYY-MM-DD HH:mm').unix();
+
       // Prepare fields for backend
       this.appointment.priceListId = this.appointment.priceList.id;
-      this.appointment.start = moment(this.appointment.start).unix();
       delete this.appointment.priceList;
 
       await this.updateAppointmentAction(this.appointment);
@@ -167,8 +170,7 @@ export default {
       if (onlyReset) {
         this.$refs.form.reset();
         this.$refs.form.resetValidation();
-      }
-      else this.$refs.form.resetValidation();
+      } else this.$refs.form.resetValidation();
 
       this.close();
     },
@@ -209,6 +211,10 @@ export default {
 
     dateProp() {
       return this.appointment.date;
+    },
+
+    dialogProp() {
+      return this.dialog;
     },
   },
 
@@ -254,6 +260,8 @@ export default {
         return;
       }
 
+      alert(val);
+
       await this.getDoctorTimesAction({
         doctorId: this.appointment.doctorId,
         date: moment(val, 'YYYY-MM-DD').unix(),
@@ -263,6 +271,31 @@ export default {
         roomId: this.appointment.roomId,
         date: moment(val, 'YYYY-MM-DD').unix(),
       });
+    },
+
+    // watch when dialog opens and closes
+    async dialogProp(val) {
+      if (!val) return;
+
+      if (this.type == 'edit') {
+        this.appointment.date = moment
+          .unix(this.appointment.start)
+          .format('YYYY-MM-DD');
+        this.appointment.time = moment
+          .unix(this.appointment.start)
+          .format('HH:mm');
+
+        await this.getDoctorTimesAction({
+          doctorId: this.appointment.doctorId,
+          date: moment(this.appointment.date, 'YYYY-MM-DD').unix(),
+        });
+
+        await this.getRoomTimesAction({
+          roomId: this.appointment.roomId,
+          date: moment(this.appointment.date, 'YYYY-MM-DD').unix(),
+        });
+
+      }
     },
   },
 };
