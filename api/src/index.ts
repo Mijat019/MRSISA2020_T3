@@ -43,6 +43,7 @@ import reportRoutes from './routes/reportRoutes';
     // creates tables from model
     // drops tables if they already exist
     // uncomment next line if you want to apply changes to the schema
+    await db.query('SET FOREIGN_KEY_CHECKS = 0');
     await db.sync({ force: true });
     await initModel();
     // await initModelStega();
